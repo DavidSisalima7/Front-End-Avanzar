@@ -1,0 +1,117 @@
+import { NgIf } from '@angular/common';
+import { Component, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
+import { FormsModule, NgForm, ReactiveFormsModule, UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
+import { MatButtonModule } from '@angular/material/button';
+import { MatCheckboxModule } from '@angular/material/checkbox';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatIconModule } from '@angular/material/icon';
+import { MatInputModule } from '@angular/material/input';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { Router, RouterLink } from '@angular/router';
+import { fuseAnimations } from '@fuse/animations';
+import { FuseAlertComponent, FuseAlertType } from '@fuse/components/alert';
+import { AuthService } from 'app/core/auth/auth.service';
+import { Persona } from 'app/services/models/persona';
+import { Usuario } from 'app/services/models/usuario';
+import { PersonaService } from 'app/services/persona.service';
+import { UsuarioService } from 'app/services/usuarios.service';
+
+@Component({
+    selector     : 'auth-sign-up',
+    templateUrl  : './sign-up.component.html',
+    encapsulation: ViewEncapsulation.None,
+    animations   : fuseAnimations,
+    standalone   : true,
+    imports      : [RouterLink, NgIf, FuseAlertComponent, FormsModule, ReactiveFormsModule, MatFormFieldModule, MatInputModule, MatButtonModule, MatIconModule, MatCheckboxModule, MatProgressSpinnerModule],
+})
+export class SignUpComponent implements OnInit
+{
+    @ViewChild('signUpNgForm') signUpNgForm: NgForm;
+
+    alert: { type: FuseAlertType; message: string } = {
+        type   : 'success',
+        message: '',
+    };
+    signUpForm: UntypedFormGroup;
+    showAlert: boolean = false;
+
+
+    persona: Persona = new Persona();
+    user: Usuario=new Usuario();
+
+    /**
+     * Constructor
+     */
+    constructor(
+        private _authService: AuthService,
+        private _formBuilder: UntypedFormBuilder,
+        private _router: Router,
+        private personaService: PersonaService,
+        private usuarioService: UsuarioService
+    )
+    {
+    }
+
+    // -----------------------------------------------------------------------------------------------------
+    // @ Lifecycle hooks
+    // -----------------------------------------------------------------------------------------------------
+
+    /**
+     * On init
+     */
+    ngOnInit(): void
+    {
+        // Create the form
+        this.signUpForm = this._formBuilder.group({
+                cedula       : ['', Validators.required],
+                primernombre       : ['', Validators.required],
+                segundonombre      : ['', Validators.required],
+                primerapellido     : ['', Validators.required],
+                segundoapellido    : ['', Validators.required],
+                correo     : ['', [Validators.required, Validators.email]],
+                password  : ['', Validators.required],
+                direccion  : ['', Validators.required],
+                celular   : ['', Validators.required],
+                agreements: ['', Validators.requiredTrue],
+            },
+        );
+    }
+
+    // -----------------------------------------------------------------------------------------------------
+    // @ Public methods
+    // -----------------------------------------------------------------------------------------------------
+
+    /**
+     * Sign up
+     */
+    signUp(): void
+    {
+
+        this.persona.estado = true;
+        this.user.estado=true;
+        this.user.username=this.signUpForm.get('correo').value;
+        this.user.password=this.signUpForm.get('password').value;
+    
+        this.personaService.savePersona(this.persona).subscribe(data => {
+            console.log(data);
+            this.user.persona=data;
+            this.usuarioService.registrarUsuario(this.user, 4)
+            .subscribe(
+                (response) => {
+                  console.log('Usuario registrado exitosamente:', response);
+                  // Realizar acciones adicionales después del registro exitoso si es necesario.
+                },
+                (error) => {
+                  console.error('Error al registrar el usuario:', error);
+                  // Manejo de errores si es necesario.
+                }
+              );
+            
+            this.signUpNgForm.resetForm();
+
+        })
+
+    }
+
+
+}
