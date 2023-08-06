@@ -15,7 +15,7 @@
             <div class="flex items-center justify-center">
                 <img
                     class="w-8"
-                    src="assets/images/logo/logo.svg">
+                    src="assets/images/logo/logo.svg"><p>s</p>
             </div>
             <!-- Components -->
             <div class="flex items-center ml-auto">
@@ -35,14 +35,26 @@
                     class="icon-size-24"
                     *ngIf="!user.avatar"
                     [svgIcon]="'heroicons_solid:user-circle'"></mat-icon>
+                    <mat-icon
+                    > <p></p></mat-icon>
+                    
             </div>
             <div class="flex flex-col items-center justify-center w-full mt-6">
                 <div class="w-full whitespace-nowrap text-ellipsis overflow-hidden text-center leading-normal font-medium">
-                    {{user.name}}
+                    {{user.persona.primer_nombre+" "+user.persona.primer_apellido}}
                 </div>
                 <div class="w-full mt-0.5 whitespace-nowrap text-ellipsis overflow-hidden text-center text-md leading-normal font-medium text-secondary">
-                    {{user.email}}
+                    {{user.username}}
                 </div>
+                
+            </div>
+            <div class="flex flex-col items-center justify-center w-full mt-6">
+                <div class="w-full whitespace-nowrap text-ellipsis overflow-hidden text-center leading-normal font-medium">
+                    <a href="https://www.instagram.com/"></a>
+                    
+                </div>
+               
+                
             </div>
         </div>
     </ng-container>

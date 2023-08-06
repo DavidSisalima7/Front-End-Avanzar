@@ -11,7 +11,6 @@ import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { fuseAnimations } from '@fuse/animations';
 import { FuseAlertComponent, FuseAlertType } from '@fuse/components/alert';
 import { AuthService } from 'app/core/auth/auth.service';
-import { LoginService } from 'app/services/login/login.service';
 
 @Component({
     selector: 'auth-sign-in',
@@ -39,7 +38,7 @@ export class SingInComponent implements OnInit {
         private _authService: AuthService,
         private _formBuilder: UntypedFormBuilder,
         private _router: Router,
-        private loginService: LoginService,
+        private loginService: AuthService,
 
     ) {
 
@@ -57,95 +56,104 @@ export class SingInComponent implements OnInit {
     }
 
     signIn(): void {
-        const username = this.signInForm.get('username').value;
-        const password = this.signInForm.get('password').value;
-    
-        // Return if the form is invalid
-        if (this.signInForm.invalid) {
-            return;
-        }
-    
-        // Disable the form
-        this.signInForm.disable();
-    
-        // Hide the alert
-        this.showAlert = false;
+      const username = this.signInForm.get('username').value;
+      const password = this.signInForm.get('password').value;
+  
+      // Return if the form is invalid
+      if (this.signInForm.invalid) {
+          return;
+      }
+  
+      // Disable the form
+      this.signInForm.disable();
+  
+      // Hide the alert
+      this.showAlert = false;
+  
+      // Sign in
+      this._authService.signIn({ username: username, password: password }).subscribe(
+          (data: any) => {
+              //this._authService.loginUser(data.token);
+              // Llamamos al método para obtener el usuario actual
+              this.obtenerUsuarioActual();
+  
+              // Set the redirect url.
+              // The '/signed-in-redirect' is a dummy url to catch the request and redirect the user
+              // to the correct page after a successful sign in. This way, that url can be set via
+              // routing file and we don't have to touch here.
+              const redirectURL = this._activatedRoute.snapshot.queryParamMap.get('redirectURL') || '/signed-in-redirect';
+  
+              // Navigate to the redirect url
+              this._router.navigateByUrl(redirectURL);
+          },
+          (error) => {
+              // Re-enable the form
+              this.signInForm.enable();
+  
+              // Reset the form
+              this.signInNgForm.resetForm();
+  
+              // Set the alert
+              this.alert = {
+                  type: 'error',
+                  message: 'Wrong email or password',
+              };
+  
+              // Show the alert
+              this.showAlert = true;
+  
+              console.log(error);
+          }
+      );
+  }
 
-        this.loginService.generarToken({ username: username, password: password }).subscribe(
-        (data:any) => {
-            this.loginService.loginUser(data.token);
-            // Llamamos al método para obtener el usuario actual
-            this.obtenerUsuarioActual();
+  
+  obtenerUsuarioActual(): void {
+      // Return if the form is invalid
+      if ( this.signInForm.invalid )
+      {
+          return;
+      }
 
-        },
-        (error) => {
-            // Re-enable the form
-            this.signInForm.enable();
+      // Disable the form
+      this.signInForm.disable();
+     this._authService.getUsuarioActual().subscribe(
+       (user: any) => {
+         if (user) {
+           // Si se reciben los detalles del usuario correctamente, almacénalos en el servicio
+           this._authService.setUser(user);
+           const userRole = this._authService.getUserRole();
+           // Redirigir según el rol del usuario
+           switch (userRole) {
+             case 'ADMIN':
+               console.log("es admin");
 
-            // Reset the form
-            this.signInNgForm.resetForm();
-
-            // Set the alert
-            this.alert = {
-                type: 'error',
-                message: 'Wrong email or password',
-            };
-
-            // Show the alert
-            this.showAlert = true;
-
-            console.log(error);
-        }
-    );
-
-    }
-
-        obtenerUsuarioActual(): void {
-            // Return if the form is invalid
-            if ( this.signInForm.invalid )
-            {
-                return;
-            }
-      
-            // Disable the form
-            this.signInForm.disable();
-           this.loginService.getUsuarioActual().subscribe(
-             (user: any) => {
-               if (user) {
-                 // Si se reciben los detalles del usuario correctamente, almacénalos en el servicio
-                 this.loginService.setUser(user);
-                 const userRole = this.loginService.getUserRole();
-                 // Redirigir según el rol del usuario
-                 switch (userRole) {
-                   case 'ADMIN':
-                     console.log("es admin");
-                    //Poner la ruta
-                     break;
-                   case 'RESPONSABLE_VENTAS':
-                     console.log("es responsable");
-                     // this.router.navigate(['/perfilre']);
-                     break;
-                   case 'VENDEDOR':
-                     console.log("es vendedor");
-                     // this.router.navigate(['/perfilve']);
-                     break;
-                   case 'CLIENTE':
-                     console.log("es cliente");
-                     // this.router.navigate(['/perfilcli']);
-                     break;
-                   default:
-                     this.loginService.logout(); // En caso de un rol desconocido o no válido, cerrar sesión
-                 }
-               } else {
-                 // Si no se reciben los detalles del usuario (puede ser nulo en caso de error),
-                 // puedes realizar alguna acción o mostrar un mensaje de error.
-                 console.log('No se pudo obtener el usuario actual.');
-               }
-             },
-             (error) => {
-               console.log('Error al obtener el usuario actual:', error);
-             }
-           );
+               break;
+             case 'RESPONSABLE_VENTAS':
+               console.log("es responsable");
+               // this.router.navigate(['/perfilre']);
+               break;
+             case 'VENDEDOR':
+               console.log("es vendedor");
+               // this.router.navigate(['/perfilve']);
+               break;
+             case 'CLIENTE':
+               console.log("es cliente");
+               // this.router.navigate(['/perfilcli']);
+               break;
+             default:
+               this._authService.signOut(); // En caso de un rol desconocido o no válido, cerrar sesión
+           }
+         } else {
+           // Si no se reciben los detalles del usuario (puede ser nulo en caso de error),
+           // puedes realizar alguna acción o mostrar un mensaje de error.
+           console.log('No se pudo obtener el usuario actual.');
          }
+       },
+       (error) => {
+         console.log('Error al obtener el usuario actual:', error);
+       }
+     );
+   }
         
 }

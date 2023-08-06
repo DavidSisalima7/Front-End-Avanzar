@@ -11,6 +11,8 @@ import { Router, RouterLink } from '@angular/router';
 import { fuseAnimations } from '@fuse/animations';
 import { FuseAlertComponent, FuseAlertType } from '@fuse/components/alert';
 import { AuthService } from 'app/core/auth/auth.service';
+import { UserService } from 'app/core/user/user.service';
+import { User } from 'app/core/user/user.types';
 import { Persona } from 'app/services/models/persona';
 import { Usuario } from 'app/services/models/usuario';
 import { PersonaService } from 'app/services/persona.service';
@@ -37,7 +39,7 @@ export class SignUpComponent implements OnInit
 
 
     persona: Persona = new Persona();
-    user: Usuario=new Usuario();
+    user: User=new User();
 
     /**
      * Constructor
@@ -47,7 +49,7 @@ export class SignUpComponent implements OnInit
         private _formBuilder: UntypedFormBuilder,
         private _router: Router,
         private personaService: PersonaService,
-        private usuarioService: UsuarioService
+        private usuarioService: UserService
     )
     {
     }
@@ -88,9 +90,13 @@ export class SignUpComponent implements OnInit
     {
 
         this.persona.estado = true;
-        this.user.estado=true;
-        this.user.username=this.signUpForm.get('correo').value;
-        this.user.password=this.signUpForm.get('password').value;
+        this.user.enabled=true;
+        this.user.visible=true;
+        this.user.username=this.signUpForm.get('correo')?.value;
+        this.user.password=this.signUpForm.get('password')?.value;
+        const primerNombre = this.signUpForm.get('primernombre')?.value;
+        const primerApellido = this.signUpForm.get('primerapellido')?.value;
+        this.user.name=primerNombre + ' ' + primerApellido;
     
         this.personaService.savePersona(this.persona).subscribe(data => {
             console.log(data);

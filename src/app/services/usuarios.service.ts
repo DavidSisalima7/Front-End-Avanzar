@@ -11,12 +11,14 @@ export class UsuarioService {
   url: string = 'http://localhost:8080/api/usuarios';
   constructor(private http: HttpClient) { }
 
+  /*
 
   // Método para registrar un nuevo usuario
   registrarUsuario(usuario: Usuario, rolId: number): Observable<Usuario> {
     const url = `${this.url}/registrar/${rolId}`;
     return this.http.post<Usuario>(url, usuario);
-  }
+  }*/
+  
 
 
 }

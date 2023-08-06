@@ -1,8 +1,13 @@
-export interface User
+import { Persona } from "app/services/models/persona";
+
+export class User
 {
-    id: string;
-    name: string;
-    email: string;
+    id: number;
+    name:string;
+    username: string;
+    password:string;
     avatar?: string;
-    status?: string;
+    enabled:boolean;
+    visible:boolean;
+    persona?:Persona;
 }
