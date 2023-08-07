@@ -11,6 +11,7 @@ import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { fuseAnimations } from '@fuse/animations';
 import { FuseAlertComponent, FuseAlertType } from '@fuse/components/alert';
 import { AuthService } from 'app/core/auth/auth.service';
+import { UsuarioRolService } from 'app/services/services/usuarioRol.service';
 
 @Component({
     selector: 'auth-sign-in',
@@ -23,6 +24,8 @@ import { AuthService } from 'app/core/auth/auth.service';
 
 export class SingInComponent implements OnInit {
 
+    //Variable para almacenar el nombre del rol del usuario que intenta ingresar al sistema
+    rolUsuario:string;
 
     @ViewChild('signInNgForm') signInNgForm: NgForm;
 
@@ -36,6 +39,7 @@ export class SingInComponent implements OnInit {
     constructor(
         private _activatedRoute: ActivatedRoute,
         private _authService: AuthService,
+        private _userRol: UsuarioRolService,
         private _formBuilder: UntypedFormBuilder,
         private _router: Router,
         private loginService: AuthService,
@@ -122,38 +126,44 @@ export class SingInComponent implements OnInit {
          if (user) {
            // Si se reciben los detalles del usuario correctamente, almacénalos en el servicio
            this._authService.setUser(user);
-           const userRole = this._authService.getUserRole();
-           // Redirigir según el rol del usuario
-           switch (userRole) {
-             case 'ADMIN':
-               console.log("es admin");
-
-               break;
-             case 'RESPONSABLE_VENTAS':
-               console.log("es responsable");
-               // this.router.navigate(['/perfilre']);
-               break;
-             case 'VENDEDOR':
-               console.log("es vendedor");
-               // this.router.navigate(['/perfilve']);
-               break;
-             case 'CLIENTE':
-               console.log("es cliente");
-               // this.router.navigate(['/perfilcli']);
-               break;
-             default:
-               this._authService.signOut(); // En caso de un rol desconocido o no válido, cerrar sesión
-           }
-         } else {
-           // Si no se reciben los detalles del usuario (puede ser nulo en caso de error),
-           // puedes realizar alguna acción o mostrar un mensaje de error.
-           console.log('No se pudo obtener el usuario actual.');
-         }
-       },
-       (error) => {
-         console.log('Error al obtener el usuario actual:', error);
-       }
-     );
+           this._userRol.obtenerRolDeUsuario(user.id).subscribe(
+            (userRole: any) => {
+                
+              // Redirigir según el rol del usuario
+              switch (userRole.nombre) {
+                case 'ADMIN':
+                  console.log('es admin');
+                  break;
+                case 'RESPONSABLE_VENTAS':
+                  console.log('es responsable');
+                  // this.router.navigate(['/perfilre']);
+                  break;
+                case 'VENDEDOR':
+                  console.log('es vendedor');
+                  // this.router.navigate(['/perfilve']);
+                  break;
+                case 'CLIENTE':
+                  console.log('es cliente');
+                  // this.router.navigate(['/perfilcli']);
+                  break;
+                default:
+                  this._authService.signOut(); // En caso de un rol desconocido o no válido, cerrar sesión
+              }
+            },
+            (error) => {
+              console.log('Error al obtener el rol del usuario:', error);
+            }
+          );
+        } else {
+          // Si no se reciben los detalles del usuario (puede ser nulo en caso de error),
+          // puedes realizar alguna acción o mostrar un mensaje de error.
+          console.log('No se pudo obtener el usuario actual.');
+        }
+      },
+      (error) => {
+        console.log('Error al obtener el usuario actual:', error);
+      }
+    );
    }
         
 }

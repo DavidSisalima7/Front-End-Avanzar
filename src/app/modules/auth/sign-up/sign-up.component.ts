@@ -15,8 +15,7 @@ import { UserService } from 'app/core/user/user.service';
 import { User } from 'app/core/user/user.types';
 import { Persona } from 'app/services/models/persona';
 import { Usuario } from 'app/services/models/usuario';
-import { PersonaService } from 'app/services/persona.service';
-import { UsuarioService } from 'app/services/usuarios.service';
+import { PersonaService } from 'app/services/services/persona.service';
 
 @Component({
     selector     : 'auth-sign-up',
