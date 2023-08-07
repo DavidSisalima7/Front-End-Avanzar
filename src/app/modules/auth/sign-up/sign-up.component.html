@@ -2,28 +2,19 @@
     <div class="md:flex md:items-center md:justify-end w-full sm:w-auto md:h-full md:w-1/2 py-8 px-4 sm:p-12 md:p-16 sm:rounded-2xl md:rounded-none sm:shadow md:shadow-none sm:bg-card">
         <div class="w-full max-w-80 sm:w-80 mx-auto sm:mx-0">
             <!-- Logo -->
-            <div class="w-30">
+            <div class="w-28">
                 <img src="assets/images/logo/avanzar.png">
             </div>
 
             <!-- Title -->
-            <div class="mt-8 text-4xl font-extrabold tracking-tight leading-tight">Inicio de Sesión</div>
+            <div class="mt-8 text-4xl font-extrabold tracking-tight leading-tight">Registrate</div>
             <div class="flex items-baseline mt-0.5 font-medium">
-                <div>No tienes una cuenta?</div>
+                <div>Ya tienes una cuenta?</div>
                 <a
                     class="ml-1 text-primary-500 hover:underline"
-                    [routerLink]="['/sign-up']">Crear cuenta
+                    [routerLink]="['/sign-in']">Iniciar sesión
                 </a>
             </div>
-
-            <!-- Alert
-            <fuse-alert
-                class="mt-8"
-                [appearance]="'outline'"
-                [showIcon]="false"
-                [type]="'info'">
-                You are browsing <strong>Fuse Demo</strong>. Click on the "Sign in" button to access the Demo and Documentation.
-            </fuse-alert> -->
 
             <!-- Alert -->
             <fuse-alert
@@ -36,27 +27,93 @@
                 {{alert.message}}
             </fuse-alert>
 
-            <!-- Sign in form -->
+            <!-- Sign Up form -->
             <form
                 class="mt-8"
-                [formGroup]="signInForm"
-                #signInNgForm="ngForm">
+                [formGroup]="signUpForm"
+                #signUpNgForm="ngForm">
+
+                <!-- Name field -->
+            
+                <mat-form-field class="w-full">
+                    <mat-label>Cédula</mat-label>
+                    <input
+                        id="cedula"
+                        matInput
+                        [formControlName]="'cedula'"
+                        [(ngModel)]="persona.cedula">
+                    <mat-error *ngIf="signUpForm.get('cedula').hasError('required')">
+                        Este campo es requerido
+                    </mat-error>
+                </mat-form-field>
+
+                <mat-form-field class="w-full">
+                    <mat-label>Primer Nombre</mat-label>
+                    <input
+                        id="primernombre"
+                        matInput
+                        [formControlName]="'primernombre'"
+                        [(ngModel)]="persona.primer_nombre">
+                    <mat-error *ngIf="signUpForm.get('primernombre').hasError('required')">
+                        Este campo es requerido
+                    </mat-error>
+                </mat-form-field>
+
+
+                <mat-form-field class="w-full">
+                    <mat-label>Segundo Nombre</mat-label>
+                    <input
+                        id="segundonombre"
+                        matInput
+                        [formControlName]="'segundonombre'"
+                        [(ngModel)]="persona.segundo_nombre">
+                    <mat-error *ngIf="signUpForm.get('segundonombre').hasError('required')">
+                        Este campo es requerido
+                    </mat-error>
+                </mat-form-field>
+
+
+                <mat-form-field class="w-full">
+                    <mat-label>Primer Apellido</mat-label>
+                    <input
+                        id="primerapellido"
+                        matInput
+                        [formControlName]="'primerapellido'"
+                        [(ngModel)]="persona.primer_apellido">
+                    <mat-error *ngIf="signUpForm.get('primerapellido').hasError('required')">
+                        Este campo es requerido
+                    </mat-error>
+                </mat-form-field>
+
+
+                <mat-form-field class="w-full">
+                    <mat-label>Segundo Apellido</mat-label>
+                    <input
+                        id="segundoapellido"
+                        matInput
+                        [formControlName]="'segundoapellido'"
+                        [(ngModel)]="persona.segundo_apellido">
+                    <mat-error *ngIf="signUpForm.get('segundoapellido').hasError('required')">
+                        Este campo es requerido
+                    </mat-error>
+                </mat-form-field>
 
                 <!-- Email field -->
                 <mat-form-field class="w-full">
                     <mat-label>Correo Electrónico</mat-label>
-
                     <input
-                        id="username"
+                        id="email"
                         matInput
-                        [formControlName]="'username'">
-                    <mat-error *ngIf="signInForm.get('username').hasError('required')">
-                        Correo electrónico requerido
+                        [formControlName]="'correo'"
+                        [(ngModel)]="persona.correo">
+                    <mat-error *ngIf="signUpForm.get('correo').hasError('required')">
+                        El correo es requerido
                     </mat-error>
-                    <mat-error *ngIf="signInForm.get('username').hasError('username')">
-                        Por favor ingresa un correo electrónico válido
+                    <mat-error *ngIf="signUpForm.get('correo').hasError('correo')">
+                        Porfavor ingrese un correo valido
                     </mat-error>
                 </mat-form-field>
+
 
                 <!-- Password field -->
                 <mat-form-field class="w-full">
@@ -86,18 +143,42 @@
                     </mat-error>
                 </mat-form-field>
 
-                <!-- Actions -->
-                <div class="inline-flex items-center justify-between w-full mt-1.5">
+                <mat-form-field class="w-full">
+                    <mat-label>Celular</mat-label>
+                    <input
+                        id="celular"
+                        matInput
+                        [formControlName]="'celular'"
+                        [(ngModel)]="persona.celular">
+                </mat-form-field>
+
+                <!-- Company field -->
+                <mat-form-field class="w-full">
+                    <mat-label>Dirección</mat-label>
+                    <input
+                        id="direccion"
+                        matInput
+                        [formControlName]="'direccion'"
+                        [(ngModel)]="persona.direccion">
+                </mat-form-field>
+
+                <!-- ToS and PP -->
+                <div class="inline-flex items-end w-full mt-1.5">
                     <mat-checkbox
                         class="-ml-2"
                         [color]="'primary'"
-                        [formControlName]="'rememberMe'">
-                        Recuérdame
+                        [formControlName]="'agreements'">
+                        <span>Acepto</span>
+                        <a
+                            class="ml-1 text-primary-500 hover:underline"
+                            [routerLink]="['./']">Términos
+                        </a>
+                        <span>y</span>
+                        <a
+                            class="ml-1 text-primary-500 hover:underline"
+                            [routerLink]="['./']">Política de privacidad
+                        </a>
                     </mat-checkbox>
-                    <a
-                        class="text-md font-medium text-primary-500 hover:underline"
-                        [routerLink]="['/forgot-password']">Olvidaste tu contraseña?
-                    </a>
                 </div>
 
                 <!-- Submit button -->
@@ -105,60 +186,26 @@
                     class="fuse-mat-button-large w-full mt-6"
                     mat-flat-button
                     [color]="'primary'"
-                    [disabled]="signInForm.disabled"
-                    (click)="signIn()">
-                    <span *ngIf="!signInForm.disabled">
-                        Iniciar Sesión
+                    [disabled]="signUpForm.disabled"
+                    (click)="signUp()">
+                    <span *ngIf="!signUpForm.disabled">
+                        Crear su cuenta gratuitamente
                     </span>
                     <mat-progress-spinner
-                        *ngIf="signInForm.disabled"
+                        *ngIf="signUpForm.disabled"
                         [diameter]="24"
                         [mode]="'indeterminate'"></mat-progress-spinner>
                 </button>
 
-                <!-- Separator -->
-                <div class="flex items-center mt-8">
-                    <div class="flex-auto mt-px border-t"></div>
-                    <div class="mx-2 text-secondary">O continúa con</div>
-                    <div class="flex-auto mt-px border-t"></div>
-                </div>
-
-                <!-- Single sign-on buttons -->
-                <div class="flex items-center mt-8 space-x-4">
-                    <button
-                        class="flex-auto"
-                        type="button"
-                        mat-stroked-button>
-                        <mat-icon
-                            class="icon-size-5"
-                            [svgIcon]="'feather:facebook'"></mat-icon>
-                    </button>
-                    <button
-                        class="flex-auto"
-                        type="button"
-                        mat-stroked-button>
-                        <mat-icon
-                            class="icon-size-5"
-                            [svgIcon]="'feather:twitter'"></mat-icon>
-                    </button>
-                    <button
-                        class="flex-auto"
-                        type="button"
-                        mat-stroked-button>
-                        <mat-icon
-                            class="icon-size-5"
-                            [svgIcon]="'feather:github'"></mat-icon>
-                    </button>
-                </div>
             </form>
         </div>
     </div>
-    <div class="relative hidden md:flex flex-auto items-center justify-center w-1/2 h-full p-16 lg:px-28 overflow-hidden bg-emerald-900 dark:border-l">
+    <div class="relative hidden md:flex flex-auto items-center justify-center w-1/2 h-full p-16 lg:px-28 overflow-hidden bg-gray-800 dark:border-l">
         <!-- Background - @formatter:off -->
         <!-- Rings -->
         <svg class="absolute inset-0 pointer-events-none"
              viewBox="0 0 960 540" width="100%" height="100%" preserveAspectRatio="xMidYMax slice" xmlns="http://www.w3.org/2000/svg">
-            <g class="text-gray-700 opacity-60" fill="none" stroke="Goldenrod" stroke-width="100">
+            <g class="text-gray-700 opacity-25" fill="none" stroke="currentColor" stroke-width="100">
                 <circle r="234" cx="196" cy="23"></circle>
                 <circle r="234" cx="790" cy="491"></circle>
             </g>
@@ -168,7 +215,7 @@
              viewBox="0 0 220 192" width="220" height="192" fill="none">
             <defs>
                 <pattern id="837c3e70-6c3a-44e6-8854-cc48c737b659" x="0" y="0" width="20" height="20" patternUnits="userSpaceOnUse">
-                    <rect x="0" y="0" width="4" height="4" fill="Goldenrod"></rect>
+                    <rect x="0" y="0" width="4" height="4" fill="currentColor"></rect>
                 </pattern>
             </defs>
             <rect width="220" height="192" fill="url(#837c3e70-6c3a-44e6-8854-cc48c737b659)"></rect>

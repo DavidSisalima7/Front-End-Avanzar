@@ -13,106 +13,147 @@ import { FuseAlertComponent, FuseAlertType } from '@fuse/components/alert';
 import { AuthService } from 'app/core/auth/auth.service';
 
 @Component({
-    selector     : 'auth-sign-in',
-    templateUrl  : './sign-in.component.html',
+    selector: 'auth-sign-in',
+    templateUrl: './sign-in.component.html',
     encapsulation: ViewEncapsulation.None,
-    animations   : fuseAnimations,
-    standalone   : true,
-    imports      : [RouterLink, FuseAlertComponent, NgIf, FormsModule, ReactiveFormsModule, MatFormFieldModule, MatInputModule, MatButtonModule, MatIconModule, MatCheckboxModule, MatProgressSpinnerModule],
+    animations: fuseAnimations,
+    standalone: true,
+    imports: [RouterLink, FuseAlertComponent, NgIf, FormsModule, ReactiveFormsModule, MatFormFieldModule, MatInputModule, MatButtonModule, MatIconModule, MatCheckboxModule, MatProgressSpinnerModule],
 })
-export class AuthSignInComponent implements OnInit
-{
+
+export class SingInComponent implements OnInit {
+
+
     @ViewChild('signInNgForm') signInNgForm: NgForm;
 
     alert: { type: FuseAlertType; message: string } = {
-        type   : 'success',
+        type: 'success',
         message: '',
     };
     signInForm: UntypedFormGroup;
     showAlert: boolean = false;
 
-    /**
-     * Constructor
-     */
     constructor(
         private _activatedRoute: ActivatedRoute,
         private _authService: AuthService,
         private _formBuilder: UntypedFormBuilder,
         private _router: Router,
-    )
-    {
+        private loginService: AuthService,
+
+    ) {
+
     }
 
-    // -----------------------------------------------------------------------------------------------------
-    // @ Lifecycle hooks
-    // -----------------------------------------------------------------------------------------------------
+    ngOnInit(): void {
 
-    /**
-     * On init
-     */
-    ngOnInit(): void
-    {
-        // Create the form
-        this.signInForm = this._formBuilder.group({
-            email     : ['hughes.brian@company.com', [Validators.required, Validators.email]],
-            password  : ['admin', Validators.required],
-            rememberMe: [''],
-        });
+         // Create the form
+         this.signInForm = this._formBuilder.group({
+            username     : ['', [Validators.required,Validators.email]],
+            password  : ['', Validators.required],
+            rememberMe: ''
+        }); 
+
     }
 
-    // -----------------------------------------------------------------------------------------------------
-    // @ Public methods
-    // -----------------------------------------------------------------------------------------------------
+    signIn(): void {
+      const username = this.signInForm.get('username').value;
+      const password = this.signInForm.get('password').value;
+  
+      // Return if the form is invalid
+      if (this.signInForm.invalid) {
+          return;
+      }
+  
+      // Disable the form
+      this.signInForm.disable();
+  
+      // Hide the alert
+      this.showAlert = false;
+  
+      // Sign in
+      this._authService.signIn({ username: username, password: password }).subscribe(
+          (data: any) => {
+              //this._authService.loginUser(data.token);
+              // Llamamos al método para obtener el usuario actual
+              this.obtenerUsuarioActual();
+  
+              // Set the redirect url.
+              // The '/signed-in-redirect' is a dummy url to catch the request and redirect the user
+              // to the correct page after a successful sign in. This way, that url can be set via
+              // routing file and we don't have to touch here.
+              const redirectURL = this._activatedRoute.snapshot.queryParamMap.get('redirectURL') || '/signed-in-redirect';
+  
+              // Navigate to the redirect url
+              this._router.navigateByUrl(redirectURL);
+          },
+          (error) => {
+              // Re-enable the form
+              this.signInForm.enable();
+  
+              // Reset the form
+              this.signInNgForm.resetForm();
+  
+              // Set the alert
+              this.alert = {
+                  type: 'error',
+                  message: 'Wrong email or password',
+              };
+  
+              // Show the alert
+              this.showAlert = true;
+  
+              console.log(error);
+          }
+      );
+  }
 
-    /**
-     * Sign in
-     */
-    signIn(): void
-    {
-        // Return if the form is invalid
-        if ( this.signInForm.invalid )
-        {
-            return;
-        }
+  
+  obtenerUsuarioActual(): void {
+      // Return if the form is invalid
+      if ( this.signInForm.invalid )
+      {
+          return;
+      }
 
-        // Disable the form
-        this.signInForm.disable();
+      // Disable the form
+      this.signInForm.disable();
+     this._authService.getUsuarioActual().subscribe(
+       (user: any) => {
+         if (user) {
+           // Si se reciben los detalles del usuario correctamente, almacénalos en el servicio
+           this._authService.setUser(user);
+           const userRole = this._authService.getUserRole();
+           // Redirigir según el rol del usuario
+           switch (userRole) {
+             case 'ADMIN':
+               console.log("es admin");
 
-        // Hide the alert
-        this.showAlert = false;
-
-        // Sign in
-        this._authService.signIn(this.signInForm.value)
-            .subscribe(
-                () =>
-                {
-                    // Set the redirect url.
-                    // The '/signed-in-redirect' is a dummy url to catch the request and redirect the user
-                    // to the correct page after a successful sign in. This way, that url can be set via
-                    // routing file and we don't have to touch here.
-                    const redirectURL = this._activatedRoute.snapshot.queryParamMap.get('redirectURL') || '/signed-in-redirect';
-
-                    // Navigate to the redirect url
-                    this._router.navigateByUrl(redirectURL);
-
-                },
-                (response) =>
-                {
-                    // Re-enable the form
-                    this.signInForm.enable();
-
-                    // Reset the form
-                    this.signInNgForm.resetForm();
-
-                    // Set the alert
-                    this.alert = {
-                        type   : 'error',
-                        message: 'Wrong email or password',
-                    };
-
-                    // Show the alert
-                    this.showAlert = true;
-                },
-            );
-    }
+               break;
+             case 'RESPONSABLE_VENTAS':
+               console.log("es responsable");
+               // this.router.navigate(['/perfilre']);
+               break;
+             case 'VENDEDOR':
+               console.log("es vendedor");
+               // this.router.navigate(['/perfilve']);
+               break;
+             case 'CLIENTE':
+               console.log("es cliente");
+               // this.router.navigate(['/perfilcli']);
+               break;
+             default:
+               this._authService.signOut(); // En caso de un rol desconocido o no válido, cerrar sesión
+           }
+         } else {
+           // Si no se reciben los detalles del usuario (puede ser nulo en caso de error),
+           // puedes realizar alguna acción o mostrar un mensaje de error.
+           console.log('No se pudo obtener el usuario actual.');
+         }
+       },
+       (error) => {
+         console.log('Error al obtener el usuario actual:', error);
+       }
+     );
+   }
+        
 }
