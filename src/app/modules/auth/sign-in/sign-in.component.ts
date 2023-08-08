@@ -26,6 +26,7 @@ export class SingInComponent implements OnInit {
 
     //Variable para almacenar el nombre del rol del usuario que intenta ingresar al sistema
     rolUsuario:string;
+    ROLINGRESADO: string = '';
 
     @ViewChild('signInNgForm') signInNgForm: NgForm;
 
@@ -35,6 +36,7 @@ export class SingInComponent implements OnInit {
     };
     signInForm: UntypedFormGroup;
     showAlert: boolean = false;
+
 
     constructor(
         private _activatedRoute: ActivatedRoute,
@@ -130,13 +132,17 @@ export class SingInComponent implements OnInit {
             (userRole: any) => {
                 
               // Redirigir según el rol del usuario
+              localStorage.setItem('Rol', userRole.nombre); // Guarda el valor en el localStorage
+    
               switch (userRole.nombre) {
                 case 'ADMIN':
                   console.log('es admin');
+                  this._router.navigate(['/example']);
+
                   break;
                 case 'RESPONSABLE_VENTAS':
                   console.log('es responsable');
-                  // this.router.navigate(['/perfilre']);
+                  this._router.navigate(['/dashboard']);
                   break;
                 case 'VENDEDOR':
                   console.log('es vendedor');

@@ -74,7 +74,24 @@ export const appRoutes: Route[] = [
             initialData: initialDataResolver
         },
         children: [
+            {path: 'dash-admin', loadChildren: () => import('app/modules/admin/dashboard/dashboard.routes')},
             {path: 'example', loadChildren: () => import('app/modules/admin/example/example.routes')},
+
         ]
-    }
+    },
+
+
+        // Responsable de Ventas routes
+        {
+            path: '',
+            canActivate: [AuthGuard],
+            canActivateChild: [AuthGuard],
+            component: LayoutComponent,
+            resolve: {
+                initialData: initialDataResolver
+            },
+            children: [
+                {path: 'dash-resp', loadChildren: () => import('app/modules/responsable/dashboard/dashboard.routes')},
+            ]
+        }
 ];

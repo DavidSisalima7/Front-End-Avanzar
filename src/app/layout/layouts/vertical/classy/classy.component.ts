@@ -5,7 +5,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { ActivatedRoute, Router, RouterOutlet } from '@angular/router';
 import { FuseFullscreenComponent } from '@fuse/components/fullscreen';
 import { FuseLoadingBarComponent } from '@fuse/components/loading-bar';
-import { FuseNavigationService, FuseVerticalNavigationComponent } from '@fuse/components/navigation';
+import { FuseNavigationItem, FuseNavigationService, FuseVerticalNavigationComponent } from '@fuse/components/navigation';
 import { FuseMediaWatcherService } from '@fuse/services/media-watcher';
 import { NavigationService } from 'app/core/navigation/navigation.service';
 import { Navigation } from 'app/core/navigation/navigation.types';
@@ -32,6 +32,10 @@ export class ClassyLayoutComponent implements OnInit, OnDestroy
     isScreenSmall: boolean;
     navigation: Navigation;
     user: User;
+    rol: any;
+    navigationName: any
+
+    
     private _unsubscribeAll: Subject<any> = new Subject<any>();
 
     /**
@@ -70,6 +74,11 @@ export class ClassyLayoutComponent implements OnInit, OnDestroy
     ngOnInit(): void
     {
         // Subscribe to navigation data
+        const rolIngresado = localStorage.getItem('Rol');
+        console.log("1", rolIngresado);
+
+        this.swapNavigationData('mainNavigation'); // Llama al método con el rol
+
         this._navigationService.navigation$
             .pipe(takeUntil(this._unsubscribeAll))
             .subscribe((navigation: Navigation) =>
@@ -93,6 +102,7 @@ export class ClassyLayoutComponent implements OnInit, OnDestroy
                 // Check if the screen is small
                 this.isScreenSmall = !matchingAliases.includes('md');
             });
+
     }
 
     /**
@@ -123,6 +133,79 @@ export class ClassyLayoutComponent implements OnInit, OnDestroy
         {
             // Toggle the opened status
             navigation.toggle();
+        }
+    }
+
+
+    swapNavigationData(navigationName: string): void {
+        // Obtiene el rol almacenado en el localStorage
+        const rolIngresado = localStorage.getItem('Rol');
+        console.log("2", rolIngresado);
+    
+        // Define las opciones de navegación en función del rol
+        let newNavigation: FuseNavigationItem[] = [];
+
+        switch (rolIngresado) {
+            case 'ADMIN':
+                newNavigation = [
+                    // ... opciones de navegación para el rol de administrador
+                    {
+                        id      : 'tablero',
+                        title   : 'Tablero',
+                        subtitle: 'Acciones rápidas',
+                        type    : 'group',
+                        icon    : 'memory',
+                        children: [
+                            {
+                                id   : 'dashboard',
+                                title: 'Dashboard',
+                                type : 'basic',
+                                icon : 'heroicons_outline:chart-pie',
+                                link : '/dash-admin'
+                            },
+                            {
+                                id   : 'supported-components.full-calendar',
+                                title: 'FullCalendar',
+                                type : 'basic',
+                                icon : 'today',
+                                link : '/supported-components/full-calendar'
+                            }
+                        ]
+                    }
+                ];
+                break;
+    
+            case 'RESPONSABLE_VENTAS':
+                newNavigation = [
+                    // ... opciones de navegación para el rol de responsable de ventas
+                    {
+                        id      : 'supported-components',
+                        title   : 'Responsable de Ventas',
+                        subtitle: 'Compatible third party components',
+                        type    : 'group',
+                        icon    : 'memory',
+                        children: [
+                            // ... opciones de navegación específicas para RESPONSABLE_VENTAS
+                        ]
+                    }
+                ];
+                break;
+    
+            // Agrega más casos según los roles necesarios
+    
+            default:
+                newNavigation = [
+                    // Opciones de navegación predeterminadas para roles desconocidos o no válidos
+                ];
+        }
+    
+        // Obtén el componente de navegación
+        const navComponent = this._fuseNavigationService.getComponent<FuseVerticalNavigationComponent>(navigationName);
+    
+        // Actualiza las opciones de navegación y refresca el componente
+        if (navComponent) {
+            navComponent.navigation = newNavigation;
+            navComponent.refresh();
         }
     }
 }
