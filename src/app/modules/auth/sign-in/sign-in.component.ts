@@ -54,8 +54,8 @@ export class SingInComponent implements OnInit {
 
          // Create the form
          this.signInForm = this._formBuilder.group({
-            username     : ['', [Validators.required,Validators.email]],
-            password  : ['', Validators.required],
+            username     : ['soraya@gmail.com', [Validators.required,Validators.email]],
+            password  : ['1234', Validators.required],
             rememberMe: ''
         }); 
 
@@ -137,20 +137,20 @@ export class SingInComponent implements OnInit {
               switch (userRole.nombre) {
                 case 'ADMIN':
                   console.log('es admin');
-                  this._router.navigate(['/example']);
+                  this._router.navigate(['/dash-admin']);
 
                   break;
                 case 'RESPONSABLE_VENTAS':
                   console.log('es responsable');
-                  this._router.navigate(['/dashboard']);
+                  this._router.navigate(['/dash-resp']);
                   break;
-                case 'VENDEDOR':
-                  console.log('es vendedor');
-                  // this.router.navigate(['/perfilve']);
+                case 'EMPRENDEDORA':
+                  console.log('es emprendedora');
+                  this._router.navigate(['/dash-empre']);
                   break;
                 case 'CLIENTE':
                   console.log('es cliente');
-                  // this.router.navigate(['/perfilcli']);
+                  this._router.navigate(['/home-cli']);
                   break;
                 default:
                   this._authService.signOut(); // En caso de un rol desconocido o no válido, cerrar sesión
@@ -171,5 +171,10 @@ export class SingInComponent implements OnInit {
       }
     );
    }
+
+
+   redirectToHome() {
+    this._router.navigate(['/home']);
+  }
         
 }
