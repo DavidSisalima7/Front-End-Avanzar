@@ -162,13 +162,42 @@ export class ClassyLayoutComponent implements OnInit, OnDestroy
                                 type : 'basic',
                                 icon : 'heroicons_outline:chart-pie',
                                 link : '/dash-admin'
-                            },
+                            }
+                        ],
+
+                    },
+
+                    // ... opciones de navegación para el rol de administrador
+                    {
+                        id      : 'listas',
+                        title   : 'Listados',
+                        subtitle: 'Detalles registros',
+                        type    : 'group',
+                        icon    : 'memory',
+                        children: [
                             {
-                                id   : 'supported-components.full-calendar',
-                                title: 'FullCalendar',
+                                id   : 'list-resp',
+                                title: 'Responsables Ventas',
                                 type : 'basic',
-                                icon : 'today',
-                                link : '/supported-components/full-calendar'
+                                icon : 'heroicons_outline:document-text',
+                                link : '/list-responsables'
+                            }
+                        ]
+                    },
+
+                    {
+                        id      : 'perfil',
+                        title   : 'Perfil',
+                        subtitle: 'Información personal',
+                        type    : 'group',
+                        icon    : 'memory',
+                        children: [
+                            {
+                                id   : 'profile',
+                                title: 'Perfil',
+                                type : 'basic',
+                                icon : 'heroicons_outline:user-circle',
+                                link : '/profile-admin'
                             }
                         ]
                     }
@@ -177,21 +206,181 @@ export class ClassyLayoutComponent implements OnInit, OnDestroy
     
             case 'RESPONSABLE_VENTAS':
                 newNavigation = [
-                    // ... opciones de navegación para el rol de responsable de ventas
                     {
-                        id      : 'supported-components',
-                        title   : 'Responsable de Ventas',
-                        subtitle: 'Compatible third party components',
+                        id      : 'tablero',
+                        title   : 'Tablero',
+                        subtitle: 'Acciones rápidas',
                         type    : 'group',
                         icon    : 'memory',
                         children: [
-                            // ... opciones de navegación específicas para RESPONSABLE_VENTAS
+                            {
+                                id   : 'dashboard',
+                                title: 'Dashboard',
+                                type : 'basic',
+                                icon : 'heroicons_outline:chart-pie',
+                                link : '/dash-resp'
+                            }
+                        ],
+
+                    },
+
+                    // ... opciones de navegación para el rol de administrador
+                    {
+                        id      : 'listas',
+                        title   : 'Listados',
+                        subtitle: 'Detalles registros',
+                        type    : 'group',
+                        icon    : 'memory',
+                        children: [
+                            {
+                                id   : 'list-emprendedoras',
+                                title: 'Emprendedoras',
+                                type : 'basic',
+                                icon : 'heroicons_outline:document-text',
+                                link : '/list-empre-resp'
+                            },
+
+                            {
+                                id   : 'list-productos',
+                                title: 'Productos',
+                                type : 'basic',
+                                icon : 'heroicons_outline:document-text',
+                                link : '/list-prod-resp'
+                            }
+                        ]
+                    },
+
+                    {
+                        id      : 'perfil',
+                        title   : 'Perfil',
+                        subtitle: 'Información personal',
+                        type    : 'group',
+                        icon    : 'memory',
+                        children: [
+                            {
+                                id   : 'profile',
+                                title: 'Perfil',
+                                type : 'basic',
+                                icon : 'heroicons_outline:user-circle',
+                                link : '/profile-resp'
+                            }
                         ]
                     }
                 ];
                 break;
     
-            // Agrega más casos según los roles necesarios
+                case 'EMPRENDEDORA':
+                    newNavigation = [
+                        {
+                            id      : 'tablero',
+                            title   : 'Tablero',
+                            subtitle: 'Acciones rápidas',
+                            type    : 'group',
+                            icon    : 'memory',
+                            children: [
+                                {
+                                    id   : 'dashboard',
+                                    title: 'Dashboard',
+                                    type : 'basic',
+                                    icon : 'heroicons_outline:chart-pie',
+                                    link : '/dash-empre'
+                                }
+                            ],
+    
+                        },
+    
+                        // ... opciones de navegación para el rol de administrador
+                        {
+                            id      : 'listas',
+                            title   : 'Listados',
+                            subtitle: 'Detalles registros',
+                            type    : 'group',
+                            icon    : 'memory',
+                            children: [
+                                {
+                                    id   : 'list-prod',
+                                    title: 'Productos',
+                                    type : 'basic',
+                                    icon : 'heroicons_outline:document-text',
+                                    link : '/list-empre-prod'
+                                },
+    
+                                {
+                                    id   : 'list-serv',
+                                    title: 'Servicios',
+                                    type : 'basic',
+                                    icon : 'heroicons_outline:document-text',
+                                    link : '/list-empre-serv'
+                                }
+                            ]
+                        },
+    
+                        {
+                            id      : 'perfil',
+                            title   : 'Perfil',
+                            subtitle: 'Información personal',
+                            type    : 'group',
+                            icon    : 'memory',
+                            children: [
+                                {
+                                    id   : 'profile',
+                                    title: 'Perfil',
+                                    type : 'basic',
+                                    icon : 'heroicons_outline:user-circle',
+                                    link : '/profile-empre'
+                                }
+                            ]
+                        }
+                    ];
+                    break;
+
+
+                    case 'CLIENTE':
+                    newNavigation = [
+                        {
+                            id      : 'productos',
+                            title   : 'Productos',
+                            subtitle: 'Tipo de productos',
+                            type    : 'group',
+                            icon    : 'memory',
+                            children: [
+                                {
+                                    id   : 'productos',
+                                    title: 'Productos',
+                                    type : 'basic',
+                                    icon : 'heroicons_outline:chart-pie',
+                                    link : '/prod-cli'
+                                },
+                                {
+                                    id   : 'servicios',
+                                    title: 'Servicios',
+                                    type : 'basic',
+                                    icon : 'heroicons_outline:chart-pie',
+                                    link : '/serv-cli'
+                                }
+                            ],
+    
+                        },
+
+    
+                        {
+                            id      : 'perfil',
+                            title   : 'Perfil',
+                            subtitle: 'Información personal',
+                            type    : 'group',
+                            icon    : 'memory',
+                            children: [
+                                {
+                                    id   : 'profile',
+                                    title: 'Perfil',
+                                    type : 'basic',
+                                    icon : 'heroicons_outline:user-circle',
+                                    link : '/profile-cli'
+                                }
+                            ]
+                        }
+                    ];
+                    break;
     
             default:
                 newNavigation = [

@@ -14,9 +14,6 @@ export const appRoutes: Route[] = [
 
     // Redirect signed-in user to the '/example'
     //
-    // After the user signs in, the sign-in page will redirect the user to the 'signed-in-redirect'
-    // path. Below is another redirection for that path to redirect the user to the desired
-    // location. This is a small convenience to keep all main routes together here on this file.
     {path: 'signed-in-redirect', pathMatch : 'full', redirectTo: 'example'},
 
     // Auth routes for guests
@@ -61,6 +58,8 @@ export const appRoutes: Route[] = [
         },
         children: [
             {path: 'home', loadChildren: () => import('app/modules/landing/home/home.routes')},
+            {path: 'home-tienda', loadChildren: () => import('app/modules/landing/home-tienda/home-tienda.routes')},
+            {path: 'nosotros', loadChildren: () => import('app/modules/landing/nosotros/nosotros.routes')},
         ]
     },
 
@@ -75,8 +74,10 @@ export const appRoutes: Route[] = [
         },
         children: [
             {path: 'dash-admin', loadChildren: () => import('app/modules/admin/dashboard/dashboard.routes')},
+            {path: 'list-responsables', loadChildren: () => import('app/modules/admin/list-responsables/list-responsables.routes')},
+            {path: 'profile-admin', loadChildren: () => import('app/modules/admin/profile/profile.routes')},
+            {path: 'register-responsable', loadChildren: () => import('app/modules/admin/register-responsable/register-responsable.routes')},
             {path: 'example', loadChildren: () => import('app/modules/admin/example/example.routes')},
-
         ]
     },
 
@@ -92,6 +93,43 @@ export const appRoutes: Route[] = [
             },
             children: [
                 {path: 'dash-resp', loadChildren: () => import('app/modules/responsable/dashboard/dashboard.routes')},
+                {path: 'list-empre-resp', loadChildren: () => import('app/modules/responsable/list-emprendedoras/list-emprendedoras.routes')},
+                {path: 'list-prod-resp', loadChildren: () => import('app/modules/responsable/list-productos/list-productos.routes')},
+                {path: 'profile-resp', loadChildren: () => import('app/modules/responsable/profile/profile.routes')},
+            ]
+        },
+
+
+        //Emprendedora routes
+        {
+            path: '',
+            canActivate: [AuthGuard],
+            canActivateChild: [AuthGuard],
+            component: LayoutComponent,
+            resolve: {
+                initialData: initialDataResolver
+            },
+            children: [
+                {path: 'dash-empre', loadChildren: () => import('app/modules/emprendedora/dashboard/dashboard.routes')},
+                {path: 'list-empre-prod', loadChildren: () => import('app/modules/emprendedora/list-productos/list-productos.routes')},
+                {path: 'list-empre-serv', loadChildren: () => import('app/modules/emprendedora/list-servicios/list-servicios.routes')},
+                {path: 'profile-empre', loadChildren: () => import('app/modules/emprendedora/profile/profile.routes')},
+            ]
+        },
+
+        {
+            path: '',
+            canActivate: [AuthGuard],
+            canActivateChild: [AuthGuard],
+            component: LayoutComponent,
+            resolve: {
+                initialData: initialDataResolver
+            },
+            children: [
+                {path: 'home-cli', loadChildren: () => import('app/modules/client/home-tienda/home-tienda.routes')},
+                {path: 'prod-cli', loadChildren: () => import('app/modules/client/productos-vent/productos-vent.routes')},
+                {path: 'serv-cli', loadChildren: () => import('app/modules/client/servicios-vent/servicios-vent.routes')},
+                {path: 'profile-cli', loadChildren: () => import('app/modules/client/profile/profile.routes')},
             ]
         }
 ];
