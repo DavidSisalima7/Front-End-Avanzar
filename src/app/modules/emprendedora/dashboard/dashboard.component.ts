@@ -4,6 +4,7 @@ import { Component, ViewEncapsulation } from '@angular/core';
     selector     : 'dashboard-emprendedora',
     standalone   : true,
     templateUrl  : './dashboard.component.html',
+    styleUrls    : ['./dashboard.component.scss'],
     encapsulation: ViewEncapsulation.None,
 })
 export class DashboardEmprendedoraComponent
