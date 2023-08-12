@@ -18,6 +18,7 @@ import { Subject, takeUntil } from 'rxjs';
     standalone   : true,
     changeDetection: ChangeDetectionStrategy.OnPush,
     templateUrl  : './dashboard.component.html',
+    styleUrls    : ['./dashboard.component.scss'],
     encapsulation: ViewEncapsulation.None,
     imports        : [TranslocoModule, MatIconModule, MatButtonModule, MatRippleModule, MatMenuModule, MatTabsModule, MatButtonToggleModule, NgApexchartsModule, NgFor, NgIf, MatTableModule, NgClass, CurrencyPipe],
 
