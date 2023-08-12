@@ -1,7 +1,7 @@
 <div class="flex flex-col flex-auto min-w-0">
     <!-- Main  -->
     <div class="flex-auto p-6 sm:p-10">
-       Lista de Servicios 
+       Lista de Productos 
       <div class="h-400 min-h-400 max-h-400 border-2 border-dashed border-gray-300 rounded-2xl">
       
   
@@ -10,7 +10,7 @@
   <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Table Example</title>
+    <title></title>
     <style>
       table {
         width: 100%;
@@ -26,7 +26,7 @@
       }
     </style>
   </head>
-  <h1>Servicios</h1>
+  <h1>Productos</h1>
   <body>
   
     <mat-form-field class="mat-mdc-form-field">
@@ -37,27 +37,27 @@
     <div class="mat-elevation-z8">
       <table mat-table [dataSource]="dataSource" matSort>
     
-        <!-- idServicio Column -->
+        <!-- idProducto Column -->
         <ng-container matColumnDef="idProducto">
           <th mat-header-cell *matHeaderCellDef mat-sort-header> Número</th>
           <td mat-cell *matCellDef="let row"> {{row.idProducto}} </td>
         </ng-container>
     
-        <!-- nombreServicio Column -->
+        <!-- nombreProducto Column -->
         <ng-container matColumnDef="nombreProducto">
           <th mat-header-cell *matHeaderCellDef mat-sort-header> Nombre</th>
           <td mat-cell *matCellDef="let row"> {{row.nombreProducto}} </td>
         </ng-container>
     
-        <!-- descripcionServicio Column -->
+        <!-- precioProducto Column -->
         <ng-container matColumnDef="precioProducto">
-          <th mat-header-cell *matHeaderCellDef mat-sort-header> Descripción </th>
+          <th mat-header-cell *matHeaderCellDef mat-sort-header> Precio </th>
           <td mat-cell *matCellDef="let row"> {{row.precioProducto}} </td>
         </ng-container>
     
-        <!-- precioServicio Column -->
+        <!-- cantidadProducto Column -->
         <ng-container matColumnDef="cantidadDisponible">
-          <th mat-header-cell *matHeaderCellDef mat-sort-header> Precio </th>
+          <th mat-header-cell *matHeaderCellDef mat-sort-header> Cantidad </th>
           <td mat-cell *matCellDef="let row"> {{row.cantidadDisponible}} </td>
         </ng-container>
     
