@@ -1,9 +1,16 @@
 import { Routes } from '@angular/router';
-import { DashboardEmprendedoraComponent } from './dashboard.component';
+import { inject } from '@angular/core';
+import { DashboardEmprendedoraComponentimplements } from 'app/modules/emprendedora/dashboard/dashboard.component';
+import { dashboardService } from 'app/modules/emprendedora/dashboard/dashboard.service';
 
 export default [
     {
         path     : '',
-        component: DashboardEmprendedoraComponent,
+        component: DashboardEmprendedoraComponentimplements,
+        resolve  : {
+            data: () => inject(dashboardService).getData(),
+        },
     },
+
+    
 ] as Routes;
