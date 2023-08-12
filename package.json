@@ -39,8 +39,8 @@
         "zone.js": "0.13.0"
     },
     "devDependencies": {
-        "@angular-devkit/build-angular": "16.0.3",
-        "@angular/cli": "16.0.3",
+        "@angular-devkit/build-angular": "^16.1.8",
+        "@angular/cli": "^16.1.8",
         "@angular/compiler-cli": "16.0.3",
         "@tailwindcss/typography": "0.5.9",
         "@types/chroma-js": "2.4.0",
