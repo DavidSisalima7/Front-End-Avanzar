@@ -17,18 +17,19 @@
           </div>
       </div>
   </div>
-
-    
-
-
-
+  <style>
   
 
+    .mat-mdc-form-field {
+      font-size: 14px;
+      width: 100%;
+    }
 
-
+  
+  </style>
   <mat-form-field class="mat-mdc-form-field">
    
-    <input matInput (keyup)="applyFilter($event)" placeholder="Búsqueda" #input>
+    <input matInput (keyup)="applyFilter($event)" placeholder="Buscar" #input>
   </mat-form-field>
   
   <div class="mat-elevation-z8">
