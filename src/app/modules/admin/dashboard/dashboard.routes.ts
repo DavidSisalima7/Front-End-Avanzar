@@ -1,9 +1,11 @@
+
 import { Routes } from '@angular/router';
-import { DashboardAdminComponent } from './dashboard.component';
+import { FormsRegistervComponent} from './dashboard.component';
 
 export default [
     {
         path     : '',
-        component: DashboardAdminComponent,
+        component: FormsRegistervComponent,
     },
+
 ] as Routes;
