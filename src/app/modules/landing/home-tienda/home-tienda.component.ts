@@ -43,4 +43,7 @@ export class HomeTiendaInvitadoComponent
        this.filters.query$.next(query);
    }
 
+
+   
+
 }

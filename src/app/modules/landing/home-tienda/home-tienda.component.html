@@ -1,449 +1,361 @@
+<div class="flex flex-col items-center justify-center w-full h-full">
 
+    <div class="container bg-white dark:bg-gray-900">
 
-
-
-<div class="container">
-   
-        
-
-    <div class="container-catalogo">
-       
-
-        <nav class="bg-white dark:bg-gray-900 fixed w-full z-20 top-0 left-0 border-b border-gray-200 dark:border-gray-600">
-            <div class="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4">
-            <a href="https://flowbite.com/" class="flex items-center">
-                <img src="../../../../assets/images/logo/avanzar.png" class="h-8 mr-3" alt="Flowbite Logo">
-                <span class="self-center text-2xl font-semibold whitespace-nowrap dark:text-white">Fundacion Avanzar</span>
-            </a>
-            <div class="flex md:order-2">
-                <button type="button" class="button-1 text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-6 py-2 text-center mr-3 md:mr-0 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Sign In</button>
-
-                <button type="button" class="button-2 text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-6 py-2 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800" style="margin-left: 10px; margin-right: 5px;">Sign Up</button>
-                
-                
-                <button data-collapse-toggle="navbar-sticky" type="button" class="inline-flex items-center p-2 w-10 h-10 justify-center text-sm text-gray-500 rounded-lg md:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600" aria-controls="navbar-sticky" aria-expanded="false">
-                  <span class="sr-only">Open main menu</span>
-                  <svg class="w-5 h-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 17 14">
-                      <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M1 1h15M1 7h15M1 13h15"/>
-                  </svg>
-              </button>
-            </div>
-            <div class="items-center justify-between hidden w-full md:flex md:w-auto md:order-1" id="navbar-sticky">
-              <ul class="flex flex-col p-4 md:p-0 mt-4 font-medium border border-gray-100 rounded-lg bg-gray-50 md:flex-row md:space-x-8 md:mt-0 md:border-0 md:bg-white dark:bg-gray-800 md:dark:bg-gray-900 dark:border-gray-700">
-                <li>
-                  <a href="#" class="block py-2 pl-3 pr-4 text-white bg-blue-700 rounded md:bg-transparent md:text-blue-700 md:p-0 md:dark:text-blue-500" aria-current="page">Home</a>
-                </li>
-                <li>
-                  <a href="#" class="block py-2 pl-3 pr-4 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 md:p-0 md:dark:hover:text-blue-500 dark:text-white dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700">Nosotros</a>
-                </li>
-                <li>
-                  <a href="#" class="block py-2 pl-3 pr-4 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 md:p-0 md:dark:hover:text-blue-500 dark:text-white dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700">Planes</a>
-                </li>
-                <li>
-                  <a href="#" class="block py-2 pl-3 pr-4 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 md:p-0 md:dark:hover:text-blue-500 dark:text-white dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700">Catalogo</a>
-                </li>
-              </ul>
-            </div>
-            </div>
-          </nav>
-          
-
-        
-        <!-- <div class="container-head">
-            <header>
-                <div class="container-img"></div>
-
-            </header>
-        </div>
-              -->
-     
-        <div class="card-header"></div>
-        <div class="container-color">
-        <div class="input-filter">
-
-            <div class="flex flex-col sm:flex-row justify-center ">
-
-                <mat-form-field class="w-full sm:w-100 mt-4 sm:mt-0 sm:ml-4" [subscriptSizing]="'dynamic'">
-                    <mat-icon matPrefix class="icon-size-5" [svgIcon]="'heroicons_solid:magnifying-glass'"></mat-icon>
-                    <input tabindex="0" (input)="filterByQuery(query.value)"
-                        placeholder="Search by title or description" matInput #query>
-                </mat-form-field>
-
-            </div>
-        </div>
-        <div class="content-descripcion-catalogo">
-            <div class="descripcion-catalogo">
-                <h1 class="title-catalogo">Food</h1>
-                <p class="descripcion-catalogo">Comida super deliciosa</p>
-            </div>
-        </div>
-        <div class="content-all-catalogo">
-
-            <div class="all-catalogo">
-                <a href="">Comida</a>
-                <a href="">Juguetes</a>
-                <a href="">Ropa</a>
-                <a href="">Accesorios</a>
-                <a href="">Servicios</a>
-                <a href="">Zapatos</a>
-                <a href="">Comida</a>
-                <a href="">Comida</a>
-                <a href="">Comida</a>
-                <!-- <a href="">Comida</a>
-                <a href="">Comida</a>
-                <a href="">Comida</a>
-                <a href="">Comida</a>
-                <a href="">Comida</a>
-                <a href="">Comida</a>
-                <a href="">Comida</a>
-                <a href="">Comida</a>
-                <a href="">Comida</a>
-                <a href="">Comida</a>
-                <a href="">Comida</a> -->
-
-            </div>
-
-        </div>
-
-
-
-        
-
-
-        <div class="content-card-catalogo">
-
-
- 
-
-      
-            
-
-<fuse-card class="flex flex-col max-w-80 w-full filter-shopping">
-    <div class="relative">
-        <div class="absolute flex flex-col top-0 right-0 p-3">
-            <button mat-icon-button>
-                <mat-icon
-                    class="icon-size-5 text-white text-opacity-50"
-                    [svgIcon]="'heroicons_solid:heart'"></mat-icon>
-            </button>
-            <button mat-icon-button>
-                <mat-icon
-                    class="icon-size-5 text-white text-opacity-50"
-                    [svgIcon]="'heroicons_solid:arrows-right-left'"></mat-icon>
-            </button>
-        </div>
-        <img
-            class="object-cover"
-            src="https://www.cnet.com/a/img/resize/69256d2623afcbaa911f08edc45fb2d3f6a8e172/hub/2023/02/03/afedd3ee-671d-4189-bf39-4f312248fb27/gettyimages-1042132904.jpg?auto=webp&fit=crop&height=675&width=1200"
-            alt="Card cover image">
-    </div>
-    <div class="m-8 mb-0">
-        <div class="flex flex-col">
-            <div class="text-2xl leading-tight">Black sneakers with white stripes</div>
-            <div class="text-3xl font-semibold mt-2">$240.00</div>
-        </div>
-        <hr class="border-b my-6">
-        <div class="flex items-center text-md">
-            
-            <div class="flex items-center">
-                <mat-icon
-                    class="text-orange-500 icon-size-5"
-                    [svgIcon]="'mat_outline:star'"></mat-icon>
-                <mat-icon
-                    class="text-orange-500 icon-size-5"
-                    [svgIcon]="'mat_outline:star'"></mat-icon>
-                <mat-icon
-                    class="text-orange-500 icon-size-5"
-                    [svgIcon]="'mat_outline:star'"></mat-icon>
-                <mat-icon
-                    class="text-orange-500 icon-size-5"
-                    [svgIcon]="'mat_outline:star'"></mat-icon>
-                <mat-icon
-                    class="text-orange-500 icon-size-5"
-                    [svgIcon]="'mat_outline:star_half'"></mat-icon>
-            </div>
-        </div>
-        <div class="mt-6 -mx-8">
-            <button
-                class="w-full rounded-none"
-                mat-flat-button
-                [color]="'primary'">
-                Add to Cart
-            </button>
-        </div>
-    </div>
-</fuse-card>
-
-
-<fuse-card class="flex flex-col max-w-80 w-full filter-shopping">
-    <div class="relative">
-        <div class="absolute flex flex-col top-0 right-0 p-3">
-            <button mat-icon-button>
-                <mat-icon
-                    class="icon-size-5 text-white text-opacity-50"
-                    [svgIcon]="'heroicons_solid:heart'"></mat-icon>
-            </button>
-            <button mat-icon-button>
-                <mat-icon
-                    class="icon-size-5 text-white text-opacity-50"
-                    [svgIcon]="'heroicons_solid:arrows-right-left'"></mat-icon>
-            </button>
-        </div>
-        <img
-            class="object-cover"
-            src="https://www.cnet.com/a/img/resize/69256d2623afcbaa911f08edc45fb2d3f6a8e172/hub/2023/02/03/afedd3ee-671d-4189-bf39-4f312248fb27/gettyimages-1042132904.jpg?auto=webp&fit=crop&height=675&width=1200"
-            alt="Card cover image">
-    </div>
-    <div class="m-8 mb-0">
-        <div class="flex flex-col">
-            <div class="text-2xl leading-tight">Black sneakers with white stripes</div>
-            <div class="text-3xl font-semibold mt-2">$240.00</div>
-        </div>
-        <hr class="border-b my-6">
-        <div class="flex items-center text-md">
-            
-            <div class="flex items-center">
-                <mat-icon
-                    class="text-orange-500 icon-size-5"
-                    [svgIcon]="'mat_outline:star'"></mat-icon>
-                <mat-icon
-                    class="text-orange-500 icon-size-5"
-                    [svgIcon]="'mat_outline:star'"></mat-icon>
-                <mat-icon
-                    class="text-orange-500 icon-size-5"
-                    [svgIcon]="'mat_outline:star'"></mat-icon>
-                <mat-icon
-                    class="text-orange-500 icon-size-5"
-                    [svgIcon]="'mat_outline:star'"></mat-icon>
-                <mat-icon
-                    class="text-orange-500 icon-size-5"
-                    [svgIcon]="'mat_outline:star_half'"></mat-icon>
-            </div>
-        </div>
-        <div class="mt-6 -mx-8">
-            <button
-                class="w-full rounded-none"
-                mat-flat-button
-                [color]="'primary'">
-                Add to Cart
-            </button>
-        </div>
-    </div>
-</fuse-card>
-
-
-<fuse-card class="flex flex-col max-w-80 w-full filter-shopping">
-    <div class="relative">
-        <div class="absolute flex flex-col top-0 right-0 p-3">
-            <button mat-icon-button>
-                <mat-icon
-                    class="icon-size-5 text-white text-opacity-50"
-                    [svgIcon]="'heroicons_solid:heart'"></mat-icon>
-            </button>
-            <button mat-icon-button>
-                <mat-icon
-                    class="icon-size-5 text-white text-opacity-50"
-                    [svgIcon]="'heroicons_solid:arrows-right-left'"></mat-icon>
-            </button>
-        </div>
-        <img
-            class="object-cover"
-            src="https://www.cnet.com/a/img/resize/69256d2623afcbaa911f08edc45fb2d3f6a8e172/hub/2023/02/03/afedd3ee-671d-4189-bf39-4f312248fb27/gettyimages-1042132904.jpg?auto=webp&fit=crop&height=675&width=1200"
-            alt="Card cover image">
-    </div>
-    <div class="m-8 mb-0">
-        <div class="flex flex-col">
-            <div class="text-2xl leading-tight">Black sneakers with white stripes</div>
-            <div class="text-3xl font-semibold mt-2">$240.00</div>
-        </div>
-        <hr class="border-b my-6">
-        <div class="flex items-center text-md">
-            
-            <div class="flex items-center">
-                <mat-icon
-                    class="text-orange-500 icon-size-5"
-                    [svgIcon]="'mat_outline:star'"></mat-icon>
-                <mat-icon
-                    class="text-orange-500 icon-size-5"
-                    [svgIcon]="'mat_outline:star'"></mat-icon>
-                <mat-icon
-                    class="text-orange-500 icon-size-5"
-                    [svgIcon]="'mat_outline:star'"></mat-icon>
-                <mat-icon
-                    class="text-orange-500 icon-size-5"
-                    [svgIcon]="'mat_outline:star'"></mat-icon>
-                <mat-icon
-                    class="text-orange-500 icon-size-5"
-                    [svgIcon]="'mat_outline:star_half'"></mat-icon>
-            </div>
-        </div>
-        <div class="mt-6 -mx-8">
-            <button
-                class="w-full rounded-none"
-                mat-flat-button
-                [color]="'primary'">
-                Add to Cart
-            </button>
-        </div>
-    </div>
-</fuse-card>
-
-<fuse-card class="flex flex-col max-w-80 w-full filter-shopping">
-    <div class="relative">
-        <div class="absolute flex flex-col top-0 right-0 p-3">
-            <button mat-icon-button>
-                <mat-icon
-                    class="icon-size-5 text-white text-opacity-50"
-                    [svgIcon]="'heroicons_solid:heart'"></mat-icon>
-            </button>
-            <button mat-icon-button>
-                <mat-icon
-                    class="icon-size-5 text-white text-opacity-50"
-                    [svgIcon]="'heroicons_solid:arrows-right-left'"></mat-icon>
-            </button>
-        </div>
-        <img
-            class="object-cover"
-            src="https://www.cnet.com/a/img/resize/69256d2623afcbaa911f08edc45fb2d3f6a8e172/hub/2023/02/03/afedd3ee-671d-4189-bf39-4f312248fb27/gettyimages-1042132904.jpg?auto=webp&fit=crop&height=675&width=1200"
-            alt="Card cover image">
-    </div>
-    <div class="m-8 mb-0">
-        <div class="flex flex-col">
-            <div class="text-2xl leading-tight">Black sneakers with white stripes</div>
-            <div class="text-3xl font-semibold mt-2">$240.00</div>
-        </div>
-        <hr class="border-b my-6">
-        <div class="flex items-center text-md">
-            
-            <div class="flex items-center">
-                <mat-icon
-                    class="text-orange-500 icon-size-5"
-                    [svgIcon]="'mat_outline:star'"></mat-icon>
-                <mat-icon
-                    class="text-orange-500 icon-size-5"
-                    [svgIcon]="'mat_outline:star'"></mat-icon>
-                <mat-icon
-                    class="text-orange-500 icon-size-5"
-                    [svgIcon]="'mat_outline:star'"></mat-icon>
-                <mat-icon
-                    class="text-orange-500 icon-size-5"
-                    [svgIcon]="'mat_outline:star'"></mat-icon>
-                <mat-icon
-                    class="text-orange-500 icon-size-5"
-                    [svgIcon]="'mat_outline:star_half'"></mat-icon>
-            </div>
-        </div>
-        <div class="mt-6 -mx-8">
-            <button
-                class="w-full rounded-none"
-                mat-flat-button
-                [color]="'primary'">
-                Add to Cart
-            </button>
-        </div>
-    </div>
-</fuse-card>
-
-<fuse-card class="flex flex-col max-w-80 w-full filter-shopping card">
-    <div class="relative">
-        <div class="absolute flex flex-col top-0 right-0 p-3">
-            <button mat-icon-button>
-                <mat-icon
-                    class="icon-size-5 text-white text-opacity-50"
-                    [svgIcon]="'heroicons_solid:heart'"></mat-icon>
-            </button>
-            <button mat-icon-button>
-                <mat-icon
-                    class="icon-size-5 text-white text-opacity-50"
-                    [svgIcon]="'heroicons_solid:arrows-right-left'"></mat-icon>
-            </button>
-        </div>
-        <img
-            class="object-cover"
-            src="https://www.cnet.com/a/img/resize/69256d2623afcbaa911f08edc45fb2d3f6a8e172/hub/2023/02/03/afedd3ee-671d-4189-bf39-4f312248fb27/gettyimages-1042132904.jpg?auto=webp&fit=crop&height=675&width=1200"
-            alt="Card cover image">
-    </div>
-    <div class="m-8 mb-0">
-        <div class="flex flex-col">
-            <div class="text-2xl leading-tight">Black sneakers with white stripes</div>
-            <div class="text-3xl font-semibold mt-2">$240.00</div>
-        </div>
-        <hr class="border-b my-6">
-        <div class="flex items-center text-md">
-            <div class="text-secondary ml-2">Calificacion</div>
-            <div class="text-secondary ml-2"></div>
-
-            <div class="flex items-center">
-                <mat-icon
-                    class="text-orange-500 icon-size-5"
-                    [svgIcon]="'mat_outline:star'"></mat-icon>
-                <mat-icon
-                    class="text-orange-500 icon-size-5"
-                    [svgIcon]="'mat_outline:star'"></mat-icon>
-                <mat-icon
-                    class="text-orange-500 icon-size-5"
-                    [svgIcon]="'mat_outline:star'"></mat-icon>
-                <mat-icon
-                    class="text-orange-500 icon-size-5"
-                    [svgIcon]="'mat_outline:star'"></mat-icon>
-                <mat-icon
-                    class="text-orange-500 icon-size-5"
-                    [svgIcon]="'mat_outline:star_half'"></mat-icon>
-            </div>
-            <div class="text-secondary ml-2">4.5</div>
-
-        </div>
-        <div class="mt-6 -mx-8">
-            <button
-                class="w-full rounded-none"
-                mat-flat-button
-                [color]="'primary'">
-                Add to Cart
-            </button>
-        </div>
-    </div>
-</fuse-card>
-
-
-
-
-
-
-        </div>
-    </div>
-
-
-    </div>
-
-
-    <footer class="bg-white rounded-lg shadow dark:bg-gray-900 m-4">
-        <div class="w-full max-w-screen-xl mx-auto p-4 md:py-8">
-            <div class="sm:flex sm:items-center sm:justify-between">
-                <a href="https://flowbite.com/" class="flex items-center mb-4 sm:mb-0">
-                    <img src="https://flowbite.com/docs/images/logo.svg" class="h-8 mr-3" alt="Flowbite Logo" />
-                    <span class="self-center text-2xl font-semibold whitespace-nowrap dark:text-white">Flowbite</span>
+        <div class="container-catalogo dark:bg-gray-900 w-full z-20 ">
+            <nav
+                class="bg-white dark:bg-gray-900 absolute w-full z-20 top-0 left-0 border-b border-gray-200 dark:border-gray-600">
+                <div class="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4">
+                    <a href="https://flowbite.com/" class="flex items-center ">
+                        <img src="../../../../assets/images/logo/avanzar.png" class="h-8 mr-3" alt="Flowbite Logo">
+                        <span class="self-center text-2xl font-semibold whitespace-nowrap dark:text-white">Fundacion
+                            Avanzar</span>
+                    </a >
+                    <div class="flex md:order-2">
+                        <a 
+                        class="mt-8"
+                        mat-flat-button
+                        [color]="'primary'"
+                        [routerLink]="'/sign-in'"
+                        style="margin-bottom: 30px; margin-right: 5px;">
+                        <span>Iniciar Sesion</span>
+                        <mat-icon
+                            class="ml-2 icon-size-5"
+                            [svgIcon]="'heroicons_mini:arrow-long-right'"></mat-icon>
+                    </a>
+                    <a 
+                    class="mt-8"
+                    mat-flat-button
+                    [color]="'primary'"
+                    [routerLink]="'/sign-in'">
+                    <span>Registrase</span>
+                    <mat-icon
+                        class="ml-2 icon-size-5"
+                        [svgIcon]="'heroicons_mini:arrow-long-right'"></mat-icon>
                 </a>
-                <ul class="flex flex-wrap items-center mb-6 text-sm font-medium text-gray-500 sm:mb-0 dark:text-gray-400">
-                    <li>
-                        <a href="#" class="mr-4 hover:underline md:mr-6 ">About</a>
-                    </li>
-                    <li>
-                        <a href="#" class="mr-4 hover:underline md:mr-6">Privacy Policy</a>
-                    </li>
-                    <li>
-                        <a href="#" class="mr-4 hover:underline md:mr-6 ">Licensing</a>
-                    </li>
-                    <li>
-                        <a href="#" class="hover:underline">Contact</a>
-                    </li>
-                </ul>
+
+                        <button data-collapse-toggle="navbar-sticky" type="button"
+                            class="inline-flex items-center p-2 w-10 h-10 justify-center text-sm text-gray-500 rounded-lg md:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600"
+                            aria-controls="navbar-sticky" aria-expanded="false">
+                            <span class="sr-only">Open main menu</span>
+                            <svg class="w-5 h-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none"
+                                viewBox="0 0 17 14">
+                                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
+                                    stroke-width="2" d="M1 1h15M1 7h15M1 13h15" />
+                            </svg>
+                        </button>
+                    </div>
+                    <div class="items-center justify-between hidden w-full md:flex md:w-auto md:order-1"
+                        id="navbar-sticky">
+                        <ul
+                            class="flex flex-col p-4 md:p-0 mt-4 font-medium border border-gray-100 rounded-lg bg-gray-50 md:flex-row md:space-x-8 md:mt-0 md:border-0 md:bg-white dark:bg-gray-800 md:dark:bg-gray-900 dark:border-gray-700">
+                            <li>
+                                <a href="#"
+                                    class="block py-2 pl-3 pr-4 text-white bg-blue-700 rounded md:bg-transparent md:text-blue-700 md:p-0 md:dark:text-blue-500"
+                                    aria-current="page">Home</a>
+                            </li>
+                            <li>
+                                <a href="#"
+                                    class="block py-2 pl-3 pr-4 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 md:p-0 md:dark:hover:text-blue-500 dark:text-white dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700">Nosotros</a>
+                            </li>
+                            <li>
+                                <a href="#"
+                                    class="block py-2 pl-3 pr-4 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 md:p-0 md:dark:hover:text-blue-500 dark:text-white dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700">Planes</a>
+                            </li>
+                            <li>
+                                <a href="#"
+                                    class="block py-2 pl-3 pr-4 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 md:p-0 md:dark:hover:text-blue-500 dark:text-white dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700">Catalogo</a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </nav>
+
+
+
+
+
+            <div class="card-header  dark:bg-gray-900 w-full z-20 "></div>
+            <div class="container-color">
+                <div class="input-filter">
+
+                    <div class="flex flex-col sm:flex-row justify-center ">
+
+                        <mat-form-field class="w-full sm:w-100 mt-4 sm:mt-0 sm:ml-4" [subscriptSizing]="'dynamic'">
+                            <mat-icon matPrefix class="icon-size-5"
+                                [svgIcon]="'heroicons_solid:magnifying-glass'"></mat-icon>
+                            <input tabindex="0" (input)="filterByQuery(query.value)"
+                                placeholder="Search by product..." matInput #query>
+                        </mat-form-field>
+
+                    </div>
+                </div>
+                <div class="content-descripcion-catalogo dark:bg-gray-900 w-full z-20">
+                    <div class="descripcion-catalogo  ">
+                        <h1 class="title-catalogo">Food</h1>
+                        <p class="descripcion-catalogo">Comida super deliciosa</p>
+                    </div>
+                </div>
+                <div class="content-all-catalogo dark:bg-gray-900 w-full z-20">
+
+                    <div class="all-catalogo dark:bg-gray-900 ">
+                        <a class="enlace" href="">Comida</a>
+                        <a class="enlace" href="">Juguetes</a>
+                        <a class="enlace" href="">Ropa</a>
+                        <a class="enlace" href="">Accesorios</a>
+                        <a class="enlace" href="">Servicios</a>
+                        <a class="enlace" href="">Zapatos</a>
+                        <a class="enlace" href="">Comida</a>
+                        <a class="enlace" href="">Comida</a>
+                        <a class="enlace" href="">Comida</a>
+
+
+                    </div>
+
+                </div>
+
+                <div class="content-card-catalogo w-full z-20">
+
+                    <fuse-card class="flex flex-col max-w-80 w-full filter-shopping">
+                        <div class="relative">
+                            <div class="absolute flex flex-col top-0 right-0 p-3">
+                                <button mat-icon-button>
+                                    <mat-icon class="icon-size-5 text-white text-opacity-50"
+                                        [svgIcon]="'heroicons_solid:heart'"></mat-icon>
+                                </button>
+                                <button mat-icon-button>
+                                    <mat-icon class="icon-size-5 text-white text-opacity-50"
+                                        [svgIcon]="'heroicons_solid:arrows-right-left'"></mat-icon>
+                                </button>
+                            </div>
+                            <img class="object-cover"
+                                src="https://www.cnet.com/a/img/resize/69256d2623afcbaa911f08edc45fb2d3f6a8e172/hub/2023/02/03/afedd3ee-671d-4189-bf39-4f312248fb27/gettyimages-1042132904.jpg?auto=webp&fit=crop&height=675&width=1200"
+                                alt="Card cover image">
+                        </div>
+                        <div class="m-8 mb-0">
+                            <div class="flex flex-col">
+                                <div class="text-2xl leading-tight">Black sneakers with white stripes</div>
+                                <div class="text-3xl font-semibold mt-2">$240.00</div>
+                            </div>
+                            <hr class="border-b my-6">
+                            <div class="flex items-center text-md">
+
+                                <div class="flex items-center">
+                                    <mat-icon class="text-orange-500 icon-size-5"
+                                        [svgIcon]="'mat_outline:star'"></mat-icon>
+                                    <mat-icon class="text-orange-500 icon-size-5"
+                                        [svgIcon]="'mat_outline:star'"></mat-icon>
+                                    <mat-icon class="text-orange-500 icon-size-5"
+                                        [svgIcon]="'mat_outline:star'"></mat-icon>
+                                    <mat-icon class="text-orange-500 icon-size-5"
+                                        [svgIcon]="'mat_outline:star'"></mat-icon>
+                                    <mat-icon class="text-orange-500 icon-size-5"
+                                        [svgIcon]="'mat_outline:star_half'"></mat-icon>
+                                </div>
+                            </div>
+                            <div class="mt-6 -mx-8">
+                                <button class="w-full rounded-none" mat-flat-button [color]="'primary'">
+                                    Add to Cart
+                                </button>
+                            </div>
+                        </div>
+                    </fuse-card>
+
+
+                    <fuse-card class="flex flex-col max-w-80 w-full filter-shopping">
+                        <div class="relative">
+                            <div class="absolute flex flex-col top-0 right-0 p-3">
+                                <button mat-icon-button>
+                                    <mat-icon class="icon-size-5 text-white text-opacity-50"
+                                        [svgIcon]="'heroicons_solid:heart'"></mat-icon>
+                                </button>
+                                <button mat-icon-button>
+                                    <mat-icon class="icon-size-5 text-white text-opacity-50"
+                                        [svgIcon]="'heroicons_solid:arrows-right-left'"></mat-icon>
+                                </button>
+                            </div>
+                            <img class="object-cover"
+                                src="https://www.cnet.com/a/img/resize/69256d2623afcbaa911f08edc45fb2d3f6a8e172/hub/2023/02/03/afedd3ee-671d-4189-bf39-4f312248fb27/gettyimages-1042132904.jpg?auto=webp&fit=crop&height=675&width=1200"
+                                alt="Card cover image">
+                        </div>
+                        <div class="m-8 mb-0">
+                            <div class="flex flex-col">
+                                <div class="text-2xl leading-tight">Black sneakers with white stripes</div>
+                                <div class="text-3xl font-semibold mt-2">$240.00</div>
+                            </div>
+                            <hr class="border-b my-6">
+                            <div class="flex items-center text-md">
+
+                                <div class="flex items-center">
+                                    <mat-icon class="text-orange-500 icon-size-5"
+                                        [svgIcon]="'mat_outline:star'"></mat-icon>
+                                    <mat-icon class="text-orange-500 icon-size-5"
+                                        [svgIcon]="'mat_outline:star'"></mat-icon>
+                                    <mat-icon class="text-orange-500 icon-size-5"
+                                        [svgIcon]="'mat_outline:star'"></mat-icon>
+                                    <mat-icon class="text-orange-500 icon-size-5"
+                                        [svgIcon]="'mat_outline:star'"></mat-icon>
+                                    <mat-icon class="text-orange-500 icon-size-5"
+                                        [svgIcon]="'mat_outline:star_half'"></mat-icon>
+                                </div>
+                            </div>
+                            <div class="mt-6 -mx-8">
+                                <button class="w-full rounded-none" mat-flat-button [color]="'primary'">
+                                    Add to Cart
+                                </button>
+                            </div>
+                        </div>
+                    </fuse-card>
+
+
+                    <fuse-card class="flex flex-col max-w-80 w-full filter-shopping">
+                        <div class="relative">
+                            <div class="absolute flex flex-col top-0 right-0 p-3">
+                                <button mat-icon-button>
+                                    <mat-icon class="icon-size-5 text-white text-opacity-50"
+                                        [svgIcon]="'heroicons_solid:heart'"></mat-icon>
+                                </button>
+                                <button mat-icon-button>
+                                    <mat-icon class="icon-size-5 text-white text-opacity-50"
+                                        [svgIcon]="'heroicons_solid:arrows-right-left'"></mat-icon>
+                                </button>
+                            </div>
+                            <img class="object-cover"
+                                src="https://www.cnet.com/a/img/resize/69256d2623afcbaa911f08edc45fb2d3f6a8e172/hub/2023/02/03/afedd3ee-671d-4189-bf39-4f312248fb27/gettyimages-1042132904.jpg?auto=webp&fit=crop&height=675&width=1200"
+                                alt="Card cover image">
+                        </div>
+                        <div class="m-8 mb-0">
+                            <div class="flex flex-col">
+                                <div class="text-2xl leading-tight">Black sneakers with white stripes</div>
+                                <div class="text-3xl font-semibold mt-2">$240.00</div>
+                            </div>
+                            <hr class="border-b my-6">
+                            <div class="flex items-center text-md">
+
+                                <div class="flex items-center">
+                                    <mat-icon class="text-orange-500 icon-size-5"
+                                        [svgIcon]="'mat_outline:star'"></mat-icon>
+                                    <mat-icon class="text-orange-500 icon-size-5"
+                                        [svgIcon]="'mat_outline:star'"></mat-icon>
+                                    <mat-icon class="text-orange-500 icon-size-5"
+                                        [svgIcon]="'mat_outline:star'"></mat-icon>
+                                    <mat-icon class="text-orange-500 icon-size-5"
+                                        [svgIcon]="'mat_outline:star'"></mat-icon>
+                                    <mat-icon class="text-orange-500 icon-size-5"
+                                        [svgIcon]="'mat_outline:star_half'"></mat-icon>
+                                </div>
+                            </div>
+                            <div class="mt-6 -mx-8">
+                                <button class="w-full rounded-none" mat-flat-button [color]="'primary'">
+                                    Add to Cart
+                                </button>
+                            </div>
+                        </div>
+                    </fuse-card>
+
+                    <fuse-card class="flex flex-col max-w-80 w-full filter-shopping">
+                        <div class="relative">
+                            <div class="absolute flex flex-col top-0 right-0 p-3">
+                                <button mat-icon-button>
+                                    <mat-icon class="icon-size-5 text-white text-opacity-50"
+                                        [svgIcon]="'heroicons_solid:heart'"></mat-icon>
+                                </button>
+                                <button mat-icon-button>
+                                    <mat-icon class="icon-size-5 text-white text-opacity-50"
+                                        [svgIcon]="'heroicons_solid:arrows-right-left'"></mat-icon>
+                                </button>
+                            </div>
+                            <img class="object-cover"
+                                src="https://www.cnet.com/a/img/resize/69256d2623afcbaa911f08edc45fb2d3f6a8e172/hub/2023/02/03/afedd3ee-671d-4189-bf39-4f312248fb27/gettyimages-1042132904.jpg?auto=webp&fit=crop&height=675&width=1200"
+                                alt="Card cover image">
+                        </div>
+                        <div class="m-8 mb-0">
+                            <div class="flex flex-col">
+                                <div class="text-2xl leading-tight">Black sneakers with white stripes</div>
+                                <div class="text-3xl font-semibold mt-2">$240.00</div>
+                            </div>
+                            <hr class="border-b my-6">
+                            <div class="flex items-center text-md">
+
+                                <div class="flex items-center">
+                                    <mat-icon class="text-orange-500 icon-size-5"
+                                        [svgIcon]="'mat_outline:star'"></mat-icon>
+                                    <mat-icon class="text-orange-500 icon-size-5"
+                                        [svgIcon]="'mat_outline:star'"></mat-icon>
+                                    <mat-icon class="text-orange-500 icon-size-5"
+                                        [svgIcon]="'mat_outline:star'"></mat-icon>
+                                    <mat-icon class="text-orange-500 icon-size-5"
+                                        [svgIcon]="'mat_outline:star'"></mat-icon>
+                                    <mat-icon class="text-orange-500 icon-size-5"
+                                        [svgIcon]="'mat_outline:star_half'"></mat-icon>
+                                </div>
+                            </div>
+                            <div class="mt-6 -mx-8">
+                                <button class="w-full rounded-none" mat-flat-button [color]="'primary'">
+                                    Add to Cart
+                                </button>
+                            </div>
+                        </div>
+                    </fuse-card>
+
+                    <fuse-card class="flex flex-col max-w-80 w-full filter-shopping card">
+                        <div class="relative">
+                            <div class="absolute flex flex-col top-0 right-0 p-3">
+                                <button mat-icon-button>
+                                    <mat-icon class="icon-size-5 text-white text-opacity-50"
+                                        [svgIcon]="'heroicons_solid:heart'"></mat-icon>
+                                </button>
+                                <button mat-icon-button>
+                                    <mat-icon class="icon-size-5 text-white text-opacity-50"
+                                        [svgIcon]="'heroicons_solid:arrows-right-left'"></mat-icon>
+                                </button>
+                            </div>
+                            <img class="object-cover"
+                                src="https://www.cnet.com/a/img/resize/69256d2623afcbaa911f08edc45fb2d3f6a8e172/hub/2023/02/03/afedd3ee-671d-4189-bf39-4f312248fb27/gettyimages-1042132904.jpg?auto=webp&fit=crop&height=675&width=1200"
+                                alt="Card cover image">
+                        </div>
+                        <div class="m-8 mb-0">
+                            <div class="flex flex-col">
+                                <div class="text-2xl leading-tight">Black sneakers with white stripes</div>
+                                <div class="text-3xl font-semibold mt-2">$240.00</div>
+                            </div>
+                            <hr class="border-b my-6">
+                            <div class="flex items-center text-md">
+                                <div class="text-secondary ml-2">Calificacion</div>
+                                <div class="text-secondary ml-2"></div>
+
+                                <div class="flex items-center">
+                                    <mat-icon class="text-orange-500 icon-size-5"
+                                        [svgIcon]="'mat_outline:star'"></mat-icon>
+                                    <mat-icon class="text-orange-500 icon-size-5"
+                                        [svgIcon]="'mat_outline:star'"></mat-icon>
+                                    <mat-icon class="text-orange-500 icon-size-5"
+                                        [svgIcon]="'mat_outline:star'"></mat-icon>
+                                    <mat-icon class="text-orange-500 icon-size-5"
+                                        [svgIcon]="'mat_outline:star'"></mat-icon>
+                                    <mat-icon class="text-orange-500 icon-size-5"
+                                        [svgIcon]="'mat_outline:star_half'"></mat-icon>
+                                </div>
+                                <div class="text-secondary ml-2">4.5</div>
+
+                            </div>
+                            <div class="mt-6 -mx-8">
+                                <button class="w-full rounded-none" mat-flat-button [color]="'primary'">
+                                    Add to Cart
+                                </button>
+                            </div>
+                        </div>
+                    </fuse-card>
+
+                </div>
             </div>
-            <hr class="my-6 border-gray-200 sm:mx-auto dark:border-gray-700 lg:my-8" />
-            <span class="block text-sm text-gray-500 sm:text-center dark:text-gray-400">© 2023 <a href="https://flowbite.com/" class="hover:underline">Flowbite™</a>. All Rights Reserved.</span>
+
+
         </div>
-    </footer>
-    
-    
+
+
+    </div>
+
+
 
 </div>
-
