@@ -1,13 +1,114 @@
 <div class="flex flex-col flex-auto min-w-0">
-
-    <!-- Main -->
-    <div class="flex-auto p-6 sm:p-10">
-
-        <!-- CONTENT GOES HERE -->
-        <div class="h-400 min-h-400 max-h-400 border-2 border-dashed border-gray-300 rounded-2xl">
-            <h1>Dashboard Admin</h1>
+    <!-- Header -->
+    <div class="bg-card">
+        <div class="flex flex-col w-full max-w-screen-xl mx-auto px-6 sm:px-8">
+            <div
+                class="flex flex-col sm:flex-row flex-auto sm:items-center min-w-0 my-8 sm:my-12"
+            >
+                <!-- Avatar and name -->
+                <div class="flex flex-auto min-w-0">
+                    <div class="flex-0 w-20 h-20 overflow-hidden">
+                        <img
+                            class="w-48 h-auto mr-6"
+                            src="assets/images/logo/avanzar.png"
+                        />
+                    </div>
+                    <div class="flex flex-col min-w-0 ml-4">
+                        <ng-container *transloco="let t">
+                            <div
+                                class="text-lg md:text-4xl font-semibold tracking-tight leading-7 md:leading-snug truncate"
+                            >
+                                ¡Te damos la bienvenida,
+                                {{ user.persona.primer_nombre }}
+                                {{ user.persona.primer_apellido }}!
+                            </div>
+                        </ng-container>
+                        <div class="flex items-center">
+                            <!--<mat-icon
+                                class="icon-size-5"
+                                [svgIcon]="'heroicons_solid:bell'"
+                            ></mat-icon>-->
+                        </div>
+                    </div>
+                </div>
+                <!-- Actions -->
+                <!--<div class="flex items-center mt-6 sm:mt-0 sm:ml-2 space-x-3">
+                    <button
+                        class="bg-accent"
+                        mat-flat-button
+                        [color]="'accent'"
+                    >
+                        <mat-icon
+                            class="icon-size-5"
+                            [svgIcon]="'heroicons_solid:envelope'"
+                        ></mat-icon>
+                        <span class="ml-2">Messages</span>
+                    </button>
+                    <button mat-flat-button [color]="'primary'">
+                        <mat-icon
+                            class="icon-size-5"
+                            [svgIcon]="'heroicons_solid:cog-8-tooth'"
+                        ></mat-icon>
+                        <span class="ml-2">Settings</span>
+                    </button>
+                </div>-->
+            </div>
+            <!-- Project selector -->
         </div>
-
     </div>
 
+    <!-- Main -->
+    <!-- Main -->
+    <div class="flex-auto border-t -mt-px pt-4 sm:pt-6">
+        <div class="w-full max-w-screen-xl mx-auto">
+            <div
+                class="sm:col-span-2 md:col-span-4 m-4 lg:col-span-2 flex flex-col flex-auto p-6 bg-card shadow rounded-2xl overflow-hidden"
+            >
+                <div class="flex items-center">
+                    <div class="flex-1">
+                        <h2 class="text-2xl font-bold mb-4">Misión</h2>
+                        <p class="text-justify leading-1.5">
+                            La Fundación Avanzar busca alinearse con la misión
+                            que persigue ONU Mujeres, que es promover la
+                            igualdad de género y empoderar a las mujeres para
+                            acelerar el progreso hacia la mejora de sus
+                            condiciones de vida. Invertir en el empoderamiento
+                            económico de las mujeres marca un camino directo
+                            hacia la igualdad de género, la erradicación de la
+                            pobreza y el crecimiento económico inclusivo. Con
+                            este fin, la Fundación Avanzar ha puesto en marcha
+                            una serie de iniciativas que apoyan a las Empresas
+                            de Economía Social formadas por mujeres, también
+                            llamadas "Empresas de Economía Femenina",
+                            centrándose en los aspectos en los que tienen más
+                            margen de mejora: Por un lado, la formación en sus
+                            áreas de trabajo y, por otro, el manejo de modelos
+                            de negocio, aspectos ambos fundamentales para
+                            incrementar el liderazgo y la participación exitosa
+                            de las mujeres en la economía familiar.
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div
+                class="sm:col-span-2 md:col-span-4 m-4 lg:col-span-2 flex flex-auto p-6 bg-card shadow rounded-2xl overflow-hidden"
+            >
+                <div class="flex items-center">
+                    <div class="flex-1">
+                        <h2 class="text-2xl font-bold mb-4">Visión</h2>
+                        <p class="text-justify leading-1.5">
+                            Los programas que ofrecemos proporcionan a sus
+                            beneficiarias la oportunidad, los conocimientos y
+                            los recursos para crear por sí mismas una vida
+                            productiva y próspera, plena de autodeterminación,
+                            dignidad, responsabilidad y libertad. Somos una
+                            organización sin ánimo de lucro dinámica, innovadora
+                            y eficiente que genera contribuciones concretas para
+                            las mujeres desfavorecidas y sus familias.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
