@@ -12,15 +12,17 @@ import { TranslocoModule } from '@ngneat/transloco';
 import { dashboardService } from 'app/modules/emprendedora/dashboard/dashboard.service';
 import { ApexOptions, NgApexchartsModule } from 'ng-apexcharts';
 import { Subject, takeUntil } from 'rxjs';
+import { UserService } from 'app/core/user/user.service';
+import { User } from 'app/core/user/user.types';
+import { UserComponent } from 'app/layout/common/user/user.component';
 
 @Component({
     selector     : 'dashboard-emprendedora',
     standalone   : true,
     changeDetection: ChangeDetectionStrategy.OnPush,
     templateUrl  : './dashboard.component.html',
-    styleUrls    : ['./dashboard.component.scss'],
     encapsulation: ViewEncapsulation.None,
-    imports        : [TranslocoModule, MatIconModule, MatButtonModule, MatRippleModule, MatMenuModule, MatTabsModule, MatButtonToggleModule, NgApexchartsModule, NgFor, NgIf, MatTableModule, NgClass, CurrencyPipe],
+    imports        : [TranslocoModule, UserComponent, MatIconModule, MatButtonModule, MatRippleModule, MatMenuModule, MatTabsModule, MatButtonToggleModule, NgApexchartsModule, NgFor, NgIf, MatTableModule, NgClass, CurrencyPipe],
 
 })
 
@@ -33,6 +35,7 @@ export class DashboardEmprendedoraComponentimplements implements OnInit, OnDestr
     chartMonthlyExpenses: ApexOptions = {};
     chartYearlyExpenses: ApexOptions = {};
     data: any;
+    user: User;
     selectedProject: string = 'ACME Corp. Backend App';
     private _unsubscribeAll: Subject<any> = new Subject<any>();
 
@@ -42,6 +45,7 @@ export class DashboardEmprendedoraComponentimplements implements OnInit, OnDestr
     constructor(
         private _dashboardService: dashboardService,
         private _router: Router,
+        private _userService: UserService,
     )
     {
     }
@@ -65,6 +69,13 @@ export class DashboardEmprendedoraComponentimplements implements OnInit, OnDestr
 
                 // Prepare the chart data
                 this._prepareChartData();
+            });
+
+        this._userService.user$
+            .pipe((takeUntil(this._unsubscribeAll)))
+            .subscribe((user: User) =>
+            {
+                this.user = user;
             });
 
         // Attach SVG fill fixer to all ApexCharts
