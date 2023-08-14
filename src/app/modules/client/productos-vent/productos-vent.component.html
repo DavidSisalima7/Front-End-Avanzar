@@ -1,36 +1,41 @@
 <div class="flex flex-col flex-auto min-w-0">
     <!-- Main  -->
-    <div class="flex-auto p-6 sm:p-10">
-       Lista de Productos 
-      <div class="h-400 min-h-400 max-h-400 border-2 border-dashed border-gray-300 rounded-2xl">
+  
+      <div class="flex-auto p-6 sm:p-10">
+
+        <div class="flex flex-col sm:flex-row flex-0 sm:items-center sm:justify-between p-6 sm:py-8 sm:px-10 border-b bg-card dark:bg-transparent">
+          <div class="flex-1 min-w-0">
+              <!-- Breadcrumbs -->
+              <div class="flex flex-wrap items-center font-medium">
+                  <div>
+                      <a class="whitespace-nowrap text-primary-500">Listado</a>
+                  </div>
+              </div>
+              <!-- Title -->
+              <div class="mt-2">
+                  <h2 class="text-3xl md:text-4xl font-extrabold tracking-tight leading-7 sm:leading-10 truncate">
+                      Listado de Productos
+                  </h2>
+              </div>
+          </div>
+      </div>
       
+      <style>
   
-  <!DOCTYPE html>
-  <html lang="en">
-  <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title></title>
-    <style>
-      table {
-        width: 100%;
-      }
-  
-      .mat-mdc-form-field {
-        font-size: 14px;
-        width: 100%;
-      }
-  
-      td, th {
-        width: 25%;
-      }
-    </style>
-  </head>
-  <h1>Productos</h1>
-  <body>
+
+        .mat-mdc-form-field {
+          font-size: 14px;
+          width: 100%;
+        }
+    
+      
+      </style>
+
+
+
   
     <mat-form-field class="mat-mdc-form-field">
-      <mat-label>Buscar</mat-label>
+
       <input matInput (keyup)="applyFilter($event)" placeholder="Búsqueda" #input>
     </mat-form-field>
     
@@ -79,6 +84,3 @@
     
       <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]" aria-label="Select page of users"></mat-paginator>
     </div>
-    
-    </body>
-    </html>

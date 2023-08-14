@@ -9,6 +9,7 @@ import { MatTableModule } from '@angular/material/table';
 import { MatTabsModule } from '@angular/material/tabs';
 import { Router } from '@angular/router';
 import { TranslocoModule } from '@ngneat/transloco';
+import { dashboardService } from 'app/modules/admin/dashboard/dashboard.service';
 import { ApexOptions, NgApexchartsModule } from 'ng-apexcharts';
 import { Subject, takeUntil } from 'rxjs';
 import { UserService } from 'app/core/user/user.service';
@@ -19,6 +20,7 @@ import { UserComponent } from 'app/layout/common/user/user.component';
     selector     : 'dashboard',
     standalone   : true,
     templateUrl  : './dashboard.component.html',
+    changeDetection: ChangeDetectionStrategy.OnPush,
     encapsulation: ViewEncapsulation.None,
     imports        : [TranslocoModule, UserComponent, MatIconModule, MatButtonModule, MatRippleModule, MatMenuModule, MatTabsModule, MatButtonToggleModule, NgApexchartsModule, NgFor, NgIf, MatTableModule, NgClass, CurrencyPipe],
 })
@@ -40,6 +42,7 @@ export class DashboardAdminComponent implements OnInit, OnDestroy
      */
     constructor(
         private _router: Router,
+        private _dashboardService: dashboardService,
         private _userService: UserService,
     )
     {
@@ -54,6 +57,20 @@ export class DashboardAdminComponent implements OnInit, OnDestroy
      */
     ngOnInit(): void
     {
+
+         // Get the data
+         this._dashboardService.data$
+         .pipe(takeUntil(this._unsubscribeAll))
+         .subscribe((data) =>
+         {
+             // Store the data
+             this.data = data;
+
+             // Prepare the chart data
+             this._prepareChartData();
+         });
+
+         
         this._userService.user$
             .pipe((takeUntil(this._unsubscribeAll)))
             .subscribe((user: User) =>

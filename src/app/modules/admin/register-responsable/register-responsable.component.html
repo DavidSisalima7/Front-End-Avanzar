@@ -1,13 +1,365 @@
 <div class="flex flex-col flex-auto min-w-0">
 
+    <!-- Header -->
+    <div class="flex flex-col sm:flex-row flex-0 sm:items-center sm:justify-between p-6 sm:py-8 sm:px-10 border-b bg-card dark:bg-transparent">
+        <div class="flex-1 min-w-0">
+            <!-- Breadcrumbs -->
+            <div class="flex flex-wrap items-center font-medium">
+                <div>
+                    <a class="whitespace-nowrap text-primary-500">Registro</a>
+                </div>
+                <div class="flex items-center ml-1 whitespace-nowrap">
+                    <mat-icon
+                        class="icon-size-5 text-secondary"
+                        [svgIcon]="'heroicons_mini:chevron-right'"></mat-icon>
+                    <a class="ml-1 text-primary-500">Responsable de Ventas</a>
+                </div>
+            </div>
+            <!-- Title -->
+            <div class="mt-2">
+                <h2 class="text-3xl md:text-4xl font-extrabold tracking-tight leading-7 sm:leading-10 truncate">
+                    Registro de Responsable de Ventas
+                </h2>
+            </div>
+        </div>
+    </div>
+
     <!-- Main -->
     <div class="flex-auto p-6 sm:p-10">
 
-        <!-- CONTENT GOES HERE -->
-        <div class="h-400 min-h-400 max-h-400 border-2 border-dashed border-gray-300 rounded-2xl">
+        <div class="max-w-3xl">
 
-            <h1>Register Resp Works Admin!</h1>
-        </div>
+            
+
+            <!-- Horizontal stepper -->
+            <div class="mt-16 mb-8 text-3xl font-bold">Datos personales:</div>
+
+            <form
+                class="p-4 bg-card shadow rounded overflow-hidden"
+                [formGroup]="horizontalStepperForm">
+                <mat-horizontal-stepper
+                    [linear]="true"
+                    #horizontalStepper>
+                    <mat-step
+                        [formGroupName]="'step1'"
+                        [stepControl]="horizontalStepperForm.get('step1')"
+                        #horizontalStepperStep1>
+                        <ng-template matStepLabel>Etapa Numero 1</ng-template>
+                        <p class="my-6 font-medium">
+                           Realizar el siguiente formulario
+                        </p>
+
+                        <div class="flex flex-col gt-xs:flex-row">
+                            <mat-form-field class="flex-auto gt-xs:pr-3">
+                                <input
+                                    matInput
+                                    [formControlName]="'Primer Nombre'"
+                                    [placeholder]="'Segundo Nombre'"
+                                    required>
+                                <mat-icon
+                                    class="icon-size-5"
+                                    matPrefix
+                                    [svgIcon]="'heroicons_outline:user-circle'"></mat-icon>
+                            </mat-form-field>
+                            <mat-form-field class="flex-auto gt-xs:pl-3">
+                                <input
+                                    matInput
+                                    [formControlName]="'Primer Nombre'"
+                                    [placeholder]="'Segundo Nombre'"
+                                    required>
+                                <mat-icon
+                                    class="icon-size-5"
+                                    matPrefix
+                                    [svgIcon]="'heroicons_outline:user-circle'"></mat-icon>
+                            </mat-form-field>
+                        </div>
+
+                        <div class="flex flex-col gt-xs:flex-row">
+                            <mat-form-field class="flex-auto gt-xs:pr-3">
+                                <input
+                                    matInput
+                                    [formControlName]="'Primer Apellido'"
+                                    [placeholder]="' Primer Apellido'"
+                                    required>
+                                <mat-icon
+                                    class="icon-size-5"
+                                    matPrefix
+                                    [svgIcon]="'heroicons_outline:user-circle'"></mat-icon>
+                            </mat-form-field>
+                            <mat-form-field class="flex-auto gt-xs:pl-3">
+                                <input
+                                    matInput
+                                    [formControlName]="'Segundo Apellido'"
+                                    [placeholder]="'Segundo Apellido '"
+                                    required>
+                                <mat-icon
+                                    class="icon-size-5"
+                                    matPrefix
+                                    [svgIcon]="'heroicons_outline:user-circle'"></mat-icon>
+                            </mat-form-field>
+                        </div>
+                        
+                        <div class="flex">
+                            
+                            <mat-form-field class="flex-auto">
+                                <input
+                                    matInput
+                                    [formControlName]="'email'"
+                                    [placeholder]="'Email Address'"
+                                    required>
+                                <mat-icon
+                                    class="icon-size-5"
+                                    matPrefix
+                                    [svgIcon]="'heroicons_outline:envelope'"></mat-icon>
+                            </mat-form-field>
+                        </div>
+                        <div class="flex flex-col gt-xs:flex-row">
+                            <mat-form-field class="flex-auto">
+                                <input
+                                    matInput
+                                    [formControlName]="'language'"
+                                    [placeholder]="'Contraseña'"
+                                    required>
+                                <mat-icon
+                                    class="icon-size-5"
+                                    matPrefix
+                                    [svgIcon]="'password'"></mat-icon>
+
+
+                            </mat-form-field>
+                            <mat-form-field class="flex-auto gt-xs:pr-3">
+                                <mat-select
+                                    [formControlName]="'country'"
+                                    [placeholder]="'Genero'"
+                                    required
+                                    >
+                                    <mat-option value="country-1">Hombre </mat-option>
+                                    <mat-option value="country-2">Mujer</mat-option>
+                                    <mat-option value="country-3">Genero no binario </mat-option>
+                                </mat-select>
+
+
+                                <mat-icon
+                                    class="icon-size-5"
+                                    matPrefix
+                                    [svgIcon]="'heroicons_outline:users'"></mat-icon>
+                            </mat-form-field>
+                            
+                            
+                            
+                        </div>
+                        <div class="flex">
+                            <mat-form-field class="flex-auto">
+                                <textarea
+                                    matInput
+                                    [formControlName]="'Direccion'"
+                                    [placeholder]="'Direccion'"
+                                    [rows]="3"></textarea>
+                                <mat-icon
+                                    class="country"
+                                    matPrefix
+                                    [svgIcon]="'heroicons_outline:map-pin'"></mat-icon>
+                            </mat-form-field>
+                        </div>
+                        <div class="flex justify-end">
+                            <button
+                                class="px-8"
+                                mat-flat-button
+                                [color]="'primary'"
+                                [disabled]="horizontalStepperStep1.stepControl.pristine || horizontalStepperStep1.stepControl.invalid"
+                                type="button"
+                                matStepperNext>
+                                Next
+                            </button>
+                        </div>
+                    </mat-step>
+
+                    <mat-step
+                        [formGroupName]="'step2'"
+                        [stepControl]="horizontalStepperForm.get('step2')"
+                        #horizontalStepperStep2>
+                        <ng-template matStepLabel>Etapa Numero 2</ng-template>
+                        <p class="my-6 font-medium">
+                            Generar Credenciales
+                        </p>
+                        <div class="flex flex-col gt-xs:flex-row">
+                            <mat-form-field class="flex-auto gt-xs:pr-3">
+                                <input
+                                    matInput
+                                    [formControlName]="'firstName'"
+                                    [placeholder]="'Cedula'"
+                                    required>
+                                <mat-icon
+                                    class="icon-size-5"
+                                    matPrefix
+                                    [svgIcon]="'heroicons_outline:identification'"></mat-icon>
+                            </mat-form-field>
+                            <mat-form-field class="flex-auto gt-xs:pl-3">
+                                <input
+                                    matInput
+                                    [formControlName]="'lastName'"
+                                    [placeholder]="'Email'"
+                                    required>
+                                <mat-icon
+                                    class="icon-size-5"
+                                    matPrefix
+                                    [svgIcon]="'heroicons_outline:envelope'"></mat-icon>
+                            </mat-form-field>
+                            <mat-form-field class="flex-auto">
+                                <input
+                                    matInput
+                                    [formControlName]="'userName'"
+                                    [placeholder]="'Contraseña'"
+                                    required>
+                                    <mat-icon
+                                    class="icon-size-5"
+                                    matPrefix
+                                    [svgIcon]="'password'"></mat-icon>
+                                <span matPrefix></span>
+                            </mat-form-field>
+
+                            <p class="my-6 font-medium" style="text-align: center;font-size: 15px;">
+                                  Jose David Naula <br>
+                                  <strong>Responsable de Ventas.</strong>
+                            </p>
+                            <p class="my-6 font-medium">
+                                
+                            </p>
+                        </div>
+                        
+
+                        
+
+                        
+                        
+                        
+                        <div class="flex justify-end">
+                            <button
+                                class="px-8 mr-2"
+                                mat-flat-button
+                                [color]="'accent'"
+                                type="button"
+                                matStepperPrevious>
+                                Back
+                            </button>
+                            <button
+                                class="px-8"
+                                mat-flat-button
+                                [color]="'primary'"
+                                [disabled]="horizontalStepperStep2.stepControl.pristine || horizontalStepperStep2.stepControl.invalid"
+                                type="button"
+                                matStepperNext>
+                                Next
+                            </button>
+                        </div>
+                    </mat-step>
+
+                    <!-- <mat-step
+                        [formGroupName]="'step3'"
+                        [stepControl]="horizontalStepperForm.get('step3')">
+                        <ng-template matStepLabel>Notifications</ng-template>
+                        <p class="my-6 font-medium">
+                            We'll always let you know about important changes, but you pick what else you want to hear about.
+                        </p>
+                        <div class="flex flex-col gt-sm:flex-row">
+                            <div class="flex flex-col">
+                                <span class="font-medium mb-2">By Email</span>
+                                <div
+                                    class="flex flex-col"
+                                    [formGroupName]="'byEmail'">
+                                    <mat-checkbox
+                                        class="mb-1"
+                                        [color]="'primary'"
+                                        [formControlName]="'companyNews'">
+                                        Company News
+                                    </mat-checkbox>
+                                    <mat-checkbox
+                                        class="mb-1"
+                                        [color]="'primary'"
+                                        [formControlName]="'featuredProducts'">
+                                        Featured Products
+                                    </mat-checkbox>
+                                    <mat-checkbox
+                                        [color]="'primary'"
+                                        [formControlName]="'messages'">
+                                        Messages
+                                    </mat-checkbox>
+                                </div>
+                            </div>
+                            <div class="flex flex-col mt-8 gt-sm:mt-0 gt-sm:ml-16">
+                                <span class="font-medium mb-2">Push Notifications</span>
+                                <mat-radio-group
+                                    class="flex flex-col"
+                                    [color]="'primary'"
+                                    [formControlName]="'pushNotifications'">
+                                    <mat-radio-button
+                                        class="mb-2"
+                                        [value]="'everything'">
+                                        Everything
+                                    </mat-radio-button>
+                                    <mat-radio-button
+                                        class="mb-2"
+                                        [value]="'just-good'">
+                                        Just the good stuff
+                                    </mat-radio-button>
+                                    <mat-radio-button [value]="'no-push'">
+                                        No push notifications
+                                    </mat-radio-button>
+                                </mat-radio-group>
+                            </div>
+                        </div>
+                        <div class="flex justify-end mt-8">
+                            <button
+                                class="px-8 mr-2"
+                                mat-flat-button
+                                [color]="'accent'"
+                                type="button"
+                                matStepperPrevious>
+                                Back
+                            </button>
+                            <button
+                                class="px-8"
+                                mat-flat-button
+                                [color]="'primary'"
+                                type="button"
+                                matStepperNext>
+                                Next
+                            </button>
+                        </div>
+                    </mat-step> -->
+
+                    <mat-step>
+                        <ng-template matStepLabel>Etapa Numero  3</ng-template>
+                        <p class="my-6 font-medium" style="text-align: center; font-size: 20px;">
+                            <strong>Operacion Finalizada Exitosamente.</strong>
+                            
+                        </p>
+                        <P class="my-6 font-medium" style="text-align: center;">
+                            Si deseas generar otro registro precina el boton Reset.</P>
+
+                        <div class="flex justify-end mt-8">
+                            <button
+                                class="px-8 mr-2"
+                                mat-flat-button
+                                [color]="'accent'"
+                                type="button"
+                                matStepperPrevious>
+                                Back
+                            </button>
+                            <button
+                                class="px-8"
+                                mat-flat-button
+                                [color]="'primary'"
+                                type="reset"
+                                (click)="horizontalStepper.reset();">
+                                Reset
+                            </button>
+                        </div>
+                    </mat-step>
+                </mat-horizontal-stepper>
+            </form>
+
+            
 
     </div>
 
