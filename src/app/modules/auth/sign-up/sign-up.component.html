@@ -28,214 +28,18 @@
             </fuse-alert>
 
             <!-- Sign Up form -->
-            <form
-                class="mt-8"
-                [formGroup]="signUpForm"
-                #signUpNgForm="ngForm">
-
-                <!-- Name field -->
+            <form class="mt-8" [formGroup]="signUpForm" (ngSubmit)="false">
+                <!-- ... campos de formulario ... -->
             
                 <mat-form-field class="w-full">
                     <mat-label>Cédula</mat-label>
-                    <input
-                        id="cedula"
+                    <input id="cedula"
                         matInput
-                        [formControlName]="'cedula'"
-                        [(ngModel)]="persona.cedula">
+                        [formControlName]="'cedula'">
                     <mat-error *ngIf="signUpForm.get('cedula').hasError('required')">
                         Este campo es requerido
                     </mat-error>
                 </mat-form-field>
-
-                <mat-form-field class="w-full">
-                    <mat-label>Primer Nombre</mat-label>
-                    <input
-                        id="primernombre"
-                        matInput
-                        [formControlName]="'primernombre'"
-                        [(ngModel)]="persona.primer_nombre">
-                    <mat-error *ngIf="signUpForm.get('primernombre').hasError('required')">
-                        Este campo es requerido
-                    </mat-error>
-                </mat-form-field>
-
-
-                <mat-form-field class="w-full">
-                    <mat-label>Segundo Nombre</mat-label>
-                    <input
-                        id="segundonombre"
-                        matInput
-                        [formControlName]="'segundonombre'"
-                        [(ngModel)]="persona.segundo_nombre">
-                    <mat-error *ngIf="signUpForm.get('segundonombre').hasError('required')">
-                        Este campo es requerido
-                    </mat-error>
-                </mat-form-field>
-
-
-                <mat-form-field class="w-full">
-                    <mat-label>Primer Apellido</mat-label>
-                    <input
-                        id="primerapellido"
-                        matInput
-                        [formControlName]="'primerapellido'"
-                        [(ngModel)]="persona.primer_apellido">
-                    <mat-error *ngIf="signUpForm.get('primerapellido').hasError('required')">
-                        Este campo es requerido
-                    </mat-error>
-                </mat-form-field>
-
-
-                <mat-form-field class="w-full">
-                    <mat-label>Segundo Apellido</mat-label>
-                    <input
-                        id="segundoapellido"
-                        matInput
-                        [formControlName]="'segundoapellido'"
-                        [(ngModel)]="persona.segundo_apellido">
-                    <mat-error *ngIf="signUpForm.get('segundoapellido').hasError('required')">
-                        Este campo es requerido
-                    </mat-error>
-                </mat-form-field>
-
-                <!-- Email field -->
-                <mat-form-field class="w-full">
-                    <mat-label>Correo Electrónico</mat-label>
-                    <input
-                        id="email"
-                        matInput
-                        [formControlName]="'correo'"
-                        [(ngModel)]="persona.correo">
-                    <mat-error *ngIf="signUpForm.get('correo').hasError('required')">
-                        El correo es requerido
-                    </mat-error>
-                    <mat-error *ngIf="signUpForm.get('correo').hasError('correo')">
-                        Porfavor ingrese un correo valido
-                    </mat-error>
-                </mat-form-field>
-
-
-                <!-- Password field -->
-                <mat-form-field class="w-full">
-                    <mat-label>Contraseña</mat-label>
-                    <input
-                        id="password"
-                        matInput
-                        type="password"
-                        [formControlName]="'password'"
-                        #passwordField>
-                    <button
-                        mat-icon-button
-                        type="button"
-                        (click)="passwordField.type === 'password' ? passwordField.type = 'text' : passwordField.type = 'password'"
-                        matSuffix>
-                        <mat-icon
-                            class="icon-size-5"
-                            *ngIf="passwordField.type === 'password'"
-                            [svgIcon]="'heroicons_solid:eye'"></mat-icon>
-                        <mat-icon
-                            class="icon-size-5"
-                            *ngIf="passwordField.type === 'text'"
-                            [svgIcon]="'heroicons_solid:eye-slash'"></mat-icon>
-                    </button>
-                    <mat-error>
-                        Contraseña requerida
-                    </mat-error>
-                </mat-form-field>
-
-                <mat-form-field class="w-full">
-                    <mat-label>Celular</mat-label>
-                    <input
-                        id="celular"
-                        matInput
-                        [formControlName]="'celular'"
-                        [(ngModel)]="persona.celular">
-                </mat-form-field>
-
-
-                 <!-- DATOS ADICIONALES PAL KEVINNN-->
-                 <!-- DATOS ADICIONALES PAL KEVINNN-->
-                 <!-- DATOS ADICIONALES PAL KEVINNN-->
-                 <!-- DATOS ADICIONALES PAL KEVINNN-->
-                 <!-- DATOS ADICIONALES PAL KEVINNN-->
-                 <!-- DATOS ADICIONALES PAL KEVINNN-->
-                 <!-- DATOS ADICIONALES PAL KEVINNN-->
-                 <!-- DATOS ADICIONALES PAL KEVINNN-->
-                 <!-- DATOS ADICIONALES PAL KEVINNN-->
-                 <!-- DATOS ADICIONALES PAL KEVINNN-->
-                 <!-- DATOS ADICIONALES PAL KEVINNN-->
-                 <!-- DATOS ADICIONALES PAL KEVINNN-->
-                 <!-- DATOS ADICIONALES PAL KEVINNN-->
-                 <!-- DATOS ADICIONALES PAL KEVINNN-->
-                 <!-- DATOS ADICIONALES PAL KEVINNN-->
-                 <!-- DATOS ADICIONALES PAL KEVINNN-->
-                 <!-- DATOS ADICIONALES PAL KEVINNN-->
-                 <!-- DATOS ADICIONALES PAL KEVINNN-->
-
-                 
-
-                 <mat-form-field class="w-full">
-                    <mat-label>Genero</mat-label>
-                    <input
-                        id="genero"
-                        matInput
-                        [formControlName]="'genero'"
-                        [(ngModel)]="persona.genero">
-                </mat-form-field>
-
-
-                
-
-                <mat-form-field class="w-full">
-                    <mat-label>Fecha</mat-label>
-                    <input
-                        id="fecha"
-                        matInput
-                        [formControlName]="'fecha'"
-                        [(ngModel)]="persona.fecha_nacimiento">
-                </mat-form-field>
-
-                <mat-form-field class="w-full">
-                    <mat-label>Nacionalidad</mat-label>
-                    <input
-                        id="nacionalidad"
-                        matInput
-                        [formControlName]="'nacionalidad'"
-                        [(ngModel)]="persona.nacionalidad">
-                </mat-form-field>
-
-
-                 
-
-
-                <!-- Company field -->
-                <mat-form-field class="w-full">
-                    <mat-label>Dirección</mat-label>
-                    <input
-                        id="direccion"
-                        matInput
-                        [formControlName]="'direccion'"
-                        [(ngModel)]="persona.direccion">
-                </mat-form-field>
-
-                <!-- ToS and PP -->
-                <div class="inline-flex items-end w-full mt-1.5">
-                    <mat-checkbox
-                        class="-ml-2"
-                        [color]="'primary'"
-                        [formControlName]="'agreements'">
-                        <span>Acepto</span>
-                        <a
-                            class="ml-1 text-primary-500 hover:underline"
-                            [routerLink]="['./']">Términos
-                        </a>
-                        <span>y</span>
-                        <a
-                            class="ml-1 text-primary-500 hover:underline"
-                            [routerLink]="['./']">Política de privacidad
-                        </a>
-                    </mat-checkbox>
-                </div>
 
                 <!-- Submit button -->
                 <button
@@ -244,15 +48,12 @@
                     [color]="'primary'"
                     [disabled]="signUpForm.disabled"
                     (click)="signUp()">
-                    <span *ngIf="!signUpForm.disabled">
-                        Crear su cuenta gratuitamente
-                    </span>
+                    <span *ngIf="!signUpForm.disabled">Crear su cuenta gratuitamente</span>
                     <mat-progress-spinner
                         *ngIf="signUpForm.disabled"
                         [diameter]="24"
                         [mode]="'indeterminate'"></mat-progress-spinner>
                 </button>
-
             </form>
         </div>
     </div>
