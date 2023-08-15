@@ -100,7 +100,8 @@ export class SignUpComponent implements OnInit
         this.personaService.savePersona(this.persona).subscribe(data => {
             console.log(data);
             this.user.persona=data;
-            this.usuarioService.registrarUsuario(this.user, 4)
+            const rolId = 4; // ID del rol
+            this.usuarioService.registrarUsuario(this.user, rolId)
             .subscribe(
                 (response) => {
                   console.log('Usuario registrado exitosamente:', response);
