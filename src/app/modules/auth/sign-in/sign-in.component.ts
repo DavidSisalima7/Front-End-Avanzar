@@ -44,7 +44,6 @@ export class SingInComponent implements OnInit {
         private _userRol: UsuarioRolService,
         private _formBuilder: UntypedFormBuilder,
         private _router: Router,
-        private loginService: AuthService,
 
     ) {
 

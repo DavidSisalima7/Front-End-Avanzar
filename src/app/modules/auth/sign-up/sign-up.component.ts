@@ -83,12 +83,13 @@ export class SignUpComponent implements OnInit
     // -----------------------------------------------------------------------------------------------------
 
     /**
-     * Sign up
+     * Sign up   
      */
     signUp(): void
     {
 
         this.persona.estado = true;
+        this.persona.descripcion = 'Persona registrada desde el formulario de registro. Bienvenido y gracias por ser parte de Avanzar';
         this.user.enabled=true;
         this.user.visible=true;
         this.user.username=this.signUpForm.get('correo')?.value;
