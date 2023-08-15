@@ -49,11 +49,26 @@
                            Realizar el siguiente formulario
                         </p>
 
+                        
                         <div class="flex flex-col gt-xs:flex-row">
+
+                            <mat-form-field class="flex-auto gt-xs:pl-3">
+                                <input
+                                    matInput
+                                    [formControlName]="'cedula'"
+                                    [placeholder]="'Cedula '"
+                                    required>
+                                <mat-icon
+                                    class="icon-size-5"
+                                    matPrefix
+                                    [svgIcon]="'heroicons_outline:identification'"></mat-icon>
+                            </mat-form-field>
+
+
                             <mat-form-field class="flex-auto gt-xs:pr-3">
                                 <input
                                     matInput
-                                    [formControlName]="'Primer Nombre'"
+                                    [formControlName]="'Primer'"
                                     [placeholder]="'Segundo Nombre'"
                                     required>
                                 <mat-icon
@@ -64,7 +79,7 @@
                             <mat-form-field class="flex-auto gt-xs:pl-3">
                                 <input
                                     matInput
-                                    [formControlName]="'Primer Nombre'"
+                                    [formControlName]="'Segundo'"
                                     [placeholder]="'Segundo Nombre'"
                                     required>
                                 <mat-icon
@@ -78,7 +93,7 @@
                             <mat-form-field class="flex-auto gt-xs:pr-3">
                                 <input
                                     matInput
-                                    [formControlName]="'Primer Apellido'"
+                                    [formControlName]="'PrimerA'"
                                     [placeholder]="' Primer Apellido'"
                                     required>
                                 <mat-icon
@@ -89,7 +104,7 @@
                             <mat-form-field class="flex-auto gt-xs:pl-3">
                                 <input
                                     matInput
-                                    [formControlName]="'Segundo Apellido'"
+                                    [formControlName]="'SegundoA'"
                                     [placeholder]="'Segundo Apellido '"
                                     required>
                                 <mat-icon
@@ -97,6 +112,44 @@
                                     matPrefix
                                     [svgIcon]="'heroicons_outline:user-circle'"></mat-icon>
                             </mat-form-field>
+                            
+                            <mat-form-field class="flex-auto gt-xs:pl-3">
+                                <input
+                                    matInput
+                                    [formControlName]="'celular'"
+                                    [placeholder]="'Celular '"
+                                    required>
+                                <mat-icon
+                                    class="icon-size-5"
+                                    matPrefix
+                                    [svgIcon]="'heroicons_outline:device-phone-mobile'"></mat-icon>
+                            </mat-form-field>
+
+
+                            <mat-form-field class="flex-auto gt-xs:pl-3">
+                                <input
+                                    matInput
+                                    [formControlName]="'fecha'"
+                                    [placeholder]="'Fecha'"
+                                    required>
+                                <mat-icon
+                                    class="icon-size-5"
+                                    matPrefix
+                                    [svgIcon]="'mat_outline:date_range'"></mat-icon>
+                            </mat-form-field>
+
+                            <mat-form-field class="flex-auto gt-xs:pl-3">
+                                <input
+                                    matInput
+                                    [formControlName]="'nacionalidad'"
+                                    [placeholder]="'Nacionalidad'"
+                                    required>
+                                <mat-icon
+                                    class="icon-size-5"
+                                    matPrefix
+                                    [svgIcon]="'mat_outline:account_box'"></mat-icon>
+                            </mat-form-field>
+
                         </div>
                         
                         <div class="flex">
@@ -117,7 +170,7 @@
                             <mat-form-field class="flex-auto">
                                 <input
                                     matInput
-                                    [formControlName]="'language'"
+                                    [formControlName]="'contra'"
                                     [placeholder]="'Contraseña'"
                                     required>
                                 <mat-icon
@@ -149,6 +202,21 @@
                             
                         </div>
                         <div class="flex">
+                            <mat-form-field class="flex-auto">
+                                <textarea
+                                    matInput
+                                    [formControlName]="'descrip'"
+                                    [placeholder]="'Descripcion'"
+                                    [rows]="3"></textarea>
+                                <mat-icon
+                                    class="country"
+                                    matPrefix
+                                    [svgIcon]="'heroicons_outline:bars-3-center-left'"></mat-icon>
+                            </mat-form-field>
+                            
+                        </div>
+                        <div class="flex">
+                            
                             <mat-form-field class="flex-auto">
                                 <textarea
                                     matInput
@@ -208,7 +276,7 @@
                             <mat-form-field class="flex-auto">
                                 <input
                                     matInput
-                                    [formControlName]="'userName'"
+                                    [formControlName]="'contra'"
                                     [placeholder]="'Contraseña'"
                                     required>
                                     <mat-icon
@@ -253,80 +321,6 @@
                             </button>
                         </div>
                     </mat-step>
-
-                    <!-- <mat-step
-                        [formGroupName]="'step3'"
-                        [stepControl]="horizontalStepperForm.get('step3')">
-                        <ng-template matStepLabel>Notifications</ng-template>
-                        <p class="my-6 font-medium">
-                            We'll always let you know about important changes, but you pick what else you want to hear about.
-                        </p>
-                        <div class="flex flex-col gt-sm:flex-row">
-                            <div class="flex flex-col">
-                                <span class="font-medium mb-2">By Email</span>
-                                <div
-                                    class="flex flex-col"
-                                    [formGroupName]="'byEmail'">
-                                    <mat-checkbox
-                                        class="mb-1"
-                                        [color]="'primary'"
-                                        [formControlName]="'companyNews'">
-                                        Company News
-                                    </mat-checkbox>
-                                    <mat-checkbox
-                                        class="mb-1"
-                                        [color]="'primary'"
-                                        [formControlName]="'featuredProducts'">
-                                        Featured Products
-                                    </mat-checkbox>
-                                    <mat-checkbox
-                                        [color]="'primary'"
-                                        [formControlName]="'messages'">
-                                        Messages
-                                    </mat-checkbox>
-                                </div>
-                            </div>
-                            <div class="flex flex-col mt-8 gt-sm:mt-0 gt-sm:ml-16">
-                                <span class="font-medium mb-2">Push Notifications</span>
-                                <mat-radio-group
-                                    class="flex flex-col"
-                                    [color]="'primary'"
-                                    [formControlName]="'pushNotifications'">
-                                    <mat-radio-button
-                                        class="mb-2"
-                                        [value]="'everything'">
-                                        Everything
-                                    </mat-radio-button>
-                                    <mat-radio-button
-                                        class="mb-2"
-                                        [value]="'just-good'">
-                                        Just the good stuff
-                                    </mat-radio-button>
-                                    <mat-radio-button [value]="'no-push'">
-                                        No push notifications
-                                    </mat-radio-button>
-                                </mat-radio-group>
-                            </div>
-                        </div>
-                        <div class="flex justify-end mt-8">
-                            <button
-                                class="px-8 mr-2"
-                                mat-flat-button
-                                [color]="'accent'"
-                                type="button"
-                                matStepperPrevious>
-                                Back
-                            </button>
-                            <button
-                                class="px-8"
-                                mat-flat-button
-                                [color]="'primary'"
-                                type="button"
-                                matStepperNext>
-                                Next
-                            </button>
-                        </div>
-                    </mat-step> -->
 
                     <mat-step>
                         <ng-template matStepLabel>Etapa Numero  3</ng-template>
