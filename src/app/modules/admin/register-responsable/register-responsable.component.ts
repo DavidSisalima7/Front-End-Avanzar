@@ -11,13 +11,15 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatStepperModule } from '@angular/material/stepper';
 import { MatTableModule } from '@angular/material/table';
 import { MatTabsModule } from '@angular/material/tabs';
+import {MatDatepickerModule} from '@angular/material/datepicker';
+
 @Component({
     selector     : 'register-responsable',
     templateUrl  : './register-responsable.component.html',
     encapsulation: ViewEncapsulation.None,
     standalone   : true,
     imports      : [MatIconModule, FormsModule, ReactiveFormsModule, MatStepperModule, MatFormFieldModule, MatInputModule, MatSelectModule, MatOptionModule, 
-        MatButtonModule, MatCheckboxModule, MatRadioModule,MatTableModule,MatTabsModule],
+        MatButtonModule, MatCheckboxModule, MatRadioModule,MatTableModule,MatTabsModule,MatDatepickerModule],
 })
 export class RegisterResponsableComponent implements OnInit
 {
