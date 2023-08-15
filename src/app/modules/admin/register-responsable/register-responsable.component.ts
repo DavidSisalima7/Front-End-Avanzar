@@ -43,14 +43,25 @@ export class RegisterResponsableComponent implements OnInit
         // Horizontal stepper form
         this.horizontalStepperForm = this._formBuilder.group({
             step1: this._formBuilder.group({
+                Primer : ['', Validators.required],
+                Segundo : ['', Validators.required],
+                PrimerA : ['', Validators.required],
+                SegundoA : ['', Validators.required],
                 email   : ['', [Validators.required, Validators.email]],
                 country : ['', Validators.required],
-                language: ['', Validators.required],
+                contra: ['', Validators.required],
+                cedula : ['', Validators.required],
+                celular: ['', Validators.required],
+                fecha: ['', Validators.required],
+                nacionalidad: ['', Validators.required],
+                descrip: ['', Validators.required],
+                Direccion: ['', Validators.required],
             }),
             step2: this._formBuilder.group({
                 firstName: ['', Validators.required],
                 lastName : ['', Validators.required],
                 userName : ['', Validators.required],
+                contra : ['', Validators.required],
                 about    : [''],
             }),
             step3: this._formBuilder.group({
@@ -66,14 +77,25 @@ export class RegisterResponsableComponent implements OnInit
         // Vertical stepper form
         this.verticalStepperForm = this._formBuilder.group({
             step1: this._formBuilder.group({
+                Primer : ['', Validators.required],
+                Segundo : ['', Validators.required],
+                PrimerA : ['', Validators.required],
+                SegundoA : ['', Validators.required],
                 email   : ['', [Validators.required, Validators.email]],
                 country : ['', Validators.required],
-                language: ['', Validators.required],
+                contra: ['', Validators.required],
+                cedula : ['', Validators.required],
+                celular: ['', Validators.required],
+                fecha: ['', Validators.required],
+                nacionalidad: ['', Validators.required],
+                descrip: ['', Validators.required],
+                Direccion: ['', Validators.required],
             }),
             step2: this._formBuilder.group({
                 firstName: ['', Validators.required],
                 lastName : ['', Validators.required],
                 userName : ['', Validators.required],
+                contra : ['', Validators.required],
                 about    : [''],
             }),
             step3: this._formBuilder.group({
