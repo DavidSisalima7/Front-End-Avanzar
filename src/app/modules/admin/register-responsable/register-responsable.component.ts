@@ -12,6 +12,9 @@ import { MatStepperModule } from '@angular/material/stepper';
 import { MatTableModule } from '@angular/material/table';
 import { MatTabsModule } from '@angular/material/tabs';
 import {MatDatepickerModule} from '@angular/material/datepicker';
+import { PersonaService } from 'app/services/services/persona.service';
+import { UserService } from 'app/core/user/user.service';
+import { Persona } from 'app/services/models/persona';
 
 @Component({
     selector     : 'register-responsable',
@@ -25,11 +28,13 @@ export class RegisterResponsableComponent implements OnInit
 {
     horizontalStepperForm: UntypedFormGroup;
     verticalStepperForm: UntypedFormGroup;
-
+    persona: Persona = new Persona();
     /**
      * Constructor
      */
-    constructor(private _formBuilder: UntypedFormBuilder)
+    constructor(private _formBuilder: UntypedFormBuilder, 
+                private personaService: PersonaService, 
+                private usuarioService: UserService)
     {
     }
 
@@ -85,7 +90,6 @@ export class RegisterResponsableComponent implements OnInit
                 SegundoA : ['', Validators.required],
                 email   : ['', [Validators.required, Validators.email]],
                 country : ['', Validators.required],
-                contra: ['', Validators.required],
                 cedula : ['', Validators.required],
                 celular: ['', Validators.required],
                 fecha: ['', Validators.required],
@@ -109,5 +113,20 @@ export class RegisterResponsableComponent implements OnInit
                 pushNotifications: ['everything', Validators.required],
             }),
         });
+
+    }
+
+
+    createPersona(){
+        this.persona.estado = true;
+        this.persona.descripcion = "Responsable de la empresa";
+        this.personaService.savePersona(this.persona).subscribe(
+            response => {
+                console.log(response);
+            },
+            error => {
+                console.log(error);
+            }
+        );
     }
 }

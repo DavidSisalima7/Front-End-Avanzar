@@ -53,32 +53,35 @@
                         <div class="flex flex-col gt-xs:flex-row">
 
                             <mat-form-field class="flex-auto gt-xs:pl-3">
-                                <input
-                                    matInput
-                                    [formControlName]="'cedula'"
-                                    [placeholder]="'Cedula '"
-                                    required>
-                                <mat-icon
-                                    class="icon-size-5"
-                                    matPrefix
-                                    [svgIcon]="'heroicons_outline:identification'"></mat-icon>
-                            </mat-form-field>
+                                <input 
+                                id="cedula" 
+                                matInput
+                                [(ngModel)]="persona.cedula"
+                                formControlName="cedula" placeholder="Cedula" required>
+                        
+                                <mat-icon class="icon-size-5" matPrefix [svgIcon]="'heroicons_outline:identification'"></mat-icon>
+                              </mat-form-field>
 
 
                             <mat-form-field class="flex-auto gt-xs:pr-3">
                                 <input
+                                    id="primerNombre"
                                     matInput
+                                    [(ngModel)]="persona.primer_nombre"
                                     [formControlName]="'Primer'"
-                                    [placeholder]="'Segundo Nombre'"
+                                    [placeholder]="'Primer Nombre'"
                                     required>
                                 <mat-icon
                                     class="icon-size-5"
                                     matPrefix
                                     [svgIcon]="'heroicons_outline:user-circle'"></mat-icon>
                             </mat-form-field>
+
                             <mat-form-field class="flex-auto gt-xs:pl-3">
                                 <input
+                                    id="segundoNombre"
                                     matInput
+                                    [(ngModel)]="persona.segundo_nombre"
                                     [formControlName]="'Segundo'"
                                     [placeholder]="'Segundo Nombre'"
                                     required>
@@ -93,6 +96,7 @@
                             <mat-form-field class="flex-auto gt-xs:pr-3">
                                 <input
                                     matInput
+                                    [(ngModel)]="persona.primer_apellido"
                                     [formControlName]="'PrimerA'"
                                     [placeholder]="' Primer Apellido'"
                                     required>
@@ -104,6 +108,7 @@
                             <mat-form-field class="flex-auto gt-xs:pl-3">
                                 <input
                                     matInput
+                                    [(ngModel)]="persona.segundo_apellido"
                                     [formControlName]="'SegundoA'"
                                     [placeholder]="'Segundo Apellido '"
                                     required>
@@ -259,13 +264,14 @@
                         <div class="flex justify-end">
                             <button
                                 class="px-8"
+                                (click)="createPersona()"
                                 mat-flat-button
                                 [color]="'primary'"
                                 [disabled]="horizontalStepperStep1.stepControl.pristine || horizontalStepperStep1.stepControl.invalid"
                                 type="button"
                                 matStepperNext>
                                 Next
-                            </button>
+                            </button> 
                         </div>
                     </mat-step>
 
