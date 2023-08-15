@@ -39,6 +39,7 @@ export class SignUpComponent implements OnInit
 
     persona: Persona = new Persona();
     user: User=new User();
+    selectedFile: File | null = null;
 
     /**
      * Constructor
@@ -85,23 +86,21 @@ export class SignUpComponent implements OnInit
     /**
      * Sign up
      */
-    signUp(): void
-    {
-
+    signUp(): void {
         this.persona.estado = true;
-        this.user.enabled=true;
-        this.user.visible=true;
-        this.user.username=this.signUpForm.get('correo')?.value;
-        this.user.password=this.signUpForm.get('password')?.value;
+        this.user.enabled = true;
+        this.user.visible = true;
+        this.user.username = this.signUpForm.get('correo')?.value;
+        this.user.password = this.signUpForm.get('password')?.value;
         const primerNombre = this.signUpForm.get('primernombre')?.value;
         const primerApellido = this.signUpForm.get('primerapellido')?.value;
-        this.user.name=primerNombre + ' ' + primerApellido;
+        this.user.name = primerNombre + ' ' + primerApellido;
     
         this.personaService.savePersona(this.persona).subscribe(data => {
-            console.log(data);
-            this.user.persona=data;
-            const rolId = 4; // ID del rol
-            this.usuarioService.registrarUsuario(this.user, rolId)
+          console.log(data);
+          this.user.persona = data;
+          const rolId = 4; // ID del rol
+          this.usuarioService.registrarUsuarioConFoto(this.user, rolId, this.selectedFile)
             .subscribe(
                 (response) => {
                   console.log('Usuario registrado exitosamente:', response);
@@ -117,6 +116,21 @@ export class SignUpComponent implements OnInit
 
         })
 
+    }
+
+    upload(event:any){
+        const file=event.target.files[0];
+        this.selectedFile=file;
+        /* if (file) {
+            const formData=new FormData();
+            formData.append('file',file);
+
+            this.usuarioService.uploadFile(formData)
+            .subscribe(response=>{
+                console.log('response',response);
+                
+            })
+        } */
     }
 
 

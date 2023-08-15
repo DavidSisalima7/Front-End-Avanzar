@@ -162,6 +162,17 @@
                         [(ngModel)]="persona.direccion">
                 </mat-form-field>
 
+               
+                    <mat-label>Foto</mat-label>
+                    <input
+                        id="image"
+                        type="file"
+                        accept="image/*"
+                        class="form-control"
+                        (change)="upload($event)">
+             
+
+
                 <!-- ToS and PP -->
                 <div class="inline-flex items-end w-full mt-1.5">
                     <mat-checkbox
