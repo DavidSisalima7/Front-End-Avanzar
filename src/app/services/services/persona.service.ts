@@ -2,9 +2,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, throwError } from 'rxjs';
-import { catchError } from 'rxjs/operators';
 import { Persona } from '../models/persona';
-import { Usuario } from '../models/usuario';
 
 @Injectable({
   providedIn: 'root'
@@ -17,8 +15,5 @@ export class PersonaService {
   savePersona(persona: Persona): Observable<Persona>{
     return this.http.post<Persona>(this.url+'/registrar',persona);
   }
-
-
-
 
 }

@@ -80,7 +80,6 @@ export const appRoutes: Route[] = [
             {path: 'example', loadChildren: () => import('app/modules/admin/example/example.routes')},
             {path: 'config-admin', loadChildren: () => import('app/modules/admin/settings/settings.routes')},
 
-
         ]
     },
 
