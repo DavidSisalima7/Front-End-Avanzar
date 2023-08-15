@@ -51,7 +51,6 @@ export class RegisterResponsableComponent implements OnInit
                 SegundoA : ['', Validators.required],
                 email   : ['', [Validators.required, Validators.email]],
                 country : ['', Validators.required],
-                contra: ['', Validators.required],
                 cedula : ['', Validators.required],
                 celular: ['', Validators.required],
                 fecha: ['', Validators.required],
@@ -72,7 +71,7 @@ export class RegisterResponsableComponent implements OnInit
                     featuredProducts: [false],
                     messages        : [true],
                 }),
-                pushNotifications: ['everything', Validators.required],
+
             }),
         });
 
@@ -85,7 +84,6 @@ export class RegisterResponsableComponent implements OnInit
                 SegundoA : ['', Validators.required],
                 email   : ['', [Validators.required, Validators.email]],
                 country : ['', Validators.required],
-                contra: ['', Validators.required],
                 cedula : ['', Validators.required],
                 celular: ['', Validators.required],
                 fecha: ['', Validators.required],
@@ -106,7 +104,7 @@ export class RegisterResponsableComponent implements OnInit
                     featuredProducts: [false],
                     messages        : [true],
                 }),
-                pushNotifications: ['everything', Validators.required],
+
             }),
         });
     }

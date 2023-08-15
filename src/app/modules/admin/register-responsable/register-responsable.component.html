@@ -194,19 +194,7 @@
                             </mat-form-field>
                         </div>
                         <div class="flex flex-col gt-xs:flex-row">
-                            <mat-form-field class="flex-auto">
-                                <input
-                                    matInput
-                                    [formControlName]="'contra'"
-                                    [placeholder]="'Contraseña'"
-                                    required>
-                                <mat-icon
-                                    class="icon-size-5"
-                                    matPrefix
-                                    [svgIcon]="'password'"></mat-icon>
-
-
-                            </mat-form-field>
+                            
                             <mat-form-field class="flex-auto gt-xs:pr-3">
                                 <mat-select
                                     [formControlName]="'country'"
@@ -266,6 +254,8 @@
                                 matStepperNext>
                                 Next
                             </button>
+
+                            
                         </div>
                     </mat-step>
 
@@ -346,10 +336,20 @@
                                 matStepperNext>
                                 Next
                             </button>
+
+                            <button
+                                class="px-8"
+                                mat-flat-button
+                                [color]="'primary'"
+                                type="reset"
+                                (click)="horizontalStepper.reset();">
+                                Finalizar
+                            </button>
                         </div>
                     </mat-step>
 
-                    <mat-step>
+                    <mat-step
+                        >
                         <ng-template matStepLabel>Etapa Numero  3</ng-template>
                         <p class="my-6 font-medium" style="text-align: center; font-size: 20px;">
                             <strong>Operacion Finalizada Exitosamente.</strong>
