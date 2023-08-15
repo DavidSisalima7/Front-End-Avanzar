@@ -1,11 +1,11 @@
+import { ProductosService } from 'app/services/services/producto.service';
 import { Component, ViewChild, ViewEncapsulation } from '@angular/core';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
 import { MatSort, MatSortModule } from '@angular/material/sort';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
-import { Productos_R } from 'app/services/models/productosR';
-import { ProductosService } from 'app/services/services/productos.service';
+import { Productos } from 'app/services/models/productos';
 
 @Component({
     selector     : 'list-emprendedoras',
@@ -16,7 +16,7 @@ import { ProductosService } from 'app/services/services/productos.service';
 })
 export class ListEmprendedorasResponsableComponent
 {
-    service: Productos_R[];
+    service: Productos[];
     displayedColumns: string[] = ['idProducto', 'nombreProducto', 'precioProducto','cantidaDisponible', 'estado'];
     dataSource: MatTableDataSource<ProductoData>;
 
@@ -32,7 +32,7 @@ export class ListEmprendedorasResponsableComponent
         this.listarProductos();
     }
     listarProductos() {
-        this.productoService.getProductos().subscribe((datos: Productos_R[]) => {
+        this.productoService.listarProducto().subscribe((datos: Productos[]) => {
           this.service = datos.map(producto => ({
             idProducto: producto.idProducto,
             nombreProducto: producto.nombreProducto.toString(),
@@ -42,7 +42,7 @@ export class ListEmprendedorasResponsableComponent
             
           }));
       
-          this.dataSource = new MatTableDataSource<Productos_R>(this.service);
+          this.dataSource = new MatTableDataSource<Productos>(this.service);
           this.dataSource.paginator = this.paginator;
           this.dataSource.sort = this.sort;
         });
