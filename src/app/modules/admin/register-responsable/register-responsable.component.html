@@ -126,29 +126,56 @@
                             </mat-form-field>
 
 
-                            <mat-form-field class="flex-auto gt-xs:pl-3">
-                                <input
-                                    matInput
+                            
+
+                            <mat-form-field>
+                                <input matInput 
+                                matInput
                                     [formControlName]="'fecha'"
                                     [placeholder]="'Fecha'"
-                                    required>
+                                    required
+                                [matDatepicker]="picker">
+
+                                <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+                                <mat-datepicker #picker></mat-datepicker>
                                 <mat-icon
                                     class="icon-size-5"
                                     matPrefix
                                     [svgIcon]="'mat_outline:date_range'"></mat-icon>
-                            </mat-form-field>
+                              </mat-form-field>
+                            
 
-                            <mat-form-field class="flex-auto gt-xs:pl-3">
-                                <input
-                                    matInput
+                            
+
+                            
+
+                            <mat-form-field class="flex-auto gt-xs:pr-3">
+                                <mat-select
                                     [formControlName]="'nacionalidad'"
                                     [placeholder]="'Nacionalidad'"
-                                    required>
+                                    required
+                                    >
+                                    <mat-option value="es">España</mat-option>
+    <mat-option value="us">Estados Unidos de América</mat-option>
+    <mat-option value="mx">México</mat-option>
+    <mat-option value="ar">Argentina</mat-option>
+    <mat-option value="ca">Canadá</mat-option>
+    <mat-option value="fr">Francia</mat-option>
+    <mat-option value="de">Alemania</mat-option>
+    <mat-option value="au">Australia</mat-option>
+    <mat-option value="br">Brasil</mat-option>
+    <mat-option value="ch">Suiza</mat-option>
+    <mat-option value="it">Italia</mat-option>
+                                </mat-select>
+
+
                                 <mat-icon
                                     class="icon-size-5"
                                     matPrefix
                                     [svgIcon]="'mat_outline:account_box'"></mat-icon>
                             </mat-form-field>
+
+                            
 
                         </div>
                         
