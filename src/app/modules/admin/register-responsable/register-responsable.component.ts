@@ -1,5 +1,5 @@
 import { Component, OnInit, ViewEncapsulation } from '@angular/core';
-import { FormsModule, ReactiveFormsModule, UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
+import { FormGroup, FormsModule, ReactiveFormsModule, UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatOptionModule } from '@angular/material/core';
@@ -26,8 +26,7 @@ import { Persona } from 'app/services/models/persona';
 })
 export class RegisterResponsableComponent implements OnInit
 {
-    horizontalStepperForm: UntypedFormGroup;
-    verticalStepperForm: UntypedFormGroup;
+    horizontalStepperForm: FormGroup;
     persona: Persona = new Persona();
     /**
      * Constructor
@@ -36,6 +35,8 @@ export class RegisterResponsableComponent implements OnInit
                 private personaService: PersonaService, 
                 private usuarioService: UserService)
     {
+
+
     }
 
     // -----------------------------------------------------------------------------------------------------
@@ -47,72 +48,23 @@ export class RegisterResponsableComponent implements OnInit
      */
     ngOnInit(): void
     {
+
         // Horizontal stepper form
         this.horizontalStepperForm = this._formBuilder.group({
             step1: this._formBuilder.group({
-                Primer : ['', Validators.required],
-                Segundo : ['', Validators.required],
-                PrimerA : ['', Validators.required],
-                SegundoA : ['', Validators.required],
-                email   : ['', [Validators.required, Validators.email]],
-                country : ['', Validators.required],
                 cedula : ['', Validators.required],
-                celular: ['', Validators.required],
-                fecha: ['', Validators.required],
-                nacionalidad: ['', Validators.required],
-                descrip: ['', Validators.required],
-                Direccion: ['', Validators.required],
+                primerNombre : ['', Validators.required],
+                genero : ['', Validators.required],              
+
+
             }),
             step2: this._formBuilder.group({
                 firstName: ['', Validators.required],
                 lastName : ['', Validators.required],
                 userName : ['', Validators.required],
-                contra : ['', Validators.required],
                 about    : [''],
             }),
-            step3: this._formBuilder.group({
-                byEmail          : this._formBuilder.group({
-                    companyNews     : [true],
-                    featuredProducts: [false],
-                    messages        : [true],
-                }),
-
-            }),
         });
-
-        // Vertical stepper form
-        this.verticalStepperForm = this._formBuilder.group({
-            step1: this._formBuilder.group({
-                Primer : ['', Validators.required],
-                Segundo : ['', Validators.required],
-                PrimerA : ['', Validators.required],
-                SegundoA : ['', Validators.required],
-                email   : ['', [Validators.required, Validators.email]],
-                country : ['', Validators.required],
-                cedula : ['', Validators.required],
-                celular: ['', Validators.required],
-                fecha: ['', Validators.required],
-                nacionalidad: ['', Validators.required],
-                descrip: ['', Validators.required],
-                Direccion: ['', Validators.required],
-            }),
-            step2: this._formBuilder.group({
-                firstName: ['', Validators.required],
-                lastName : ['', Validators.required],
-                userName : ['', Validators.required],
-                contra : ['', Validators.required],
-                about    : [''],
-            }),
-            step3: this._formBuilder.group({
-                byEmail          : this._formBuilder.group({
-                    companyNews     : [true],
-                    featuredProducts: [false],
-                    messages        : [true],
-                }),
-
-            }),
-        });
-
     }
 
 
@@ -127,5 +79,32 @@ export class RegisterResponsableComponent implements OnInit
                 console.log(error);
             }
         );
+    }
+
+    registrarPersona(): void {
+        // Obtén los valores de los FormControls del FormGroup
+        const cedula = this.horizontalStepperForm.get('step1.cedula')?.value;
+        const primerNombre = this.horizontalStepperForm.get('step1.primerNombre')?.value;
+        const genero = this.horizontalStepperForm.get('step1.genero')?.value;
+        // ... otros campos ...
+    
+        // Ahora puedes usar los valores en tu lógica
+        // Por ejemplo, configura los valores en el objeto persona
+        this.persona.cedula = cedula;
+        this.persona.primer_nombre = primerNombre;
+        this.persona.genero = genero;
+        // ... otros campos ...
+    
+        // Luego, realiza la llamada al servicio para guardar la persona y el usuario
+        // ... código para guardar persona y usuario ...
+        this.personaService.savePersona(this.persona).subscribe(
+            (response) => {
+                // Si la respuesta es correcta, muestra un mensaje de éxito
+                console.log(response);
+            },
+        );
+    
+        // Restablece el formulario después de guardar los datos
+        this.horizontalStepperForm.reset();
     }
 }
