@@ -198,6 +198,14 @@ export class ClassyLayoutComponent implements OnInit, OnDestroy
                                 type : 'basic',
                                 icon : 'heroicons_outline:user-circle',
                                 link : '/profile-admin'
+                            },
+
+                            {
+                                id   : 'settings',
+                                title: 'Cofiguración',
+                                type : 'basic',
+                                icon : 'heroicons_outline:cog-6-tooth',
+                                link : '/config-admin'
                             }
                         ]
                     }
