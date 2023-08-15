@@ -16,6 +16,7 @@ import { User } from 'app/core/user/user.types';
 import { Persona } from 'app/services/models/persona';
 import { Usuario } from 'app/services/models/usuario';
 import { PersonaService } from 'app/services/services/persona.service';
+import { MatOptionModule } from '@angular/material/core';
 
 @Component({
     selector     : 'auth-sign-up',
@@ -23,7 +24,7 @@ import { PersonaService } from 'app/services/services/persona.service';
     encapsulation: ViewEncapsulation.None,
     animations   : fuseAnimations,
     standalone   : true,
-    imports      : [RouterLink, NgIf, FuseAlertComponent, FormsModule, ReactiveFormsModule, MatFormFieldModule, MatInputModule, MatButtonModule, MatIconModule, MatCheckboxModule, MatProgressSpinnerModule],
+    imports      : [MatOptionModule,RouterLink, NgIf, FuseAlertComponent, FormsModule, ReactiveFormsModule, MatFormFieldModule, MatInputModule, MatButtonModule, MatIconModule, MatCheckboxModule, MatProgressSpinnerModule],
 })
 export class SignUpComponent implements OnInit
 {
@@ -73,6 +74,9 @@ export class SignUpComponent implements OnInit
                 password  : ['', Validators.required],
                 direccion  : ['', Validators.required],
                 celular   : ['', Validators.required],
+                genero  : ['', Validators.required],
+                fecha  : ['', Validators.required],
+                nacionalidad   : ['', Validators.required],
                 agreements: ['', Validators.requiredTrue],
             },
         );
