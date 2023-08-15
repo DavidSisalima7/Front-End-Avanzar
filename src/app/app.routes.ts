@@ -78,7 +78,6 @@ export const appRoutes: Route[] = [
             {path: 'profile-admin', loadChildren: () => import('app/modules/admin/profile/profile.routes')},
             {path: 'register-responsable', loadChildren: () => import('app/modules/admin/register-responsable/register-responsable.routes')},
             {path: 'example', loadChildren: () => import('app/modules/admin/example/example.routes')},
-            {path: 'lista', loadChildren: () => import('app/modules/admin/lista-responsable/lista-responsable.routes')},
 
         ]
     },

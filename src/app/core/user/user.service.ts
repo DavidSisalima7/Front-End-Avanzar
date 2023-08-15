@@ -1,7 +1,8 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { User } from 'app/core/user/user.types';
-import { map, Observable, ReplaySubject, tap } from 'rxjs';
+import { Usuario } from 'app/services/models/usuario';
+import { catchError, map, Observable, ReplaySubject, tap, throwError } from 'rxjs';
 
 @Injectable({providedIn: 'root'})
 export class UserService
@@ -73,4 +74,18 @@ export class UserService
     const url = `${this.url}/registrar/${rolId}`;
     return this._httpClient.post<User>(url, usuario);
     }
+
+    obtenerListaResponsable(): Observable<Usuario[]> {
+        const url = `${this.url}/listarResponsables`;
+        return this._httpClient.get<Usuario[]>(url)
+          .pipe(
+            catchError(this.handleError)
+          );
+      }
+    
+      private handleError(error: any) {
+        console.error('Ocurrió un error:', error);
+        return throwError('Error en el servicio. Por favor, inténtalo de nuevo más tarde.');
+      }
+
 }
