@@ -1,3 +1,4 @@
+import { SocialAuthService, SocialLoginModule } from '@abacritt/angularx-social-login';
 import { NgIf } from '@angular/common';
 import { Component, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
 import { FormsModule, NgForm, ReactiveFormsModule, UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
@@ -19,7 +20,7 @@ import { UsuarioRolService } from 'app/services/services/usuarioRol.service';
     encapsulation: ViewEncapsulation.None,
     animations: fuseAnimations,
     standalone: true,
-    imports: [RouterLink, FuseAlertComponent, NgIf, FormsModule, ReactiveFormsModule, MatFormFieldModule, MatInputModule, MatButtonModule, MatIconModule, MatCheckboxModule, MatProgressSpinnerModule],
+    imports: [RouterLink, FuseAlertComponent, NgIf, FormsModule, ReactiveFormsModule, MatFormFieldModule, MatInputModule, MatButtonModule, MatIconModule, MatCheckboxModule, MatProgressSpinnerModule,SocialLoginModule],
 })
 
 export class SingInComponent implements OnInit {
@@ -44,7 +45,7 @@ export class SingInComponent implements OnInit {
         private _userRol: UsuarioRolService,
         private _formBuilder: UntypedFormBuilder,
         private _router: Router,
-        private loginService: AuthService,
+        private loginService: AuthService
 
     ) {
 
@@ -54,8 +55,8 @@ export class SingInComponent implements OnInit {
 
          // Create the form
          this.signInForm = this._formBuilder.group({
-            username     : ['soraya@gmail.com', [Validators.required,Validators.email]],
-            password  : ['1234', Validators.required],
+            username     : ['', [Validators.required,Validators.email]],
+            password  : ['', Validators.required],
             rememberMe: ''
         }); 
 
@@ -102,7 +103,7 @@ export class SingInComponent implements OnInit {
               // Set the alert
               this.alert = {
                   type: 'error',
-                  message: 'Wrong email or password',
+                  message: 'Correo electrónico o contraseña incorrectos',
               };
   
               // Show the alert

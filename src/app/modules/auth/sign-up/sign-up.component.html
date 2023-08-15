@@ -1,6 +1,6 @@
 <div class="flex flex-col sm:flex-row items-center md:items-start sm:justify-center md:justify-start flex-auto min-w-0">
     <div class="md:flex md:items-center md:justify-end w-full sm:w-auto md:h-full md:w-1/2 py-8 px-4 sm:p-12 md:p-16 sm:rounded-2xl md:rounded-none sm:shadow md:shadow-none sm:bg-card">
-        <div class="w-full max-w-80 sm:w-80 mx-auto sm:mx-0">
+        <div class="w-full max-w-120 sm:w-120 mx-auto sm:mx-0">
             <!-- Logo -->
             <div class="w-28">
                 <img src="assets/images/logo/avanzar.png">
@@ -35,29 +35,27 @@
 
                 <!-- Name field -->
             
-                <mat-form-field class="w-full">
-                    <mat-label>Cédula</mat-label>
-                    <input
-                        id="cedula"
-                        matInput
-                        [formControlName]="'cedula'"
-                        [(ngModel)]="persona.cedula">
-                    <mat-error *ngIf="signUpForm.get('cedula').hasError('required')">
-                        Este campo es requerido
-                    </mat-error>
-                </mat-form-field>
-
-                <mat-form-field class="w-full">
-                    <mat-label>Primer Nombre</mat-label>
-                    <input
-                        id="primernombre"
-                        matInput
-                        [formControlName]="'primernombre'"
-                        [(ngModel)]="persona.primer_nombre">
-                    <mat-error *ngIf="signUpForm.get('primernombre').hasError('required')">
-                        Este campo es requerido
-                    </mat-error>
-                </mat-form-field>
+                <div class="grid grid-cols-2 gap-6">
+                    <mat-form-field class="col-span-1">
+                        <mat-label>Cédula</mat-label>
+                        <input
+                            id="cedula"
+                            matInput
+                            [formControlName]="'cedula'"
+                            [(ngModel)]="persona.cedula">
+                        <mat-error *ngIf="signUpForm.get('cedula').hasError('required')">Este campo es requerido</mat-error>
+                    </mat-form-field>
+    
+                    <mat-form-field class="col-span-1">
+                        <mat-label>Primer Nombre</mat-label>
+                        <input
+                            id="primernombre"
+                            matInput
+                            [formControlName]="'primernombre'"
+                            [(ngModel)]="persona.primer_nombre">
+                        <mat-error *ngIf="signUpForm.get('primernombre').hasError('required')">Este campo es requerido</mat-error>
+                    </mat-form-field>
+    
 
 
                 <mat-form-field class="w-full">
@@ -98,6 +96,17 @@
                     </mat-error>
                 </mat-form-field>
 
+                <mat-form-field class="w-full">
+                    <mat-label>Celular</mat-label>
+                    <input
+                        id="celular"
+                        matInput
+                        [formControlName]="'celular'"
+                        [(ngModel)]="persona.celular">
+                        <mat-error *ngIf="signUpForm.get('celular').hasError('required')">
+                            Este campo es requerido
+                        </mat-error>
+                </mat-form-field>
                 <!-- Email field -->
                 <mat-form-field class="w-full">
                     <mat-label>Correo Electrónico</mat-label>
@@ -143,14 +152,7 @@
                     </mat-error>
                 </mat-form-field>
 
-                <mat-form-field class="w-full">
-                    <mat-label>Celular</mat-label>
-                    <input
-                        id="celular"
-                        matInput
-                        [formControlName]="'celular'"
-                        [(ngModel)]="persona.celular">
-                </mat-form-field>
+               
 
                 <!-- Company field -->
                 <mat-form-field class="w-full">
@@ -160,9 +162,57 @@
                         matInput
                         [formControlName]="'direccion'"
                         [(ngModel)]="persona.direccion">
+                        <mat-error *ngIf="signUpForm.get('direccion').hasError('required')">
+                            Este campo es requerido
+                        </mat-error>
                 </mat-form-field>
 
                
+                    <mat-form-field class="w-full" >
+                        <mat-label>Fecha de Nacimiento</mat-label>
+                        <input
+                          id="fecha_nacimiento"
+                            matInput
+                            [formControlName]="'fecha_nacimiento'"
+                            [matDatepicker]="picker1"
+                            [(ngModel)]="persona.fecha_nacimiento">
+                            <mat-error *ngIf="signUpForm.get('fecha_nacimiento').hasError('required')">
+                                Este campo es requerido
+                            </mat-error>
+                        <mat-datepicker-toggle
+                            matSuffix
+                            [for]="picker1"></mat-datepicker-toggle>
+                        <mat-datepicker #picker1></mat-datepicker>
+                    </mat-form-field>
+
+                    
+                    <mat-form-field
+                    class="flex-auto gt-xs:pr-3">
+                    <mat-label>Genero</mat-label>
+                    <select
+                        id="genero"
+                        matNativeControl
+                        matInput
+                        [placeholder]="'Genero'"
+                        [(ngModel)]="persona.genero"
+                        (ngModelChange)="persona.genero = $event">
+                        <mat-error *ngIf="signUpForm.get('genero').hasError('required')">
+                            Este campo es requerido
+                        </mat-error>
+                        <option value=""></option>
+                        <option value="Masculino">Masculino</option>
+                        <option value="Femenino">Femenino</option>
+                        <option value="Otro">Otro</option>
+                    </select>
+                    <mat-icon
+                        class="icon-size-5"
+                        matPrefix
+                        [svgIcon]="'heroicons_solid:map-pin'"></mat-icon>
+                </mat-form-field>
+
+                </div>
+
+        
                     <mat-label>Foto</mat-label>
                     <input
                         id="image"
@@ -207,7 +257,7 @@
                         [diameter]="24"
                         [mode]="'indeterminate'"></mat-progress-spinner>
                 </button>
-
+            
             </form>
         </div>
     </div>

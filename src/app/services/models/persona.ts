@@ -10,6 +10,10 @@ export class Persona {
     direccion: string='';
     celular: string='';
     estado: boolean;
+    genero:string='';
+    fecha_nacimiento:string='';
+    nacionalidad:string='';
+    descripcion:string='';
 
 
 }

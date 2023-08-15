@@ -3,6 +3,7 @@ import { Component, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
 import { FormsModule, NgForm, ReactiveFormsModule, UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCheckboxModule } from '@angular/material/checkbox';
+import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
@@ -23,7 +24,7 @@ import { PersonaService } from 'app/services/services/persona.service';
     encapsulation: ViewEncapsulation.None,
     animations   : fuseAnimations,
     standalone   : true,
-    imports      : [RouterLink, NgIf, FuseAlertComponent, FormsModule, ReactiveFormsModule, MatFormFieldModule, MatInputModule, MatButtonModule, MatIconModule, MatCheckboxModule, MatProgressSpinnerModule],
+    imports      : [RouterLink, NgIf, FuseAlertComponent, FormsModule, ReactiveFormsModule, MatFormFieldModule, MatInputModule, MatButtonModule, MatIconModule, MatCheckboxModule, MatProgressSpinnerModule, MatDatepickerModule],
 })
 export class SignUpComponent implements OnInit
 {
@@ -40,6 +41,9 @@ export class SignUpComponent implements OnInit
     persona: Persona = new Persona();
     user: User=new User();
     selectedFile: File | null = null;
+    //Variable para el combo Box de genero que almacena el resultado
+    public generoSeleccionado:string;
+
 
     /**
      * Constructor
@@ -74,6 +78,8 @@ export class SignUpComponent implements OnInit
                 password  : ['', Validators.required],
                 direccion  : ['', Validators.required],
                 celular   : ['', Validators.required],
+                fecha_nacimiento :['',Validators.required],
+                genero:['',Validators.required],
                 agreements: ['', Validators.requiredTrue],
             },
         );
@@ -88,12 +94,14 @@ export class SignUpComponent implements OnInit
      */
     signUp(): void {
         this.persona.estado = true;
+        this.persona.nacionalidad="Ecuador"
         this.user.enabled = true;
         this.user.visible = true;
         this.user.username = this.signUpForm.get('correo')?.value;
         this.user.password = this.signUpForm.get('password')?.value;
         const primerNombre = this.signUpForm.get('primernombre')?.value;
         const primerApellido = this.signUpForm.get('primerapellido')?.value;
+        this.persona.descripcion="Hola mi nombre es "+primerNombre+' '+primerApellido+" encantado de concerte. ♥";
         this.user.name = primerNombre + ' ' + primerApellido;
     
         this.personaService.savePersona(this.persona).subscribe(data => {
@@ -103,12 +111,19 @@ export class SignUpComponent implements OnInit
           this.usuarioService.registrarUsuarioConFoto(this.user, rolId, this.selectedFile)
             .subscribe(
                 (response) => {
-                  console.log('Usuario registrado exitosamente:', response);
-                  // Realizar acciones adicionales después del registro exitoso si es necesario.
+                    console.log(response);
+                    this.alert = {
+                        type   : 'success',
+                        message: 'Su registro se a realizado correctamente',
+                    };
+                    this.showAlert = true;
                 },
                 (error) => {
-                  console.error('Error al registrar el usuario:', error);
-                  // Manejo de errores si es necesario.
+                    this.alert = {
+                        type   : 'error',
+                        message: 'Ha ocurrido un error al crear el usuario',
+                    };
+                    this.showAlert = true;
                 }
               );
             
@@ -116,7 +131,8 @@ export class SignUpComponent implements OnInit
 
         })
 
-    }
+    } 
+
 
     upload(event:any){
         const file=event.target.files[0];
