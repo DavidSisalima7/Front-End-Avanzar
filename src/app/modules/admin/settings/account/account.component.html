@@ -136,7 +136,8 @@
                     <mat-label>Sobre mi</mat-label>
                     <textarea
                         matInput
-                        [formControlName]="'about'"
+                        [formControlName]="'descripcion'"
+                        matInput
                         cdkTextareaAutosize
                         [cdkAutosizeMinRows]="5"></textarea>
                 </mat-form-field>
@@ -190,7 +191,7 @@
                         [svgIcon]="'heroicons_solid:map-pin'"
                         matPrefix
                     ></mat-icon>
-                    <mat-select [formControlName]="'country'">
+                    <mat-select [formControlName]="'nacionalidad'" matInput>
                         <mat-option [value]="'usa'">United States</mat-option>
                         <mat-option [value]="'canada'">Canada</mat-option>
                         <mat-option [value]="'mexico'">Mexico</mat-option>
@@ -218,7 +219,8 @@
                     <mat-label>Fecha de Nacimiento</mat-label>
                     <input
                         matInput
-                        [matDatepicker]="picker1">
+                        [matDatepicker]="picker1"
+                        [(ngModel)]="selectedDate">
                     <mat-datepicker-toggle
                         matSuffix
                         [for]="picker1"></mat-datepicker-toggle>

@@ -2,9 +2,9 @@ import { TextFieldModule } from '@angular/cdk/text-field';
 import { CommonModule } from '@angular/common';
 import { ChangeDetectionStrategy, Component, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
 import { FormsModule, NgForm, ReactiveFormsModule, UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
-import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatDatepickerInputEvent, MatDatepickerModule } from '@angular/material/datepicker';
 import { MatButtonModule } from '@angular/material/button';
-import { MatOptionModule } from '@angular/material/core';
+import { MatDateFormats, MatOptionModule } from '@angular/material/core';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
@@ -12,6 +12,19 @@ import { MatSelectModule } from '@angular/material/select';
 import { fuseAnimations } from '@fuse/animations';
 import { FuseAlertType } from '@fuse/components/alert';
 import { UserService } from 'app/core/user/user.service';
+
+
+export const MY_FORMATS: MatDateFormats = {
+    parse: {
+      dateInput: 'DD/MM/YYYY',
+    },
+    display: {
+      dateInput: 'DD/MM/YYYY',
+      monthYearLabel: 'MMMM YYYY',
+      dateA11yLabel: 'DD/MM/YYYY',
+      monthYearA11yLabel: 'MMMM YYYY',
+    },
+  };
 
 @Component({
     selector       : 'settings-account',
@@ -40,6 +53,12 @@ export class SettingsAccountComponent implements OnInit
     };
 
     showAlert: boolean = false;
+
+    selectedDate: Date | null = null;
+
+  onDateChange(event: MatDatepickerInputEvent<Date>) {
+    this.selectedDate = event.value;
+  }
 
     /**
      * Constructor
@@ -74,7 +93,10 @@ export class SettingsAccountComponent implements OnInit
             phone   : [this.usuario.persona.celular],
             country : [this.usuario.persona.direccion],
             direccion: [this.usuario.persona.direccion],
-            avatar:[this.usuario.avatar]
+            avatar:[this.usuario.avatar],
+            descripcion:[this.usuario.persona.descripcion],
+            nacionalidad:[this.usuario.persona.nacionalidad],
+            genero:[this.usuario.persona.genero]
         });
     }
 
