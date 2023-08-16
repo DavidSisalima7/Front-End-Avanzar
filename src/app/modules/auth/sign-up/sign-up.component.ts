@@ -1,11 +1,11 @@
 import { DatePipe, NgIf } from '@angular/common';
 import { Component, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
-import { FormGroup, FormsModule, NgForm, ReactiveFormsModule, UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
+import { FormsModule, NgForm, ReactiveFormsModule, UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCheckboxModule } from '@angular/material/checkbox';
-import { MatFormFieldControl, MatFormFieldModule } from '@angular/material/form-field';
 import { MatDateFormats } from '@angular/material/core';
 import { MatDatepickerInputEvent, MatDatepickerModule } from '@angular/material/datepicker';
+import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
@@ -18,7 +18,6 @@ import { User } from 'app/core/user/user.types';
 import { Persona } from 'app/services/models/persona';
 import { Usuario } from 'app/services/models/usuario';
 import { PersonaService } from 'app/services/services/persona.service';
-import { MatOptionModule } from '@angular/material/core';
 
 
 @Component({
@@ -37,7 +36,7 @@ export class SignUpComponent implements OnInit
         type   : 'success',
         message: '',
     };
-    signUpForm: FormGroup;
+    signUpForm: UntypedFormGroup;
     showAlert: boolean = false;
 
     //fechas
@@ -82,6 +81,7 @@ export class SignUpComponent implements OnInit
                 primerapellido     : ['', Validators.required],
                 segundoapellido    : ['', Validators.required],
                 correo     : ['', [Validators.required, Validators.email]],
+                password  : ['', Validators.required],
                 direccion  : ['', Validators.required],
                 celular   : ['', Validators.required],
                 fecha_nacimiento :['',Validators.required],
