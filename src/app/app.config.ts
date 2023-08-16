@@ -1,5 +1,6 @@
+import { DatePipe } from '@angular/common';
 import { provideHttpClient } from '@angular/common/http';
-import { ApplicationConfig } from '@angular/core';
+import { ApplicationConfig, importProvidersFrom } from '@angular/core';
 import { LuxonDateAdapter } from '@angular/material-luxon-adapter';
 import { DateAdapter, MAT_DATE_FORMATS } from '@angular/material/core';
 import { provideAnimations } from '@angular/platform-browser/animations';
@@ -13,6 +14,7 @@ import { mockApiServices } from 'app/mock-api';
 
 export const appConfig: ApplicationConfig = {
     providers: [
+        DatePipe,
         provideAnimations(),
         provideHttpClient(),
         provideRouter(appRoutes,
@@ -42,6 +44,7 @@ export const appConfig: ApplicationConfig = {
 
         // Transloco Config
         provideTransloco(),
+
 
         // Fuse
         provideAuth(),

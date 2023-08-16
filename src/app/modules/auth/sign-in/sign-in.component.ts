@@ -19,7 +19,8 @@ import { UsuarioRolService } from 'app/services/services/usuarioRol.service';
     encapsulation: ViewEncapsulation.None,
     animations: fuseAnimations,
     standalone: true,
-    imports: [RouterLink, FuseAlertComponent, NgIf, FormsModule, ReactiveFormsModule, MatFormFieldModule, MatInputModule, MatButtonModule, MatIconModule, MatCheckboxModule, MatProgressSpinnerModule],
+    imports: [RouterLink, FuseAlertComponent, NgIf, FormsModule, ReactiveFormsModule, 
+      MatFormFieldModule, MatInputModule, MatButtonModule, MatIconModule, MatCheckboxModule, MatProgressSpinnerModule],
 })
 
 export class SingInComponent implements OnInit {
@@ -53,8 +54,8 @@ export class SingInComponent implements OnInit {
 
          // Create the form
          this.signInForm = this._formBuilder.group({
-            username     : ['soraya@gmail.com', [Validators.required,Validators.email]],
-            password  : ['1234', Validators.required],
+            username     : ['', [Validators.required,Validators.email]],
+            password  : ['', Validators.required],
             rememberMe: ''
         }); 
 
@@ -101,7 +102,7 @@ export class SingInComponent implements OnInit {
               // Set the alert
               this.alert = {
                   type: 'error',
-                  message: 'Wrong email or password',
+                  message: 'Correo electrónico o contraseña incorrectos',
               };
   
               // Show the alert
