@@ -9,15 +9,59 @@
 
                     <mat-step [formGroupName]="'step1'" [stepControl]="horizontalStepperForm.get('step1')">
                         <ng-template matStepLabel>Información básica</ng-template>
+                        <p class="my-6 font-medium">
+                            Completa la información básica de la persona que se va a registrar
+                        </p>
                         <div class="flex">
                             <mat-form-field class="flex-auto">
                                 <input matInput [formControlName]="'cedula'" [placeholder]="'Número de Cédula'" required>
                             </mat-form-field>
                         </div>
+
                         <div class="flex flex-col gt-xs:flex-row">
+
                             <mat-form-field class="flex-auto">
                                 <input matInput [formControlName]="'primerNombre'" [placeholder]="'Primer Nombre'" required>
                             </mat-form-field>
+
+                            <mat-form-field class="flex-auto">
+                                <input matInput [formControlName]="'segundoNombre'" [placeholder]="'Segundo Nombre'" required>
+                            </mat-form-field>
+
+                            <mat-form-field class="flex-auto">
+                                <input matInput [formControlName]="'primerApellido'" [placeholder]="'Primer Apellido'" required>
+                            </mat-form-field>
+
+                            <mat-form-field class="flex-auto">
+                                <input matInput [formControlName]="'segundoApellido'" [placeholder]="'Segundo Apellido'" required>
+                            </mat-form-field>
+
+                            <mat-form-field class="flex-auto">
+                                <input matInput [formControlName]="'correoElectronico'" [placeholder]="'Correo Electronico'" required>
+                            </mat-form-field>
+
+                            <mat-form-field class="flex-auto">
+                                <input matInput [formControlName]="'celular'" [placeholder]="'Número Célular'" required>
+                            </mat-form-field>
+
+                            <mat-form-field class="flex-auto">
+                                <input matInput [formControlName]="'direccion'" [placeholder]="'Direccion'" required>
+                            </mat-form-field>
+
+                        </div>
+
+
+                        <div class="flex flex-col gt-xs:flex-row">
+
+                            <mat-form-field class="flex-auto">
+                                <input matInput [formControlName]="'fechaNacimiento'"
+                                    [placeholder]="'Fecha de Nacimiento'"
+                                    [matDatepicker]="picker" 
+                                    required>
+                                <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle> <!-- Botón para abrir el datepicker -->
+                                <mat-datepicker #picker></mat-datepicker> <!-- El datepicker en sí -->
+                            </mat-form-field>
+
                             <mat-form-field class="flex-auto gt-xs:pl-3">
                                 <mat-select [formControlName]="'genero'" [placeholder]="'Género'" required>
                                     <mat-option value="Masculino">Masculino</mat-option>
@@ -25,6 +69,15 @@
                                     <mat-option value="Otro">Otro</mat-option>
                                 </mat-select>
                             </mat-form-field>
+
+                            <mat-form-field class="flex-auto gt-xs:pl-3">
+                                <mat-select [formControlName]="'nacionalidad'" [placeholder]="'Nacionalidad'" required>
+                                    <mat-option value="Ecuatoriano/a">Ecuatoriano/a</mat-option>
+                                    <mat-option value="Peruano/a">Peruano/a</mat-option>
+                                    <mat-option value="Otro">Otro</mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                            
                         </div>
                         <!-- ... otros campos ... -->
                         <div class="flex justify-end">

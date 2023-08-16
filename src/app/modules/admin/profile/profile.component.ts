@@ -12,18 +12,41 @@ import { RouterLink } from '@angular/router';
 import { FuseCardComponent } from '@fuse/components/card';
 
 @Component({
-    selector     : 'profile',
-    standalone   : true,
-    templateUrl  : './profile.component.html',
+    selector: 'profile',
+    standalone: true,
+    templateUrl: './profile.component.html',
     encapsulation: ViewEncapsulation.None,
-    imports        : [RouterLink, FuseCardComponent, MatIconModule, MatButtonModule, MatMenuModule, MatFormFieldModule, MatInputModule, TextFieldModule, MatDividerModule, MatTooltipModule, NgClass],
+    imports: [RouterLink, FuseCardComponent, MatIconModule, MatButtonModule, MatMenuModule, MatFormFieldModule, MatInputModule, TextFieldModule, MatDividerModule, MatTooltipModule, NgClass],
 })
-export class ProfileAdminComponent
-{
+export class ProfileAdminComponent {
     /**
      * Constructor
      */
-    constructor()
-    {
+
+    userExtraido: any;
+    ngOnInit(): void {
+
+        const userString = localStorage.getItem('user');
+        this.userExtraido = JSON.parse(userString);
+        
+
+    }
+
+    constructor() {
+    }
+
+
+    formatDate(date: string): string {
+        const monthsInSpanish = [
+            'enero', 'febrero', 'marzo', 'abril', 'mayo', 'junio',
+            'julio', 'agosto', 'septiembre', 'octubre', 'noviembre', 'diciembre'
+        ];
+        
+        const formattedDate = new Date(date);
+        const year = formattedDate.getFullYear();
+        const day = formattedDate.getDate();
+        const month = formattedDate.getMonth();
+        
+        return `${day} de ${monthsInSpanish[month]} de ${year}`;
     }
 }

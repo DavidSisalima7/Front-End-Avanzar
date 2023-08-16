@@ -54,7 +54,15 @@ export class RegisterResponsableComponent implements OnInit
             step1: this._formBuilder.group({
                 cedula : ['', Validators.required],
                 primerNombre : ['', Validators.required],
-                genero : ['', Validators.required],              
+                segundoNombre : ['', Validators.required],
+                primerApellido : ['', Validators.required],
+                segundoApellido : ['', Validators.required],
+                correoElectronico : ['', [Validators.required, Validators.email]],
+                direccion : ['', Validators.required],
+                celular : ['', Validators.required],
+                fechaNacimiento : [null, Validators.required],
+                genero : ['', Validators.required],    
+                nacionalidad : ['', Validators.required],          
 
 
             }),
@@ -68,31 +76,35 @@ export class RegisterResponsableComponent implements OnInit
     }
 
 
-    createPersona(){
-        this.persona.estado = true;
-        this.persona.descripcion = "Responsable de la empresa";
-        this.personaService.savePersona(this.persona).subscribe(
-            response => {
-                console.log(response);
-            },
-            error => {
-                console.log(error);
-            }
-        );
-    }
-
     registrarPersona(): void {
         // Obtén los valores de los FormControls del FormGroup
         const cedula = this.horizontalStepperForm.get('step1.cedula')?.value;
         const primerNombre = this.horizontalStepperForm.get('step1.primerNombre')?.value;
+        const segundoNombre = this.horizontalStepperForm.get('step1.segundoNombre')?.value;
+        const primerApellido = this.horizontalStepperForm.get('step1.primerApellido')?.value;
+        const segundoApellido = this.horizontalStepperForm.get('step1.segundoApellido')?.value;
+        const fechaNacimiento = this.horizontalStepperForm.get('step1.fechaNacimiento')?.value;
         const genero = this.horizontalStepperForm.get('step1.genero')?.value;
+        const correoElectronico = this.horizontalStepperForm.get('step1.correoElectronico')?.value;
+        const direccion = this.horizontalStepperForm.get('step1.direccion')?.value;
+        const celular = this.horizontalStepperForm.get('step1.celular')?.value;
+        const nacionalidad = this.horizontalStepperForm.get('step1.nacionalidad')?.value;
         // ... otros campos ...
-    
-        // Ahora puedes usar los valores en tu lógica
-        // Por ejemplo, configura los valores en el objeto persona
+
         this.persona.cedula = cedula;
         this.persona.primer_nombre = primerNombre;
+        this.persona.segundo_nombre = segundoNombre;  
+        this.persona.primer_apellido = primerApellido;
+        this.persona.segundo_apellido = segundoApellido; 
+        this.persona.fecha_nacimiento = fechaNacimiento; 
         this.persona.genero = genero;
+        this.persona.correo = correoElectronico;
+        this.persona.direccion = direccion;
+        this.persona.celular = celular;
+        this.persona.nacionalidad = nacionalidad;
+
+        this.persona.estado = true;
+        this.persona.descripcion = "Persona registrada desde el formulario de registro de responsable";
         // ... otros campos ...
     
         // Luego, realiza la llamada al servicio para guardar la persona y el usuario
@@ -101,6 +113,8 @@ export class RegisterResponsableComponent implements OnInit
             (response) => {
                 // Si la respuesta es correcta, muestra un mensaje de éxito
                 console.log(response);
+
+                
             },
         );
     
