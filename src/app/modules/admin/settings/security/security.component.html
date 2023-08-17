@@ -1,0 +1,19 @@
+<div class="w-full max-w-md">
+    <h2>Cambiar Contraseña</h2>
+    <form [formGroup]="securityForm" (ngSubmit)="cambiarContrasena(securityForm.get('currentPassword').value, securityForm.get('newPassword').value)">
+        <!-- Campo de contraseña actual -->
+      <mat-form-field class="w-full" [subscriptSizing]="'dynamic'">
+        <mat-label>Current password</mat-label>
+        <mat-icon class="icon-size-5" [svgIcon]="'heroicons_solid:key'" matPrefix></mat-icon>
+        <input formControlName="currentPassword" type="password" matInput>
+    </mat-form-field>
+    
+    <mat-form-field class="w-full" [subscriptSizing]="'dynamic'">
+        <mat-label>New password</mat-label>
+        <mat-icon class="icon-size-5" [svgIcon]="'heroicons_solid:key'" matPrefix></mat-icon>
+        <input formControlName="newPassword" type="password" matInput>
+    </mat-form-field>
+  
+      <button mat-raised-button color="primary" type="submit">Cambiar Contraseña</button>
+    </form>
+  </div>

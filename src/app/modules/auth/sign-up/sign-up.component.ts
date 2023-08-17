@@ -1,12 +1,15 @@
-import { NgIf } from '@angular/common';
+import { DatePipe, NgIf } from '@angular/common';
 import { Component, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
 import { FormsModule, NgForm, ReactiveFormsModule, UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCheckboxModule } from '@angular/material/checkbox';
+import { MatDateFormats } from '@angular/material/core';
+import { MatDatepickerInputEvent, MatDatepickerModule } from '@angular/material/datepicker';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MatSelectModule } from '@angular/material/select';
 import { Router, RouterLink } from '@angular/router';
 import { fuseAnimations } from '@fuse/animations';
 import { FuseAlertComponent, FuseAlertType } from '@fuse/components/alert';
@@ -17,13 +20,16 @@ import { Persona } from 'app/services/models/persona';
 import { Usuario } from 'app/services/models/usuario';
 import { PersonaService } from 'app/services/services/persona.service';
 
+
 @Component({
     selector     : 'auth-sign-up',
     templateUrl  : './sign-up.component.html',
     encapsulation: ViewEncapsulation.None,
     animations   : fuseAnimations,
     standalone   : true,
-    imports      : [RouterLink, NgIf, FuseAlertComponent, FormsModule, ReactiveFormsModule, MatFormFieldModule, MatInputModule, MatButtonModule, MatIconModule, MatCheckboxModule, MatProgressSpinnerModule],
+    imports      : [RouterLink, NgIf, FuseAlertComponent, FormsModule, ReactiveFormsModule, MatFormFieldModule, 
+        MatInputModule, MatButtonModule, MatIconModule, MatCheckboxModule, MatProgressSpinnerModule, 
+        MatDatepickerModule, MatSelectModule],
 })
 export class SignUpComponent implements OnInit
 {
@@ -36,9 +42,16 @@ export class SignUpComponent implements OnInit
     signUpForm: UntypedFormGroup;
     showAlert: boolean = false;
 
+    //fechas
+    selectedDate:Date;
 
     persona: Persona = new Persona();
     user: User=new User();
+    selectedFile: File | null = null;
+    //Variable para el combo Box de genero que almacena el resultado
+    public generoSeleccionado:string;
+
+
 
     /**
      * Constructor
@@ -48,7 +61,8 @@ export class SignUpComponent implements OnInit
         private _formBuilder: UntypedFormBuilder,
         private _router: Router,
         private personaService: PersonaService,
-        private usuarioService: UserService
+        private usuarioService: UserService,
+        private datePipe:DatePipe
     )
     {
     }
@@ -73,6 +87,8 @@ export class SignUpComponent implements OnInit
                 password  : ['', Validators.required],
                 direccion  : ['', Validators.required],
                 celular   : ['', Validators.required],
+                fecha_nacimiento :['',Validators.required],
+                genero:['',Validators.required],
                 agreements: ['', Validators.requiredTrue],
             },
         );
@@ -82,33 +98,52 @@ export class SignUpComponent implements OnInit
     // @ Public methods
     // -----------------------------------------------------------------------------------------------------
 
+
+    // Método para verificar si el formulario es válido y si se han aceptado los términos
+    isFormValidAndAccepted(): boolean {
+        return this.signUpForm.valid && this.signUpForm.get('agreements').value;
+    }
+    
     /**
      * Sign up
      */
-    signUp(): void
-    {
-
+    signUp(): void {
         this.persona.estado = true;
-        this.user.enabled=true;
-        this.user.visible=true;
-        this.user.username=this.signUpForm.get('correo')?.value;
-        this.user.password=this.signUpForm.get('password')?.value;
+        this.persona.nacionalidad="Ecuador"
+        this.user.enabled = true;
+        this.user.visible = true;
+        this.user.username = this.signUpForm.get('correo')?.value;
+        this.user.password = this.signUpForm.get('password')?.value;
         const primerNombre = this.signUpForm.get('primernombre')?.value;
         const primerApellido = this.signUpForm.get('primerapellido')?.value;
-        this.user.name=primerNombre + ' ' + primerApellido;
-    
+        const generoSeleccionado = this.signUpForm.get('genero').value
+        const formattedDate = this.datePipe.transform(this.selectedDate, 'dd/MM/yyyy');
+        this.persona.descripcion="Hola mi nombre es "+primerNombre+' '+primerApellido+" encantado de concerte. ♥";
+        this.user.name = primerNombre + ' ' + primerApellido;
+        this.persona.fecha_nacimiento=formattedDate;
+        this.persona.genero = generoSeleccionado;
+        
+
         this.personaService.savePersona(this.persona).subscribe(data => {
-            console.log(data);
-            this.user.persona=data;
-            this.usuarioService.registrarUsuario(this.user, 4)
+          console.log(data);
+          this.user.persona = data;
+          const rolId = 4; // ID del rol
+          this.usuarioService.registrarUsuarioConFoto(this.user, rolId, this.selectedFile)
             .subscribe(
                 (response) => {
-                  console.log('Usuario registrado exitosamente:', response);
-                  // Realizar acciones adicionales después del registro exitoso si es necesario.
+                    console.log(response);
+                    this.alert = {
+                        type   : 'success',
+                        message: 'Su registro se a realizado correctamente',
+                    };
+                    this.showAlert = true;
                 },
                 (error) => {
-                  console.error('Error al registrar el usuario:', error);
-                  // Manejo de errores si es necesario.
+                    this.alert = {
+                        type   : 'error',
+                        message: 'Ha ocurrido un error al crear el usuario',
+                    };
+                    this.showAlert = true;
                 }
               );
             
@@ -116,6 +151,22 @@ export class SignUpComponent implements OnInit
 
         })
 
+    } 
+
+
+    upload(event:any){
+        const file=event.target.files[0];
+        this.selectedFile=file;
+        /* if (file) {
+            const formData=new FormData();
+            formData.append('file',file);
+
+            this.usuarioService.uploadFile(formData)
+            .subscribe(response=>{
+                console.log('response',response);
+                
+            })
+        } */
     }
 
 

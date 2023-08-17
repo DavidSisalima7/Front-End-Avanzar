@@ -1,7 +1,7 @@
 
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Observable, throwError } from 'rxjs';
 import { Persona } from '../models/persona';
 
 @Injectable({
@@ -15,6 +15,5 @@ export class PersonaService {
   savePersona(persona: Persona): Observable<Persona>{
     return this.http.post<Persona>(this.url+'/registrar',persona);
   }
-
 
 }
