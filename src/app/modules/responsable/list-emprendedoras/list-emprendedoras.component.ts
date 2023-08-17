@@ -8,6 +8,7 @@ import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { Productos } from 'app/services/models/productos';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
+import { Router } from '@angular/router';
 
 @Component({
     selector     : 'list-emprendedoras',
@@ -27,7 +28,8 @@ export class ListEmprendedorasResponsableComponent
     /**
      * Constructor
      */
-    constructor(private productoService: ProductosService)
+    constructor(private productoService: ProductosService,
+      private _router: Router)
     {
     }
     ngOnInit(): void {
@@ -58,6 +60,12 @@ export class ListEmprendedorasResponsableComponent
           this.dataSource.paginator.firstPage();
         }
       }
+
+
+      redirectToFormEmprendedora(): void {
+        this._router.navigate(['/reg-empre-resp']);
+    }
+
 }
 export class ProductoData {
     idProducto: number;
@@ -66,3 +74,4 @@ export class ProductoData {
     cantidadDisponible: number;
     estado: boolean;
 }
+
