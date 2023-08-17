@@ -113,5 +113,7 @@ export class UserService {
         return this._httpClient.put(`${this.url}/actualizarUsuarioConFoto/${usuarioId}`, formData);
       }
     
-
+      eliminadoLogico(id: any) {
+        return this._httpClient.put(`${this.url}/eliminar/${id}`, null);
+      }
 }
