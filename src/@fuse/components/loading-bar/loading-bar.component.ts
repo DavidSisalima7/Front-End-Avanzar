@@ -4,6 +4,7 @@ import { Component, Input, OnChanges, OnDestroy, OnInit, SimpleChanges, ViewEnca
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { FuseLoadingService } from '@fuse/services/loading';
 import { Subject, takeUntil } from 'rxjs';
+import { ChangeDetectorRef } from '@angular/core';
 
 @Component({
     selector     : 'fuse-loading-bar',
@@ -25,7 +26,8 @@ export class FuseLoadingBarComponent implements OnChanges, OnInit, OnDestroy
     /**
      * Constructor
      */
-    constructor(private _fuseLoadingService: FuseLoadingService)
+    constructor(private _fuseLoadingService: FuseLoadingService,
+        private cdRef: ChangeDetectorRef)
     {
     }
 
@@ -73,6 +75,7 @@ export class FuseLoadingBarComponent implements OnChanges, OnInit, OnDestroy
             .subscribe((value) =>
             {
                 this.show = value;
+                this.cdRef.detectChanges(); // Forzar una nueva detección de cambios
             });
 
     }
