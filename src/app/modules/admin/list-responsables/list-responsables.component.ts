@@ -76,9 +76,7 @@ export class ListResponsableComponent {
 
   selectedResponsable:any;
   seleccionarResponsable(usuario: any) {
-    console.log('Se seleccionó la empresa:', usuario);
     this.selectedResponsable = usuario.id;
-    console.log(this.selectedResponsable);
     this.usuarioService.eliminadoLogico(this.selectedResponsable).subscribe(
       (datapersencontrada) => {
         console.log(datapersencontrada);
