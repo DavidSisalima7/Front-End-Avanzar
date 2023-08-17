@@ -61,6 +61,43 @@ export class ListResponsableComponent {
     );
   }
 
+  listarRegistrosOrdenA() {
+    this.usuarioService.obtenerListaResponsableOrdenA().subscribe(
+      (datos: Usuario[]) => {
+        this.dataSource = new MatTableDataSource<Usuario>(datos);
+      },
+      error => {
+        console.error('Ocurrió un error al obtener la lista de personas responsables:', error);
+      }
+    );
+  }
+  listarRegistrosOrdenI() {
+    this.usuarioService.obtenerListaResponsableOrdenI().subscribe(
+      (datos: Usuario[]) => {
+        this.dataSource = new MatTableDataSource<Usuario>(datos);
+      },
+      error => {
+        console.error('Ocurrió un error al obtener la lista de personas responsables:', error);
+      }
+    );
+  }
+ 
+  ejecutarPrimeraFuncion: number = 1;
+
+  cambiarFuncionAEjecutar(): void {
+    this.ejecutarPrimeraFuncion = (this.ejecutarPrimeraFuncion % 3) + 1;
+  }
+  ejecutarFuncionSeleccionada(): void {
+    if (this.ejecutarPrimeraFuncion === 1) {
+      this.listarRegistrosOrdenA();
+    } else if (this.ejecutarPrimeraFuncion === 2) {
+      this.listarRegistrosOrdenI();
+    } else {
+      this.listarRegistros();
+    }
+    this.cambiarFuncionAEjecutar();
+  }
+
   applyFilter(event: Event) {
     const filterValue = (event.target as HTMLInputElement).value;
     this.dataSource.filter = filterValue.trim().toLowerCase();
