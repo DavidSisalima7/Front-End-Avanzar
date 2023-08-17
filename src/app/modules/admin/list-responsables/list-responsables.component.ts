@@ -25,7 +25,7 @@ import { Router } from '@angular/router';
   imports: [MatFormFieldModule, MatInputModule, MatTableModule, MatSortModule, MatPaginatorModule, MatIconModule, MatButtonModule],
 })
 export class ListResponsableComponent {
-  displayedColumns: string[] = ['idProducto', 'nombreProducto', 'precioProducto', 'cantidaDisponible', 'estado'];
+  displayedColumns: string[] = ['id', 'cedula','nombres', 'correo', 'celular','estado','editar','delete'];
   dataSource: MatTableDataSource<Usuario>;
 
 
@@ -74,4 +74,12 @@ export class ListResponsableComponent {
     this._router.navigate(['/register-responsable']);
   }
 
+  selectedResponsable:any;
+  seleccionarResponsable(usuario: any) {
+    this.selectedResponsable = usuario.id;
+    this.usuarioService.eliminadoLogico(this.selectedResponsable).subscribe(
+      (datapersencontrada) => {
+        console.log(datapersencontrada);
+      });
+  }
 }

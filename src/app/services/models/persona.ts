@@ -16,5 +16,4 @@ export class Persona {
     celular: string='';
     estado: boolean;
 
-
 }
