@@ -6,13 +6,15 @@ import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
 import { MatSort, MatSortModule } from '@angular/material/sort';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { Productos } from 'app/services/models/productos';
+import { MatIconModule } from '@angular/material/icon';
+import { MatButtonModule } from '@angular/material/button';
 
 @Component({
     selector     : 'list-emprendedoras',
     standalone   : true,
     templateUrl  : './list-emprendedoras.component.html',
     encapsulation: ViewEncapsulation.None,
-    imports: [MatFormFieldModule, MatInputModule, MatTableModule, MatSortModule, MatPaginatorModule],
+    imports: [MatFormFieldModule, MatInputModule, MatTableModule, MatSortModule,MatButtonModule, MatPaginatorModule,MatIconModule],
 })
 export class ListEmprendedorasResponsableComponent
 {
