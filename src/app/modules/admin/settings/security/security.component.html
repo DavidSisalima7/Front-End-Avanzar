@@ -1,21 +1,44 @@
 <div class="w-full max-w-md">
-    <h2>Cambiar Contraseña</h2>
-    <form [formGroup]="securityForm" (ngSubmit)="cambiarContrasena(securityForm.get('currentPassword').value, securityForm.get('newPassword').value)">
-        <!-- Campo de contraseña actual -->
-      <mat-form-field class="w-full" [subscriptSizing]="'dynamic'">
-        <mat-label>Current password</mat-label>
-        <mat-icon class="icon-size-5" [svgIcon]="'heroicons_solid:key'" matPrefix></mat-icon>
-        <input formControlName="currentPassword" type="password" matInput>
+  <h2 class="mb-4">Cambiar Contraseña</h2>
+
+  <!-- Alerta de cambio de contraseña -->
+  <fuse-alert
+    class="mb-4"
+    *ngIf="showAlert"
+    [appearance]="'outline'"
+    [showIcon]="false"
+    [type]="alertType"
+    [@shake]="alertType === 'error'"
+  >
+    {{ alertMessage }}
+  </fuse-alert>
+
+  <form [formGroup]="securityForm" (ngSubmit)="cambiarContrasena(securityForm.get('currentPassword').value, securityForm.get('newPassword').value)">
+    <!-- Campo de contraseña actual -->
+    <mat-form-field class="w-full mb-4" [subscriptSizing]="'dynamic'" appearance="outline">
+      <mat-label>Contraseña actual</mat-label>
+      <mat-icon class="icon-size-5" [svgIcon]="'heroicons_solid:key'" matPrefix></mat-icon>
+      <input formControlName="currentPassword" type="password" matInput>
+      <mat-error *ngIf="securityForm.controls.currentPassword.invalid && (securityForm.controls.currentPassword.dirty || securityForm.controls.currentPassword.touched)" class="text-error mt-2">
+        Ingrese la contraseña actual
+      </mat-error>
     </mat-form-field>
-    
-    <mat-form-field class="w-full" [subscriptSizing]="'dynamic'">
-        <mat-label>New password</mat-label>
-        <mat-icon class="icon-size-5" [svgIcon]="'heroicons_solid:key'" matPrefix></mat-icon>
-        <input formControlName="newPassword" type="password" matInput>
+
+    <!-- Campo de nueva contraseña -->
+    <mat-form-field class="w-full mb-4" [subscriptSizing]="'dynamic'" appearance="outline">
+      <mat-label>Contraseña nueva</mat-label>
+      <mat-icon class="icon-size-5" [svgIcon]="'heroicons_solid:key'" matPrefix></mat-icon>
+      <input formControlName="newPassword" type="password" matInput>
+      <mat-error *ngIf="securityForm.controls.newPassword.invalid && (securityForm.controls.newPassword.dirty || securityForm.controls.newPassword.touched)" class="text-error mt-2">
+        Ingrese la nueva contraseña
+      </mat-error>
     </mat-form-field>
-  
-      <button mat-raised-button color="primary" type="submit">Cambiar Contraseña</button>
-    </form>
-  </div>
+
+    <button mat-raised-button color="primary" type="submit">Cambiar Contraseña</button>
+  </form>
+</div>
+
+
+
 
     <!-- PRUEBA -->
