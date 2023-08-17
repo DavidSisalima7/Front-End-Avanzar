@@ -9,6 +9,11 @@ import { Productos } from 'app/services/models/productos';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 
+//DIALOGOS
+import { MatDialog } from '@angular/material/dialog';
+import { MailboxComposeComponent } from 'app/modules/responsable/compose/compose.component';
+
+
 @Component({
     selector     : 'list-emprendedoras',
     standalone   : true,
@@ -27,7 +32,7 @@ export class ListEmprendedorasResponsableComponent
     /**
      * Constructor
      */
-    constructor(private productoService: ProductosService)
+    constructor(private productoService: ProductosService,private _matDialog: MatDialog)
     {
     }
     ngOnInit(): void {
@@ -58,6 +63,22 @@ export class ListEmprendedorasResponsableComponent
           this.dataSource.paginator.firstPage();
         }
       }
+
+
+      //ABRIR EL MODAL
+  openComposeDialog(): void
+  {
+      // Open the dialog
+      const dialogRef = this._matDialog.open(MailboxComposeComponent);
+
+      dialogRef.afterClosed()
+          .subscribe((result) =>
+          {
+              console.log('Compose dialog was closed!');
+          });
+  }
+
+
 }
 export class ProductoData {
     idProducto: number;
