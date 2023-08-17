@@ -11,7 +11,7 @@
           <mat-progress-bar [mode]="'indeterminate'"></mat-progress-bar>
       </div>
       <!-- Title -->
-      <div class="text-4xl font-extrabold tracking-tight">Responsables de Ventas</div>
+      <div class="text-4xl font-extrabold tracking-tight">Producto</div>
       <!-- Actions -->
       <div class="flex shrink-0 items-center mt-6 sm:mt-0 sm:ml-4">
           <!-- Search -->
@@ -38,6 +38,33 @@
               <mat-icon [svgIcon]="'heroicons_outline:plus'"></mat-icon>
               <span class="ml-2 mr-1">Agregar</span>
           </button>
+
+
+
+          <!-- BOTTON EDITAR-->
+          <!-- BOTTON EDITAR-->
+          <!-- BOTTON EDITAR-->
+          <!-- BOTTON EDITAR-->
+          <!-- BOTTON EDITAR-->
+          <!-- BOTTON EDITAR-->
+          <button
+            class="mx-6"
+            mat-flat-button
+            [color]="'primary'"
+            (click)="openComposeDialog()">
+            <mat-icon [svgIcon]="'heroicons_outline:pencil'"></mat-icon>
+            </button>
+
+            <!-- PEGAR EL BOTON EN LA TABLA CUANDO CREEN ESE PARAMETRO -->
+
+          <!-- BOTTON EDITAR-->
+          <!-- BOTTON EDITAR-->
+          <!-- BOTTON EDITAR-->
+          <!-- BOTTON EDITAR-->
+          <!-- BOTTON EDITAR-->
+          <!-- BOTTON EDITAR-->
+
+
       </div>
   </div>
 
@@ -63,19 +90,19 @@
               
                   <!-- Progress Column -->
                   <ng-container matColumnDef="nombreProducto">
-                    <th mat-header-cell *matHeaderCellDef mat-sort-header> Cédula </th>
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header> Nombre Producto </th>
                     <td mat-cell *matCellDef="let row"> {{row.nombreProducto}} </td>
                   </ng-container>
               
                   <!-- Name Column -->
                   <ng-container matColumnDef="precioProducto">
-                    <th mat-header-cell *matHeaderCellDef mat-sort-header> Nombre </th>
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header> Precio </th>
                     <td mat-cell *matCellDef="let row"> {{row.precioProducto}} </td>
                   </ng-container>
               
                   <!-- Fruit Column -->
                   <ng-container matColumnDef="cantidaDisponible">
-                    <th mat-header-cell *matHeaderCellDef mat-sort-header> Correo Electrónico </th>
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header> Cantidad </th>
                     <td mat-cell *matCellDef="let row"> {{row.cantidadDisponible}} </td>
                   </ng-container>
     

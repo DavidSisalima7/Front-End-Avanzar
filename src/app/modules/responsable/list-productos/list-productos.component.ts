@@ -17,12 +17,18 @@ import { UserService } from 'app/core/user/user.service';
 import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
 
+
+//DIALOGOS
+import { MatDialog } from '@angular/material/dialog';
+import { MailboxComposeComponent } from 'app/modules/responsable/compose/compose.component';
+
+
 @Component({
     selector     : 'list-emprendedoras',
     standalone   : true,
     templateUrl  : './list-productos.component.html',
     encapsulation: ViewEncapsulation.None,
-    imports: [MatFormFieldModule, MatInputModule, MatTableModule, MatSortModule, MatPaginatorModule, 
+    imports: [MatFormFieldModule, MatInputModule, MatTableModule, MatSortModule, MatPaginatorModule,
       MatIconModule, MatButtonModule, CommonModule],
 })
 export class ListProductosResponsableComponent
@@ -43,7 +49,7 @@ export class ListProductosResponsableComponent
   /**
    * Constructor
    */
-  constructor(private productoService: ProductosService, private _router: Router,
+  constructor(private productoService: ProductosService, private _router: Router,private _matDialog: MatDialog
     ) {
   }
   ngOnInit(): void {
@@ -75,4 +81,18 @@ export class ListProductosResponsableComponent
   redirectToRegisterResponsable() {
     this._router.navigate(['/register-productos']);
   }
+
+
+  //ABRIR EL MODAL
+  openComposeDialog(): void
+    {
+        // Open the dialog
+        const dialogRef = this._matDialog.open(MailboxComposeComponent);
+
+        dialogRef.afterClosed()
+            .subscribe((result) =>
+            {
+                console.log('Compose dialog was closed!');
+            });
+    }
 }
