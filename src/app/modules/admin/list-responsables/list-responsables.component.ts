@@ -16,6 +16,10 @@ import { Usuario } from 'app/services/models/usuario';
 import { UserService } from 'app/core/user/user.service';
 import { Router } from '@angular/router';
 
+//DIALOGOS
+import { MatDialog } from '@angular/material/dialog';
+import { MailboxComposeComponent } from 'app/modules/admin/compose/compose.component';
+
 
 @Component({
   selector: 'list-responsable',
@@ -41,7 +45,7 @@ export class ListResponsableComponent {
   /**
    * Constructor
    */
-  constructor(private usuarioService: UserService, private _router: Router,
+  constructor(private usuarioService: UserService, private _router: Router,private _matDialog: MatDialog,
     ) {
   }
   ngOnInit(): void {
@@ -82,4 +86,18 @@ export class ListResponsableComponent {
         console.log(datapersencontrada);
       });
   }
+
+
+  //ABRIR EL MODAL
+  openComposeDialog(): void
+    {
+        // Open the dialog
+        const dialogRef = this._matDialog.open(MailboxComposeComponent);
+
+        dialogRef.afterClosed()
+            .subscribe((result) =>
+            {
+                console.log('Compose dialog was closed!');
+            });
+    }
 }
