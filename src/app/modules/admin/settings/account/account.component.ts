@@ -1,6 +1,6 @@
 import { TextFieldModule } from '@angular/cdk/text-field';
-import { CommonModule } from '@angular/common';
-import { ChangeDetectionStrategy, Component, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
+import { CommonModule  } from '@angular/common';
+import { ChangeDetectionStrategy, Component, OnInit, Renderer2, ViewChild, ViewEncapsulation } from '@angular/core';
 import { FormsModule, NgForm, ReactiveFormsModule, UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 import { MatDatepickerInputEvent, MatDatepickerModule } from '@angular/material/datepicker';
 import { MatButtonModule } from '@angular/material/button';
@@ -12,6 +12,8 @@ import { MatSelectModule } from '@angular/material/select';
 import { fuseAnimations } from '@fuse/animations';
 import { FuseAlertType } from '@fuse/components/alert';
 import { UserService } from 'app/core/user/user.service';
+import { User } from 'app/core/user/user.types';
+import { Subject, takeUntil } from 'rxjs';
 
 
 export const MY_FORMATS: MatDateFormats = {
@@ -37,6 +39,8 @@ export const MY_FORMATS: MatDateFormats = {
 })
 export class SettingsAccountComponent implements OnInit
 {
+    //Usuario logeado
+    user: User;
 
     accountForm: UntypedFormGroup;
     selectedFile: File | null = null; // Variable para almacenar el archivo seleccionado
@@ -53,23 +57,30 @@ export class SettingsAccountComponent implements OnInit
     };
 
     showAlert: boolean = false;
-
     selectedDate: Date | null = null;
 
-  onDateChange(event: MatDatepickerInputEvent<Date>) {
+    onDateChange(event: MatDatepickerInputEvent<Date>) {
     this.selectedDate = event.value;
-  }
+    }
+  
+    paises = [
+    { value: 'Ecuador', label: 'Ecuador' },
+    { value: 'colombia', label: 'Colombia' }
+    ];
 
+
+    private _unsubscribeAll: Subject<any> = new Subject<any>();
     /**
      * Constructor
      */
     constructor(
         private _formBuilder: UntypedFormBuilder,
-        private _userService: UserService
+        private _userService: UserService,
+        private renderer:Renderer2
     )
     {
     }
-
+    
     // -----------------------------------------------------------------------------------------------------
     // @ Lifecycle hooks
     // -----------------------------------------------------------------------------------------------------
@@ -79,26 +90,41 @@ export class SettingsAccountComponent implements OnInit
      */
     ngOnInit(): void
     {
+        // Subscribe to the user service
+        this._userService.user$
+            .pipe((takeUntil(this._unsubscribeAll)))
+            .subscribe((user: User) =>
+            {
+                this.user = user;
+            });
 
+        const dateOfBirth = new Date(this.user.persona.fecha_nacimiento); // Convertir a objeto Date
+        this.selectedDate = dateOfBirth;
+        
         
         // Create the form
         this.accountForm = this._formBuilder.group({
-            Firstname    : [this.usuario.persona.primer_nombre],
-            Secondname    : [this.usuario.persona.segundo_nombre],
-            FirstSurname    : [this.usuario.persona.primer_apellido],
-            SecondSurname    : [this.usuario.persona.segundo_apellido],
+            Firstname    : [this.user.persona.primer_nombre],
+            Secondname    : [this.user.persona.segundo_nombre],
+            FirstSurname    : [this.user.persona.primer_apellido],
+            SecondSurname    : [this.user.persona.segundo_apellido],
             rol: [this.rol],
-            username: [this.usuario.name],
-            email   : [this.usuario.persona.correo],
-            phone   : [this.usuario.persona.celular],
-            country : [this.usuario.persona.direccion],
-            direccion: [this.usuario.persona.direccion],
-            avatar:[this.usuario.avatar],
-            descripcion:[this.usuario.persona.descripcion],
-            nacionalidad:[this.usuario.persona.nacionalidad],
-            genero:[this.usuario.persona.genero]
+            username: [this.user.name],
+            email   : [this.user.persona.correo],
+            phone   : [this.user.persona.celular],
+            address: [this.user.persona.direccion],
+            avatar:[this.user.avatar],
+            description:[this.user.persona.descripcion],
+            nationality:[this.user.persona.nacionalidad],
+            genero:[this.user.persona.genero],
+            dateBirth: [dateOfBirth] 
+            
         });
+
+
     }
+
+    
 
     onFileSelected(event: Event): void {
         const inputElement = event.target as HTMLInputElement;
@@ -112,14 +138,7 @@ export class SettingsAccountComponent implements OnInit
                 });
             };
             reader.readAsDataURL(this.selectedFile);
-           // Set the alert
-           this.alert = {
-            type: 'error',
-            message: 'Correo electrónico o contraseña incorrectos',
-        };
-
-        // Show the alert
-        this.showAlert = true;
+        
         }
     }
 
@@ -137,7 +156,11 @@ export class SettingsAccountComponent implements OnInit
               segundo_apellido: this.accountForm.value.SecondSurname,
               correo: this.accountForm.value.email,
               celular: this.accountForm.value.phone,
-              direccion: this.accountForm.value.direccion,
+              direccion: this.accountForm.value.address,
+              nacionalidad:this.accountForm.value.nationality,
+              genero:this.accountForm.value.genero,
+              fecha_nacimiento:this.accountForm.value.dateBirth,
+              descripcion:this.accountForm.value.description
             },
             username:this.accountForm.value.email,
             name: this.accountForm.value.username,
@@ -146,23 +169,14 @@ export class SettingsAccountComponent implements OnInit
       
         this._userService.actualizarUsuario(usuarioId, usuarioActualizado, this.selectedFile).subscribe(
           (response) => {
-            this.alert = {
-                type: 'success',
-                message: 'Usuario actualizado correctamente.',
-            };
-            // Show the alert
-            this.showAlert = true;
-            console.error(response);
+            this.renderer.setProperty(window,'location',location);
+            console.log("correcto",response);
+            //falta alerta de correcto.
+    
           },
           (error) => {
-            this.alert = {
-                type: 'error',
-                message: 'Error al actualizar el usuario.',
-            };
-
-            // Show the alert
-            this.showAlert = true;
-            console.error(error);
+        
+            console.error("error",error);
             
           }
         );

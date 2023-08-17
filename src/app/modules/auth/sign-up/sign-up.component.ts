@@ -118,7 +118,7 @@ export class SignUpComponent implements OnInit
         const primerApellido = this.signUpForm.get('primerapellido')?.value;
         const generoSeleccionado = this.signUpForm.get('genero').value
         const formattedDate = this.datePipe.transform(this.selectedDate, 'dd/MM/yyyy');
-        this.persona.descripcion="Hola mi nombre es "+primerNombre+' '+primerApellido+" encantado de concerte. ♥";
+        this.persona.descripcion="Hola mi nombre es "+primerNombre+' '+primerApellido+" encantado de conocerte. ♥";
         this.user.name = primerNombre + ' ' + primerApellido;
         this.persona.fecha_nacimiento=formattedDate;
         this.persona.genero = generoSeleccionado;
