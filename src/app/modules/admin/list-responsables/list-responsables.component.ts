@@ -17,6 +17,10 @@ import { UserService } from 'app/core/user/user.service';
 import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
 
+//DIALOGOS
+import { MatDialog } from '@angular/material/dialog';
+import { MailboxComposeComponent } from 'app/modules/admin/compose/compose.component';
+
 
 @Component({
   selector: 'list-responsable',
@@ -27,7 +31,7 @@ import { CommonModule } from '@angular/common';
             MatIconModule, MatButtonModule, CommonModule],
 })
 export class ListResponsableComponent {
-  displayedColumns: string[] = ['idProducto', 'nombreProducto', 'precioProducto', 'cantidaDisponible', 'estado'];
+  displayedColumns: string[] = ['id', 'cedula','nombres', 'correo', 'celular','estado','editar','delete'];
   dataSource: MatTableDataSource<Usuario>;
 
 
@@ -43,7 +47,7 @@ export class ListResponsableComponent {
   /**
    * Constructor
    */
-  constructor(private usuarioService: UserService, private _router: Router,
+  constructor(private usuarioService: UserService, private _router: Router,private _matDialog: MatDialog,
     ) {
   }
   ngOnInit(): void {
@@ -76,4 +80,26 @@ export class ListResponsableComponent {
     this._router.navigate(['/register-responsable']);
   }
 
+  selectedResponsable:any;
+  seleccionarResponsable(usuario: any) {
+    this.selectedResponsable = usuario.id;
+    this.usuarioService.eliminadoLogico(this.selectedResponsable).subscribe(
+      (datapersencontrada) => {
+        console.log(datapersencontrada);
+      });
+  }
+
+
+  //ABRIR EL MODAL
+  openComposeDialog(): void
+    {
+        // Open the dialog
+        const dialogRef = this._matDialog.open(MailboxComposeComponent);
+
+        dialogRef.afterClosed()
+            .subscribe((result) =>
+            {
+                console.log('Compose dialog was closed!');
+            });
+    }
 }

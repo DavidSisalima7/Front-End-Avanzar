@@ -136,4 +136,9 @@ export class UserService {
             catchError(this.handleError)
           );
       }
+
+      eliminadoLogico(id: any) {
+        return this._httpClient.put(`${this.url}/eliminar/${id}`, null);
+      }
+
 }
