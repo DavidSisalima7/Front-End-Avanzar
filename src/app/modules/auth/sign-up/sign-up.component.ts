@@ -26,7 +26,10 @@ import { PersonaService } from 'app/services/services/persona.service';
     encapsulation: ViewEncapsulation.None,
     animations   : fuseAnimations,
     standalone   : true,
-    imports      : [RouterLink, NgIf, FuseAlertComponent, FormsModule, ReactiveFormsModule, MatFormFieldModule, MatInputModule, MatButtonModule, MatIconModule, MatCheckboxModule, MatProgressSpinnerModule, MatDatepickerModule],
+    imports      : [RouterLink, NgIf, FuseAlertComponent, 
+        FormsModule, ReactiveFormsModule, MatFormFieldModule, 
+        MatInputModule, MatButtonModule, MatIconModule, MatCheckboxModule,
+        MatProgressSpinnerModule, MatDatepickerModule],
 })
 export class SignUpComponent implements OnInit
 {
