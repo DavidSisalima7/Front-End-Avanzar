@@ -128,4 +128,12 @@ export class UserService {
             catchError((error) => throwError(error))
           );
       }
+
+      obtenerListaEmprendedor(): Observable<Usuario[]> {
+        const url = `${this.url}/listarEmprendedores`;
+        return this._httpClient.get<Usuario[]>(url)
+          .pipe(
+            catchError(this.handleError)
+          );
+      }
 }
