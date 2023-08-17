@@ -53,27 +53,33 @@
 
                         <div class="flex flex-col gt-xs:flex-row">
 
-                            <mat-form-field class="flex-auto">
-                                <input matInput [formControlName]="'fechaNacimiento'"
-                                    [placeholder]="'Fecha de Nacimiento'"
-                                    [matDatepicker]="picker" 
-                                    required>
-                                <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle> <!-- Botón para abrir el datepicker -->
-                                <mat-datepicker #picker></mat-datepicker> <!-- El datepicker en sí -->
+                            <mat-form-field class="w-full">
+                                <input
+                                    id="fecha_nacimiento"
+                                    matInput
+                                    [formControlName]="'fechaNacimiento'"
+                                    [matDatepicker]="picker1"
+                                    placeholder="Fecha de Nacimiento"
+                                    [(ngModel)]="selectedDate"/>
+                                <mat-datepicker-toggle
+                                    matSuffix
+                                    [for]="picker1"
+                                ></mat-datepicker-toggle>
+                                <mat-datepicker #picker1></mat-datepicker>
                             </mat-form-field>
 
                             <mat-form-field class="flex-auto gt-xs:pl-3">
                                 <mat-select [formControlName]="'genero'" [placeholder]="'Género'" required>
                                     <mat-option value="Masculino">Masculino</mat-option>
                                     <mat-option value="Femenino">Femenino</mat-option>
-                                    <mat-option value="Otro">Otro</mat-option>
+                                    <mat-option value="Otro">Otro ...</mat-option>
                                 </mat-select>
                             </mat-form-field>
 
                             <mat-form-field class="flex-auto gt-xs:pl-3">
                                 <mat-select [formControlName]="'nacionalidad'" [placeholder]="'Nacionalidad'" required>
-                                    <mat-option value="Ecuatoriano/a">Ecuatoriano/a</mat-option>
-                                    <mat-option value="Peruano/a">Peruano/a</mat-option>
+                                    <mat-option value="Ecuador">Ecuador</mat-option>
+                                    <mat-option value="Perú">Perú</mat-option>
                                     <mat-option value="Otro">Otro</mat-option>
                                 </mat-select>
                             </mat-form-field>

@@ -15,6 +15,7 @@ import {MatDatepickerModule} from '@angular/material/datepicker';
 import { PersonaService } from 'app/services/services/persona.service';
 import { UserService } from 'app/core/user/user.service';
 import { Persona } from 'app/services/models/persona';
+import { DatePipe } from '@angular/common';
 
 @Component({
     selector     : 'register-responsable',
@@ -28,12 +29,16 @@ export class RegisterResponsableComponent implements OnInit
 {
     horizontalStepperForm: FormGroup;
     persona: Persona = new Persona();
+    selectedDate:Date;
+
     /**
      * Constructor
      */
     constructor(private _formBuilder: UntypedFormBuilder, 
                 private personaService: PersonaService, 
-                private usuarioService: UserService)
+                private usuarioService: UserService,
+                private datePipe:DatePipe
+                )
     {
 
 
@@ -83,12 +88,16 @@ export class RegisterResponsableComponent implements OnInit
         const segundoNombre = this.horizontalStepperForm.get('step1.segundoNombre')?.value;
         const primerApellido = this.horizontalStepperForm.get('step1.primerApellido')?.value;
         const segundoApellido = this.horizontalStepperForm.get('step1.segundoApellido')?.value;
-        const fechaNacimiento = this.horizontalStepperForm.get('step1.fechaNacimiento')?.value;
         const genero = this.horizontalStepperForm.get('step1.genero')?.value;
         const correoElectronico = this.horizontalStepperForm.get('step1.correoElectronico')?.value;
         const direccion = this.horizontalStepperForm.get('step1.direccion')?.value;
         const celular = this.horizontalStepperForm.get('step1.celular')?.value;
         const nacionalidad = this.horizontalStepperForm.get('step1.nacionalidad')?.value;
+
+        const formattedDate = this.datePipe.transform(this.selectedDate, 'dd/MM/yyyy');
+        const fechaNacimiento = this.horizontalStepperForm.get('step1.fechaNacimiento')?.value;
+
+
         // ... otros campos ...
 
         this.persona.cedula = cedula;
@@ -96,7 +105,7 @@ export class RegisterResponsableComponent implements OnInit
         this.persona.segundo_nombre = segundoNombre;  
         this.persona.primer_apellido = primerApellido;
         this.persona.segundo_apellido = segundoApellido; 
-        this.persona.fecha_nacimiento = fechaNacimiento; 
+        this.persona.fecha_nacimiento = formattedDate; 
         this.persona.genero = genero;
         this.persona.correo = correoElectronico;
         this.persona.direccion = direccion;

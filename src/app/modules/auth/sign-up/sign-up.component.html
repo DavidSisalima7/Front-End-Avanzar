@@ -250,29 +250,23 @@
                     </mat-form-field>
 
                     <mat-form-field class="flex-auto gt-xs:pr-3">
-                        <mat-label>Genero</mat-label>
-                        <select
+                        <mat-label>Género</mat-label>
+                        <mat-select
                             id="genero"
-                            matNativeControl
-                            matInput
                             [placeholder]="'Genero'"
                             [formControlName]="'genero'"
                             name="genero"
+                            required
                         >
-                            <mat-error
-                                *ngIf="
-                                    signUpForm
-                                        .get('genero')
-                                        .hasError('required')
-                                "
-                            >
-                                Este campo es requerido
-                            </mat-error>
-                            <option value=""></option>
-                            <option value="Masculino">Masculino</option>
-                            <option value="Femenino">Femenino</option>
-                            <option value="Otro">Otro</option>
-                        </select>
+                            <mat-option value="Masculino">Masculino</mat-option>
+                            <mat-option value="Femenino">Femenino</mat-option>
+                            <mat-option value="Otro">Otro ...</mat-option>
+                        </mat-select>
+                        <mat-error
+                            *ngIf="signUpForm.get('genero').hasError('required')"
+                        >
+                            Este campo es requerido
+                        </mat-error>
                     </mat-form-field>
                 </div>
 

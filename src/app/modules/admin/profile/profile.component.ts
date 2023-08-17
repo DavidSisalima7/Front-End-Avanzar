@@ -36,17 +36,15 @@ export class ProfileAdminComponent {
     }
 
 
-    formatDate(date: string): string {
+    formatDate(dateString: string): string {
+        const [day, month, year] = dateString.split('/');
         const monthsInSpanish = [
             'enero', 'febrero', 'marzo', 'abril', 'mayo', 'junio',
             'julio', 'agosto', 'septiembre', 'octubre', 'noviembre', 'diciembre'
         ];
         
-        const formattedDate = new Date(date);
-        const year = formattedDate.getFullYear();
-        const day = formattedDate.getDate();
-        const month = formattedDate.getMonth();
+        const monthName = monthsInSpanish[parseInt(month) - 1];
         
-        return `${day} de ${monthsInSpanish[month]} de ${year}`;
+        return `${day} de ${monthName} de ${year}`;
     }
 }

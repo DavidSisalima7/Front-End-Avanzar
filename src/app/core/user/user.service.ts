@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { User } from 'app/core/user/user.types';
 import { Usuario } from 'app/services/models/usuario';
@@ -114,4 +114,18 @@ export class UserService {
       }
     
 
+      actualizarContrasena(oldPassword: string, newPassword: string): Observable<any> {
+        const requestBody = {
+          contrasenaActual: oldPassword,
+          contrasenaNueva: newPassword
+        };
+    
+        const url = `${this.url}/actualizar-password`;
+    
+        return this._httpClient
+          .put(url, requestBody)
+          .pipe(
+            catchError((error) => throwError(error))
+          );
+      }
 }

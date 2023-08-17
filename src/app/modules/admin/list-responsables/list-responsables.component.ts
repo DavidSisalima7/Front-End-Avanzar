@@ -15,6 +15,7 @@ import { Persona } from 'app/services/models/persona';
 import { Usuario } from 'app/services/models/usuario';
 import { UserService } from 'app/core/user/user.service';
 import { Router } from '@angular/router';
+import { CommonModule } from '@angular/common';
 
 
 @Component({
@@ -22,7 +23,8 @@ import { Router } from '@angular/router';
   standalone: true,
   templateUrl: './list-responsables.component.html',
   encapsulation: ViewEncapsulation.None,
-  imports: [MatFormFieldModule, MatInputModule, MatTableModule, MatSortModule, MatPaginatorModule, MatIconModule, MatButtonModule],
+  imports: [MatFormFieldModule, MatInputModule, MatTableModule, MatSortModule, MatPaginatorModule, 
+            MatIconModule, MatButtonModule, CommonModule],
 })
 export class ListResponsableComponent {
   displayedColumns: string[] = ['idProducto', 'nombreProducto', 'precioProducto', 'cantidaDisponible', 'estado'];
