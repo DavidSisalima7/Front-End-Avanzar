@@ -1,9 +1,9 @@
 <div class="w-full max-w-md">
-  <h2 class="mb-4">Cambiar Contraseña</h2>
+  <h2 class="mt-8">Cambiar Contraseña</h2>
 
   <!-- Alerta de cambio de contraseña -->
   <fuse-alert
-    class="mb-4"
+    class="mt-8"
     *ngIf="showAlert"
     [appearance]="'outline'"
     [showIcon]="false"
@@ -15,7 +15,7 @@
 
   <form [formGroup]="securityForm" (ngSubmit)="cambiarContrasena(securityForm.get('currentPassword').value, securityForm.get('newPassword').value)">
     <!-- Campo de contraseña actual -->
-    <mat-form-field class="w-full mb-4" [subscriptSizing]="'dynamic'" appearance="outline">
+    <mat-form-field class="w-full mt-8" [subscriptSizing]="'dynamic'" appearance="outline">
       <mat-label>Contraseña actual</mat-label>
       <mat-icon class="icon-size-5" [svgIcon]="'heroicons_solid:key'" matPrefix></mat-icon>
       <input formControlName="currentPassword" type="password" matInput>
@@ -25,7 +25,7 @@
     </mat-form-field>
 
     <!-- Campo de nueva contraseña -->
-    <mat-form-field class="w-full mb-4" [subscriptSizing]="'dynamic'" appearance="outline">
+    <mat-form-field class="w-full mt-8" [subscriptSizing]="'dynamic'" appearance="outline">
       <mat-label>Contraseña nueva</mat-label>
       <mat-icon class="icon-size-5" [svgIcon]="'heroicons_solid:key'" matPrefix></mat-icon>
       <input formControlName="newPassword" type="password" matInput>
@@ -33,11 +33,10 @@
         Ingrese la nueva contraseña
       </mat-error>
     </mat-form-field>
-
+    <div class="mt-4"></div>
     <button mat-raised-button color="primary" type="submit">Cambiar Contraseña</button>
   </form>
 </div>
-
 
 
 
