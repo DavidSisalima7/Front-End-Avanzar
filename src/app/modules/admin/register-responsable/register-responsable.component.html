@@ -178,6 +178,23 @@
                 <p class="my-6 font-medium">
                     Información de usuario
                 </p>
+
+                <div class="relative w-24 h-24">
+                    <mat-label>Foto</mat-label> <br>
+                    <img class="w-full h-full rounded-full" *ngIf="selectedImageSrc" [src]="selectedImageSrc" alt="User avatar">
+                    <mat-icon class="icon-size-24" *ngIf="!selectedImageSrc" [svgIcon]="'heroicons_solid:user-circle'"></mat-icon>
+                  </div>
+                  
+                  <div class="grid grid-cols-1 sm:grid-cols-2 gap-6 mt-15">
+                    <!-- Columna de la imagen de perfil -->
+                    <div class="sm:col-span-1">
+                      <div class="-mt-18 lg:-mt-18 rounded-full">
+                        <br><br><span>↓ Deseas cambiar la foto de perfil? ↓</span><br>
+                        <input id="image" type="file" accept="image/*" class="form-control" (change)="upload($event)" /> <br>
+                      </div>
+                    </div>
+                  </div>
+
                 <div class="flex flex-col gt-xs:flex-row">
                     <mat-form-field class="flex-auto gt-xs:pr-3">
                         <input matInput [formControlName]="'usuario'" [placeholder]="'Usuario'" required>
@@ -205,6 +222,7 @@
                         <mat-error> Contraseña requerida </mat-error>
                     </mat-form-field>
                 </div>
+                
                 <div class="flex">
                     <mat-form-field class="flex-auto">
                         <textarea matInput [formControlName]="'descripcion'" [placeholder]="'Descripcion'"
@@ -214,17 +232,8 @@
                     </mat-form-field>
                 </div>
 
-                <div class="grid grid-cols-1 sm:grid-cols-2 gap-6 mt-15">
-                    <!-- Columna de la imagen de perfil -->
-                    <div class="sm:col-span-1">
-                        <div class="-mt-18 lg:-mt-18 rounded-full">
-                            <br>
-                            <mat-label>Foto</mat-label> <br>
-                            <input id="image" type="file" accept="image/*" class="form-control"
-                                (change)="upload($event)" />
-                        </div>
-                    </div>
-                </div>
+                
+                  
 
                 <div class="flex justify-end">
                     <button class="px-8 mr-2" mat-flat-button [color]="'accent'" type="button" matStepperPrevious>

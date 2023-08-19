@@ -96,7 +96,7 @@ export class UserService {
 
 
       
-    registrarUsuarioConFoto(usuario: User, rolId: number, file: File | null): Observable<User> {
+    registrarUsuarioConFoto(usuario: User, rolId: number, file: any | null): Observable<User> {
         const formData = new FormData();
         formData.append('usuario', JSON.stringify(usuario));
         

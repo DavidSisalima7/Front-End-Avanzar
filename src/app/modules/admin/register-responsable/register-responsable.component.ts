@@ -47,6 +47,7 @@ export class RegisterResponsableComponent implements OnInit
     persona: Persona = new Persona();
     selectedDate:Date;
     selectedFile: File | null = null;
+    selectedImageSrc: string = null;
     user: User=new User();
 
     /**
@@ -204,12 +205,27 @@ export class RegisterResponsableComponent implements OnInit
     
         // Restablece el formulario después de guardar los datos
     }
-
+    /*
     upload(event:any){
         const file=event.target.files[0];
         this.selectedFile=file;
         
-    }
+    } */
+
+    upload(event: any) {
+        const file = event.target.files[0];
+        if (file) {
+          this.selectedFile = file;
+      
+          // Crear una URL de objeto para la imagen y asignarla a selectedImageSrc
+          const reader = new FileReader();
+          reader.onload = (e: any) => {
+            this.selectedImageSrc = e.target.result;
+          };
+          reader.readAsDataURL(file);
+        }
+      }
+      
 
     alerta(): void {
         this.alert = {
