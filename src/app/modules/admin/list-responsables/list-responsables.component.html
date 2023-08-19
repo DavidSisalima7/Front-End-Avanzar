@@ -12,6 +12,7 @@
         </div>
         <!-- Title -->
         <div class="text-4xl font-extrabold tracking-tight">Responsables de Ventas</div>
+        <button (click)="listarRegistros()">RecargarTabla</button>
         <!-- Actions -->
         <div class="flex shrink-0 items-center mt-6 sm:mt-0 sm:ml-4">
             <!-- Search -->
@@ -38,68 +39,88 @@
                 <mat-icon [svgIcon]="'heroicons_outline:plus'"></mat-icon>
                 <span class="ml-2 mr-1">Agregar</span>
             </button>
+
+            <button
+            class="mx-6"
+            mat-flat-button
+            [color]="'primary'"
+            (click)="openComposeDialog()">
+            <mat-icon [svgIcon]="'heroicons_outline:pencil'"></mat-icon>
+            </button>
         </div>
     </div>
   
     <style>
-    
-  
       .mat-mdc-form-field {
         font-size: 14px;
         width: 100%;
       }
-  
-    
+      .tablexd{
+  width: 100%;
+  overflow-x: auto;
+  scrollbar-color: #aaa #f8f8f8;
+  scrollbar-width: thin;
+      }
     </style>
 
-              
-              <div class="mat-elevation-z8">
+              <div class="tablexd mat-elevation-z8">
                 <table mat-table [dataSource]="dataSource" matSort>
-              
-                  <!-- ID Column -->
-                  <ng-container matColumnDef="idProducto">
-                    <th mat-header-cell *matHeaderCellDef mat-sort-header> ID </th>
-                    <td mat-cell *matCellDef="let row"> {{row.id}} </td>
+
+                  <ng-container matColumnDef="cedula">
+                    <th  mat-header-cell *matHeaderCellDef mat-sort-header (click)="ejecutarFuncionCedula()"> Cédula </th>
+                    <td  mat-cell *matCellDef="let row" > {{row.persona.cedula}} </td>
                   </ng-container>
-              
-                  <!-- Progress Column -->
-                  <ng-container matColumnDef="nombreProducto">
-                    <th mat-header-cell *matHeaderCellDef mat-sort-header> Cédula </th>
-                    <td mat-cell *matCellDef="let row"> {{row.persona.cedula}} </td>
-                  </ng-container>
-              
-                  <!-- Name Column -->
-                  <ng-container matColumnDef="precioProducto">
-                    <th mat-header-cell *matHeaderCellDef mat-sort-header> Nombre </th>
+
+                  <ng-container matColumnDef="nombres">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header (click)="ejecutarFuncionNombres()" > Nombres</th>
                     <td mat-cell *matCellDef="let row"> {{row.name}} </td>
                   </ng-container>
-              
-                  <!-- Fruit Column -->
-                  <ng-container matColumnDef="cantidaDisponible">
-                    <th mat-header-cell *matHeaderCellDef mat-sort-header> Correo Electrónico </th>
+
+                  <ng-container matColumnDef="correo">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header (click)="ejecutarFuncionCorreo()"> Correo Electrónico </th>
                     <td mat-cell *matCellDef="let row"> {{row.persona.correo}} </td>
+                  </ng-container>
+                  <ng-container matColumnDef="celular">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header (click)="ejecutarFuncionCelular()"> Celular </th>
+                    <td mat-cell *matCellDef="let row"> {{row.persona.celular}} </td>
                   </ng-container>
     
                   <ng-container matColumnDef="estado">
-                    <th mat-header-cell *matHeaderCellDef mat-sort-header> Estado </th>
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header (click)="ejecutarFuncionEstado()"> Estado </th>
                     <td mat-cell *matCellDef="let row">
                       {{ row.visible ? 'Activo' : 'Desactivado' }}
                     </td>
                   </ng-container>
-              
+                  <ng-container matColumnDef="editar">
+                    <th mat-header-cell *matHeaderCellDef>Editar</th>
+                    <td mat-cell *matCellDef="let row">
+                      <button
+            class="mx-6"
+            mat-flat-button
+            [color]="'primary'"
+            (click)="openComposeDialog()">
+            <mat-icon [svgIcon]="'heroicons_outline:pencil'"></mat-icon>
+            </button>
+                    </td>
+                  </ng-container>
+                
+                  <ng-container matColumnDef="delete">
+                    <th mat-header-cell *matHeaderCellDef>Eliminar</th>
+                    <td mat-cell *matCellDef="let row">
+                      <button (click)="seleccionarResponsable(row)">
+                       eliminar
+                      </button>
+                    </td>
+                  </ng-container>
                   <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-                  <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
-              
+                  <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr> 
                   <!-- Row shown when there is no matching data. -->
                   <tr class="mat-row" *matNoDataRow>
-                    <td class="mat-cell" colspan="4">No data matching the filter "{{input.value}}"</td>
+                    <td class="mat-cell" colspan="4">No hay datos que coincidan con el filtro "{{input.value}}"</td>
                   </tr>
-                </table>
-              
+                </table>   
                 <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]" aria-label="Select page of users"></mat-paginator>
               </div>
-        
-    
         </div>
         </div>
   

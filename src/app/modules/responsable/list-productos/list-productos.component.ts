@@ -3,64 +3,76 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
 import { MatSort, MatSortModule } from '@angular/material/sort';
+import { MatIconModule } from '@angular/material/icon';
+import { FormsModule, ReactiveFormsModule, UntypedFormBuilder, UntypedFormControl, UntypedFormGroup, Validators } from '@angular/forms';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { Productos } from 'app/services/models/productos';
 import { ProductosService } from 'app/services/services/producto.service';
+import { MatButtonModule } from '@angular/material/button';
+import { debounceTime, map, merge, Observable, Subject, switchMap, takeUntil } from 'rxjs';
+import { PersonaService } from 'app/services/services/persona.service';
+import { Persona } from 'app/services/models/persona';
+import { Usuario } from 'app/services/models/usuario';
+import { UserService } from 'app/core/user/user.service';
+import { Router } from '@angular/router';
+import { CommonModule } from '@angular/common';
 
 @Component({
     selector     : 'list-emprendedoras',
     standalone   : true,
     templateUrl  : './list-productos.component.html',
     encapsulation: ViewEncapsulation.None,
-    imports: [MatFormFieldModule, MatInputModule, MatTableModule, MatSortModule, MatPaginatorModule],
+    imports: [MatFormFieldModule, MatInputModule, MatTableModule, MatSortModule, MatPaginatorModule, 
+      MatIconModule, MatButtonModule, CommonModule],
 })
 export class ListProductosResponsableComponent
 {
-    service: Productos[];
-    displayedColumns: string[] = ['idProducto', 'nombreProducto', 'precioProducto','cantidaDisponible', 'estado'];
-    dataSource: MatTableDataSource<ProductoData>;
+  displayedColumns: string[] = ['idProducto', 'nombreProducto', 'precioProducto', 'cantidaDisponible', 'estado'];
+  dataSource: MatTableDataSource<Productos>;
+
 
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
-    /**
-     * Constructor
-     */
-    constructor(private productoService: ProductosService)
-    {
-    }
-    ngOnInit(): void {
-        this.listarProductos();
-    }
-    listarProductos() {
-        this.productoService.listarProducto().subscribe((datos: Productos[]) => {
-          this.service = datos.map(producto => ({
-            idProducto: producto.idProducto,
-            nombreProducto: producto.nombreProducto.toString(),
-            precioProducto: producto.precioProducto,
-            cantidadDisponible: producto.cantidadDisponible,
-            estado: producto.estado ? true : false
-            
-          }));
-      
-          this.dataSource = new MatTableDataSource<Productos>(this.service);
-          this.dataSource.paginator = this.paginator;
-          this.dataSource.sort = this.sort;
-        });
+
+  searchInputControl: UntypedFormControl = new UntypedFormControl();
+  private _unsubscribeAll: Subject<any> = new Subject<any>();
+  isLoading: boolean = false;
+
+
+
+  /**
+   * Constructor
+   */
+  constructor(private productoService: ProductosService, private _router: Router,
+    ) {
+  }
+  ngOnInit(): void {
+    this.listarRegistros();
+
+  }
+
+
+  listarRegistros() {
+    this.productoService.listarProducto().subscribe(
+      (datos: Productos[]) => {
+        this.dataSource = new MatTableDataSource<Productos>(datos);
+      },
+      error => {
+        console.error('Ocurrió un error al obtener la lista de personas responsables:', error);
       }
-     
-    applyFilter(event: Event) {
-        const filterValue = (event.target as HTMLInputElement).value;
-        this.dataSource.filter = filterValue.trim().toLowerCase();
-    
-        if (this.dataSource.paginator) {
-          this.dataSource.paginator.firstPage();
-        }
-      }
-}
-export class ProductoData {
-    idProducto: number;
-    nombreProducto: string='';
-    precioProducto: number;
-    cantidadDisponible: number;
-    estado: boolean;
+    );
+  }
+
+  applyFilter(event: Event) {
+    const filterValue = (event.target as HTMLInputElement).value;
+    this.dataSource.filter = filterValue.trim().toLowerCase();
+
+    if (this.dataSource.paginator) {
+      this.dataSource.paginator.firstPage();
+    }
+  }
+
+  redirectToRegisterResponsable() {
+    this._router.navigate(['/register-productos']);
+  }
 }

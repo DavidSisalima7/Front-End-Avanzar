@@ -97,7 +97,10 @@ export const appRoutes: Route[] = [
                 {path: 'dash-resp', loadChildren: () => import('app/modules/responsable/dashboard/dashboard.routes')},
                 {path: 'list-empre-resp', loadChildren: () => import('app/modules/responsable/list-emprendedoras/list-emprendedoras.routes')},
                 {path: 'list-prod-resp', loadChildren: () => import('app/modules/responsable/list-productos/list-productos.routes')},
+                {path: 'reg-empre-resp', loadChildren: () => import('app/modules/responsable/register-emprendedora/register-emprendedora.routes')},
                 {path: 'profile-resp', loadChildren: () => import('app/modules/responsable/profile/profile.routes')},
+                {path: 'config-resp', loadChildren: () => import('app/modules/responsable/settings/settings.routes')},
+
             ]
         },
 

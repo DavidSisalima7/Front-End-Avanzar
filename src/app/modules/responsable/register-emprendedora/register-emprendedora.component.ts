@@ -23,8 +23,8 @@ import { fuseAnimations } from '@fuse/animations';
 import { User } from 'app/core/user/user.types';
 
 @Component({
-    selector     : 'register-responsable',
-    templateUrl  : './register-responsable.component.html',
+    selector     : 'register-emprendedora',
+    templateUrl  : './register-emprendedora.component.html',
     encapsulation: ViewEncapsulation.None,
     animations: fuseAnimations,
     standalone   : true,
@@ -32,7 +32,7 @@ import { User } from 'app/core/user/user.types';
         MatButtonModule, MatCheckboxModule, MatRadioModule,MatTableModule,MatTabsModule,MatDatepickerModule,
         NgIf, FuseAlertComponent],
 })
-export class RegisterResponsableComponent implements OnInit
+export class RegisterEmpreRespComponent implements OnInit
 {
     @ViewChild('signUpNgForm') signUpNgForm: NgForm;
 

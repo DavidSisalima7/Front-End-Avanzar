@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { User } from 'app/core/user/user.types';
 import { Usuario } from 'app/services/models/usuario';
@@ -74,6 +74,20 @@ export class UserService {
             catchError(this.handleError)
           );
       }
+      obtenerListaResponsableOrdenA(): Observable<Usuario[]> {
+        const url = `${this.url}/listarResponsablesEstadoActivo`;
+        return this._httpClient.get<Usuario[]>(url)
+          .pipe(
+            catchError(this.handleError)
+          );
+      }
+        obtenerListaResponsableOrdenI(): Observable<Usuario[]> {
+        const url = `${this.url}/listarResponsablesEstadoInactivo`;
+        return this._httpClient.get<Usuario[]>(url)
+          .pipe(
+            catchError(this.handleError)
+          );
+      }
     
       private handleError(error: any) {
         console.error('Ocurrió un error:', error);
@@ -113,5 +127,32 @@ export class UserService {
         return this._httpClient.put(`${this.url}/actualizarUsuarioConFoto/${usuarioId}`, formData);
       }
     
+
+      actualizarContrasena(oldPassword: string, newPassword: string): Observable<any> {
+        const requestBody = {
+          contrasenaActual: oldPassword,
+          contrasenaNueva: newPassword
+        };
+    
+        const url = `${this.url}/actualizar-password`;
+    
+        return this._httpClient
+          .put(url, requestBody)
+          .pipe(
+            catchError((error) => throwError(error))
+          );
+      }
+
+      obtenerListaEmprendedor(): Observable<Usuario[]> {
+        const url = `${this.url}/listarEmprendedores`;
+        return this._httpClient.get<Usuario[]>(url)
+          .pipe(
+            catchError(this.handleError)
+          );
+      }
+
+      eliminadoLogico(id: any) {
+        return this._httpClient.put(`${this.url}/eliminar/${id}`, null);
+      }
 
 }

@@ -1,51 +1,70 @@
-import { ProductosService } from 'app/services/services/producto.service';
 import { Component, ViewChild, ViewEncapsulation } from '@angular/core';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
 import { MatSort, MatSortModule } from '@angular/material/sort';
+import { MatIconModule } from '@angular/material/icon';
+import { FormsModule, ReactiveFormsModule, UntypedFormBuilder, UntypedFormControl, UntypedFormGroup, Validators } from '@angular/forms';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { Productos } from 'app/services/models/productos';
+import { ProductosService } from 'app/services/services/producto.service';
+import { MatButtonModule } from '@angular/material/button';
+import { debounceTime, map, merge, Observable, Subject, switchMap, takeUntil } from 'rxjs';
+import { PersonaService } from 'app/services/services/persona.service';
+import { Persona } from 'app/services/models/persona';
+import { Usuario } from 'app/services/models/usuario';
+import { UserService } from 'app/core/user/user.service';
+import { Router } from '@angular/router';
+import { CommonModule } from '@angular/common';
+
+//DIALOGOS
+import { MatDialog } from '@angular/material/dialog';
+import { MailboxComposeComponent } from 'app/modules/responsable/compose/compose.component';
+
 
 @Component({
     selector     : 'list-emprendedoras',
     standalone   : true,
     templateUrl  : './list-emprendedoras.component.html',
     encapsulation: ViewEncapsulation.None,
-    imports: [MatFormFieldModule, MatInputModule, MatTableModule, MatSortModule, MatPaginatorModule],
+    imports: [MatFormFieldModule, MatInputModule, MatTableModule, MatSortModule, MatPaginatorModule, 
+      MatIconModule, MatButtonModule, CommonModule],
 })
 export class ListEmprendedorasResponsableComponent
 {
-    service: Productos[];
-    displayedColumns: string[] = ['idProducto', 'nombreProducto', 'precioProducto','cantidaDisponible', 'estado'];
-    dataSource: MatTableDataSource<ProductoData>;
+  displayedColumns: string[] = ['idUsuario', 'nombreUsuario', 'correoUsuario', 'estado'];
+  dataSource: MatTableDataSource<Usuario>;
+
 
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
+
+  searchInputControl: UntypedFormControl = new UntypedFormControl();
+  private _unsubscribeAll: Subject<any> = new Subject<any>();
+  isLoading: boolean = false;
+
+
     /**
      * Constructor
      */
-    constructor(private productoService: ProductosService)
+
+    constructor(private usuarioService: UserService, private _router: Router,
+      private productoService: ProductosService,private _matDialog: MatDialog)
     {
     }
     ngOnInit(): void {
-        this.listarProductos();
+      this.listarUsuariosEmp();
+  
     }
-    listarProductos() {
-        this.productoService.listarProducto().subscribe((datos: Productos[]) => {
-          this.service = datos.map(producto => ({
-            idProducto: producto.idProducto,
-            nombreProducto: producto.nombreProducto.toString(),
-            precioProducto: producto.precioProducto,
-            cantidadDisponible: producto.cantidadDisponible,
-            estado: producto.estado ? true : false
-            
-          }));
-      
-          this.dataSource = new MatTableDataSource<Productos>(this.service);
-          this.dataSource.paginator = this.paginator;
-          this.dataSource.sort = this.sort;
-        });
+    listarUsuariosEmp() {
+      this.usuarioService.obtenerListaEmprendedor().subscribe(
+        (datos: Usuario[]) => {
+          this.dataSource = new MatTableDataSource<Usuario>(datos);
+        },
+        error => {
+          console.error('Ocurrió un error al obtener la lista de personas responsables:', error);
+        }
+      );
       }
      
     applyFilter(event: Event) {
@@ -56,6 +75,25 @@ export class ListEmprendedorasResponsableComponent
           this.dataSource.paginator.firstPage();
         }
       }
+
+
+      redirectToFormEmprendedora(): void {
+        this._router.navigate(['/reg-empre-resp']);
+    }
+      //ABRIR EL MODAL
+  openComposeDialog(): void
+  {
+      // Open the dialog
+      const dialogRef = this._matDialog.open(MailboxComposeComponent);
+
+      dialogRef.afterClosed()
+          .subscribe((result) =>
+          {
+              console.log('Compose dialog was closed!');
+          });
+  }
+
+
 }
 export class ProductoData {
     idProducto: number;
@@ -64,3 +102,4 @@ export class ProductoData {
     cantidadDisponible: number;
     estado: boolean;
 }
+
