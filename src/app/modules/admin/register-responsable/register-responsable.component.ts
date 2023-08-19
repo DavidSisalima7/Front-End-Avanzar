@@ -16,6 +16,8 @@ import {MatDatepickerModule} from '@angular/material/datepicker';
 @Component({
     selector     : 'register-responsable',
     templateUrl  : './register-responsable.component.html',
+    styleUrls: ['./register-responsable.component.scss'],
+
     encapsulation: ViewEncapsulation.None,
     standalone   : true,
     imports      : [MatIconModule, FormsModule, ReactiveFormsModule, MatStepperModule, MatFormFieldModule, MatInputModule, MatSelectModule, MatOptionModule, 

@@ -113,6 +113,18 @@ ul{
 	background-color: black;
 }
 
+// .w-extra-wide {
+// 	width: 100%;
+// 	margin: 0 -70px; 
+//   }
+
+//   @media (min-width: 768px) {
+// 	.w-extra-wide {
+// 	  width: 120%;
+// 	}
+//   }
+  
+
 /*responsive*/
 @media(max-width: 767px){
   .footer-col{
@@ -126,7 +138,14 @@ ul{
 }
 }
 
+.card-view{
+	display:flex;
+	justify-content: center;
+}
 
+.card-product{
+	margin: 0 15px;
+}
 
 
 
