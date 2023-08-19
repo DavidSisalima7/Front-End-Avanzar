@@ -97,5 +97,6 @@ export class SettingsSecurityComponent implements OnInit
         this.alertType = 'error';
         this.alertMessage = 'Por favor, completa todos los campos.';
         this.showAlert = true;
+        
     }
 }}

@@ -33,11 +33,16 @@
         Ingrese la nueva contraseña
       </mat-error>
     </mat-form-field>
+    
     <div class="mt-4"></div>
+    
     <button mat-raised-button color="primary" type="submit">Cambiar Contraseña</button>
   </form>
+
+  <!-- Mensaje de alerta -->
+  <div *ngIf="showAlert" [ngClass]="alertType">
+    {{ alertMessage }}
+  </div>
 </div>
-
-
 
     <!-- PRUEBA -->
