@@ -66,28 +66,6 @@ export class UserService {
         const url = `${this.url}/registrar/${rolId}`;
         return this._httpClient.post<User>(url, usuario);
     }
-
-    obtenerListaResponsable(): Observable<Usuario[]> {
-        const url = `${this.url}/listarResponsables`;
-        return this._httpClient.get<Usuario[]>(url)
-          .pipe(
-            catchError(this.handleError)
-          );
-      }
-      obtenerListaResponsableOrdenA(): Observable<Usuario[]> {
-        const url = `${this.url}/listarResponsablesEstadoActivo`;
-        return this._httpClient.get<Usuario[]>(url)
-          .pipe(
-            catchError(this.handleError)
-          );
-      }
-        obtenerListaResponsableOrdenI(): Observable<Usuario[]> {
-        const url = `${this.url}/listarResponsablesEstadoInactivo`;
-        return this._httpClient.get<Usuario[]>(url)
-          .pipe(
-            catchError(this.handleError)
-          );
-      }
     
       private handleError(error: any) {
         console.error('Ocurrió un error:', error);
@@ -151,6 +129,58 @@ export class UserService {
           );
       }
 
+      obtenerListaResponsable(): Observable<Usuario[]> {
+        const url = `${this.url}/listarResponsables`;
+        return this._httpClient.get<Usuario[]>(url)
+          .pipe(
+            catchError(this.handleError)
+          );
+      }
+      obtenerListaResponsableOrdenA(): Observable<Usuario[]> {
+        const url = `${this.url}/listarResponsablesEstadoActivo`;
+        return this._httpClient.get<Usuario[]>(url)
+          .pipe(
+            catchError(this.handleError)
+          );
+      }
+        obtenerListaResponsableOrdenI(): Observable<Usuario[]> {
+        const url = `${this.url}/listarResponsablesEstadoInactivo`;
+        return this._httpClient.get<Usuario[]>(url)
+          .pipe(
+            catchError(this.handleError)
+          );
+      }
+      obtenerListEmprendedorOrdenA(): Observable<Usuario[]> {
+        const url = `${this.url}/listarEmprendedorEstadoActivo`;
+        return this._httpClient.get<Usuario[]>(url)
+          .pipe(
+            catchError(this.handleError)
+          );
+      }
+        obtenerListEmprendedorOrdenI(): Observable<Usuario[]> {
+        const url = `${this.url}/listarEmprendedorEstadoInactivo`;
+        return this._httpClient.get<Usuario[]>(url)
+          .pipe(
+            catchError(this.handleError)
+          );
+      }
+      obtenerListClientOrdenA(): Observable<Usuario[]> {
+        const url = `${this.url}/listarClienteEstadoActivo`;
+        return this._httpClient.get<Usuario[]>(url)
+          .pipe(
+            catchError(this.handleError)
+          );
+      }
+        obtenerListClientOrdenI(): Observable<Usuario[]> {
+        const url = `${this.url}/listarClienteEstadoInactivo`;
+        return this._httpClient.get<Usuario[]>(url)
+          .pipe(
+            catchError(this.handleError)
+          );
+      }
+      BuscarUsername(username: any) {
+        return this._httpClient.get(`${this.url}/buscar/${username}`);
+      }
       eliminadoLogico(id: any) {
         return this._httpClient.put(`${this.url}/eliminar/${id}`, null);
       }
