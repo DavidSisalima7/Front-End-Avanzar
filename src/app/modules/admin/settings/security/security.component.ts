@@ -47,56 +47,54 @@ export class SettingsSecurityComponent implements OnInit
       newPassword: ['', Validators.required]
     });
   }
-
   cambiarContrasena(currentPassword: string, newPassword: string): void {
     if (this.securityForm.valid) {
-    this.securityForm.disable(); // Deshabilitar el formulario
-    
-        // Ocultar la alerta
-        this.showAlert = false;
-    
-        if (this.securityForm.controls.currentPassword.value === currentPassword) {
-            this.userService.actualizarContrasena(currentPassword, newPassword).subscribe(
-                () => {
-                    // Éxito al cambiar la contraseña
-                    this.alertType = 'success';
-                    this.alertMessage = 'Contraseña cambiada con éxito';
-                    this.showAlert = true;
-    
-                    // Realizar acciones adicionales después de cambiar la contraseña si es necesario.
-    
-                    this.securityForm.reset(); // Reiniciar el formulario
-                    this.securityForm.enable(); // Habilitar el formulario después del éxito
-                },
-                (error) => {
-                    // Error al cambiar la contraseña
-                    console.error('Error al cambiar la contraseña', error);
-                    if (error.status === 401) {
-                        this.alertType = 'error';
-                        this.alertMessage = 'La contraseña actual no coincide.';
-                    } else {
-                        this.alertType = 'error';
-                        this.alertMessage = 'Ocurrió un error al cambiar la contraseña.';
-                    }
-                    // Manejar otros errores si es necesario.
-    
-                    this.showAlert = true; // Establecer showAlert en true en caso de error
-                    this.securityForm.enable(); // Habilitar el formulario después del error
-                }
-            );
-        } else {
-            // Contraseña actual incorrecta
-            this.alertType = 'error';
-            this.alertMessage = 'La contraseña actual no es correcta.';
+      this.securityForm.disable(); // Deshabilitar el formulario
+  
+      // Ocultar la alerta
+      this.showAlert = false;
+  
+      if (this.securityForm.controls.currentPassword.value === currentPassword) {
+        this.userService.actualizarContrasena(currentPassword, newPassword).subscribe({
+          next: () => {
+            // Éxito al cambiar la contraseña
+            this.alertType = 'success';
+            this.alertMessage = 'Contraseña cambiada con éxito';
             this.showAlert = true;
+  
+            // Realizar acciones adicionales después de cambiar la contraseña si es necesario.
+  
+            this.securityForm.reset(); // Reiniciar el formulario
+            this.securityForm.enable(); // Habilitar el formulario después del éxito
+          },
+          error: (error) => {
+            // Error al cambiar la contraseña
+            console.error('Error al cambiar la contraseña', error);
+            if (error.status === 401) {
+              this.alertType = 'error';
+              this.alertMessage = 'La contraseña actual no coincide.';
+            } else {
+              this.alertType = 'error';
+              this.alertMessage = 'Ocurrió un error al cambiar la contraseña.';
+            }
+            // Manejar otros errores si es necesario.
+  
+            this.showAlert = true; // Establecer showAlert en true en caso de error
             this.securityForm.enable(); // Habilitar el formulario después del error
-        }
-    } else {
-        // Marcar los campos como tocados para mostrar los mensajes de error
-        this.securityForm.markAllAsTouched();
+          }
+        });
+      } else {
+        // Contraseña actual incorrecta
         this.alertType = 'error';
-        this.alertMessage = 'Por favor, completa todos los campos.';
+        this.alertMessage = 'La contraseña actual no es correcta.';
         this.showAlert = true;
-        
+        this.securityForm.enable(); // Habilitar el formulario después del error
+      }
+    } else {
+      // Marcar los campos como tocados para mostrar los mensajes de error
+      Object.values(this.securityForm.controls).forEach(control => control.markAsTouched());
+      this.alertType = 'error';
+      this.alertMessage = 'Por favor, completa todos los campos.';
+      this.showAlert = true;
     }
-}}
+  }}
