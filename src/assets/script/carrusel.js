@@ -38,3 +38,4 @@ nextButton.addEventListener('click', goToNextSlide);
 
 // Mostrar el primer elemento al cargar la página
 showCurrentSlide();
+
