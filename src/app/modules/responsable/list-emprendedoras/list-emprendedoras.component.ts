@@ -19,7 +19,7 @@ import { CommonModule } from '@angular/common';
 
 //DIALOGOS
 import { MatDialog } from '@angular/material/dialog';
-import { MailboxComposeComponent } from 'app/modules/responsable/compose/compose.component';
+import { MailboxeditarComponent} from 'app/modules/responsable/editar/editar.component';
 
 
 @Component({
@@ -84,7 +84,7 @@ export class ListEmprendedorasResponsableComponent
   openComposeDialog(): void
   {
       // Open the dialog
-      const dialogRef = this._matDialog.open(MailboxComposeComponent);
+      const dialogRef = this._matDialog.open(MailboxeditarComponent);
 
       dialogRef.afterClosed()
           .subscribe((result) =>
