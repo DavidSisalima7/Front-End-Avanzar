@@ -17,10 +17,14 @@ import {MatDatepickerModule} from '@angular/material/datepicker';
 import { PersonaService } from 'app/services/services/persona.service';
 import { UserService } from 'app/core/user/user.service';
 import { Persona } from 'app/services/models/persona';
-import { DatePipe, NgIf } from '@angular/common';
+import { DatePipe, NgClass, NgIf } from '@angular/common';
 import { FuseAlertComponent } from '@fuse/components/alert';
 import { fuseAnimations } from '@fuse/animations';
 import { User } from 'app/core/user/user.types';
+import { ChangeDetectionStrategy } from '@angular/compiler';
+import { FuseCardComponent } from '@fuse/components/card';
+import { VendedorService } from 'app/services/services/vendedora.service';
+import { Vendedora } from 'app/services/models/vendedora';
 
 @Component({
     selector     : 'register-emprendedora',
@@ -30,7 +34,7 @@ import { User } from 'app/core/user/user.types';
     standalone   : true,
     imports      : [MatIconModule, FormsModule, ReactiveFormsModule, MatStepperModule, MatFormFieldModule, MatInputModule, MatSelectModule, MatOptionModule, 
         MatButtonModule, MatCheckboxModule, MatRadioModule,MatTableModule,MatTabsModule,MatDatepickerModule,
-        NgIf, FuseAlertComponent],
+        NgIf, FuseAlertComponent, NgClass, FuseCardComponent],
 })
 export class RegisterEmpreRespComponent implements OnInit
 {
@@ -45,9 +49,12 @@ export class RegisterEmpreRespComponent implements OnInit
 
     horizontalStepperForm: FormGroup;
     persona: Persona = new Persona();
+    vendedora: Vendedora = new Vendedora();
     selectedDate:Date;
     selectedFile: File | null = null;
     user: User=new User();
+    yearlyBilling: boolean = true;
+    clickedButtonValue: number = 0; // Inicializar con 0
 
     /**
      * Constructor
@@ -55,7 +62,8 @@ export class RegisterEmpreRespComponent implements OnInit
     constructor(private _formBuilder: UntypedFormBuilder, 
                 private personaService: PersonaService, 
                 private usuarioService: UserService,
-                private datePipe:DatePipe
+                private datePipe:DatePipe,
+                private vendedorService: VendedorService
                 )
     {
 
@@ -184,20 +192,18 @@ export class RegisterEmpreRespComponent implements OnInit
             this.usuarioService.registrarUsuarioConFoto(this.user, rolId, this.selectedFile)
               .subscribe(
                   (response) => {
+                    this.vendedora.usuario = response;
+                    this.vendedora.nombreEmprendimiento = "VAMOOOS";
                       console.log(response);
-                      this.alert = {
-                          type   : 'success',
-                          message: 'Su registro se a realizado correctamente',
-                      };
-                      this.showAlert = true;
+
+                      this.vendedorService.registrarVendedor(this.vendedora, this.clickedButtonValue).subscribe(dataVendedora => {
+
+                        console.log(dataVendedora);
+
+                      });
+                      
                   },
-                  (error) => {
-                      this.alert = {
-                          type   : 'error',
-                          message: 'Ha ocurrido un error al crear el usuario',
-                      };
-                      this.showAlert = true;
-                  }
+                  
                 );
               
           })
@@ -222,4 +228,12 @@ export class RegisterEmpreRespComponent implements OnInit
             this.showAlert = false; // Ocultar la alerta después de 4 segundos
         }, 4000); // 4000 milisegundos = 4 segundos
     }
+
+    handleClick(buttonValue: number) {
+        this.clickedButtonValue = buttonValue;
+        console.log("BOTON", this.clickedButtonValue);
+      }
+
+     
+    
 }

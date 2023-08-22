@@ -5,7 +5,7 @@ export class Usuario {
     username: string='';
     name: string='';
     password: string='';
-    estado: boolean;
+    estado ?: boolean;
     visible: boolean;
     persona?:Persona;
 }
