@@ -181,6 +181,21 @@ export class ClassyLayoutComponent implements OnInit, OnDestroy
                                 type : 'basic',
                                 icon : 'heroicons_outline:document-text',
                                 link : '/list-responsables'
+                            },
+
+                            {
+                                id   : 'list-empren',
+                                title: 'Emprendedoras',
+                                type : 'basic',
+                                icon : 'heroicons_outline:document-text',
+                                link : '/list-emprend'
+                            },
+                            {
+                                id   : 'list-clie',
+                                title: 'Clientes',
+                                type : 'basic',
+                                icon : 'heroicons_outline:document-text',
+                                link : '/list-clie'
                             }
                         ]
                     },
