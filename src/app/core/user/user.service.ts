@@ -74,6 +74,20 @@ export class UserService {
             catchError(this.handleError)
           );
       }
+      obtenerListaResponsableOrdenA(): Observable<Usuario[]> {
+        const url = `${this.url}/listarResponsablesEstadoActivo`;
+        return this._httpClient.get<Usuario[]>(url)
+          .pipe(
+            catchError(this.handleError)
+          );
+      }
+        obtenerListaResponsableOrdenI(): Observable<Usuario[]> {
+        const url = `${this.url}/listarResponsablesEstadoInactivo`;
+        return this._httpClient.get<Usuario[]>(url)
+          .pipe(
+            catchError(this.handleError)
+          );
+      }
     
       private handleError(error: any) {
         console.error('Ocurrió un error:', error);
@@ -82,7 +96,7 @@ export class UserService {
 
 
       
-    registrarUsuarioConFoto(usuario: User, rolId: number, file: File | null): Observable<User> {
+    registrarUsuarioConFoto(usuario: User, rolId: number, file: any | null): Observable<User> {
         const formData = new FormData();
         formData.append('usuario', JSON.stringify(usuario));
         
