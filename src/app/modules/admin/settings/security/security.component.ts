@@ -54,7 +54,7 @@ export class SettingsSecurityComponent implements OnInit
   
       // Ocultar la alerta
       this.showAlert = false;
-      alert(this.securityForm.controls.currentPassword.value)
+   
       
       // Verificar si la contraseña actual coincide
       if (this.securityForm.controls.currentPassword.value === currentPassword) {
