@@ -30,9 +30,7 @@
                     matInput
                     [formControlName]="'cedula'">
             </mat-form-field>
-
         </div>
-
 
         <div class="flex">
 
@@ -110,6 +108,15 @@
             <mat-datepicker #picker></mat-datepicker>
           </mat-form-field>
 
+          <mat-form-field class="flex-auto gt-xs:pr-3"  id="datos">
+            <mat-label>Estado</mat-label>
+            <mat-select >
+                <mat-option value="country-1">Activo</mat-option>
+                <mat-option value="country-2">Inactivo</mat-option>
+            </mat-select>
+        </mat-form-field>
+
+
 
                   
         <div class="flex">
@@ -144,6 +151,40 @@
                 matPrefix
                 [svgIcon]="'heroicons_solid:bars-3-bottom-left'"></mat-icon>
         </mat-form-field>
+
+
+        <div class="flex">
+            <mat-form-field >
+                <mat-label>Contraseña</mat-label>
+                <input
+                    id="password"
+                    matInput
+                    type="password"
+                    [formControlName]="'password'"
+                    #passwordField>
+                <button
+                    mat-icon-button
+                    type="button"
+                    (click)="passwordField.type === 'password' ? passwordField.type = 'text' : passwordField.type = 'password'"
+                    matSuffix>
+                    <mat-icon
+                        class="icon-size-5"
+                        *ngIf="passwordField.type === 'password'"
+                        [svgIcon]="'heroicons_solid:eye'"></mat-icon>
+                    <mat-icon
+                        class="icon-size-5"
+                        *ngIf="passwordField.type === 'text'"
+                        [svgIcon]="'heroicons_solid:eye-slash'"></mat-icon>
+                </button>
+                <mat-error>
+                    Password is required
+                </mat-error>
+            </mat-form-field>
+
+        </div>
+
+
+        
 
 
         <!-- Actions -->
