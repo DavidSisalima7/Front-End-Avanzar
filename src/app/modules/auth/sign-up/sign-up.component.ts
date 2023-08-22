@@ -1,6 +1,6 @@
 import { DatePipe, NgIf } from '@angular/common';
 import { Component, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
-import { FormsModule, NgForm, ReactiveFormsModule, UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
+import { AbstractControl, FormsModule, NgForm, ReactiveFormsModule, UntypedFormBuilder, UntypedFormGroup, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatDateFormats } from '@angular/material/core';
@@ -22,34 +22,33 @@ import { PersonaService } from 'app/services/services/persona.service';
 
 
 @Component({
-    selector     : 'auth-sign-up',
-    templateUrl  : './sign-up.component.html',
+    selector: 'auth-sign-up',
+    templateUrl: './sign-up.component.html',
     encapsulation: ViewEncapsulation.None,
-    animations   : fuseAnimations,
-    standalone   : true,
-    imports      : [RouterLink, NgIf, FuseAlertComponent, FormsModule, ReactiveFormsModule, MatFormFieldModule, 
-        MatInputModule, MatButtonModule, MatIconModule, MatCheckboxModule, MatProgressSpinnerModule, 
+    animations: fuseAnimations,
+    standalone: true,
+    imports: [RouterLink, NgIf, FuseAlertComponent, FormsModule, ReactiveFormsModule, MatFormFieldModule,
+        MatInputModule, MatButtonModule, MatIconModule, MatCheckboxModule, MatProgressSpinnerModule,
         MatDatepickerModule, MatSelectModule],
 })
-export class SignUpComponent implements OnInit
-{
+export class SignUpComponent implements OnInit {
     @ViewChild('signUpNgForm') signUpNgForm: NgForm;
 
     alert: { type: FuseAlertType; message: string } = {
-        type   : 'success',
+        type: 'success',
         message: '',
     };
     signUpForm: UntypedFormGroup;
     showAlert: boolean = false;
 
     //fechas
-    selectedDate:Date;
+    selectedDate: Date;
 
     persona: Persona = new Persona();
-    user: User=new User();
+    user: User = new User();
     selectedFile: File | null = null;
     //Variable para el combo Box de genero que almacena el resultado
-    public generoSeleccionado:string;
+    public generoSeleccionado: string;
 
 
 
@@ -62,9 +61,8 @@ export class SignUpComponent implements OnInit
         private _router: Router,
         private personaService: PersonaService,
         private usuarioService: UserService,
-        private datePipe:DatePipe
-    )
-    {
+        private datePipe: DatePipe
+    ) {
     }
 
     // -----------------------------------------------------------------------------------------------------
@@ -74,24 +72,22 @@ export class SignUpComponent implements OnInit
     /**
      * On init
      */
-    ngOnInit(): void
-    {
+    ngOnInit(): void {
         // Create the form
         this.signUpForm = this._formBuilder.group({
-                cedula       : ['', Validators.required],
-                primernombre       : ['', Validators.required],
-                segundonombre      : ['', Validators.required],
-                primerapellido     : ['', Validators.required],
-                segundoapellido    : ['', Validators.required],
-                correo     : ['', [Validators.required, Validators.email]],
-                password  : ['', Validators.required],
-                direccion  : ['', Validators.required],
-                celular   : ['', Validators.required],
-                fecha_nacimiento :['',Validators.required],
-                genero:['',Validators.required],
-                agreements: ['', Validators.requiredTrue],
-            },
-        );
+            cedula: ['', [Validators.required, validarLongitud()]],
+            primernombre: ['', Validators.required],
+            segundonombre: ['', Validators.required],
+            primerapellido: ['', Validators.required],
+            segundoapellido: ['', Validators.required],
+            correo: ['', [Validators.required, Validators.email]],
+            password: ['', [Validators.required, validarcontra()]],
+            direccion: ['', Validators.required],
+            celular: ['', [Validators.required, validarLongitud()]],
+            fecha_nacimiento: ['', [Validators.required, edadMinimaValidator()]],
+            genero: ['', Validators.required],
+            agreements: ['', Validators.requiredTrue],
+        });
     }
 
     // -----------------------------------------------------------------------------------------------------
@@ -103,13 +99,13 @@ export class SignUpComponent implements OnInit
     isFormValidAndAccepted(): boolean {
         return this.signUpForm.valid && this.signUpForm.get('agreements').value;
     }
-    
+
     /**
      * Sign up
      */
     signUp(): void {
         this.persona.estado = true;
-        this.persona.nacionalidad="Ecuador"
+        this.persona.nacionalidad = "Ecuador"
         this.user.enabled = true;
         this.user.visible = true;
         this.user.username = this.signUpForm.get('correo')?.value;
@@ -118,45 +114,45 @@ export class SignUpComponent implements OnInit
         const primerApellido = this.signUpForm.get('primerapellido')?.value;
         const generoSeleccionado = this.signUpForm.get('genero').value
         const formattedDate = this.datePipe.transform(this.selectedDate, 'dd/MM/yyyy');
-        this.persona.descripcion="Hola mi nombre es "+primerNombre+' '+primerApellido+" encantado de conocerte. ♥";
+        this.persona.descripcion = "Hola mi nombre es " + primerNombre + ' ' + primerApellido + " encantado de conocerte. ♥";
         this.user.name = primerNombre + ' ' + primerApellido;
-        this.persona.fecha_nacimiento=formattedDate;
+        this.persona.fecha_nacimiento = formattedDate;
         this.persona.genero = generoSeleccionado;
-        
+
 
         this.personaService.savePersona(this.persona).subscribe(data => {
-          console.log(data);
-          this.user.persona = data;
-          const rolId = 4; // ID del rol
-          this.usuarioService.registrarUsuarioConFoto(this.user, rolId, this.selectedFile)
-            .subscribe(
-                (response) => {
-                    console.log(response);
-                    this.alert = {
-                        type   : 'success',
-                        message: 'Su registro se a realizado correctamente',
-                    };
-                    this.showAlert = true;
-                },
-                (error) => {
-                    this.alert = {
-                        type   : 'error',
-                        message: 'Ha ocurrido un error al crear el usuario',
-                    };
-                    this.showAlert = true;
-                }
-              );
-            
+            console.log(data);
+            this.user.persona = data;
+            const rolId = 4; // ID del rol
+            this.usuarioService.registrarUsuarioConFoto(this.user, rolId, this.selectedFile)
+                .subscribe(
+                    (response) => {
+                        console.log(response);
+                        this.alert = {
+                            type: 'success',
+                            message: 'Su registro se a realizado correctamente',
+                        };
+                        this.showAlert = true;
+                    },
+                    (error) => {
+                        this.alert = {
+                            type: 'error',
+                            message: 'Ha ocurrido un error al crear el usuario',
+                        };
+                        this.showAlert = true;
+                    }
+                );
+
             this.signUpNgForm.resetForm();
 
         })
 
-    } 
+    }
 
 
-    upload(event:any){
-        const file=event.target.files[0];
-        this.selectedFile=file;
+    upload(event: any) {
+        const file = event.target.files[0];
+        this.selectedFile = file;
         /* if (file) {
             const formData=new FormData();
             formData.append('file',file);
@@ -169,5 +165,67 @@ export class SignUpComponent implements OnInit
         } */
     }
 
+}
 
+/* Metodo para validar la cedula y celular de 10 digitos*/
+
+function validarLongitud(): ValidatorFn {
+    return (control: AbstractControl): ValidationErrors | null => {
+        const longitud = control.value as string;
+
+        if (longitud && longitud.length !== 10) {
+            return { longitudInvalida: true };
+        }
+
+        return null;
+    };   
+}
+
+/* Metodo para validar la contraseña de 8 digitos*/
+
+function validarcontra(): ValidatorFn {
+    return (control: AbstractControl): ValidationErrors | null => {
+        const longitud = control.value as string;
+
+        if (longitud && longitud.length !== 8) {
+            return { longitudInvalida: true };
+        }
+
+        return null;
+    };
+    
+}
+
+/* Metodo para validar que el usuario sea mayor de edad*/
+
+function calcularEdad(fechaNacimiento: Date): number {
+    const hoy = new Date();
+    const fechaNac = new Date(fechaNacimiento);
+    let edad = hoy.getFullYear() - fechaNac.getFullYear();
+    const mes = hoy.getMonth() - fechaNac.getMonth();
+
+    if (mes < 0 || (mes === 0 && hoy.getDate() < fechaNac.getDate())) {
+        edad--;
+    }
+
+    return edad;
+}
+
+
+
+export function edadMinimaValidator(): ValidatorFn {
+    return (control: AbstractControl): ValidationErrors | null => {
+        const fechaNacimiento = control.value;
+        if (!fechaNacimiento) {
+            return null;
+        }
+
+        const edad = calcularEdad(fechaNacimiento);
+
+        if (edad < 18) {
+            return { menorDeEdad: true };
+        }
+
+        return null;
+    };
 }
