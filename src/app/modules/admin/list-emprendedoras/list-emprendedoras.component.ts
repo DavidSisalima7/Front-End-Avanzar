@@ -16,6 +16,7 @@ import { Usuario } from 'app/services/models/usuario';
 import { UserService } from 'app/core/user/user.service';
 import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
+import Swal from 'sweetalert2';
 
 //DIALOGOS
 import { MatDialog } from '@angular/material/dialog';
@@ -52,7 +53,7 @@ export class ListAdminEmprendedorasComponent{
 
   }
   listarRegistros() {
-    this.usuarioService.obtenerListaResponsable().subscribe(
+    this.usuarioService.obtenerListaEmprendedor().subscribe(
       (datos: Usuario[]) => {
         this.dataSource = new MatTableDataSource<Usuario>(datos);
       },
@@ -65,7 +66,7 @@ export class ListAdminEmprendedorasComponent{
   usuarios:any;
 ///Cedula
   FiltroCedulaAsc(): void {
-    this.usuarioService.obtenerListaResponsable().subscribe(
+    this.usuarioService.obtenerListaEmprendedor().subscribe(
       (datos: Usuario[]) => {
         // Ordena el array de usuarios por  cedula asc
         this.usuarios = datos.sort((a, b) => a.persona.cedula - b.persona.cedula);
@@ -77,7 +78,7 @@ export class ListAdminEmprendedorasComponent{
     );
   }
   FiltroCedulaDesc(): void {
-    this.usuarioService.obtenerListaResponsable().subscribe(
+    this.usuarioService.obtenerListaEmprendedor().subscribe(
       (datos: Usuario[]) => {
         // Ordena el array de usuarios por cedula en forma descendente
         this.usuarios = datos.sort((a, b) => b.persona.cedula - a.persona.cedula);
@@ -91,7 +92,7 @@ export class ListAdminEmprendedorasComponent{
 
   //celular
   FiltroCelularAsc(): void {
-    this.usuarioService.obtenerListaResponsable().subscribe(
+    this.usuarioService.obtenerListaEmprendedor().subscribe(
       (datos: Usuario[]) => {
         // Ordena el array de usuarios por el celular acs
         this.usuarios = datos.sort((a, b) => a.persona.celular.localeCompare(b.persona.celular));
@@ -103,7 +104,7 @@ export class ListAdminEmprendedorasComponent{
     );
   }
   FiltroCelularDesc(): void {
-    this.usuarioService.obtenerListaResponsable().subscribe(
+    this.usuarioService.obtenerListaEmprendedor().subscribe(
       (datos: Usuario[]) => {
         // Ordena el array de usuarios por el celular desc
         this.usuarios = datos.sort((a, b) => b.persona.celular.localeCompare(a.persona.celular));
@@ -116,7 +117,7 @@ export class ListAdminEmprendedorasComponent{
   }
 //Nombres
 FiltroNombreAsc(): void {
-  this.usuarioService.obtenerListaResponsable().subscribe(
+  this.usuarioService.obtenerListaEmprendedor().subscribe(
     (datos: Usuario[]) => {
       // Ordena el array de usuarios por el nombre asc
       this.usuarios = datos.sort((a, b) => a.name.localeCompare(b.name));
@@ -128,7 +129,7 @@ FiltroNombreAsc(): void {
   );
 }
 FiltroNombreDesc(): void {
-  this.usuarioService.obtenerListaResponsable().subscribe(
+  this.usuarioService.obtenerListaEmprendedor().subscribe(
     (datos: Usuario[]) => {
       // Ordena el array de usuarios por el nombre desc
       this.usuarios = datos.sort((a, b) => b.name.localeCompare(a.name));
@@ -141,7 +142,7 @@ FiltroNombreDesc(): void {
 }
 //Correos
 FiltroCorreoAsc(): void {
-  this.usuarioService.obtenerListaResponsable().subscribe(
+  this.usuarioService.obtenerListaEmprendedor().subscribe(
     (datos: Usuario[]) => {
       // Ordena el array de usuarios por el correo asc
       this.usuarios = datos.sort((a, b) => a.persona.correo.localeCompare(b.persona.correo));
@@ -153,7 +154,7 @@ FiltroCorreoAsc(): void {
   );
 }
 FiltroCorreoDesc(): void {
-  this.usuarioService.obtenerListaResponsable().subscribe(
+  this.usuarioService.obtenerListaEmprendedor().subscribe(
     (datos: Usuario[]) => {
       // Ordena el array de usuarios por el correo desc
       this.usuarios = datos.sort((a, b) => b.persona.correo.localeCompare(a.persona.correo));
@@ -166,7 +167,7 @@ FiltroCorreoDesc(): void {
 }
   FiltroEstadoActivo() {
      // Ordena el array de usuarios por estado activo
-    this.usuarioService.obtenerListaResponsableOrdenA().subscribe(
+    this.usuarioService.obtenerListEmprendedorOrdenA().subscribe(
       (datos: Usuario[]) => {
         this.dataSource = new MatTableDataSource<Usuario>(datos);
       },
@@ -177,7 +178,7 @@ FiltroCorreoDesc(): void {
   }
   FiltroEstadoInactivo() {
     // Ordena el array de usuarios por estado inactivo
-    this.usuarioService.obtenerListaResponsableOrdenI().subscribe(
+    this.usuarioService.obtenerListEmprendedorOrdenI().subscribe(
       (datos: Usuario[]) => {
         this.dataSource = new MatTableDataSource<Usuario>(datos);
       },
@@ -247,19 +248,41 @@ FiltroCorreoDesc(): void {
     }
   }
 
-  redirectToRegisterResponsable() {
-    this._router.navigate(['/register-responsable']);
-  }
+  redirectToFormEmprendedora(): void {
+    this._router.navigate(['/reg-empre-resp']);
+}
 
-  selectedResponsable:any;
-  seleccionarResponsable(usuario: any) {
-    this.selectedResponsable = usuario.id;
-    this.usuarioService.eliminadoLogico(this.selectedResponsable).subscribe(
-      (datapersencontrada) => {
-        console.log(datapersencontrada);
-      });
+  selectedEmprendedora:any;
+  usernameSelect: any;
+  verficarEstado: any;
+  seleccionarEmprendedora(usuario: any) {
+    this.selectedEmprendedora = usuario.id;
+    this.usernameSelect = usuario.username;
+    this.usuarioService.BuscarUsername(this.usernameSelect).subscribe(
+      (usuarioEncontrado) => {
+        this.verficarEstado=usuarioEncontrado;
+      if (this.verficarEstado === null){
+      Swal.fire(
+        'Acción no disponible',
+        'El usuario ya se encuentra inactivo',
+        'error',
+            );
+      
+      }else{
+        this.usuarioService.eliminadoLogico(this.selectedEmprendedora).subscribe(
+          (datapersencontrada) => {
+            this.listarRegistros();
+            Swal.fire(
+              'Acción Exitosa',
+              'Usuario Desactivado.',
+              'success'
+                  );
+            return;
+          } );
+       
+      }
+    });
   }
-
 
   //ABRIR EL MODAL
   openComposeDialog(): void

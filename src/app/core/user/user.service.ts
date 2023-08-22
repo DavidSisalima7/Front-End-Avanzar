@@ -128,7 +128,13 @@ export class UserService {
             catchError(this.handleError)
           );
       }
-
+      obtenerListaCliente(): Observable<Usuario[]> {
+        const url = `${this.url}/listarClientes`;
+        return this._httpClient.get<Usuario[]>(url)
+          .pipe(
+            catchError(this.handleError)
+          );
+      }
       obtenerListaResponsable(): Observable<Usuario[]> {
         const url = `${this.url}/listarResponsables`;
         return this._httpClient.get<Usuario[]>(url)
