@@ -9,14 +9,19 @@ import { UserService } from 'app/core/user/user.service';
 
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
+import { fuseAnimations } from '@fuse/animations';
+import { FuseAlertComponent } from '@fuse/components/alert';
+import { NgIf } from '@angular/common';
 
 @Component({
     selector       : 'settings-security',
     templateUrl    : './security.component.html',
     encapsulation  : ViewEncapsulation.None,
     changeDetection: ChangeDetectionStrategy.OnPush,
+    animations   : fuseAnimations,
     standalone     : true,
-    imports        : [FormsModule, ReactiveFormsModule, MatFormFieldModule, MatIconModule, MatInputModule, MatSlideToggleModule, MatButtonModule],
+    imports        : [FormsModule, ReactiveFormsModule, MatFormFieldModule, MatIconModule, MatInputModule, MatSlideToggleModule, MatButtonModule,
+    FuseAlertComponent, NgIf],
 })
 export class SettingsSecurityComponent implements OnInit
 {

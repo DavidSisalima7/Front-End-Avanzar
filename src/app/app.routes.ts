@@ -75,6 +75,8 @@ export const appRoutes: Route[] = [
         children: [
             {path: 'dash-admin', loadChildren: () => import('app/modules/admin/dashboard/dashboard.routes')},
             {path: 'list-responsables', loadChildren: () => import('app/modules/admin/list-responsables/list-responsables.routes')},
+            {path: 'list-emprend', loadChildren: () => import('app/modules/admin/list-emprendedoras/list-emprendedoras.routes')},
+            {path: 'list-clie', loadChildren: () => import('app/modules/admin/list-cliente/list-cliente.routes')},
             {path: 'profile-admin', loadChildren: () => import('app/modules/admin/profile/profile.routes')},
             {path: 'register-responsable', loadChildren: () => import('app/modules/admin/register-responsable/register-responsable.routes')},
             {path: 'example', loadChildren: () => import('app/modules/admin/example/example.routes')},

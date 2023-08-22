@@ -25,8 +25,6 @@ import { User } from 'app/core/user/user.types';
 @Component({
     selector     : 'register-responsable',
     templateUrl  : './register-responsable.component.html',
-    styleUrls: ['./register-responsable.component.scss'],
-
     encapsulation: ViewEncapsulation.None,
     animations: fuseAnimations,
     standalone   : true,
