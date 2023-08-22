@@ -28,6 +28,14 @@ export class LandingHomeComponent {
     }
 
     redirectToNosotros(): void {
-        this._router.navigate(['nosotros']);
+        this._router.navigate(['/nosotros']);
+    }
+
+    redirectToPlanes(): void {
+        this._router.navigate(['/planes']);
+    }
+
+    redirectToHome(): void {
+        this._router.navigate(['/home']);
     }
 }

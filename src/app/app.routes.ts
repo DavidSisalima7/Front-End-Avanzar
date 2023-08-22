@@ -60,6 +60,7 @@ export const appRoutes: Route[] = [
             {path: 'home', loadChildren: () => import('app/modules/landing/home/home.routes')},
             {path: 'home-tienda', loadChildren: () => import('app/modules/landing/home-tienda/home-tienda.routes')},
             {path: 'nosotros', loadChildren: () => import('app/modules/landing/nosotros/nosotros.routes')},
+            {path: 'planes', loadChildren: () => import('app/modules/landing/planes/planes.routes')},
         ]
     },
 
@@ -102,6 +103,7 @@ export const appRoutes: Route[] = [
                 {path: 'reg-empre-resp', loadChildren: () => import('app/modules/responsable/register-emprendedora/register-emprendedora.routes')},
                 {path: 'profile-resp', loadChildren: () => import('app/modules/responsable/profile/profile.routes')},
                 {path: 'config-resp', loadChildren: () => import('app/modules/responsable/settings/settings.routes')},
+                {path: 'list-serv-resp', loadChildren: () => import('app/modules/responsable/list-servicios/list-servicios.routes')},
 
             ]
         },
