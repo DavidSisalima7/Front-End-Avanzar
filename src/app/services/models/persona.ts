@@ -2,7 +2,7 @@
 export class Persona {
 
     id_persona: number;
-    cedula: number;
+    cedula: string='';
     primer_nombre: string='';
     segundo_nombre: string='';
     primer_apellido: string='';

@@ -50,7 +50,7 @@ export class SignUpComponent implements OnInit {
     //Variable para el combo Box de genero que almacena el resultado
     public generoSeleccionado: string;
 
-
+    cedulaRegistrada: boolean = false;
 
     /**
      * Constructor
@@ -100,9 +100,43 @@ export class SignUpComponent implements OnInit {
         return this.signUpForm.valid && this.signUpForm.get('agreements').value;
     }
 
-    /**
-     * Sign up
-     */
+    // Método para capturar la cédula del formulario
+
+    capturarCedulaYBuscar(): void {
+        const cedulaValue = this.signUpForm.get('cedula').value;
+        console.log(`Cédula capturada: ${cedulaValue}`);
+        this.buscarPersonaPorCedula(cedulaValue);
+    }
+
+    // Método para buscar la cédula si esta en la BD
+
+    buscarPersonaPorCedula(cedulaValue: string): void {
+        this.personaService.buscarPersonaPorCedula(cedulaValue)
+            .subscribe(
+                (encontrada: boolean) => {
+                    if (encontrada) {
+                        console.log(`Persona con cédula ${cedulaValue} encontrada.`);
+                        this.cedulaRegistrada = true;
+                        this.alert = {
+                            type: 'error',
+                            message: 'El usuario ya se encuentra registrado',
+                        };
+                        this.showAlert = true;
+                        this.signUpNgForm.resetForm();
+                    } else {
+                        console.log(`Persona con cédula ${cedulaValue} no encontrada.`);
+                        this.cedulaRegistrada = false;
+                        this.signUp();
+                    }
+                },
+                (error) => {
+                    console.error('Error al buscar persona:', error);
+                }
+            );
+    }
+
+    // Método para registrar a un nuevo usuario
+
     signUp(): void {
         this.persona.estado = true;
         this.persona.nacionalidad = "Ecuador"
@@ -118,7 +152,6 @@ export class SignUpComponent implements OnInit {
         this.user.name = primerNombre + ' ' + primerApellido;
         this.persona.fecha_nacimiento = formattedDate;
         this.persona.genero = generoSeleccionado;
-
 
         this.personaService.savePersona(this.persona).subscribe(data => {
             console.log(data);
@@ -145,7 +178,7 @@ export class SignUpComponent implements OnInit {
 
             this.signUpNgForm.resetForm();
 
-        })
+        });
 
     }
 
@@ -165,6 +198,8 @@ export class SignUpComponent implements OnInit {
         } */
     }
 
+
+
 }
 
 /* Metodo para validar la cedula y celular de 10 digitos*/
@@ -178,7 +213,7 @@ function validarLongitud(): ValidatorFn {
         }
 
         return null;
-    };   
+    };
 }
 
 /* Metodo para validar la contraseña de 8 digitos*/
@@ -193,7 +228,7 @@ function validarcontra(): ValidatorFn {
 
         return null;
     };
-    
+
 }
 
 /* Metodo para validar que el usuario sea mayor de edad*/
@@ -212,7 +247,6 @@ function calcularEdad(fechaNacimiento: Date): number {
 }
 
 
-
 export function edadMinimaValidator(): ValidatorFn {
     return (control: AbstractControl): ValidationErrors | null => {
         const fechaNacimiento = control.value;
@@ -229,3 +263,4 @@ export function edadMinimaValidator(): ValidatorFn {
         return null;
     };
 }
+
