@@ -75,7 +75,6 @@ export class ClassyLayoutComponent implements OnInit, OnDestroy
     {
         // Subscribe to navigation data
         const rolIngresado = localStorage.getItem('Rol');
-        console.log("1", rolIngresado);
 
         this.swapNavigationData('mainNavigation'); // Llama al método con el rol
 
@@ -140,8 +139,7 @@ export class ClassyLayoutComponent implements OnInit, OnDestroy
     swapNavigationData(navigationName: string): void {
         // Obtiene el rol almacenado en el localStorage
         const rolIngresado = localStorage.getItem('Rol');
-        console.log("2", rolIngresado);
-    
+
         // Define las opciones de navegación en función del rol
         let newNavigation: FuseNavigationItem[] = [];
 

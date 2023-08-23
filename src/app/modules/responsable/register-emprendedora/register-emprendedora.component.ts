@@ -191,14 +191,11 @@ export class RegisterEmpreRespComponent implements OnInit {
         // Luego, realiza la llamada al servicio para guardar la persona y el usuario
         // ... código para guardar persona y usuario ...
         this.personaService.savePersona(this.persona).subscribe(data => {
-            console.log(data);
             this.user.persona = data;
             const rolId = 3; // ID del rol
             this.usuarioService.registrarUsuarioConFoto(this.user, rolId, this.selectedFile)
                 .subscribe(
                     (response) => {
-                        console.log("usuario", response);
-
                         this.vendedor.usuario = response;
                         this.vendedorService.registrarVendedor(this.vendedor, this.clickedButtonValue).subscribe(dataVendedora => {
                             console.log(dataVendedora);
