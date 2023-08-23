@@ -24,7 +24,7 @@ import { User } from 'app/core/user/user.types';
 import { ChangeDetectionStrategy } from '@angular/compiler';
 import { FuseCardComponent } from '@fuse/components/card';
 import { VendedorService } from 'app/services/services/vendedora.service';
-import { Vendedora } from 'app/services/models/vendedora';
+import { Vendedor } from 'app/services/models/vendedora';
 
 @Component({
     selector     : 'register-emprendedora',
@@ -49,7 +49,7 @@ export class RegisterEmpreRespComponent implements OnInit
 
     horizontalStepperForm: FormGroup;
     persona: Persona = new Persona();
-    vendedora: Vendedora = new Vendedora();
+    vendedor: Vendedor = new Vendedor();
     selectedDate:Date;
     selectedFile: File | null = null;
     user: User=new User();
@@ -181,6 +181,10 @@ export class RegisterEmpreRespComponent implements OnInit
         this.user.enabled = true;
         this.user.visible = true;
 
+        //DATOS DE VENDEDOR
+        
+        this.vendedor.nombreEmprendimiento = "VAMOOOS";
+
         // ... otros campos ...
     
         // Luego, realiza la llamada al servicio para guardar la persona y el usuario
@@ -188,18 +192,15 @@ export class RegisterEmpreRespComponent implements OnInit
         this.personaService.savePersona(this.persona).subscribe(data => {
             console.log(data);
             this.user.persona = data;
-            const rolId = 2; // ID del rol
+            const rolId = 3; // ID del rol
             this.usuarioService.registrarUsuarioConFoto(this.user, rolId, this.selectedFile)
               .subscribe(
                   (response) => {
-                    this.vendedora.usuario = response;
-                    this.vendedora.nombreEmprendimiento = "VAMOOOS";
-                      console.log(response);
-
-                      this.vendedorService.registrarVendedor(this.vendedora, this.clickedButtonValue).subscribe(dataVendedora => {
-
+                    console.log("usuario",response);
+                    
+                    this.vendedor.usuario = response;
+                      this.vendedorService.registrarVendedor(this.vendedor, this.clickedButtonValue).subscribe(dataVendedora => {
                         console.log(dataVendedora);
-
                       });
                       
                   },
