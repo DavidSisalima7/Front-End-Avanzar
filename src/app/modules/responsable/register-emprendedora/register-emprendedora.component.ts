@@ -1,7 +1,7 @@
 import { user } from './../../../mock-api/common/user/data';
 import { FuseAlertType } from './../../../../@fuse/components/alert/alert.types';
 import { Component, OnInit, ViewEncapsulation, ViewChild } from '@angular/core';
-import { FormGroup, FormsModule, NgForm, ReactiveFormsModule, UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
+import { AbstractControl, FormGroup, FormsModule, NgForm, ReactiveFormsModule, UntypedFormBuilder, UntypedFormGroup, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatOptionModule } from '@angular/material/core';
@@ -82,22 +82,22 @@ export class RegisterEmpreRespComponent implements OnInit
         // Horizontal stepper form
         this.horizontalStepperForm = this._formBuilder.group({
             step1: this._formBuilder.group({
-                cedula : ['', Validators.required],
+                cedula : ['', [Validators.required, validarLongitud()]],
                 primerNombre : ['', Validators.required],
                 segundoNombre : ['', Validators.required],
                 primerApellido : ['', Validators.required],
                 segundoApellido : ['', Validators.required],
                 correo   : ['', [Validators.required, Validators.email]],
                 direccion : ['', Validators.required],
-                celular: ['', Validators.required],
-                fechaNacimiento : ['', Validators.required],
+                celular: ['', [Validators.required, validarLongitud()]],
+                fechaNacimiento : ['', [Validators.required, edadMinimaValidator()]],
                 genero : ['', Validators.required],
                 nacionalidad : ['', Validators.required],
             }),
             step2: this._formBuilder.group({
                 usuario: ['', Validators.required],
                 email : ['', Validators.required],
-                password : ['', Validators.required],
+                password : ['', [Validators.required, validarcontra()]],
                 avatar : [''],
                 descripcion    : [''],
             }),
@@ -234,6 +234,66 @@ export class RegisterEmpreRespComponent implements OnInit
         console.log("BOTON", this.clickedButtonValue);
       }
 
-     
-    
+    }  
+    /* Metodo para validar la cedula y celular de 10 digitos*/
+
+function validarLongitud(): ValidatorFn {
+    return (control: AbstractControl): ValidationErrors | null => {
+        const longitud = control.value as string;
+
+        if (longitud && longitud.length !== 10) {
+            return { longitudInvalida: true };
+        }
+
+        return null;
+    };
+}
+
+/* Metodo para validar la contraseña de 8 digitos*/
+
+function validarcontra(): ValidatorFn {
+    return (control: AbstractControl): ValidationErrors | null => {
+        const longitud = control.value as string;
+
+        if (longitud && longitud.length !== 8) {
+            return { longitudInvalida: true };
+        }
+
+        return null;
+    };
+
+}
+
+/* Metodo para validar que el usuario sea mayor de edad*/
+
+function calcularEdad(fechaNacimiento: Date): number {
+    const hoy = new Date();
+    const fechaNac = new Date(fechaNacimiento);
+    let edad = hoy.getFullYear() - fechaNac.getFullYear();
+    const mes = hoy.getMonth() - fechaNac.getMonth();
+
+    if (mes < 0 || (mes === 0 && hoy.getDate() < fechaNac.getDate())) {
+        edad--;
+    }
+
+    return edad;
+}
+
+
+
+export function edadMinimaValidator(): ValidatorFn {
+    return (control: AbstractControl): ValidationErrors | null => {
+        const fechaNacimiento = control.value;
+        if (!fechaNacimiento) {
+            return null;
+        }
+
+        const edad = calcularEdad(fechaNacimiento);
+
+        if (edad < 18) {
+            return { menorDeEdad: true };
+        }
+
+        return null;
+    };
 }
