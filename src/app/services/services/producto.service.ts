@@ -1,7 +1,7 @@
 import { Injectable } from "@angular/core";
 import { Productos } from "../models/productos";
 import { HttpClient } from "@angular/common/http";
-import { Observable } from "rxjs";
+import { catchError, map, Observable, ReplaySubject, tap, throwError } from 'rxjs';
 
 @Injectable({
     providedIn: 'root'
@@ -10,7 +10,11 @@ import { Observable } from "rxjs";
     private url: string = 'http://localhost:8080/api/productos';
   
     constructor(private http: HttpClient) { }
-  
+    private handleError(error: any) {
+      console.error('Ocurrió un error:', error);
+      return throwError('Error en el servicio. Por favor, inténtalo de nuevo más tarde.');
+    }
+
     saveProducto(producto: Productos): Observable<Productos> {
       return this.http.post<Productos>(`${this.url}/registrar`, producto);
     }
@@ -19,11 +23,30 @@ import { Observable } from "rxjs";
       return this.http.get<Productos[]>(`${this.url}/listar`);
     }
   
-    eliminarProducto(id: number): Observable<object> {
-      return this.http.delete(`${this.url}/eliminar/${id}`);
+    buscarProductoActivo(id: number): Observable<object> {
+      return this.http.get(`${this.url}/buscarProductoActivo/${id}`);
     }
-  
+
+    eliminadoLogico(id: any) {
+      return this.http.put(`${this.url}/eliminadoLogico/${id}`, null);
+    }
     actualizarProducto(id: number, producto: Productos): Observable<object> {
       return this.http.put(`${this.url}/actualizar/${id}`, producto);
     }
+
+    obtenerListProductoOrdenA(): Observable<Productos[]> {
+      const url = `${this.url}/listarProductosEstadoActivo`;
+      return this.http.get<Productos[]>(url)
+        .pipe(
+          catchError(this.handleError)
+        );
+    }
+      obtenerListProductoOrdenI(): Observable<Productos[]> {
+      const url = `${this.url}/listarProductosEstadoInactivo`;
+      return this.http.get<Productos[]>(url)
+        .pipe(
+          catchError(this.handleError)
+        );
+    }
+
   }

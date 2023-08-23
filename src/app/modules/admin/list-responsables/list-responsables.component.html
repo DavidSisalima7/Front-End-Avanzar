@@ -11,19 +11,7 @@
             <mat-progress-bar [mode]="'indeterminate'"></mat-progress-bar>
         </div>
         <!-- Title -->
-        <div class="text-4xl font-extrabold tracking-tight">Responsables de Ventas</div>
-
-
-        
-
-<!-- 
-        <button
-            class="mx-6"
-            mat-flat-button
-            [color]="'primary'"
-            (click)="openComposeDialog()">
-            <mat-icon [svgIcon]="'heroicons_outline:pencil'"></mat-icon>
-            </button> -->
+        <div class="text-4xl font-extrabold tracking-tight">List Responsables de Ventas</div>
         <!-- Actions -->
         <div class="flex shrink-0 items-center mt-6 sm:mt-0 sm:ml-4">
             <!-- Search -->
@@ -42,38 +30,19 @@
             </mat-form-field>
 
             <!-- Add product button -->
-            <button
-                class="ml-4"
-                mat-flat-button
-                [color]="'primary'"
-                (click)="redirectToRegisterResponsable()">
+            <button class="ml-4" mat-flat-button (click)="redirectToRegisterResponsable()">
                 <mat-icon [svgIcon]="'heroicons_outline:plus'"></mat-icon>
-                <span class="ml-2 mr-1">Agregar</span>
             </button>
 
-            <button
-            class="mx-2"
-            mat-flat-button
-            [color]="'primary'"
-            (click)="listarRegistros()">
+            <button class="mx-2" mat-flat-button (click)="listarRegistros()">
             <mat-icon [svgIcon]="'heroicons_outline:arrow-path'"></mat-icon>
             </button>
         </div>
     </div>
-  
     <style>
-      .mat-mdc-form-field {
-        font-size: 14px;
-        width: 100%;
-      }
-      .tablexd{
-  width: 100%;
-  overflow-x: auto;
-  scrollbar-color: #aaa #f8f8f8;
-  scrollbar-width: thin;
-      }
+  .mat-mdc-form-field {font-size: 14px; width: 100%;}
+      .tablexd{ width: 100%; overflow-x: auto; scrollbar-color: #aaa #f8f8f8; scrollbar-width: thin; }
     </style>
-
               <div class="tablexd mat-elevation-z8">
                 <table mat-table [dataSource]="dataSource" matSort>
 
@@ -99,27 +68,22 @@
                   <ng-container matColumnDef="estado">
                     <th mat-header-cell *matHeaderCellDef mat-sort-header (click)="ejecutarFuncionEstado()"> Estado </th>
                     <td mat-cell *matCellDef="let row">
-                      {{ row.visible ? 'Activo' : 'Desactivado' }}
+                      {{ row.visible ? 'Activo' : 'Inactivo' }}
                     </td>
                   </ng-container>
                   <ng-container matColumnDef="editar">
                     <th mat-header-cell *matHeaderCellDef>Editar</th>
                     <td mat-cell *matCellDef="let row">
-                      <button
-            class="mx-6"
-            mat-flat-button
-            [color]="'primary'"
-            (click)="openComposeDialog()">
-            <mat-icon [svgIcon]="'heroicons_outline:pencil'"></mat-icon>
-            </button>
+                      <button class="mx-6" mat-flat-button [color]="'accent'" (click)="openComposeDialog()">
+                       <mat-icon [svgIcon]="'heroicons_mini:pencil'"></mat-icon>
+                     </button>
                     </td>
                   </ng-container>
-                
                   <ng-container matColumnDef="delete">
-                    <th mat-header-cell *matHeaderCellDef>Eliminar</th>
+                    <th mat-header-cell *matHeaderCellDef>Desactivar</th>
                     <td mat-cell *matCellDef="let row">
-                      <button (click)="seleccionarResponsable(row)">
-                       eliminar
+                      <button class="mx-6" mat-flat-button [color]="'warn'" (click)="seleccionarResponsable(row)">
+                        <mat-icon [svgIcon]="'heroicons_mini:trash'"></mat-icon>
                       </button>
                     </td>
                   </ng-container>
