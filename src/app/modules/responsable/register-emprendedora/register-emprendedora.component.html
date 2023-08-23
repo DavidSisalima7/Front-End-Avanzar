@@ -1,3 +1,4 @@
+
 <div class="flex flex-col flex-auto min-w-0">
 
 
@@ -34,7 +35,7 @@
 
     <form class="p-4 bg-card shadow rounded overflow-hidden" [formGroup]="horizontalStepperForm">
         <mat-horizontal-stepper [linear]="true" #horizontalStepper>
-            <mat-step [formGroupName]="'step1'" [stepControl]="horizontalStepperForm.get('step1')"
+             <mat-step [formGroupName]="'step1'" [stepControl]="horizontalStepperForm.get('step1')"
                 #horizontalStepperStep1>
                 <ng-template matStepLabel>Información Personal</ng-template>
 
@@ -170,14 +171,33 @@
                         Next
                     </button>
                 </div>
-            </mat-step>
+            </mat-step> 
 
+            
             <mat-step [formGroupName]="'step2'" [stepControl]="horizontalStepperForm.get('step2')"
                 #horizontalStepperStep2>
                 <ng-template matStepLabel>Generar Credenciales</ng-template>
                 <p class="my-6 font-medium">
                     Información de usuario
                 </p>
+
+                <div class="relative w-24 h-24">
+                    <mat-label>Foto</mat-label> <br>
+                    <img class="w-full h-full rounded-full" *ngIf="selectedImageSrc" [src]="selectedImageSrc" alt="User avatar">
+                    <mat-icon class="icon-size-24" *ngIf="!selectedImageSrc" [svgIcon]="'heroicons_solid:user-circle'"></mat-icon>
+                  </div>
+                  
+                  <div class="grid grid-cols-1 sm:grid-cols-2 gap-6 mt-15">
+                    <!-- Columna de la imagen de perfil -->
+                    <div class="sm:col-span-1">
+                      <div class="-mt-18 lg:-mt-18 rounded-full">
+                        <br><br><span>↓ Deseas cambiar la foto de perfil? ↓</span><br>
+                        <input id="image" type="file" accept="image/*" class="form-control" (change)="upload($event)" /> <br>
+                      </div>
+                    </div>
+                  </div>
+                  <br>
+
                 <div class="flex flex-col gt-xs:flex-row">
                     <mat-form-field class="flex-auto gt-xs:pr-3">
                         <input matInput [formControlName]="'usuario'" [placeholder]="'Usuario'" required>
@@ -214,17 +234,7 @@
                     </mat-form-field>
                 </div>
 
-                <div class="grid grid-cols-1 sm:grid-cols-2 gap-6 mt-15">
-                    <!-- Columna de la imagen de perfil -->
-                    <div class="sm:col-span-1">
-                        <div class="-mt-18 lg:-mt-18 rounded-full">
-                            <br>
-                            <mat-label>Foto</mat-label> <br>
-                            <input id="image" type="file" accept="image/*" class="form-control"
-                                (change)="upload($event)" />
-                        </div>
-                    </div>
-                </div>
+               
 
                 <div class="flex justify-end">
                     <button class="px-8 mr-2" mat-flat-button [color]="'accent'" type="button" matStepperPrevious>
@@ -238,20 +248,18 @@
                 </div>
             </mat-step>
 
+            
             <mat-step [formGroupName]="'step3'" [stepControl]="horizontalStepperForm.get('step3')">
-                <ng-template matStepLabel>Asignar Rol</ng-template>
-                <p class="my-6 font-medium">
-                    Recuerde seleccionar el rol respectivo a su perfil
-                </p>
+                <ng-template matStepLabel>Plan</ng-template>
                 
                 <div class="flex flex-col items-center">
-                    <h2 class="text-xl font-semibold">PRICING</h2>
+                    <h2 class="text-xl font-semibold">PLANES</h2>
                     <div class="mt-1 text-4xl sm:text-7xl font-extrabold tracking-tight leading-tight text-center">
-                        Take control of your productivity
+                        Toma el control de tu productividad
                     </div>
                     <div class="mt-3 sm:text-2xl text-center tracking-tight text-secondary">
-                        <div class="">Start small and free, upgrade as you go.</div>
-                        <div class="">Take control of everything.</div>
+                        <div class="">Empiece con poco y gratis, actualice a medida que avanza.</div>
+                        <div class="">Seleccione un plan</div>
                     </div>
                     <!-- Recurring selector -->
                     <div class="flex items-center mt-8 sm:mt-16 p-0.5 rounded-full overflow-hidden bg-gray-200 dark:bg-gray-700">
@@ -262,7 +270,7 @@
                             mat-flat-button
                             (click)="yearlyBilling = true"
                             disableRipple>
-                            Yearly billing
+                           Plan Anual
                         </button>
                         <button
                             class="px-6"
@@ -271,7 +279,7 @@
                             mat-flat-button
                             (click)="yearlyBilling = false"
                             disableRipple>
-                            Monthly billing
+                            Plan Mensual
                         </button>
                     </div>
                 </div>
@@ -281,7 +289,7 @@
                         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-y-6 lg:gap-y-0 md:gap-x-6">
                             <!-- Card 1 -->
                             <fuse-card class="flex-col max-w-sm md:max-w-none p-6 sm:py-12 sm:px-10">
-                                <div class="text-4xl font-bold tracking-tight leading-tight">Personal</div>
+                                <div class="text-4xl font-bold tracking-tight leading-tight">Gratis</div>
                                 <div class="mt-2 text-lg font-medium tracking-tight text-secondary">Perfect for an individual or a small team starting to get bigger</div>
                                 <div class="w-8 h-1 my-10 rounded bg-accent"></div>
                                 <!-- Price -->
@@ -304,10 +312,14 @@
                                     </ng-container>
                                 </div>
                                 <!-- CTA -->
+
+                                
                                 <button
+                                
                                     class="fuse-mat-button-large mt-10"
                                     mat-stroked-button
                                     (click)="handleClick(1)"
+                                   
                                     [color]="'primary'">
                                     Seleccionar Membresia
                                 </button>
@@ -376,13 +388,17 @@
                                     </ng-container>
                                 </div>
                                 <!-- CTA -->
+
                                 <button
+                                
                                     class="fuse-mat-button-large mt-10"
-                                    mat-flat-button
+                                    mat-stroked-button
                                     (click)="handleClick(2)"
+                                  
                                     [color]="'primary'">
-                                    Start a free 14-day trial
+                                    Seleccionar Membresia
                                 </button>
+
                                 <!-- Features -->
                                 <div class="flex flex-col mt-12">
                                     <div class="font-semibold">Personal features, plus:</div>
@@ -422,7 +438,7 @@
                             </fuse-card>
                             <!-- Card 3 -->
                             <fuse-card class="flex-col max-w-sm md:max-w-none p-6 sm:py-12 sm:px-10">
-                                <div class="text-4xl font-bold tracking-tight leading-tight">Enterprise</div>
+                                <div class="text-4xl font-bold tracking-tight leading-tight">Gold</div>
                                 <div class="mt-2 text-lg font-medium tracking-tight text-secondary">Perfect for companies wanting advanced tools and support</div>
                                 <div class="w-8 h-1 my-10 rounded bg-accent"></div>
                                 <!-- Price -->
@@ -446,12 +462,14 @@
                                 </div>
                                 <!-- CTA -->
                                 <button
-                                    class="fuse-mat-button-large mt-10"
-                                    mat-stroked-button
-                                    (click)="handleClick(3)"
-                                    [color]="'primary'">
-                                    Start a free 7-day trial
-                                </button>
+                                
+                                class="fuse-mat-button-large mt-10"
+                                mat-stroked-button
+                                (click)="handleClick(3)"
+                                
+                                [color]="'primary'">
+                                Seleccionar Membresia
+                            </button>
                                 <!-- Features -->
                                 <div class="flex flex-col mt-12">
                                     <div class="font-semibold">Premium features, plus:</div>

@@ -25,6 +25,7 @@ import { ChangeDetectionStrategy } from '@angular/compiler';
 import { FuseCardComponent } from '@fuse/components/card';
 import { VendedorService } from 'app/services/services/vendedora.service';
 import { Vendedor } from 'app/services/models/vendedora';
+import Swal from 'sweetalert2';
 
 @Component({
     selector     : 'register-emprendedora',
@@ -55,6 +56,9 @@ export class RegisterEmpreRespComponent implements OnInit
     user: User=new User();
     yearlyBilling: boolean = true;
     clickedButtonValue: number = 0; // Inicializar con 0
+    selectedImageSrc: string = null;
+    
+
 
     /**
      * Constructor
@@ -201,7 +205,25 @@ export class RegisterEmpreRespComponent implements OnInit
                     this.vendedor.usuario = response;
                       this.vendedorService.registrarVendedor(this.vendedor, this.clickedButtonValue).subscribe(dataVendedora => {
                         console.log(dataVendedora);
-                      });
+                        this.alert = {
+                            type   : 'success',
+                            message: 'Su registro se a realizado correctamente',
+                        };
+                        this.showAlert = true;
+                        setTimeout(() => {
+                            this.showAlert = false; // Ocultar la alerta después de 4 segundos
+                        }, 4000);
+                      },
+                      (error) => {
+                        this.alert = {
+                            type   : 'error',
+                            message: 'Ha ocurrido un error al crear el usuario',
+                        };
+                        this.showAlert = true;
+                        setTimeout(() => {
+                            this.showAlert = false; // Ocultar la alerta después de 4 segundos
+                        }, 4000);
+                    });
                       
                   },
                   
@@ -212,11 +234,19 @@ export class RegisterEmpreRespComponent implements OnInit
         // Restablece el formulario después de guardar los datos
     }
 
-    upload(event:any){
-        const file=event.target.files[0];
-        this.selectedFile=file;
-        
-    }
+    upload(event: any) {
+        const file = event.target.files[0];
+        if (file) {
+          this.selectedFile = file;
+      
+          // Crear una URL de objeto para la imagen y asignarla a selectedImageSrc
+          const reader = new FileReader();
+          reader.onload = (e: any) => {
+            this.selectedImageSrc = e.target.result;
+          };
+          reader.readAsDataURL(file);
+        }
+      }
 
     alerta(): void {
         this.alert = {
@@ -232,9 +262,34 @@ export class RegisterEmpreRespComponent implements OnInit
 
     handleClick(buttonValue: number) {
         this.clickedButtonValue = buttonValue;
-        console.log("BOTON", this.clickedButtonValue);
+        if (buttonValue === 1) {
+            
+            Swal.fire(
+                'Acción Exitosa',
+                'Seleccionado Plan Gratuito.',
+                'success'
+                    );
+    
+          } else if (buttonValue === 2) {
+           
+            Swal.fire(
+                'Acción Exitosa',
+                'Seleccionado Plan Premium',
+                'success'
+                    );
+            
+          } else if (buttonValue === 3) {
+            
+            Swal.fire(
+                'Acción Exitosa',
+                'Seleccionado Plan Gold',
+                'success'
+                    );
+           
+          }
+       
       }
-
+      
      
     
 }
