@@ -10,12 +10,9 @@ import { Productos } from 'app/services/models/productos';
 import { ProductosService } from 'app/services/services/producto.service';
 import { MatButtonModule } from '@angular/material/button';
 import { debounceTime, map, merge, Observable, Subject, switchMap, takeUntil } from 'rxjs';
-import { PersonaService } from 'app/services/services/persona.service';
-import { Persona } from 'app/services/models/persona';
-import { Usuario } from 'app/services/models/usuario';
-import { UserService } from 'app/core/user/user.service';
 import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
+import Swal from 'sweetalert2';
 
 
 //DIALOGOS
@@ -33,7 +30,7 @@ import { MailboxComposeComponent } from 'app/modules/responsable/compose/compose
 })
 export class ListProductosResponsableComponent
 {
-  displayedColumns: string[] = ['idProducto', 'nombreProducto', 'precioProducto', 'cantidaDisponible', 'estado'];
+  displayedColumns: string[] = ['nombreProducto', 'precioProducto', 'cantidaDisponible', 'estado','editar','delete'];
   dataSource: MatTableDataSource<Productos>;
 
 
@@ -53,22 +50,19 @@ export class ListProductosResponsableComponent
     ) {
   }
   ngOnInit(): void {
-    this.listarRegistros();
+    this.listarRegistrosProductos();
 
   }
-
-
-  listarRegistros() {
+  listarRegistrosProductos() {
     this.productoService.listarProducto().subscribe(
       (datos: Productos[]) => {
         this.dataSource = new MatTableDataSource<Productos>(datos);
       },
       error => {
-        console.error('Ocurrió un error al obtener la lista de personas responsables:', error);
+        console.error('Ocurrió un error al obtener la lista de los productos:', error);
       }
     );
   }
-
   applyFilter(event: Event) {
     const filterValue = (event.target as HTMLInputElement).value;
     this.dataSource.filter = filterValue.trim().toLowerCase();
@@ -78,7 +72,7 @@ export class ListProductosResponsableComponent
     }
   }
 
-  redirectToRegisterResponsable() {
+  redirectToRegisterProductos() {
     this._router.navigate(['/register-productos']);
   }
 
@@ -95,4 +89,184 @@ export class ListProductosResponsableComponent
                 console.log('Compose dialog was closed!');
             });
     }
+/////////////////////////Filtro de los productos
+productos:any;
+ ///cantidad
+   FiltroCantidadAsc(): void {
+     this.productoService.listarProducto().subscribe(
+       (datos: Productos[]) => {
+         // Ordena el array de productos por cantidad asc
+         this.productos = datos.sort((a, b) => a.cantidadDisponible - b.cantidadDisponible);
+         this.dataSource = new MatTableDataSource<Productos>(this.productos);
+       },
+       error => {
+        console.error('Ocurrió un error al obtener la lista de productos:', error);
+       }
+     );
+   }
+   FiltroCantidadDesc(): void {
+     this.productoService.listarProducto().subscribe(
+       (datos: Productos[]) => {
+         // Ordena el array de productos por cantidad en forma descendente
+         this.productos = datos.sort((a, b) => b.cantidadDisponible - a.cantidadDisponible);
+         this.dataSource = new MatTableDataSource<Productos>(this.productos);
+       },
+       error => {
+        console.error('Ocurrió un error al obtener la lista de productos:', error);
+       }
+     );
+   }
+ 
+   //Nombre de productos
+   FiltroNombreAsc(): void {
+     this.productoService.listarProducto().subscribe(
+       (datos: Productos[]) => {
+         // Ordena el array de usuarios por el nombre acs
+         this.productos = datos.sort((a, b) => a.nombreProducto.localeCompare(b.nombreProducto));
+         this.dataSource = new MatTableDataSource<Productos>(this.productos);
+       },
+       error => {
+         console.error('Ocurrió un error al obtener la lista de productos:', error);
+       }
+     );
+   }
+   FiltroNombreDesc(): void {
+    this.productoService.listarProducto().subscribe(
+      (datos: Productos[]) => {
+        // Ordena el array de usuarios por el nombre acs
+        this.productos = datos.sort((a, b) => b.nombreProducto.localeCompare(a.nombreProducto));
+        this.dataSource = new MatTableDataSource<Productos>(this.productos);
+      },
+      error => {
+        console.error('Ocurrió un error al obtener la lista de productos:', error);
+      }
+    );
+  }
+
+ //precio
+ FiltroprecioAsc(): void {
+  this.productoService.listarProducto().subscribe(
+    (datos: Productos[]) => {
+      // Ordena el array de productos por precio asc
+      this.productos = datos.sort((a, b) => a.precioProducto - b.precioProducto);
+      this.dataSource = new MatTableDataSource<Productos>(this.productos);
+    },
+    error => {
+     console.error('Ocurrió un error al obtener la lista de productos:', error);
+    }
+  );
+}
+ FiltroprecioDesc(): void {
+  this.productoService.listarProducto().subscribe(
+    (datos: Productos[]) => {
+      // Ordena el array de productos por el precio en forma descendente
+      this.productos = datos.sort((a, b) => b.precioProducto - a.precioProducto);
+      this.dataSource = new MatTableDataSource<Productos>(this.productos);
+    
+    },
+    error => {
+     console.error('Ocurrió un error al obtener la lista de productos:', error);
+    }
+  );
+}
+ FiltroEstadoActivo() {
+  // Ordena el array de prodcutos por estado activo
+ this.productoService.obtenerListProductoOrdenA().subscribe(
+   (datos: Productos[]) => {
+     this.dataSource = new MatTableDataSource<Productos>(datos);
+   },
+   error => {
+    console.error('Ocurrió un error al obtener la lista de productos:', error);
+   }
+ );
+}
+FiltroEstadoInactivo() {
+ // Ordena el array de productos por estado inactivo
+ this.productoService.obtenerListProductoOrdenI().subscribe(
+   (datos: Productos[]) => {
+     this.dataSource = new MatTableDataSource<Productos>(datos);
+   },
+   error => {
+    console.error('Ocurrió un error al obtener la lista de productos:', error);
+   }
+ );
+}
+  
+   ejecutarPrimeraFuncion: boolean = true;
+   cambiarFuncionAEjecutar(): void {
+     this.ejecutarPrimeraFuncion = !this.ejecutarPrimeraFuncion;
+   }
+   //Nombre
+   ejecutarFuncionNombre(): void {
+     if (this.ejecutarPrimeraFuncion) {
+       this.FiltroNombreAsc();
+     } else {
+       this.FiltroNombreDesc();
+     }
+     this.cambiarFuncionAEjecutar();
+   }
+   //cantidada
+   ejecutarFuncionCantidad(): void {
+     if (this.ejecutarPrimeraFuncion) {
+       this.FiltroCantidadAsc();
+     } else {
+       this.FiltroCantidadDesc();
+     }
+     this.cambiarFuncionAEjecutar();
+   }
+   //precio
+   ejecutarFuncionPrecio(): void {
+     if (this.ejecutarPrimeraFuncion) {
+       this.FiltroprecioAsc();
+     } else {
+       this.FiltroprecioDesc();
+     }
+     this.cambiarFuncionAEjecutar();
+   }
+   //Estado
+   ejecutarFuncionEstado(): void {
+     if (this.ejecutarPrimeraFuncion) {
+       this.FiltroEstadoActivo();
+     } else {
+       this.FiltroEstadoInactivo();
+     }
+     this.cambiarFuncionAEjecutar();
+   }
+
+
+///////////////////////// Fin de filtro
+
+////////eliminado lógico de productos
+selectedProducto:any;
+productSelect: any;
+verficarEstado: any;
+seleccionarProducto(producto: any) {
+  this.selectedProducto = producto.idProducto;
+  this.productoService.buscarProductoActivo(this.selectedProducto).subscribe(
+    (productoEncontrado) => {
+      this.verficarEstado=productoEncontrado;
+    if (this.verficarEstado === null){
+    Swal.fire(
+      'Acción no disponible',
+      'El producto ya se encuentra inactivo',
+      'error',
+          );
+    
+    }else{
+      this.productoService.eliminadoLogico(this.selectedProducto).subscribe(
+        (dataprodencontrada) => {
+          this.listarRegistrosProductos();
+          Swal.fire(
+            'Acción Exitosa',
+            'Producto Eliminado.',
+            'success'
+                );
+          return;
+        } );
+     
+    }
+  });
+}
+
+
 }

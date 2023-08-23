@@ -96,7 +96,6 @@ export class ListEmprendedorasResponsableComponent
       (usuarioEncontrado) => {
         this.verficarEstado=usuarioEncontrado;
       if (this.verficarEstado === null){
-      console.log("Acción no disponible, El usuario ya se encuentra inactivo");
       Swal.fire(
         'Acción no disponible',
         'El usuario ya se encuentra inactivo',
@@ -107,7 +106,6 @@ export class ListEmprendedorasResponsableComponent
         this.usuarioService.eliminadoLogico(this.selectedEmprendedora).subscribe(
           (datapersencontrada) => {
             this.listarUsuariosEmp();
-            console.log("Acción Exitosa, Usuario Desactivado");
             Swal.fire(
               'Acción Exitosa',
               'Usuario Desactivado.',
