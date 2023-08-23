@@ -13,7 +13,7 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatStepperModule } from '@angular/material/stepper';
 import { MatTableModule } from '@angular/material/table';
 import { MatTabsModule } from '@angular/material/tabs';
-import {MatDatepickerModule} from '@angular/material/datepicker';
+import { MatDatepickerModule } from '@angular/material/datepicker';
 import { PersonaService } from 'app/services/services/persona.service';
 import { UserService } from 'app/core/user/user.service';
 import { Persona } from 'app/services/models/persona';
@@ -23,21 +23,20 @@ import { fuseAnimations } from '@fuse/animations';
 import { User } from 'app/core/user/user.types';
 
 @Component({
-    selector     : 'register-responsable',
-    templateUrl  : './register-responsable.component.html',
+    selector: 'register-responsable',
+    templateUrl: './register-responsable.component.html',
     encapsulation: ViewEncapsulation.None,
     animations: fuseAnimations,
-    standalone   : true,
-    imports      : [MatIconModule, FormsModule, ReactiveFormsModule, MatStepperModule, MatFormFieldModule, MatInputModule, MatSelectModule, MatOptionModule, 
-        MatButtonModule, MatCheckboxModule, MatRadioModule,MatTableModule,MatTabsModule,MatDatepickerModule,
+    standalone: true,
+    imports: [MatIconModule, FormsModule, ReactiveFormsModule, MatStepperModule, MatFormFieldModule, MatInputModule, MatSelectModule, MatOptionModule,
+        MatButtonModule, MatCheckboxModule, MatRadioModule, MatTableModule, MatTabsModule, MatDatepickerModule,
         NgIf, FuseAlertComponent],
 })
-export class RegisterResponsableComponent implements OnInit
-{
+export class RegisterResponsableComponent implements OnInit {
     @ViewChild('signUpNgForm') signUpNgForm: NgForm;
 
     alert: { type: FuseAlertType; message: string } = {
-        type   : 'success',
+        type: 'success',
         message: '',
     };
 
@@ -45,20 +44,19 @@ export class RegisterResponsableComponent implements OnInit
 
     horizontalStepperForm: FormGroup;
     persona: Persona = new Persona();
-    selectedDate:Date;
+    selectedDate: Date;
     selectedFile: File | null = null;
     selectedImageSrc: string = null;
-    user: User=new User();
+    user: User = new User();
 
     /**
      * Constructor
      */
-    constructor(private _formBuilder: UntypedFormBuilder, 
-                private personaService: PersonaService, 
-                private usuarioService: UserService,
-                private datePipe:DatePipe
-                )
-    {
+    constructor(private _formBuilder: UntypedFormBuilder,
+        private personaService: PersonaService,
+        private usuarioService: UserService,
+        private datePipe: DatePipe
+    ) {
 
 
     }
@@ -70,29 +68,28 @@ export class RegisterResponsableComponent implements OnInit
     /**
      * On init
      */
-    ngOnInit(): void
-    {
+    ngOnInit(): void {
         // Horizontal stepper form
         this.horizontalStepperForm = this._formBuilder.group({
             step1: this._formBuilder.group({
-                cedula : ['', [Validators.required, validarLongitud()]],
-                primerNombre : ['', Validators.required],
-                segundoNombre : ['', Validators.required],
-                primerApellido : ['', Validators.required],
-                segundoApellido : ['', Validators.required],
-                correo   : ['', [Validators.required, Validators.email]],
-                direccion : ['', Validators.required],
+                cedula: ['', [Validators.required, validarLongitud()]],
+                primerNombre: ['', Validators.required],
+                segundoNombre: ['', Validators.required],
+                primerApellido: ['', Validators.required],
+                segundoApellido: ['', Validators.required],
+                correo: ['', [Validators.required, Validators.email]],
+                direccion: ['', Validators.required],
                 celular: ['', [Validators.required, validarLongitud()]],
-                fechaNacimiento : ['', [Validators.required, edadMinimaValidator()]],
-                genero : ['', Validators.required],
-                nacionalidad : ['', Validators.required],
+                fechaNacimiento: ['', [Validators.required, edadMinimaValidator()]],
+                genero: ['', Validators.required],
+                nacionalidad: ['', Validators.required],
             }),
             step2: this._formBuilder.group({
                 usuario: ['', Validators.required],
-                email : ['', Validators.required],
-                password : ['', [Validators.required, validarcontra()]],
-                avatar : [''],
-                descripcion    : [''],
+                email: ['', Validators.required],
+                password: ['', [Validators.required, validarcontra()]],
+                avatar: [''],
+                descripcion: [''],
             }),
             step3: this._formBuilder.group({
                 rolUser: ['Responsable', Validators.required],
@@ -100,27 +97,27 @@ export class RegisterResponsableComponent implements OnInit
         });
 
 
-            // Listen to changes in the 'correo' field in step1
-    this.horizontalStepperForm
-    .get('step1.correo')
-    .valueChanges.subscribe((correoValue) => {
-      // Set the value of 'email' in step2 to the same value as 'correo'
-      this.horizontalStepperForm.get('step2.email').setValue(correoValue);
-    });
+        // Listen to changes in the 'correo' field in step1
+        this.horizontalStepperForm
+            .get('step1.correo')
+            .valueChanges.subscribe((correoValue) => {
+                // Set the value of 'email' in step2 to the same value as 'correo'
+                this.horizontalStepperForm.get('step2.email').setValue(correoValue);
+            });
 
-    this.horizontalStepperForm.valueChanges.subscribe((formValues) => {
-        const primerNombreValue = formValues.step1.primerNombre;
-        const primerApellidoValue = formValues.step1.primerApellido;
-    
-        const usuarioValue = primerNombreValue + ' ' + primerApellidoValue;
-    
-        // Verifica si el valor actual es diferente antes de establecerlo
-        const currentUsuarioValue = this.horizontalStepperForm.get('step2.usuario').value;
-        if (currentUsuarioValue !== usuarioValue) {
-            this.horizontalStepperForm.get('step2.usuario').setValue(usuarioValue);
-        }
-    });
-    
+        this.horizontalStepperForm.valueChanges.subscribe((formValues) => {
+            const primerNombreValue = formValues.step1.primerNombre;
+            const primerApellidoValue = formValues.step1.primerApellido;
+
+            const usuarioValue = primerNombreValue + ' ' + primerApellidoValue;
+
+            // Verifica si el valor actual es diferente antes de establecerlo
+            const currentUsuarioValue = this.horizontalStepperForm.get('step2.usuario').value;
+            if (currentUsuarioValue !== usuarioValue) {
+                this.horizontalStepperForm.get('step2.usuario').setValue(usuarioValue);
+            }
+        });
+
 
 
     }
@@ -152,10 +149,10 @@ export class RegisterResponsableComponent implements OnInit
 
         this.persona.cedula = cedula;
         this.persona.primer_nombre = primerNombre;
-        this.persona.segundo_nombre = segundoNombre;  
+        this.persona.segundo_nombre = segundoNombre;
         this.persona.primer_apellido = primerApellido;
-        this.persona.segundo_apellido = segundoApellido; 
-        this.persona.fecha_nacimiento = formattedDate; 
+        this.persona.segundo_apellido = segundoApellido;
+        this.persona.fecha_nacimiento = formattedDate;
         this.persona.genero = genero;
         this.persona.correo = correoElectronico;
         this.persona.direccion = direccion;
@@ -175,7 +172,7 @@ export class RegisterResponsableComponent implements OnInit
         this.user.visible = true;
 
         // ... otros campos ...
-    
+
         // Luego, realiza la llamada al servicio para guardar la persona y el usuario
         // ... código para guardar persona y usuario ...
         this.personaService.savePersona(this.persona).subscribe(data => {
@@ -183,26 +180,32 @@ export class RegisterResponsableComponent implements OnInit
             this.user.persona = data;
             const rolId = 2; // ID del rol
             this.usuarioService.registrarUsuarioConFoto(this.user, rolId, this.selectedFile)
-              .subscribe(
-                  (response) => {
-                      console.log(response);
-                      this.alert = {
-                          type   : 'success',
-                          message: 'Su registro se a realizado correctamente',
-                      };
-                      this.showAlert = true;
-                  },
-                  (error) => {
-                      this.alert = {
-                          type   : 'error',
-                          message: 'Ha ocurrido un error al crear el usuario',
-                      };
-                      this.showAlert = true;
-                  }
+                .subscribe(
+                    (response) => {
+                        console.log(response);
+                        this.alert = {
+                            type: 'success',
+                            message: 'Su registro se a realizado correctamente',
+                        };
+                        this.showAlert = true;
+                        setTimeout(() => {
+                            this.showAlert = false; // Ocultar la alerta después de 4 segundos
+                        }, 4000);
+                    },
+                    (error) => {
+                        this.alert = {
+                            type: 'error',
+                            message: 'Ha ocurrido un error al crear el usuario',
+                        };
+                        this.showAlert = true;
+                        setTimeout(() => {
+                            this.showAlert = false; // Ocultar la alerta después de 4 segundos
+                        }, 4000);
+                    }
                 );
-              
-          })
-    
+
+        })
+
         // Restablece el formulario después de guardar los datos
     }
     /*
@@ -215,17 +218,17 @@ export class RegisterResponsableComponent implements OnInit
     upload(event: any) {
         const file = event.target.files[0];
         if (file) {
-          this.selectedFile = file;
-      
-          // Crear una URL de objeto para la imagen y asignarla a selectedImageSrc
-          const reader = new FileReader();
-          reader.onload = (e: any) => {
-            this.selectedImageSrc = e.target.result;
-          };
-          reader.readAsDataURL(file);
+            this.selectedFile = file;
+
+            // Crear una URL de objeto para la imagen y asignarla a selectedImageSrc
+            const reader = new FileReader();
+            reader.onload = (e: any) => {
+                this.selectedImageSrc = e.target.result;
+            };
+            reader.readAsDataURL(file);
         }
-      }
-      
+    }
+
 
     alerta(): void {
         this.alert = {
@@ -233,7 +236,7 @@ export class RegisterResponsableComponent implements OnInit
             message: 'Su registro se ha realizado correctamente',
         };
         this.showAlert = true;
-    
+
         setTimeout(() => {
             this.showAlert = false; // Ocultar la alerta después de 4 segundos
         }, 4000); // 4000 milisegundos = 4 segundos
