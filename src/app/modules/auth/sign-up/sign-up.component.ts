@@ -51,6 +51,7 @@ export class SignUpComponent implements OnInit {
     public generoSeleccionado: string;
 
     cedulaRegistrada: boolean = false;
+    correoRegistrado: boolean = false;
 
     /**
      * Constructor
@@ -104,7 +105,9 @@ export class SignUpComponent implements OnInit {
 
     capturarCedulaYBuscar(): void {
         const cedulaValue = this.signUpForm.get('cedula').value;
+        const correoValue = this.signUpForm.get('correo').value;
         console.log(`Cédula capturada: ${cedulaValue}`);
+        console.log(`Correo capturado: ${correoValue}`);
         this.buscarPersonaPorCedula(cedulaValue);
     }
 
@@ -113,19 +116,71 @@ export class SignUpComponent implements OnInit {
     buscarPersonaPorCedula(cedulaValue: string): void {
         this.personaService.buscarPersonaPorCedula(cedulaValue)
             .subscribe(
-                (encontrada: boolean) => {
-                    if (encontrada) {
+                (cedulaEncontrada: boolean) => {
+                    if (cedulaEncontrada) {
                         console.log(`Persona con cédula ${cedulaValue} encontrada.`);
                         this.cedulaRegistrada = true;
-                        this.alert = {
-                            type: 'error',
-                            message: 'El usuario ya se encuentra registrado',
-                        };
-                        this.showAlert = true;
-                        this.signUpNgForm.resetForm();
+                        const correoValue = this.signUpForm.get('correo').value;
+                        this.buscarPersonaPorCorreoYMostrarMensaje(cedulaValue, correoValue);
                     } else {
                         console.log(`Persona con cédula ${cedulaValue} no encontrada.`);
                         this.cedulaRegistrada = false;
+                        const correoValue = this.signUpForm.get('correo').value;
+                        this.buscarPersonaPorCorreo(correoValue);
+                    }
+                },
+                (error) => {
+                    console.error('Error al buscar persona:', error);
+                }
+            );
+    }
+    
+
+    buscarPersonaPorCorreoYMostrarMensaje(cedulaValue: string, correoValue: string): void {
+        this.personaService.buscarPersonaPorCorreo(correoValue)
+            .subscribe(
+                (correoEncontrado: boolean) => {
+                    if (correoEncontrado) {
+                        console.log(`Persona con correo ${correoValue} encontrada.`);
+                        this.correoRegistrado = true;
+                        this.alert = {
+                            type: 'error',
+                            message: 'La cédula y el correo ya han sido registrados.',
+                        };
+                        this.showAlert = true;
+                    } else {
+                        console.log(`Persona con correo ${correoValue} no encontrada.`);
+                        this.correoRegistrado = false;
+                        this.alert = {
+                            type: 'error',
+                            message: 'La cédula '+ cedulaValue +' ya ha sido registrada.',
+                        };
+                        this.showAlert = true;
+                    }
+                },
+                (error) => {
+                    console.error('Error al buscar persona:', error);
+                }
+            );
+    }
+
+    // Método para buscar el correo si esta en la BD
+
+    buscarPersonaPorCorreo(correoValue: string): void {
+        this.personaService.buscarPersonaPorCorreo(correoValue)
+            .subscribe(
+                (encontrada: boolean) => {
+                    if (encontrada) {
+                        console.log(`Persona con correo ${correoValue} encontrada.`);
+                        this.correoRegistrado = true;
+                        this.alert = {
+                            type: 'error',
+                            message: 'El correo ' + correoValue + ' ya ha sido registrado.',
+                        };
+                        this.showAlert = true;
+                    } else {
+                        console.log(`Persona con correo ${correoValue} no encontrada.`);
+                        this.correoRegistrado = false;
                         this.signUp();
                     }
                 },

@@ -19,4 +19,8 @@ export class PersonaService {
   buscarPersonaPorCedula(cedula: string): Observable<boolean> {
     return this.http.get<boolean>(`${this.url}/findByCedula/${cedula}`);
   }
+
+  buscarPersonaPorCorreo(correo: string): Observable<boolean> {
+    return this.http.get<boolean>(`${this.url}/findByCorreo/${correo}`);
+  }
 }
