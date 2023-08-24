@@ -1,5 +1,5 @@
 import { DatePipe, NgIf } from '@angular/common';
-import { Component, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
 import { AbstractControl, FormsModule, NgForm, ReactiveFormsModule, UntypedFormBuilder, UntypedFormGroup, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCheckboxModule } from '@angular/material/checkbox';
@@ -16,8 +16,10 @@ import { FuseAlertComponent, FuseAlertType } from '@fuse/components/alert';
 import { AuthService } from 'app/core/auth/auth.service';
 import { UserService } from 'app/core/user/user.service';
 import { User } from 'app/core/user/user.types';
+import { EmailDto } from 'app/services/models/emailDto';
 import { Persona } from 'app/services/models/persona';
 import { Usuario } from 'app/services/models/usuario';
+import { EmailService } from 'app/services/services/email.service';
 import { PersonaService } from 'app/services/services/persona.service';
 
 
@@ -34,16 +36,30 @@ import { PersonaService } from 'app/services/services/persona.service';
 export class SignUpComponent implements OnInit {
     @ViewChild('signUpNgForm') signUpNgForm: NgForm;
 
-    alert: { type: FuseAlertType; message: string } = {
+    alertCod: { type: FuseAlertType; message: string } = {
+        type: 'success',
+        message: '',
+    };
+    alertReg: { type: FuseAlertType; message: string } = {
         type: 'success',
         message: '',
     };
     signUpForm: UntypedFormGroup;
     showAlert: boolean = false;
-
+    showCode: boolean = false;
     //fechas
     selectedDate: Date;
+    //intentos de verifición
+    protected banVerificacion = 0;
+    protected codeInt = "";
+    protected codeRec = "";
+    protected formCode = false;
+    protected returnForm = false;
+    //llamar componentes html para darle propiedades
+    @ViewChild('btnCodeVerHtml') btnCodeVer: ElementRef;
+    @ViewChild('inputCodeHmtl') inputCode: ElementRef;
 
+    email: EmailDto = new EmailDto();
     persona: Persona = new Persona();
     user: User = new User();
     selectedFile: File | null = null;
@@ -61,6 +77,7 @@ export class SignUpComponent implements OnInit {
         private _router: Router,
         private personaService: PersonaService,
         private usuarioService: UserService,
+        private emailService: EmailService,
         private datePipe: DatePipe
     ) {
     }
@@ -120,32 +137,36 @@ export class SignUpComponent implements OnInit {
         this.persona.genero = generoSeleccionado;
 
 
-        this.personaService.savePersona(this.persona).subscribe(data => {
-            console.log(data);
-            this.user.persona = data;
-            const rolId = 4; // ID del rol
-            this.usuarioService.registrarUsuarioConFoto(this.user, rolId, this.selectedFile)
-                .subscribe(
-                    (response) => {
-                        console.log(response);
-                        this.alert = {
-                            type: 'success',
-                            message: 'Su registro se a realizado correctamente',
-                        };
-                        this.showAlert = true;
-                    },
-                    (error) => {
-                        this.alert = {
-                            type: 'error',
-                            message: 'Ha ocurrido un error al crear el usuario',
-                        };
-                        this.showAlert = true;
-                    }
-                );
+        this.formCode = true;
+        this.banVerificacion = 0;
 
-            this.signUpNgForm.resetForm();
+        this.email.subject = "Su código de verificación es:"
+        this.email.to = this.persona.correo;
+        this.showCode = false;
+        this.returnForm = false;
+        this.emailService.sendCodeVer(this.email)
+            .subscribe({
 
-        })
+                next: (reponse) => {
+                    console.log("codigo enviado")
+                    this.alertCod = {
+                        type: 'success',
+                        message: 'Código enviado revise en Spam o Recibidos',
+                    };
+                    this.codeRec = reponse.text;
+                    this.showCode = true;
+                    this.returnForm = true;
+                },
+                error: (error) => {
+                    this.alertCod = {
+                        type: 'error',
+                        message: 'Ha ocurrido al enviar el código',
+                    };
+                    this.showCode = true;
+                    this.returnForm = true;
+                }
+            });
+
 
     }
 
@@ -165,6 +186,87 @@ export class SignUpComponent implements OnInit {
         } */
     }
 
+    /* Metodo para verificafar el código de verificación*/
+    protected CodeVer() {
+
+
+        if (this.banVerificacion < 3) {
+
+            if (this.codeInt !== "") {
+
+                if (this.codeRec === this.codeInt) {
+                    this.returnForm = false;
+                    this.personaService.savePersona(this.persona)
+
+
+                    this.personaService.savePersona(this.persona).subscribe(data => {
+                        console.log(data);
+                        this.user.persona = data;
+                        const rolId = 4; // ID del rol
+                        this.usuarioService.registrarUsuarioConFoto(this.user, rolId, this.selectedFile)
+                            .subscribe({
+                                next: (response) => {
+                                    console.log(response);
+                                    this.alertReg = {
+                                        type: 'success',
+                                        message: 'Su registro se a realizado correctamente',
+                                    };
+                                    this.showAlert = true;
+                                    setTimeout(function () {
+                                        window.location.href = 'http://localhost:4200/'; // URL a la que deseas redirigir
+                                    }, 1500);
+                                },
+                                error: (error) => {
+                                    this.alertReg = {
+                                        type: 'error',
+                                        message: 'Ha ocurrido un error al crear el usuario',
+                                    };
+                                    this.showAlert = true;
+                                    this.returnForm = true;
+                                }
+                            });
+
+                        this.signUpNgForm.resetForm();
+
+                    })
+
+
+                } else {
+                    this.banVerificacion++;
+                    this.inputCode.nativeElement.classList.remove('bg-red-400');
+                    switch (this.banVerificacion) {
+
+                        case 1:
+
+                            this.btnCodeVer.nativeElement.textContent = "2 Intentos";
+
+                            break;
+                        case 2:
+
+                            this.btnCodeVer.nativeElement.textContent = "1 Intento";
+
+                            break;
+                        case 3:
+                            this.btnCodeVer.nativeElement.textContent = "Demasiados intentos";
+                            this.btnCodeVer.nativeElement.classList.replace('bg-indigo-600', 'bg-red-400');
+                            this.btnCodeVer.nativeElement.classList.replace('hover:bg-indigo-500', 'hover:bg-red-400');
+                            this.inputCode.nativeElement.classList.add('bg-red-400');
+                            break;
+
+                    }
+                }
+
+            } else {
+
+                this.inputCode.nativeElement.classList.add('bg-red-400');
+            }
+
+        }
+
+
+    }
+
+
 }
 
 /* Metodo para validar la cedula y celular de 10 digitos*/
@@ -178,7 +280,7 @@ function validarLongitud(): ValidatorFn {
         }
 
         return null;
-    };   
+    };
 }
 
 /* Metodo para validar la contraseña de 8 digitos*/
@@ -193,7 +295,7 @@ function validarcontra(): ValidatorFn {
 
         return null;
     };
-    
+
 }
 
 /* Metodo para validar que el usuario sea mayor de edad*/
