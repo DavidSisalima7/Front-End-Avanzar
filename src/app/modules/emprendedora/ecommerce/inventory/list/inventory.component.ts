@@ -16,7 +16,7 @@ import { fuseAnimations } from '@fuse/animations';
 import { FuseConfirmationService } from '@fuse/services/confirmation';
 import { debounceTime, map, merge, Observable, Subject, switchMap, takeUntil } from 'rxjs';
 import { InventoryService } from '../inventory.service';
-import { InventoryBrand, InventoryCategory, InventoryPagination, InventoryProduct, InventoryTag, InventoryVendor } from '../inventory.types';
+import { InventarioProductos, CategoriaProducto, InventarioPublicaciones, CategoriaPublicacion, InventoryPagination } from '../inventory.types';
 
 @Component({
     selector       : 'inventory-list',
@@ -52,20 +52,15 @@ export class InventoryListComponent implements OnInit, AfterViewInit, OnDestroy
     @ViewChild(MatPaginator) private _paginator: MatPaginator;
     @ViewChild(MatSort) private _sort: MatSort;
 
-    products$: Observable<InventoryProduct[]>;
-
-    brands: InventoryBrand[];
-    categories: InventoryCategory[];
-    filteredTags: InventoryTag[];
+    publicaciones$: Observable<InventarioPublicaciones[]>;
+    categoriesPublicacion: CategoriaPublicacion[];
+    categoriesProducto: CategoriaProducto[];
     flashMessage: 'success' | 'error' | null = null;
     isLoading: boolean = false;
     pagination: InventoryPagination;
     searchInputControl: UntypedFormControl = new UntypedFormControl();
-    selectedProduct: InventoryProduct | null = null;
-    selectedProductForm: UntypedFormGroup;
-    tags: InventoryTag[];
-    tagsEditMode: boolean = false;
-    vendors: InventoryVendor[];
+    selectedPublicacion: InventarioPublicaciones | null = null;
+    selectedPublicacionForm: UntypedFormGroup;
     private _unsubscribeAll: Subject<any> = new Subject<any>();
 
     /**
@@ -90,7 +85,7 @@ export class InventoryListComponent implements OnInit, AfterViewInit, OnDestroy
     ngOnInit(): void
     {
         // Create the selected product form
-        this.selectedProductForm = this._formBuilder.group({
+        this.selectedPublicacionForm = this._formBuilder.group({
             id               : [''],
             category         : [''],
             name             : ['', [Validators.required]],
@@ -263,7 +258,7 @@ export class InventoryListComponent implements OnInit, AfterViewInit, OnDestroy
     toggleDetails(productId: string): void
     {
         // If the product is already selected...
-        if ( this.selectedProduct && this.selectedProduct.id === productId )
+        if ( this.selectedPublicacion && this.selectedPublicacion.id === productId )
         {
             // Close the details
             this.closeDetails();
@@ -275,10 +270,10 @@ export class InventoryListComponent implements OnInit, AfterViewInit, OnDestroy
             .subscribe((product) =>
             {
                 // Set the selected product
-                this.selectedProduct = product;
+                this.selectedPublicacion = product;
 
                 // Fill the form
-                this.selectedProductForm.patchValue(product);
+                this.selectedPublicacionForm.patchValue(product);
 
                 // Mark for check
                 this._changeDetectorRef.markForCheck();
@@ -290,7 +285,7 @@ export class InventoryListComponent implements OnInit, AfterViewInit, OnDestroy
      */
     closeDetails(): void
     {
-        this.selectedProduct = null;
+        this.selectedPublicacion = null;
     }
 
     /**
@@ -299,8 +294,8 @@ export class InventoryListComponent implements OnInit, AfterViewInit, OnDestroy
     cycleImages(forward: boolean = true): void
     {
         // Get the image count and current image index
-        const count = this.selectedProductForm.get('images').value.length;
-        const currentIndex = this.selectedProductForm.get('currentImageIndex').value;
+        const count = this.selectedPublicacionForm.get('images').value.length;
+        const currentIndex = this.selectedPublicacionForm.get('currentImageIndex').value;
 
         // Calculate the next and previous index
         const nextIndex = currentIndex + 1 === count ? 0 : currentIndex + 1;
@@ -309,12 +304,12 @@ export class InventoryListComponent implements OnInit, AfterViewInit, OnDestroy
         // If cycling forward...
         if ( forward )
         {
-            this.selectedProductForm.get('currentImageIndex').setValue(nextIndex);
+            this.selectedPublicacionForm.get('currentImageIndex').setValue(nextIndex);
         }
         // If cycling backwards...
         else
         {
-            this.selectedProductForm.get('currentImageIndex').setValue(prevIndex);
+            this.selectedPublicacionForm.get('currentImageIndex').setValue(prevIndex);
         }
     }
 
@@ -368,7 +363,7 @@ export class InventoryListComponent implements OnInit, AfterViewInit, OnDestroy
 
         // If there is a tag...
         const tag = this.filteredTags[0];
-        const isTagApplied = this.selectedProduct.tags.find(id => id === tag.id);
+        const isTagApplied = this.selectedPublicacion.tags.find(id => id === tag.id);
 
         // If the found tag is already applied to the product...
         if ( isTagApplied )
@@ -445,10 +440,10 @@ export class InventoryListComponent implements OnInit, AfterViewInit, OnDestroy
     addTagToProduct(tag: InventoryTag): void
     {
         // Add the tag
-        this.selectedProduct.tags.unshift(tag.id);
+        this.selectedPublicacion.tags.unshift(tag.id);
 
         // Update the selected product form
-        this.selectedProductForm.get('tags').patchValue(this.selectedProduct.tags);
+        this.selectedPublicacionForm.get('tags').patchValue(this.selectedPublicacion.tags);
 
         // Mark for check
         this._changeDetectorRef.markForCheck();
@@ -462,10 +457,10 @@ export class InventoryListComponent implements OnInit, AfterViewInit, OnDestroy
     removeTagFromProduct(tag: InventoryTag): void
     {
         // Remove the tag
-        this.selectedProduct.tags.splice(this.selectedProduct.tags.findIndex(item => item === tag.id), 1);
+        this.selectedPublicacion.tags.splice(this.selectedPublicacion.tags.findIndex(item => item === tag.id), 1);
 
         // Update the selected product form
-        this.selectedProductForm.get('tags').patchValue(this.selectedProduct.tags);
+        this.selectedPublicacionForm.get('tags').patchValue(this.selectedPublicacion.tags);
 
         // Mark for check
         this._changeDetectorRef.markForCheck();
@@ -508,10 +503,10 @@ export class InventoryListComponent implements OnInit, AfterViewInit, OnDestroy
         this._inventoryService.createProduct().subscribe((newProduct) =>
         {
             // Go to new product
-            this.selectedProduct = newProduct;
+            this.selectedPublicacion = newProduct;
 
             // Fill the form
-            this.selectedProductForm.patchValue(newProduct);
+            this.selectedPublicacionForm.patchValue(newProduct);
 
             // Mark for check
             this._changeDetectorRef.markForCheck();
@@ -521,10 +516,10 @@ export class InventoryListComponent implements OnInit, AfterViewInit, OnDestroy
     /**
      * Update the selected product using the form data
      */
-    updateSelectedProduct(): void
+    updateselectedPublicacion(): void
     {
         // Get the product object
-        const product = this.selectedProductForm.getRawValue();
+        const product = this.selectedPublicacionForm.getRawValue();
 
         // Remove the currentImageIndex field
         delete product.currentImageIndex;
@@ -540,7 +535,7 @@ export class InventoryListComponent implements OnInit, AfterViewInit, OnDestroy
     /**
      * Delete the selected product using the form data
      */
-    deleteSelectedProduct(): void
+    deleteselectedPublicacion(): void
     {
         // Open the confirmation dialog
         const confirmation = this._fuseConfirmationService.open({
@@ -560,7 +555,7 @@ export class InventoryListComponent implements OnInit, AfterViewInit, OnDestroy
             if ( result === 'confirmed' )
             {
                 // Get the product object
-                const product = this.selectedProductForm.getRawValue();
+                const product = this.selectedPublicacionForm.getRawValue();
 
                 // Delete the product on the server
                 this._inventoryService.deleteProduct(product.id).subscribe(() =>

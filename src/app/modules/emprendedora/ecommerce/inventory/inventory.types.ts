@@ -1,24 +1,50 @@
-export interface InventoryProduct
-{
-    id: string;
-    category?: string;
-    name: string;
-    description?: string;
-    tags?: string[];
-    sku?: string | null;
-    barcode?: string | null;
-    brand?: string | null;
-    vendor: string | null;
-    stock: number;
-    reserved: number;
-    cost: number;
-    basePrice: number;
-    taxPercent: number;
-    price: number;
-    weight: number;
-    thumbnail: string;
-    images: string[];
-    active: boolean;
+import { Vendedor } from "app/services/models/vendedora";
+
+export interface InventarioProductos {
+    idProducto: number;
+    nombreProducto: string;
+    precioProducto: number;
+    cantidadDisponible: number;
+    estadoProducto: boolean;
+    descripcionProducto: string;
+    miniaturaProducto: string;
+    categoriaProducto: CategoriaProducto;
+}
+
+export interface InventarioServicios {
+    idServicio: number;
+    nombreServicio: string;
+}
+
+export interface CategoriaProducto {
+    idCategoriaProducto: number;
+    nombreCategoriaProducto: string;
+    descripcion: string;
+    estado: boolean;
+}
+
+export interface InventarioPublicaciones {
+
+    idPublicacion: number;
+    tituloPublicacion: string;
+    descripcionPublicacion: string;
+    estado: boolean;
+    fechaPublicacion: Date;
+    vendedor: Vendedor;
+    categoria: CategoriaPublicacion;
+    productos: InventarioProductos;
+    servicios: InventarioServicios;
+    imagenes: string[];
+}
+
+
+
+export interface CategoriaPublicacion {
+
+    idCategoria: number;
+    nombreCategoria: string;
+    descripcion: string;
+    estado: boolean;
 }
 
 export interface InventoryPagination
@@ -29,32 +55,4 @@ export interface InventoryPagination
     lastPage: number;
     startIndex: number;
     endIndex: number;
-}
-
-export interface InventoryCategory
-{
-    id: string;
-    parentId: string;
-    name: string;
-    slug: string;
-}
-
-export interface InventoryBrand
-{
-    id: string;
-    name: string;
-    slug: string;
-}
-
-export interface InventoryTag
-{
-    id?: string;
-    title?: string;
-}
-
-export interface InventoryVendor
-{
-    id: string;
-    name: string;
-    slug: string;
 }
