@@ -52,6 +52,7 @@ export class InventoryListComponent implements OnInit, AfterViewInit, OnDestroy
     @ViewChild(MatPaginator) private _paginator: MatPaginator;
     @ViewChild(MatSort) private _sort: MatSort;
 
+
     publicaciones$: Observable<InventarioPublicaciones[]>;
     categoriesPublicacion: CategoriaPublicacion[];
     categoriesProducto: CategoriaProducto[];
@@ -86,47 +87,30 @@ export class InventoryListComponent implements OnInit, AfterViewInit, OnDestroy
     {
         // Create the selected product form
         this.selectedPublicacionForm = this._formBuilder.group({
-            id               : [''],
-            category         : [''],
-            name             : ['', [Validators.required]],
-            description      : [''],
-            tags             : [[]],
-            sku              : [''],
-            barcode          : [''],
-            brand            : [''],
-            vendor           : [''],
-            stock            : [''],
-            reserved         : [''],
-            cost             : [''],
-            basePrice        : [''],
-            taxPercent       : [''],
-            price            : [''],
-            weight           : [''],
-            thumbnail        : [''],
-            images           : [[]],
-            currentImageIndex: [0], // Image index that is currently being viewed
+            idPublicacion    : [''],
+            categoria         : [''],
+            nombreProducto  : ['', [Validators.required]],
+            tituloPublicacion: ['', [Validators.required]],
+            descripcionPublicacion: [''],
+            tipos            : [''],
+            vendedor           : [''],
+            cantidadDisponible  : [''],
+            precioProducto   : [''],
+            pesoProducto     : [''],
+            miniaturaProducto        : [''],
+            imagenes           : [[]],
+            currentImageIndex: [0], // Image index that is currently being viewed 
             active           : [false],
         });
 
-        // Get the brands
-        this._inventoryService.brands$
+       
+        // Get the categoriesProduct
+        this._inventoryService.categoriesProducto$
             .pipe(takeUntil(this._unsubscribeAll))
-            .subscribe((brands: InventoryBrand[]) =>
-            {
-                // Update the brands
-                this.brands = brands;
-
-                // Mark for check
-                this._changeDetectorRef.markForCheck();
-            });
-
-        // Get the categories
-        this._inventoryService.categories$
-            .pipe(takeUntil(this._unsubscribeAll))
-            .subscribe((categories: InventoryCategory[]) =>
+            .subscribe((categories: CategoriaProducto[]) =>
             {
                 // Update the categories
-                this.categories = categories;
+                this.categoriesProducto = categories;
 
                 // Mark for check
                 this._changeDetectorRef.markForCheck();
@@ -145,33 +129,10 @@ export class InventoryListComponent implements OnInit, AfterViewInit, OnDestroy
             });
 
         // Get the products
-        this.products$ = this._inventoryService.products$;
 
-        // Get the tags
-        this._inventoryService.tags$
-            .pipe(takeUntil(this._unsubscribeAll))
-            .subscribe((tags: InventoryTag[]) =>
-            {
-                // Update the tags
-                this.tags = tags;
-                this.filteredTags = tags;
+        this.publicaciones$ = this._inventoryService.publicaciones$;
 
-                // Mark for check
-                this._changeDetectorRef.markForCheck();
-            });
-
-        // Get the vendors
-        this._inventoryService.vendors$
-            .pipe(takeUntil(this._unsubscribeAll))
-            .subscribe((vendors: InventoryVendor[]) =>
-            {
-                // Update the vendors
-                this.vendors = vendors;
-
-                // Mark for check
-                this._changeDetectorRef.markForCheck();
-            });
-
+       
         // Subscribe to search input field value changes
         this.searchInputControl.valueChanges
             .pipe(
@@ -181,7 +142,7 @@ export class InventoryListComponent implements OnInit, AfterViewInit, OnDestroy
                 {
                     this.closeDetails();
                     this.isLoading = true;
-                    return this._inventoryService.getProducts(0, 10, 'name', 'asc', query);
+                    return this._inventoryService.getPublicaciones(0, 10, 'name', 'asc', query);
                 }),
                 map(() =>
                 {
@@ -226,7 +187,7 @@ export class InventoryListComponent implements OnInit, AfterViewInit, OnDestroy
                 {
                     this.closeDetails();
                     this.isLoading = true;
-                    return this._inventoryService.getProducts(this._paginator.pageIndex, this._paginator.pageSize, this._sort.active, this._sort.direction);
+                    return this._inventoryService.getPublicaciones(this._paginator.pageIndex, this._paginator.pageSize, this._sort.active, this._sort.direction);
                 }),
                 map(() =>
                 {
@@ -253,12 +214,12 @@ export class InventoryListComponent implements OnInit, AfterViewInit, OnDestroy
     /**
      * Toggle product details
      *
-     * @param productId
+     * @param publicacionId
      */
-    toggleDetails(productId: string): void
+    toggleDetails(publicacionId: number): void
     {
         // If the product is already selected...
-        if ( this.selectedPublicacion && this.selectedPublicacion.id === productId )
+        if ( this.selectedPublicacion && this.selectedPublicacion.idPublicacion === publicacionId )
         {
             // Close the details
             this.closeDetails();
@@ -266,7 +227,7 @@ export class InventoryListComponent implements OnInit, AfterViewInit, OnDestroy
         }
 
         // Get the product by id
-        this._inventoryService.getProductById(productId)
+        this._inventoryService.getPublicacionById(publicacionId)
             .subscribe((product) =>
             {
                 // Set the selected product
@@ -314,199 +275,18 @@ export class InventoryListComponent implements OnInit, AfterViewInit, OnDestroy
     }
 
     /**
-     * Toggle the tags edit mode
-     */
-    toggleTagsEditMode(): void
-    {
-        this.tagsEditMode = !this.tagsEditMode;
-    }
-
-    /**
-     * Filter tags
-     *
-     * @param event
-     */
-    filterTags(event): void
-    {
-        // Get the value
-        const value = event.target.value.toLowerCase();
-
-        // Filter the tags
-        this.filteredTags = this.tags.filter(tag => tag.title.toLowerCase().includes(value));
-    }
-
-    /**
-     * Filter tags input key down event
-     *
-     * @param event
-     */
-    filterTagsInputKeyDown(event): void
-    {
-        // Return if the pressed key is not 'Enter'
-        if ( event.key !== 'Enter' )
-        {
-            return;
-        }
-
-        // If there is no tag available...
-        if ( this.filteredTags.length === 0 )
-        {
-            // Create the tag
-            this.createTag(event.target.value);
-
-            // Clear the input
-            event.target.value = '';
-
-            // Return
-            return;
-        }
-
-        // If there is a tag...
-        const tag = this.filteredTags[0];
-        const isTagApplied = this.selectedPublicacion.tags.find(id => id === tag.id);
-
-        // If the found tag is already applied to the product...
-        if ( isTagApplied )
-        {
-            // Remove the tag from the product
-            this.removeTagFromProduct(tag);
-        }
-        else
-        {
-            // Otherwise add the tag to the product
-            this.addTagToProduct(tag);
-        }
-    }
-
-    /**
-     * Create a new tag
-     *
-     * @param title
-     */
-    createTag(title: string): void
-    {
-        const tag = {
-            title,
-        };
-
-        // Create tag on the server
-        this._inventoryService.createTag(tag)
-            .subscribe((response) =>
-            {
-                // Add the tag to the product
-                this.addTagToProduct(response);
-            });
-    }
-
-    /**
-     * Update the tag title
-     *
-     * @param tag
-     * @param event
-     */
-    updateTagTitle(tag: InventoryTag, event): void
-    {
-        // Update the title on the tag
-        tag.title = event.target.value;
-
-        // Update the tag on the server
-        this._inventoryService.updateTag(tag.id, tag)
-            .pipe(debounceTime(300))
-            .subscribe();
-
-        // Mark for check
-        this._changeDetectorRef.markForCheck();
-    }
-
-    /**
-     * Delete the tag
-     *
-     * @param tag
-     */
-    deleteTag(tag: InventoryTag): void
-    {
-        // Delete the tag from the server
-        this._inventoryService.deleteTag(tag.id).subscribe();
-
-        // Mark for check
-        this._changeDetectorRef.markForCheck();
-    }
-
-    /**
-     * Add tag to the product
-     *
-     * @param tag
-     */
-    addTagToProduct(tag: InventoryTag): void
-    {
-        // Add the tag
-        this.selectedPublicacion.tags.unshift(tag.id);
-
-        // Update the selected product form
-        this.selectedPublicacionForm.get('tags').patchValue(this.selectedPublicacion.tags);
-
-        // Mark for check
-        this._changeDetectorRef.markForCheck();
-    }
-
-    /**
-     * Remove tag from the product
-     *
-     * @param tag
-     */
-    removeTagFromProduct(tag: InventoryTag): void
-    {
-        // Remove the tag
-        this.selectedPublicacion.tags.splice(this.selectedPublicacion.tags.findIndex(item => item === tag.id), 1);
-
-        // Update the selected product form
-        this.selectedPublicacionForm.get('tags').patchValue(this.selectedPublicacion.tags);
-
-        // Mark for check
-        this._changeDetectorRef.markForCheck();
-    }
-
-    /**
-     * Toggle product tag
-     *
-     * @param tag
-     * @param change
-     */
-    toggleProductTag(tag: InventoryTag, change: MatCheckboxChange): void
-    {
-        if ( change.checked )
-        {
-            this.addTagToProduct(tag);
-        }
-        else
-        {
-            this.removeTagFromProduct(tag);
-        }
-    }
-
-    /**
-     * Should the create tag button be visible
-     *
-     * @param inputValue
-     */
-    shouldShowCreateTagButton(inputValue: string): boolean
-    {
-        return !!!(inputValue === '' || this.tags.findIndex(tag => tag.title.toLowerCase() === inputValue.toLowerCase()) > -1);
-    }
-
-    /**
      * Create product
      */
-    createProduct(): void
+    createPublicacion(): void
     {
         // Create the product
-        this._inventoryService.createProduct().subscribe((newProduct) =>
+        this._inventoryService.createPublicacion().subscribe((newPublicacion) =>
         {
             // Go to new product
-            this.selectedPublicacion = newProduct;
+            this.selectedPublicacion = newPublicacion;
 
             // Fill the form
-            this.selectedPublicacionForm.patchValue(newProduct);
+            this.selectedPublicacionForm.patchValue(newPublicacion);
 
             // Mark for check
             this._changeDetectorRef.markForCheck();
@@ -519,13 +299,13 @@ export class InventoryListComponent implements OnInit, AfterViewInit, OnDestroy
     updateselectedPublicacion(): void
     {
         // Get the product object
-        const product = this.selectedPublicacionForm.getRawValue();
+        const post = this.selectedPublicacionForm.getRawValue();
 
         // Remove the currentImageIndex field
-        delete product.currentImageIndex;
+        delete post.currentImageIndex;
 
-        // Update the product on the server
-        this._inventoryService.updateProduct(product.id, product).subscribe(() =>
+        // Update the post on the server
+        this._inventoryService.updatePublicacion(post.idPublicacion, post).subscribe(() =>
         {
             // Show a success message
             this.showFlashMessage('success');
@@ -533,17 +313,17 @@ export class InventoryListComponent implements OnInit, AfterViewInit, OnDestroy
     }
 
     /**
-     * Delete the selected product using the form data
+     * Delete the selected post using the form data
      */
     deleteselectedPublicacion(): void
     {
         // Open the confirmation dialog
         const confirmation = this._fuseConfirmationService.open({
-            title  : 'Delete product',
-            message: 'Are you sure you want to remove this product? This action cannot be undone!',
+            title  : 'Eliminar publicación',
+            message: '¿Está seguro de que desea eliminar esta publicación? Esta acción no se puede deshacer.',
             actions: {
                 confirm: {
-                    label: 'Delete',
+                    label: 'Eliminar',
                 },
             },
         });
@@ -555,10 +335,10 @@ export class InventoryListComponent implements OnInit, AfterViewInit, OnDestroy
             if ( result === 'confirmed' )
             {
                 // Get the product object
-                const product = this.selectedPublicacionForm.getRawValue();
+                const post = this.selectedPublicacionForm.getRawValue();
 
-                // Delete the product on the server
-                this._inventoryService.deleteProduct(product.id).subscribe(() =>
+                // Delete the post on the server
+                this._inventoryService.deleteProduct(post.idPublicacion).subscribe(() =>
                 {
                     // Close the details
                     this.closeDetails();

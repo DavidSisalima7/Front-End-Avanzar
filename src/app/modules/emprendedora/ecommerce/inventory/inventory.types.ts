@@ -8,6 +8,7 @@ export interface InventarioProductos {
     estadoProducto: boolean;
     descripcionProducto: string;
     miniaturaProducto: string;
+    pesoProducto: number;
     categoriaProducto: CategoriaProducto;
 }
 

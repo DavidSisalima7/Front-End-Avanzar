@@ -8,7 +8,6 @@ import { Vendedor } from './../../../../services/models/vendedora';
 export class InventoryService
 {
     // Private
-
     private _product: BehaviorSubject<InventarioProductos | null> = new BehaviorSubject(null);
     private _publicacion: BehaviorSubject<InventarioPublicaciones | null> = new BehaviorSubject(null);
     private _categoriesProducto: BehaviorSubject<CategoriaProducto[] | null> = new BehaviorSubject(null);
