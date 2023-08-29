@@ -112,7 +112,7 @@ export class SettingsSecurityComponent implements OnInit {
   }
 
 
-  // Función para evaluar la fortaleza de la contraseña
+  // evaluar longitud 
   testLongPass(): ValidatorFn {
 
     return (pass: AbstractControl): ValidationErrors | null => {
@@ -133,46 +133,16 @@ export class SettingsSecurityComponent implements OnInit {
 
         } else if (longitud != "") {
 
-          this.longPass = this.evaluarSeguridadContrasena(longitud);
+          this.longPass=this.vali.evaluarSeguridadContrasena(longitud);
           this.showAlertPassSecu = true;
-
+          
 
           return null;
         }
-
       }
-
-    };
-
-  }
-
-  evaluarSeguridadContrasena(contrasena: string): string {
-    let seguridad = 0;
-
-    if (contrasena.length >= 8) {
-      seguridad += 25;
-    }
-
-    if (/[a-z]/.test(contrasena) && /[A-Z]/.test(contrasena)) {
-      seguridad += 25;
-    }
-
-    if (/\d/.test(contrasena)) {
-      seguridad += 25;
-    }
-
-    if (/[!@#$%^&*()_+{}\[\]:;<>,.?~\-]/.test(contrasena)) {
-      seguridad += 25;
-    }
-
-    if (seguridad < 50) {
-      return 'Débil';
-    } else if (seguridad < 75) {
-      return 'Moderada';
-    } else {
-      return 'Fuerte';
     }
   }
+
 
 
   isFormValid(): boolean {
@@ -193,17 +163,17 @@ export class SettingsSecurityComponent implements OnInit {
               type: 'success',
               message: 'Contraseña modificada',
             };
-            this.showAlertPassEqu = false;
+            
             this.showAlertCurrentPas = true;
             this.securityNgForm.resetForm();
             /*this.cd.detectChanges();*/
-
+            this.showAlertPassEqu = false;
           },
           error: (error) => {
    
             this.alertUpdaPass = {
               type: 'error',
-              message: 'No modificada',
+              message: 'Contraseña anterior incorrecta',
             };
             this.showAlertPassUpda = true;
             this.securityForm.get('repPassword').updateValueAndValidity();
@@ -212,7 +182,7 @@ export class SettingsSecurityComponent implements OnInit {
 
 
         });
-
+      
 
     }
 
