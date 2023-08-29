@@ -7,15 +7,14 @@ import { MatInputModule } from '@angular/material/input';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 
 @Component({
-    selector       : 'settings-security',
-    templateUrl    : './security.component.html',
-    encapsulation  : ViewEncapsulation.None,
+    selector: 'settings-security',
+    templateUrl: './security.component.html',
+    encapsulation: ViewEncapsulation.None,
     changeDetection: ChangeDetectionStrategy.OnPush,
-    standalone     : true,
-    imports        : [FormsModule, ReactiveFormsModule, MatFormFieldModule, MatIconModule, MatInputModule, MatSlideToggleModule, MatButtonModule],
+    standalone: true,
+    imports: [FormsModule, ReactiveFormsModule, MatFormFieldModule, MatIconModule, MatInputModule, MatSlideToggleModule, MatButtonModule],
 })
-export class SettingsSecurityComponent implements OnInit
-{
+export class SettingsSecurityComponent implements OnInit {
     securityForm: UntypedFormGroup;
 
     /**
@@ -23,8 +22,7 @@ export class SettingsSecurityComponent implements OnInit
      */
     constructor(
         private _formBuilder: UntypedFormBuilder,
-    )
-    {
+    ) {
     }
 
     // -----------------------------------------------------------------------------------------------------
@@ -34,13 +32,12 @@ export class SettingsSecurityComponent implements OnInit
     /**
      * On init
      */
-    ngOnInit(): void
-    {
+    ngOnInit(): void {
         // Create the form
         this.securityForm = this._formBuilder.group({
-            currentPassword  : [''],
-            newPassword      : [''],
-            twoStep          : [true],
+            currentPassword: [''],
+            newPassword: [''],
+            twoStep: [true],
             askPasswordChange: [false],
         });
     }

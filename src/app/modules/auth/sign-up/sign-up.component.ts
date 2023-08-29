@@ -143,12 +143,13 @@ export class SignUpComponent implements OnInit {
         this.email.subject = "Su código de verificación es:"
         this.email.to = this.persona.correo;
         this.showCode = false;
+        //regresar al formulario
         this.returnForm = false;
         this.emailService.sendCodeVer(this.email)
             .subscribe({
 
                 next: (reponse) => {
-                    console.log("codigo enviado")
+                    
                     this.alertCod = {
                         type: 'success',
                         message: 'Código enviado revise en Spam o Recibidos',
@@ -165,7 +166,7 @@ export class SignUpComponent implements OnInit {
                     this.showCode = true;
                     this.returnForm = true;
                 }
-            });
+        });
 
 
     }
@@ -206,7 +207,7 @@ export class SignUpComponent implements OnInit {
                         this.usuarioService.registrarUsuarioConFoto(this.user, rolId, this.selectedFile)
                             .subscribe({
                                 next: (response) => {
-                                    console.log(response);
+                                   
                                     this.alertReg = {
                                         type: 'success',
                                         message: 'Su registro se a realizado correctamente',
