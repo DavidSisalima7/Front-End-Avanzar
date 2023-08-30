@@ -82,8 +82,7 @@
                 <div class="grid grid-cols-2 gap-6">
                     <mat-form-field class="w-full">
                         <mat-label>Cédula</mat-label>
-                        <input id="cedula" matInput [formControlName]="'cedula'" [(ngModel)]="persona.cedula"
-                            maxlength="10" pattern="[0-9]*" />
+                        <input id="cedula" matInput [formControlName]="'cedula'" [(ngModel)]="persona.cedula" maxlength="10" pattern="[0-9]*" />
                         <mat-error *ngIf="
                             signUpForm.get('cedula').hasError('required')
                         ">Este campo es requerido</mat-error>
@@ -93,6 +92,7 @@
                             cédula debe contener 10 dígitos</mat-error>
                         <mat-error *ngIf="signUpForm.get('cedula').hasError('pattern')">Solo se permiten números en la
                             cédula</mat-error>
+                        
                     </mat-form-field>
 
                     <!-- Primer Nombre field -->
@@ -243,7 +243,7 @@
                     <mat-checkbox class="-ml-2" [color]="'primary'" [formControlName]="'agreements'">
                         <span>Acepto</span>
                         <a class="ml-1 text-primary-500 hover:underline" [routerLink]="['./']">Términos</a>
-                        <span>y</span>
+                        <span> y</span>
                         <a class="ml-1 text-primary-500 hover:underline" [routerLink]="['./']">Política de
                             privacidad</a>
                     </mat-checkbox>
@@ -258,7 +258,7 @@
 
                 <!-- Submit button -->
                 <button class="fuse-mat-button-large w-full mt-6" mat-flat-button [color]="'primary'"
-                    [disabled]="!isFormValidAndAccepted()" (click)="signUp()">
+                    [disabled]="!isFormValidAndAccepted()" (click)="capturarCedulaYBuscar()">
                     <span *ngIf="!signUpForm.disabled">
                         Crear su cuenta gratuitamente
                     </span>

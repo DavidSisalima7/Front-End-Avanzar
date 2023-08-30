@@ -66,7 +66,8 @@ export class SignUpComponent implements OnInit {
     //Variable para el combo Box de genero que almacena el resultado
     public generoSeleccionado: string;
 
-
+    cedulaRegistrada: boolean = false;
+    correoRegistrado: boolean = false;
 
     /**
      * Constructor
@@ -117,9 +118,97 @@ export class SignUpComponent implements OnInit {
         return this.signUpForm.valid && this.signUpForm.get('agreements').value;
     }
 
-    /**
-     * Sign up
-     */
+    // Método para capturar la cédula del formulario
+
+    capturarCedulaYBuscar(): void {
+        const cedulaValue = this.signUpForm.get('cedula').value;
+        const correoValue = this.signUpForm.get('correo').value;
+        console.log(`Cédula capturada: ${cedulaValue}`);
+        console.log(`Correo capturado: ${correoValue}`);
+        this.buscarPersonaPorCedula(cedulaValue);
+    }
+
+    // Método para buscar la cédula si esta en la BD
+
+    buscarPersonaPorCedula(cedulaValue: string): void {
+        this.personaService.buscarPersonaPorCedula(cedulaValue)
+            .subscribe(
+                (cedulaEncontrada: boolean) => {
+                    if (cedulaEncontrada) {
+                        console.log(`Persona con cédula ${cedulaValue} encontrada.`);
+                        this.cedulaRegistrada = true;
+                        const correoValue = this.signUpForm.get('correo').value;
+                        this.buscarPersonaPorCorreoYMostrarMensaje(cedulaValue, correoValue);
+                    } else {
+                        console.log(`Persona con cédula ${cedulaValue} no encontrada.`);
+                        this.cedulaRegistrada = false;
+                        const correoValue = this.signUpForm.get('correo').value;
+                        this.buscarPersonaPorCorreo(correoValue);
+                    }
+                },
+                (error) => {
+                    console.error('Error al buscar persona:', error);
+                }
+            );
+    }
+    
+
+    buscarPersonaPorCorreoYMostrarMensaje(cedulaValue: string, correoValue: string): void {
+        this.personaService.buscarPersonaPorCorreo(correoValue)
+            .subscribe(
+                (correoEncontrado: boolean) => {
+                    if (correoEncontrado) {
+                        console.log(`Persona con correo ${correoValue} encontrada.`);
+                        this.correoRegistrado = true;
+                        this.alertCod = {
+                            type: 'error',
+                            message: 'La cédula y el correo ya han sido registrados.',
+                        };
+                        this.showAlert = true;
+                    } else {
+                        console.log(`Persona con correo ${correoValue} no encontrada.`);
+                        this.correoRegistrado = false;
+                        this.alertCod = {
+                            type: 'error',
+                            message: 'La cédula '+ cedulaValue +' ya ha sido registrada.',
+                        };
+                        this.showAlert = true;
+                    }
+                },
+                (error) => {
+                    console.error('Error al buscar persona:', error);
+                }
+            );
+    }
+
+    // Método para buscar el correo si esta en la BD
+
+    buscarPersonaPorCorreo(correoValue: string): void {
+        this.personaService.buscarPersonaPorCorreo(correoValue)
+            .subscribe(
+                (encontrada: boolean) => {
+                    if (encontrada) {
+                        console.log(`Persona con correo ${correoValue} encontrada.`);
+                        this.correoRegistrado = true;
+                        this.alertCod = {
+                            type: 'error',
+                            message: 'El correo ' + correoValue + ' ya ha sido registrado.',
+                        };
+                        this.showAlert = true;
+                    } else {
+                        console.log(`Persona con correo ${correoValue} no encontrada.`);
+                        this.correoRegistrado = false;
+                        this.signUp();
+                    }
+                },
+                (error) => {
+                    console.error('Error al buscar persona:', error);
+                }
+            );
+    }
+
+    // Método para registrar a un nuevo usuario
+
     signUp(): void {
         this.persona.estado = true;
         this.persona.nacionalidad = "Ecuador"
@@ -139,6 +228,28 @@ export class SignUpComponent implements OnInit {
 
         this.formCode = true;
         this.banVerificacion = 0;
+        this.personaService.savePersona(this.persona).subscribe(data => {
+            console.log(data);
+            this.user.persona = data;
+            const rolId = 4; // ID del rol
+            this.usuarioService.registrarUsuarioConFoto(this.user, rolId, this.selectedFile)
+                .subscribe(
+                    (response) => {
+                        console.log(response);
+                        this.alertCod = {
+                            type: 'success',
+                            message: 'Su registro se a realizado correctamente',
+                        };
+                        this.showAlert = true;
+                    },
+                    (error) => {
+                        this.alertCod = {
+                            type: 'error',
+                            message: 'Ha ocurrido un error al crear el usuario',
+                        };
+                        this.showAlert = true;
+                    }
+                );
 
         this.email.subject = "Su código de verificación es:"
         this.email.to = this.persona.correo;
@@ -167,6 +278,7 @@ export class SignUpComponent implements OnInit {
                 }
             });
 
+        });
 
     }
 
@@ -314,7 +426,6 @@ function calcularEdad(fechaNacimiento: Date): number {
 }
 
 
-
 export function edadMinimaValidator(): ValidatorFn {
     return (control: AbstractControl): ValidationErrors | null => {
         const fechaNacimiento = control.value;
@@ -331,3 +442,4 @@ export function edadMinimaValidator(): ValidatorFn {
         return null;
     };
 }
+

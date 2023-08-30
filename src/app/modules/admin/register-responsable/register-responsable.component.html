@@ -55,7 +55,7 @@
                             <mat-label>Cédula</mat-label>
                             <input matInput [formControlName]="'cedula'" [placeholder]="'Cedula'" maxlength="10"
                                 pattern="[0-9]*">
-                            <mat-icon class="icon-size-5" matPrefix [svgIcon]="'heroicons_solid:envelope'"></mat-icon>
+                            <mat-icon class="icon-size-5" matPrefix [svgIcon]="'heroicons_solid:identification'"></mat-icon>
                             <mat-error *ngIf="horizontalStepperForm.get('step1.cedula').hasError('required')">
                                 Este campo es requerido.
                             </mat-error>
@@ -80,7 +80,7 @@
                             <mat-error *ngIf="horizontalStepperForm.get('step1.primerNombre').hasError('pattern')">
                                 Nombre inválido
                             </mat-error>
-                            <mat-icon class="icon-size-5" matPrefix [svgIcon]="'heroicons_solid:envelope'"></mat-icon>
+                            <mat-icon class="icon-size-5" matPrefix [svgIcon]="'heroicons_solid:pencil'"></mat-icon>
                         </mat-form-field>
                     </div>
 
@@ -95,7 +95,7 @@
                             <mat-error *ngIf="horizontalStepperForm.get('step1.segundoNombre').hasError('pattern')">
                                 Nombre inválido
                             </mat-error>
-                            <mat-icon class="icon-size-5" matPrefix [svgIcon]="'heroicons_solid:envelope'"></mat-icon>
+                            <mat-icon class="icon-size-5" matPrefix [svgIcon]="'heroicons_solid:pencil'"></mat-icon>
                         </mat-form-field>
                     </div>
 
@@ -110,7 +110,7 @@
                             <mat-error *ngIf="horizontalStepperForm.get('step1.primerApellido').hasError('pattern')">
                                 Apellido inválido
                             </mat-error>
-                            <mat-icon class="icon-size-5" matPrefix [svgIcon]="'heroicons_solid:envelope'"></mat-icon>
+                            <mat-icon class="icon-size-5" matPrefix [svgIcon]="'heroicons_solid:pencil'"></mat-icon>
                         </mat-form-field>
                     </div>
 
@@ -125,7 +125,7 @@
                             <mat-error *ngIf="horizontalStepperForm.get('step1.segundoApellido').hasError('pattern')">
                                 Apellido inválido
                             </mat-error>
-                            <mat-icon class="icon-size-5" matPrefix [svgIcon]="'heroicons_solid:envelope'"></mat-icon>
+                            <mat-icon class="icon-size-5" matPrefix [svgIcon]="'heroicons_solid:pencil'"></mat-icon>
                         </mat-form-field>
                     </div>
 
@@ -161,7 +161,7 @@
                                 números en
                                 el
                                 celular</mat-error>
-                            <mat-icon class="icon-size-5" matPrefix [svgIcon]="'heroicons_solid:envelope'"></mat-icon>
+                            <mat-icon class="icon-size-5" matPrefix [svgIcon]="'heroicons_solid:phone'"></mat-icon>
                         </mat-form-field>
                     </div>
 
@@ -176,7 +176,7 @@
                             <mat-error
                                 *ngIf="horizontalStepperForm.get('step1.direccion').hasError('pattern')">Dirección
                                 inválida</mat-error>
-                            <mat-icon class="icon-size-5" matPrefix [svgIcon]="'heroicons_solid:envelope'"></mat-icon>
+                            <mat-icon class="icon-size-5" matPrefix [svgIcon]="'heroicons_solid:map-pin'"></mat-icon>
                         </mat-form-field>
                     </div>
 
@@ -206,7 +206,7 @@
                             <mat-error *ngIf="horizontalStepperForm.get('step1.genero').hasError('required')">
                                 Este campo es requerido
                             </mat-error>
-                            <mat-icon class="icon-size-5" matPrefix [svgIcon]="'heroicons_solid:map-pin'"></mat-icon>
+                            <mat-icon class="icon-size-5" matPrefix [svgIcon]="'heroicons_solid:users'"></mat-icon>
                         </mat-form-field>
                     </div>
                     <div class="flex flex-col gt-xs:flex-row">
@@ -230,7 +230,7 @@
                                 <mat-option value="España">España</mat-option>
                                 <mat-option value="Otro">Otro ...</mat-option>
                             </mat-select>
-                            <mat-icon class="icon-size-5" matPrefix [svgIcon]="'heroicons_solid:language'"></mat-icon>
+                            <mat-icon class="icon-size-5" matPrefix [svgIcon]="'heroicons_solid:globe-americas'"></mat-icon>
                             <mat-error *ngIf="horizontalStepperForm.get('step1.genero').hasError('required')">
                                 Este campo es requerido
                             </mat-error>
@@ -264,7 +264,7 @@
                     <!-- Columna de la imagen de perfil -->
                     <div class="sm:col-span-1">
                       <div class="-mt-18 lg:-mt-18 rounded-full">
-                        <br><br><span>↓ Deseas cambiar la foto de perfil? ↓</span><br>
+                        <br><br><span>↓ ¿Desea cambiar su foto de perfil? ↓</span><br>
                         <input id="image" type="file" accept="image/*" class="form-control" (change)="upload($event)" /> <br>
                       </div>
                     </div>
@@ -278,7 +278,7 @@
                     </mat-form-field>
                     <mat-form-field class="flex-auto gt-xs:pl-3">
                         <input matInput [formControlName]="'email'" [placeholder]="'Correo Electrónico'" readonly>
-                        <mat-icon class="icon-size-5" matPrefix [svgIcon]="'heroicons_solid:user-circle'"></mat-icon>
+                        <mat-icon class="icon-size-5" matPrefix [svgIcon]="'heroicons_solid:envelope'"></mat-icon>
                     </mat-form-field>
                 </div>
                 <div class="flex">
