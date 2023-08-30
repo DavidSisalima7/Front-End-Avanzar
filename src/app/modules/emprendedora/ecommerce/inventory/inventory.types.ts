@@ -31,11 +31,11 @@ export interface InventarioPublicaciones {
     descripcionPublicacion: string;
     estado: boolean;
     fechaPublicacion: Date;
-    vendedor: Vendedor;
-    categoria: CategoriaPublicacion;
-    productos: InventarioProductos;
-    servicios: InventarioServicios;
     imagenes: string[];
+    vendedor?: Vendedor ;
+    categoria?: CategoriaPublicacion ;
+    productos?: InventarioProductos;
+    servicios?: InventarioServicios;
 }
 
 
@@ -48,8 +48,7 @@ export interface CategoriaPublicacion {
     estado: boolean;
 }
 
-export interface InventoryPagination
-{
+export interface InventoryPagination {
     length: number;
     size: number;
     page: number;

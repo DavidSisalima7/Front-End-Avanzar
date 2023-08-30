@@ -1,8 +1,7 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, filter, map, Observable, of, switchMap, take, tap, throwError } from 'rxjs';
+import { BehaviorSubject, catchError, filter, map, Observable, of, switchMap, take, tap, throwError } from 'rxjs';
 import { InventarioProductos, CategoriaProducto, InventoryPagination, InventarioPublicaciones, CategoriaPublicacion } from './inventory.types';
-import { Vendedor } from './../../../../services/models/vendedora';
 
 @Injectable({providedIn: 'root'})
 export class InventoryService
@@ -20,6 +19,7 @@ export class InventoryService
      */
     constructor(private _httpClient: HttpClient)
     {
+        this.listarServicio(); // Llama a tu método para cargar los datos iniciales
     }
 
     // -----------------------------------------------------------------------------------------------------
@@ -53,6 +53,14 @@ export class InventoryService
     {
         return this._publicaciones.asObservable();
     }
+
+
+    listarServicio(): void {
+        this._httpClient.get<InventarioPublicaciones[]>("http://localhost:8080/api/publicaciones/listar")
+          .subscribe((data) => {
+            this._publicaciones.next(data); // Actualiza el BehaviorSubject con los datos obtenidos
+          });
+      }
 
     get categoriesPublicacion$(): Observable<CategoriaPublicacion[]>
     {
@@ -88,34 +96,47 @@ export class InventoryService
     }
 
     /**
-     * Get products
+     * Get publicationes
      *
      *
-     * @param page
+     *  @param page
      * @param size
      * @param sort
      * @param order
      * @param search
      */
-    getPublicaciones(page: number = 0, size: number = 10, sort: string = 'name', order: 'asc' | 'desc' | '' = 'asc', search: string = ''):
-        Observable<{ pagination: InventoryPagination; products: InventarioPublicaciones[] }>
-    {
-        return this._httpClient.get<{ pagination: InventoryPagination; products: InventarioPublicaciones[] }>('http://localhost:8080/api/publicaciones/listar', {
-            params: {
-                page: '' + page,
-                size: '' + size,
-                sort,
-                order,
-                search,
-            },
-        }).pipe(
-            tap((response) =>
-            {
-                this._pagination.next(response.pagination);
-                this._publicaciones.next(response.products);
-            }),
-        );
-    }
+
+    getProducts(
+        page: number = 0,
+        size: number = 10,
+        sort: string = 'tituloPublicacion',
+        order: 'asc' | 'desc' | '' = 'asc',
+        search: string = ''
+      ): Observable<InventarioPublicaciones[]> {
+        // Construir los parámetros de la solicitud HTTP
+        const params = new HttpParams()
+          .set('page', '' + page)
+          .set('size', '' + size)
+          .set('sort', sort)
+          .set('order', order)
+          .set('search', search);
+      
+        return this._httpClient
+          .get<{ pagination: InventoryPagination; products: InventarioPublicaciones[] }>('http://localhost:8080/api/publicaciones/listar', {
+            params: params
+          })
+          .pipe(
+            map((response) => response.products),
+             // Extrae solo la lista de productos
+            catchError((error) => {
+              console.error('Error al obtener productos', error);
+              return throwError(error); // Propaga el error hacia arriba
+            })
+          );
+      }
+      
+    
+    
 
     /**
      * Get product by id

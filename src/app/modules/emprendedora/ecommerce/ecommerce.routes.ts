@@ -21,7 +21,7 @@ export default [
                 resolve  : {
                     categoriesProducto: () => inject(InventoryService).getCategoriesProducto(),
                     categoriesPublicacion: () => inject(InventoryService).getCategoriesPublicacion(),
-                    publicaciones  : () => inject(InventoryService).getPublicaciones(),
+                    publicaciones  : () => inject(InventoryService).getProducts(),
                 },
             },
         ],
