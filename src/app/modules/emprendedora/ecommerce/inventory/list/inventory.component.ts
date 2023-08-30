@@ -17,6 +17,8 @@ import { FuseConfirmationService } from '@fuse/services/confirmation';
 import { debounceTime, map, merge, Observable, Subject, switchMap, takeUntil } from 'rxjs';
 import { InventoryService } from '../inventory.service';
 import { InventarioProductos, CategoriaProducto, InventarioPublicaciones, CategoriaPublicacion, InventoryPagination } from '../inventory.types';
+import { ProductosService } from 'app/services/services/producto.service';
+import { Productos } from 'app/services/models/productos';
 
 @Component({
     selector: 'inventory-list',
@@ -63,6 +65,9 @@ export class InventoryListComponent implements OnInit, AfterViewInit, OnDestroy 
     selectedPublicacionForm: UntypedFormGroup;
     private _unsubscribeAll: Subject<any> = new Subject<any>();
 
+    idPublicacion: any;
+    producto: Productos;
+
     /**
      * Constructor
      */
@@ -71,6 +76,7 @@ export class InventoryListComponent implements OnInit, AfterViewInit, OnDestroy 
         private _fuseConfirmationService: FuseConfirmationService,
         private _formBuilder: UntypedFormBuilder,
         private _inventoryService: InventoryService,
+        private _productoService: ProductosService
     ) {
     }
 
@@ -110,6 +116,16 @@ export class InventoryListComponent implements OnInit, AfterViewInit, OnDestroy 
             .subscribe((categories: CategoriaProducto[]) => {
                 // Update the categories
                 this.categoriesProducto = categories;
+
+                // Mark for check
+                this._changeDetectorRef.markForCheck();
+            });
+
+            this._inventoryService.categoriesPublicacion$
+            .pipe(takeUntil(this._unsubscribeAll))
+            .subscribe((categoriesPublicacion: CategoriaPublicacion[]) => {
+                // Update the categories
+                this.categoriesPublicacion = categoriesPublicacion;
 
                 // Mark for check
                 this._changeDetectorRef.markForCheck();
@@ -216,6 +232,7 @@ export class InventoryListComponent implements OnInit, AfterViewInit, OnDestroy 
         // If the product is already selected...
         if (this.selectedPublicacion && this.selectedPublicacion.idPublicacion === publicacionId) {
             // Close the details
+            console.log("cerrar")
             this.closeDetails();
             return;
         }
@@ -224,10 +241,20 @@ export class InventoryListComponent implements OnInit, AfterViewInit, OnDestroy 
         this._inventoryService.getPublicacionById(publicacionId)
             .subscribe((product) => {
                 // Set the selected product
+                console.log("abrir")
                 this.selectedPublicacion = product;
 
-                // Fill the form
                 this.selectedPublicacionForm.patchValue(product);
+                this.selectedPublicacionForm.get('nombreProducto').setValue(product.productos.nombreProducto);
+                this.selectedPublicacionForm.get('precioProducto').setValue(product.productos.precioProducto);
+                this.selectedPublicacionForm.get('cantidadDisponible').setValue(product.productos.cantidadDisponible);
+                this.selectedPublicacionForm.get('pesoProducto').setValue(product.productos.pesoProducto);
+                this.selectedPublicacionForm.get('vendedor').setValue(product.vendedor.usuario.name);
+                const selectedCategoryId = product.categoria.idCategoria; // Assuming you have an 'id' property in the category object
+                this.selectedPublicacionForm.get('categoria').setValue(selectedCategoryId);
+
+                const selectedCategoryIdProducto = product.productos.categoriaProducto.idCategoriaProducto; 
+                this.selectedPublicacionForm.get('tipos').setValue(selectedCategoryIdProducto);
 
                 // Mark for check
                 this._changeDetectorRef.markForCheck();
@@ -268,6 +295,7 @@ export class InventoryListComponent implements OnInit, AfterViewInit, OnDestroy 
      */
     createPublicacion(): void {
         // Create the product
+        
         this._inventoryService.createPublicacion().subscribe((newPublicacion) => {
             // Go to new product
             this.selectedPublicacion = newPublicacion;

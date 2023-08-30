@@ -19,7 +19,7 @@ export interface InventarioServicios {
 
 export interface CategoriaProducto {
     idCategoriaProducto: number;
-    nombreCategoriaProducto: string;
+    nombreCategoria: string;
     descripcion: string;
     estado: boolean;
 }

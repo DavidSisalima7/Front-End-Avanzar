@@ -125,7 +125,7 @@ export class ListEmprendedorasResponsableComponent
      this.usuarioService.obtenerListaEmprendedor().subscribe(
        (datos: Usuario[]) => {
          // Ordena el array de usuarios por  cedula asc
-         this.usuarios = datos.sort((a, b) => a.persona.cedula - b.persona.cedula);
+         this.usuarios = datos.sort((a, b) => a.persona.cedula.localeCompare(b.persona.cedula));
          this.dataSource = new MatTableDataSource<Usuario>(this.usuarios);
        },
        error => {
@@ -137,7 +137,7 @@ export class ListEmprendedorasResponsableComponent
      this.usuarioService.obtenerListaEmprendedor().subscribe(
        (datos: Usuario[]) => {
          // Ordena el array de usuarios por cedula en forma descendente
-         this.usuarios = datos.sort((a, b) => b.persona.cedula - a.persona.cedula);
+         this.usuarios = datos.sort((a, b) => b.persona.cedula.localeCompare(a.persona.cedula));
          this.dataSource = new MatTableDataSource<Usuario>(this.usuarios);
        },
        error => {

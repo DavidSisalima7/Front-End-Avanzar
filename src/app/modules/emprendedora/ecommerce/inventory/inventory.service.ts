@@ -8,6 +8,7 @@ export class InventoryService
 {
     // Private
     private _product: BehaviorSubject<InventarioProductos | null> = new BehaviorSubject(null);
+    private _productos: BehaviorSubject<InventarioProductos[] | null> = new BehaviorSubject(null);
     private _publicacion: BehaviorSubject<InventarioPublicaciones | null> = new BehaviorSubject(null);
     private _categoriesProducto: BehaviorSubject<CategoriaProducto[] | null> = new BehaviorSubject(null);
     private _pagination: BehaviorSubject<InventoryPagination | null> = new BehaviorSubject(null);
@@ -52,6 +53,11 @@ export class InventoryService
     get publicaciones$(): Observable<InventarioPublicaciones[]>
     {
         return this._publicaciones.asObservable();
+    }
+
+    get productos$(): Observable<InventarioProductos[]>
+    {
+        return this._productos.asObservable();
     }
 
 
