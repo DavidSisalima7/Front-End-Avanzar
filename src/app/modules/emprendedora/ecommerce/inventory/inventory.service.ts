@@ -200,9 +200,12 @@ export class InventoryService
      */
     updatePublicacion(id: number, publicacion: InventarioPublicaciones): Observable<InventarioPublicaciones>
     {
+
+        const url = `http://localhost:8080/api/publicaciones/actualizar/${id}`;
+
         return this.publicaciones$.pipe(
             take(1),
-            switchMap(publicaciones => this._httpClient.patch<InventarioPublicaciones>('api/apps/ecommerce/inventory/product', {
+            switchMap(publicaciones => this._httpClient.put<InventarioPublicaciones>(url, {
                 id,
                 publicacion,
             }).pipe(

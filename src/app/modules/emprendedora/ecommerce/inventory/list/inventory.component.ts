@@ -19,6 +19,13 @@ import { InventoryService } from '../inventory.service';
 import { InventarioProductos, CategoriaProducto, InventarioPublicaciones, CategoriaPublicacion, InventoryPagination } from '../inventory.types';
 import { ProductosService } from 'app/services/services/producto.service';
 import { Productos } from 'app/services/models/productos';
+import { Usuario } from 'app/services/models/usuario';
+import { UserService } from 'app/core/user/user.service';
+import { User } from 'app/core/user/user.types';
+import { Publicacion } from 'app/services/models/publicaciones';
+import { VendedorService } from 'app/services/services/vendedora.service';
+import { CategoriaPublicacionService } from 'app/services/services/categoria.service';
+import { PublicacionesService } from 'app/services/services/publicaciones.service';
 
 @Component({
     selector: 'inventory-list',
@@ -64,7 +71,8 @@ export class InventoryListComponent implements OnInit, AfterViewInit, OnDestroy 
     selectedPublicacion: InventarioPublicaciones | null = null;
     selectedPublicacionForm: UntypedFormGroup;
     private _unsubscribeAll: Subject<any> = new Subject<any>();
-
+    user: Usuario;
+    publication = new Publicacion();
     idPublicacion: any;
     producto: Productos;
 
@@ -76,7 +84,10 @@ export class InventoryListComponent implements OnInit, AfterViewInit, OnDestroy 
         private _fuseConfirmationService: FuseConfirmationService,
         private _formBuilder: UntypedFormBuilder,
         private _inventoryService: InventoryService,
-        private _productoService: ProductosService
+        private _vendedoraService: VendedorService,
+        private _userService: UserService,
+        private _categoriaService: CategoriaPublicacionService,
+        private _publicacionService: PublicacionesService,
     ) {
     }
 
@@ -142,6 +153,12 @@ export class InventoryListComponent implements OnInit, AfterViewInit, OnDestroy 
                 this._changeDetectorRef.markForCheck();
             });
 
+            this._userService.user$
+            .pipe((takeUntil(this._unsubscribeAll)))
+            .subscribe((user: User) =>
+            {
+                this.user = user;
+            });
         
 
         // Get the products
@@ -294,6 +311,7 @@ export class InventoryListComponent implements OnInit, AfterViewInit, OnDestroy 
     createPublicacion(): void {
         // Create the product
         
+
         this._inventoryService.createPublicacion().subscribe((newPublicacion) => {
             // Go to new product
             this.selectedPublicacion = newPublicacion;
@@ -301,6 +319,7 @@ export class InventoryListComponent implements OnInit, AfterViewInit, OnDestroy 
             // Fill the form
             this.selectedPublicacionForm.patchValue(newPublicacion);
 
+            this.selectedPublicacionForm.get('vendedor').setValue(this.user.name);
             // Mark for check
             this._changeDetectorRef.markForCheck();
         });
@@ -313,14 +332,41 @@ export class InventoryListComponent implements OnInit, AfterViewInit, OnDestroy 
         // Get the product object
         const post = this.selectedPublicacionForm.getRawValue();
 
-        // Remove the currentImageIndex field
-        delete post.currentImageIndex;
+        this._vendedoraService.buscarVendedoraId(this.user.id).subscribe((vendedor) => {
+            post.vendedor = vendedor;
+            this.publication.vendedor = vendedor;
+        });
+
+
+        this._categoriaService.buscarCategoriaId(post.categoria).subscribe((categoria) => {
+            post.categoria = categoria;
+            this.publication.categoria = categoria;
+        });
+
+        this._publicacionService.buscarPublicacionId(post.idPublicacion).subscribe((publicacion) => {
+            post.productos = publicacion.productos;
+            this.publication.productos = publicacion.productos; 
+            this.publication.productos.miniaturaProducto = null;
+            this.publication.productos.nombreProducto = post.nombreProducto;
+        });
+
+        this.publication.idPublicacion = post.idPublicacion;
+        this.publication.tituloPublicacion = post.tituloPublicacion;
+        this.publication.descripcionPublicacion = post.descripcionPublicacion;
+        this.publication.estado = post.estado;
+        this.publication.imagenes = post.imagenes;
+
+        this.publication.servicios = null;
+
+        console.log(this.publication);
 
         // Update the post on the server
-        this._inventoryService.updatePublicacion(post.idPublicacion, post).subscribe(() => {
+        this._inventoryService.updatePublicacion(post.idPublicacion, this.publication).subscribe(() => {
             // Show a success message
             this.showFlashMessage('success');
         });
+
+        
     }
 
     /**
