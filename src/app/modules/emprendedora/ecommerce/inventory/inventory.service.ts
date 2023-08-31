@@ -62,7 +62,7 @@ export class InventoryService
 
 
     listarServicio(): void {
-        this._httpClient.get<InventarioPublicaciones[]>("http://localhost:8080/api/publicaciones/listar")
+        this._httpClient.get<InventarioPublicaciones[]>("http://localhost:8080/api/publicaciones/visibles")
           .subscribe((data) => {
             this._publicaciones.next(data); // Actualiza el BehaviorSubject con los datos obtenidos
           });
@@ -240,28 +240,30 @@ export class InventoryService
     }
 
     
-    deletePublicacion(id: number): Observable<boolean>
-    {
-        return this.publicaciones$.pipe(
-            take(1),
-            switchMap(publicaciones => this._httpClient.delete(`http://localhost:8080/api/publicaciones/eliminar/${id}`).pipe(
-                map((isDeleted: boolean) =>
-                {
-                    // Find the index of the deleted product
-                    const index = publicaciones.findIndex(item => item.idPublicacion === id);
-
-                    // Delete the product
-                    publicaciones.splice(index, 1);
-
-                    // Update the publicaciones
-                    this._publicaciones.next(publicaciones);
-
-                    // Return the deleted status
-                    return isDeleted;
-                }),
-            )),
+    deletePublicacion(id: number): Observable<boolean> {
+        return this._httpClient.put<boolean>(`http://localhost:8080/api/publicaciones/eliminar/${id}`,null).pipe(
+            switchMap(isDeleted => {
+                if (isDeleted) {
+                    // Eliminación exitosa, actualiza la lista
+                    return this.publicaciones$.pipe(
+                        take(1),
+                        map(publicaciones => {
+                            const index = publicaciones.findIndex(item => item.idPublicacion === id);
+                            if (index !== -1) {
+                                publicaciones.splice(index, 1);
+                                this._publicaciones.next(publicaciones);
+                            }
+                            return true; // Retorna true si se eliminó correctamente de la lista
+                        })
+                    );
+                } else {
+                    // No se pudo eliminar
+                    return of(false);
+                }
+            })
         );
     }
+    
 
 
 }
