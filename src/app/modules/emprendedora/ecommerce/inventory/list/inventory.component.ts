@@ -147,11 +147,9 @@ export class InventoryListComponent implements OnInit, AfterViewInit, OnDestroy 
         // Get the products
 
         this.publicaciones$ = this._inventoryService.publicaciones$;
-        
-       
-
         console.log(this.publicaciones$)
-  
+
+
 
         // Subscribe to search input field value changes
         this.searchInputControl.valueChanges
@@ -232,7 +230,7 @@ export class InventoryListComponent implements OnInit, AfterViewInit, OnDestroy 
         // If the product is already selected...
         if (this.selectedPublicacion && this.selectedPublicacion.idPublicacion === publicacionId) {
             // Close the details
-            console.log("cerrar")
+            
             this.closeDetails();
             return;
         }
@@ -241,7 +239,7 @@ export class InventoryListComponent implements OnInit, AfterViewInit, OnDestroy 
         this._inventoryService.getPublicacionById(publicacionId)
             .subscribe((product) => {
                 // Set the selected product
-                console.log("abrir")
+                
                 this.selectedPublicacion = product;
 
                 this.selectedPublicacionForm.patchValue(product);
@@ -273,7 +271,7 @@ export class InventoryListComponent implements OnInit, AfterViewInit, OnDestroy 
      */
     cycleImages(forward: boolean = true): void {
         // Get the image count and current image index
-        const count = this.selectedPublicacionForm.get('images').value.length;
+        const count = this.selectedPublicacionForm.get('imagenes').value.length;
         const currentIndex = this.selectedPublicacionForm.get('currentImageIndex').value;
 
         // Calculate the next and previous index
@@ -345,10 +343,11 @@ export class InventoryListComponent implements OnInit, AfterViewInit, OnDestroy 
             // If the confirm button pressed...
             if (result === 'confirmed') {
                 // Get the product object
-                const post = this.selectedPublicacionForm.getRawValue();
+                const publicacion = this.selectedPublicacionForm.getRawValue();
 
                 // Delete the post on the server
-                this._inventoryService.deleteProduct(post.idPublicacion).subscribe(() => {
+                this._inventoryService.deletePublicacion(publicacion.idPublicacion).subscribe(() => {
+                   
                     // Close the details
                     this.closeDetails();
                 });

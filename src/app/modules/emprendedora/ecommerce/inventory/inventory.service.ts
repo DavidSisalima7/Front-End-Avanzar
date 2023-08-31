@@ -236,16 +236,12 @@ export class InventoryService
         );
     }
 
-    /**
-     * Delete the product
-     *
-     * @param id
-     */
-    deleteProduct(id: number): Observable<boolean>
+    
+    deletePublicacion(id: number): Observable<boolean>
     {
         return this.publicaciones$.pipe(
             take(1),
-            switchMap(publicaciones => this._httpClient.delete('http://localhost:8080/api/publicaciones/eliminar/', {params: {id}}).pipe(
+            switchMap(publicaciones => this._httpClient.delete(`http://localhost:8080/api/publicaciones/eliminar/${id}`).pipe(
                 map((isDeleted: boolean) =>
                 {
                     // Find the index of the deleted product
