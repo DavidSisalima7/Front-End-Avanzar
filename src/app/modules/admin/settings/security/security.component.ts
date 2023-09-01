@@ -1,5 +1,5 @@
-import { ChangeDetectionStrategy, Component, OnInit, ViewEncapsulation } from '@angular/core';
-import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
+import { Component, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
+import { AbstractControl, FormGroup, FormsModule, NgForm, ReactiveFormsModule, UntypedFormBuilder, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 
 import { MatIconModule } from '@angular/material/icon';
@@ -10,34 +10,51 @@ import { UserService } from 'app/core/user/user.service';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { fuseAnimations } from '@fuse/animations';
-import { FuseAlertComponent } from '@fuse/components/alert';
+import { FuseAlertComponent, FuseAlertType } from '@fuse/components/alert';
 import { NgIf } from '@angular/common';
+import { validacion } from 'app/services/models/validacion';
 
 @Component({
-    selector       : 'settings-security',
-    templateUrl    : './security.component.html',
-    encapsulation  : ViewEncapsulation.None,
-    changeDetection: ChangeDetectionStrategy.OnPush,
-    animations   : fuseAnimations,
-    standalone     : true,
-    imports        : [FormsModule, ReactiveFormsModule, MatFormFieldModule, MatIconModule, MatInputModule, MatSlideToggleModule, MatButtonModule,
-    FuseAlertComponent, NgIf],
-})
-export class SettingsSecurityComponent implements OnInit
-{
-  securityForm: FormGroup;
+  selector: 'settings-security',
+  templateUrl: './security.component.html',
+  encapsulation: ViewEncapsulation.None,
+  animations: fuseAnimations,
+  standalone: true,
 
+  imports: [NgIf, FuseAlertComponent, FormsModule, ReactiveFormsModule, MatFormFieldModule,
+    MatInputModule, MatButtonModule, MatIconModule, MatSlideToggleModule],
+})
+export class SettingsSecurityComponent implements OnInit {
+  securityForm: FormGroup;
+  @ViewChild('securityNgForm') securityNgForm: NgForm;
   showAlert: boolean = false;
   alertType: string = ''; // Puede ser 'error', 'success', u otro tipo
   alertMessage: string = '';
+  vali: validacion = new validacion();
 
+  //alertas pass
+  showAlertPassEqu = false;
+  showAlertPassSecu = false;
+  showAlertPassUpda = false;
+  showAlertCurrentPas = false;
+  longPass = "";
+  equPass = "";
+
+  alertUpdaPass: { type: FuseAlertType; message: string } = {
+    type: 'success',
+    message: '',
+  };
+  alertCurrentPass: { type: FuseAlertType; message: string } = {
+    type: 'error',
+    message: '',
+  };
   /**
    * Constructor
    */
   constructor(
     private _formBuilder: UntypedFormBuilder,
-    private userService: UserService
-  ) {}
+    private userService: UserService /*private cd: ChangeDetectorRef*/
+  ) { }
 
   // -----------------------------------------------------------------------------------------------------
   // @ Lifecycle hooks
@@ -47,59 +64,128 @@ export class SettingsSecurityComponent implements OnInit
    * On init
    */
   ngOnInit(): void {
+    /*
     this.securityForm = this._formBuilder.group({
       currentPassword: ['', Validators.required],
       newPassword: ['', Validators.required]
+    });*/
+
+    // Create the form
+    this.securityForm = this._formBuilder.group({
+      currentPassword: ['', [Validators.required]],
+      newPassword: ['', [Validators.required, this.testLongPass()]],
+      repPassword: ['', [Validators.required, this.equalPass()]],
+      twoStep: [true],
+      askPasswordChange: [false],
     });
+    //autoevaluar si coinciden las pass
+    this.securityForm.get('newPassword').valueChanges.subscribe(() => {
+      this.securityForm.get('repPassword').updateValueAndValidity();
+    });
+
+
   }
-  cambiarContrasena(currentPassword: string, newPassword: string): void {
-    if (this.securityForm.valid) {
-      this.securityForm.disable(); // Deshabilitar el formulario
-  
-      // Ocultar la alerta
-      this.showAlert = false;
-  
-      if (this.securityForm.controls.currentPassword.value === currentPassword) {
-        this.userService.actualizarContrasena(currentPassword, newPassword).subscribe({
-          next: () => {
-            // Éxito al cambiar la contraseña
-            this.alertType = 'success';
-            this.alertMessage = 'Contraseña cambiada con éxito';
-            this.showAlert = true;
-  
-            // Realizar acciones adicionales después de cambiar la contraseña si es necesario.
-  
-            this.securityForm.reset(); // Reiniciar el formulario
-            this.securityForm.enable(); // Habilitar el formulario después del éxito
+  //comparar las contraseñas
+  equalPass() {
+    return (repPass: AbstractControl): ValidationErrors | null => {
+      const repEquPass = repPass.value as string;
+
+      if (repEquPass !== '') {
+        if (repEquPass === this.securityForm.get('newPassword').value) {
+          this.showAlertPassEqu = true;
+          this.equPass = "Las contraseñas coinciden"
+          return null;
+        } else {
+          this.showAlertPassEqu = true;
+          this.equPass = "Las contraseñas no coinciden"
+          return null;
+        }
+
+      } else {
+        this.equPass = "";
+        this.showAlertPassEqu = false;
+        return null;
+      }
+    }
+
+
+  }
+
+
+  // evaluar longitud 
+  testLongPass(): ValidatorFn {
+
+    return (pass: AbstractControl): ValidationErrors | null => {
+      const longitud = pass.value as string;
+      this.showAlertPassSecu = false;
+      if (longitud != null) {
+        if (longitud.length >= 1 && longitud.length < 7) {
+
+          this.longPass = "Muy corta"
+          return { longInvalid: true };
+
+
+        } else if (longitud.length > 15) {
+
+          this.longPass = "Muy larga"
+
+          return { longInvalid: true }
+
+        } else if (longitud != "") {
+
+          this.longPass=this.vali.evaluarSeguridadContrasena(longitud);
+          this.showAlertPassSecu = true;
+          
+
+          return null;
+        }
+      }
+    }
+  }
+
+
+
+  isFormValid(): boolean {
+    return this.securityForm.valid;
+  }
+
+  changePass(currentPass: string, newPass: string, repPass: string) {
+    this.showAlertPassUpda = false;
+    this.showAlertCurrentPas = false;
+    if (newPass === repPass && repPass.length >= 7 && repPass.length < 15) {
+
+
+      this.userService.actualizarContrasena(currentPass, newPass)
+        .subscribe({
+          next: (response) => {
+
+            this.alertCurrentPass = {
+              type: 'success',
+              message: 'Contraseña modificada',
+            };
+            
+            this.showAlertCurrentPas = true;
+            this.securityNgForm.resetForm();
+            /*this.cd.detectChanges();*/
+            this.showAlertPassEqu = false;
           },
           error: (error) => {
-            // Error al cambiar la contraseña
-            console.error('Error al cambiar la contraseña', error);
-            if (error.status === 401) {
-              this.alertType = 'error';
-              this.alertMessage = 'La contraseña actual no coincide.';
-            } else {
-              this.alertType = 'error';
-              this.alertMessage = 'Ocurrió un error al cambiar la contraseña.';
-            }
-            // Manejar otros errores si es necesario.
-  
-            this.showAlert = true; // Establecer showAlert en true en caso de error
-            this.securityForm.enable(); // Habilitar el formulario después del error
+   
+            this.alertUpdaPass = {
+              type: 'error',
+              message: 'Contraseña anterior incorrecta',
+            };
+            this.showAlertPassUpda = true;
+            this.securityForm.get('repPassword').updateValueAndValidity();
+
           }
+
+
         });
-      } else {
-        // Contraseña actual incorrecta
-        this.alertType = 'error';
-        this.alertMessage = 'La contraseña actual no es correcta.';
-        this.showAlert = true;
-        this.securityForm.enable(); // Habilitar el formulario después del error
-      }
-    } else {
-      // Marcar los campos como tocados para mostrar los mensajes de error
-      Object.values(this.securityForm.controls).forEach(control => control.markAsTouched());
-      this.alertType = 'error';
-      this.alertMessage = 'Por favor, completa todos los campos.';
-      this.showAlert = true;
+      
+
     }
-  }}
+
+  }
+
+}

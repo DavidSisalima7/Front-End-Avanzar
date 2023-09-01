@@ -21,6 +21,9 @@ import { Persona } from 'app/services/models/persona';
 import { Usuario } from 'app/services/models/usuario';
 import { EmailService } from 'app/services/services/email.service';
 import { PersonaService } from 'app/services/services/persona.service';
+import Swal from 'sweetalert2';
+import { FuseConfirmationService } from '@fuse/services/confirmation';
+
 
 
 @Component({
@@ -58,6 +61,8 @@ export class SignUpComponent implements OnInit {
     //llamar componentes html para darle propiedades
     @ViewChild('btnCodeVerHtml') btnCodeVer: ElementRef;
     @ViewChild('inputCodeHmtl') inputCode: ElementRef;
+    @ViewChild('cedulaField') cedulaField: ElementRef;
+    @ViewChild('correoField') correoField: ElementRef;
 
     email: EmailDto = new EmailDto();
     persona: Persona = new Persona();
@@ -79,6 +84,7 @@ export class SignUpComponent implements OnInit {
         private personaService: PersonaService,
         private usuarioService: UserService,
         private emailService: EmailService,
+        private confirmationService: FuseConfirmationService,
         private datePipe: DatePipe
     ) {
     }
@@ -160,19 +166,51 @@ export class SignUpComponent implements OnInit {
                     if (correoEncontrado) {
                         console.log(`Persona con correo ${correoValue} encontrada.`);
                         this.correoRegistrado = true;
-                        this.alertCod = {
-                            type: 'error',
-                            message: 'La cédula y el correo ya han sido registrados.',
-                        };
-                        this.showAlert = true;
+                        const confirmationDialog = this.confirmationService.open({
+                            title: 'Ocurrió un error',
+                            message: `La cédula y correo ya han sido registrados`,
+                            actions: {
+                              confirm: {
+                                show: true,
+                                label: 'OK',
+                                color: 'primary'
+                              },
+                              cancel: {
+                                show: false,
+                                label: 'Cancelar'
+                              }
+                            }
+                          });
+                
+                          confirmationDialog.afterClosed().subscribe(result => {
+                            if (result === 'confirmed') {
+                              this.cedulaField.nativeElement.focus();
+                            }
+                          });
                     } else {
                         console.log(`Persona con correo ${correoValue} no encontrada.`);
                         this.correoRegistrado = false;
-                        this.alertCod = {
-                            type: 'error',
-                            message: 'La cédula '+ cedulaValue +' ya ha sido registrada.',
-                        };
-                        this.showAlert = true;
+                        const confirmationDialog = this.confirmationService.open({
+                            title: 'Ocurrió un error',
+                            message: 'La cédula ' + cedulaValue +' ya ha sido registrada',
+                            actions: {
+                              confirm: {
+                                show: true,
+                                label: 'OK',
+                                color: 'primary'
+                              },
+                              cancel: {
+                                show: false,
+                                label: 'Cancelar'
+                              }
+                            }
+                          });
+                
+                          confirmationDialog.afterClosed().subscribe(result => {
+                            if (result === 'confirmed') {
+                              this.cedulaField.nativeElement.focus();
+                            }
+                          });
                     }
                 },
                 (error) => {
@@ -190,14 +228,31 @@ export class SignUpComponent implements OnInit {
                     if (encontrada) {
                         console.log(`Persona con correo ${correoValue} encontrada.`);
                         this.correoRegistrado = true;
-                        this.alertCod = {
-                            type: 'error',
-                            message: 'El correo ' + correoValue + ' ya ha sido registrado.',
-                        };
-                        this.showAlert = true;
+                        const confirmationDialog = this.confirmationService.open({
+                            title: 'Ocurrió un error',
+                            message: 'El correo ' + correoValue + ' ya ha sido registrado',
+                            actions: {
+                              confirm: {
+                                show: true,
+                                label: 'OK',
+                                color: 'primary'
+                              },
+                              cancel: {
+                                show: false,
+                                label: 'Cancelar'
+                              }
+                            }
+                          });
+                
+                          confirmationDialog.afterClosed().subscribe(result => {
+                            if (result === 'confirmed') {
+                              this.correoField.nativeElement.focus();
+                            }
+                          });
                     } else {
                         console.log(`Persona con correo ${correoValue} no encontrada.`);
                         this.correoRegistrado = false;
+                        this.formCode = true;
                         this.signUp();
                     }
                 },
@@ -226,40 +281,18 @@ export class SignUpComponent implements OnInit {
         this.persona.genero = generoSeleccionado;
 
 
-        this.formCode = true;
+     
         this.banVerificacion = 0;
-        this.personaService.savePersona(this.persona).subscribe(data => {
-            console.log(data);
-            this.user.persona = data;
-            const rolId = 4; // ID del rol
-            this.usuarioService.registrarUsuarioConFoto(this.user, rolId, this.selectedFile)
-                .subscribe(
-                    (response) => {
-                        console.log(response);
-                        this.alertCod = {
-                            type: 'success',
-                            message: 'Su registro se a realizado correctamente',
-                        };
-                        this.showAlert = true;
-                    },
-                    (error) => {
-                        this.alertCod = {
-                            type: 'error',
-                            message: 'Ha ocurrido un error al crear el usuario',
-                        };
-                        this.showAlert = true;
-                    }
-                );
-
         this.email.subject = "Su código de verificación es:"
         this.email.to = this.persona.correo;
         this.showCode = false;
+        //regresar al formulario
         this.returnForm = false;
         this.emailService.sendCodeVer(this.email)
             .subscribe({
 
                 next: (reponse) => {
-                    console.log("codigo enviado")
+                    
                     this.alertCod = {
                         type: 'success',
                         message: 'Código enviado revise en Spam o Recibidos',
@@ -276,9 +309,8 @@ export class SignUpComponent implements OnInit {
                     this.showCode = true;
                     this.returnForm = true;
                 }
-            });
-
         });
+
 
     }
 
@@ -318,7 +350,7 @@ export class SignUpComponent implements OnInit {
                         this.usuarioService.registrarUsuarioConFoto(this.user, rolId, this.selectedFile)
                             .subscribe({
                                 next: (response) => {
-                                    console.log(response);
+                                   
                                     this.alertReg = {
                                         type: 'success',
                                         message: 'Su registro se a realizado correctamente',

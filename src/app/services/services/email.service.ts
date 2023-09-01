@@ -12,7 +12,7 @@ export class EmailService {
 
 
   sendCodeVer(e: EmailDto): Observable<EmailDto> {
-    const url = `${this.url}/sentCodeVerification`;
+    const url = `${this.url}/sendCodeVerification`;
     return this.http.post<EmailDto>(url,e);
   }
 

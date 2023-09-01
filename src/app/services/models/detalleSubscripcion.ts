@@ -1,4 +1,5 @@
 import { Subscripcion } from "./subscripcion";
+import { Vendedor } from "./vendedora";
 
 export class DetalleSubscripcion {
     
@@ -7,6 +8,7 @@ export class DetalleSubscripcion {
     fechaFin: Date;
     estado: boolean;
     subscripcion ?: Subscripcion
+    vendedor ?: Vendedor;
 
 }
 

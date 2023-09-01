@@ -18,6 +18,13 @@ export class ProductosModels {
     descripcionProducto: string;
     miniaturaProducto: string;
     pesoProducto: number;
-    categoriaProducto: CategoriaProducto;
+    categoriaProducto: CategoriesProd;
 }
 
+
+export class CategoriesProd {
+    idCategoriaProducto: number;
+    nombreCategoria: string;
+    descripcion: string;
+    estado: boolean;
+}
