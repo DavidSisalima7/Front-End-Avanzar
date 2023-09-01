@@ -21,6 +21,9 @@ import { Persona } from 'app/services/models/persona';
 import { Usuario } from 'app/services/models/usuario';
 import { EmailService } from 'app/services/services/email.service';
 import { PersonaService } from 'app/services/services/persona.service';
+import Swal from 'sweetalert2';
+import { FuseConfirmationService } from '@fuse/services/confirmation';
+
 
 
 @Component({
@@ -58,6 +61,8 @@ export class SignUpComponent implements OnInit {
     //llamar componentes html para darle propiedades
     @ViewChild('btnCodeVerHtml') btnCodeVer: ElementRef;
     @ViewChild('inputCodeHmtl') inputCode: ElementRef;
+    @ViewChild('cedulaField') cedulaField: ElementRef;
+    @ViewChild('correoField') correoField: ElementRef;
 
     email: EmailDto = new EmailDto();
     persona: Persona = new Persona();
@@ -66,7 +71,8 @@ export class SignUpComponent implements OnInit {
     //Variable para el combo Box de genero que almacena el resultado
     public generoSeleccionado: string;
 
-
+    cedulaRegistrada: boolean = false;
+    correoRegistrado: boolean = false;
 
     /**
      * Constructor
@@ -78,6 +84,7 @@ export class SignUpComponent implements OnInit {
         private personaService: PersonaService,
         private usuarioService: UserService,
         private emailService: EmailService,
+        private confirmationService: FuseConfirmationService,
         private datePipe: DatePipe
     ) {
     }
@@ -117,9 +124,145 @@ export class SignUpComponent implements OnInit {
         return this.signUpForm.valid && this.signUpForm.get('agreements').value;
     }
 
-    /**
-     * Sign up
-     */
+    // Método para capturar la cédula del formulario
+
+    capturarCedulaYBuscar(): void {
+        const cedulaValue = this.signUpForm.get('cedula').value;
+        const correoValue = this.signUpForm.get('correo').value;
+        console.log(`Cédula capturada: ${cedulaValue}`);
+        console.log(`Correo capturado: ${correoValue}`);
+        this.buscarPersonaPorCedula(cedulaValue);
+    }
+
+    // Método para buscar la cédula si esta en la BD
+
+    buscarPersonaPorCedula(cedulaValue: string): void {
+        this.personaService.buscarPersonaPorCedula(cedulaValue)
+            .subscribe(
+                (cedulaEncontrada: boolean) => {
+                    if (cedulaEncontrada) {
+                        console.log(`Persona con cédula ${cedulaValue} encontrada.`);
+                        this.cedulaRegistrada = true;
+                        const correoValue = this.signUpForm.get('correo').value;
+                        this.buscarPersonaPorCorreoYMostrarMensaje(cedulaValue, correoValue);
+                    } else {
+                        console.log(`Persona con cédula ${cedulaValue} no encontrada.`);
+                        this.cedulaRegistrada = false;
+                        const correoValue = this.signUpForm.get('correo').value;
+                        this.buscarPersonaPorCorreo(correoValue);
+                    }
+                },
+                (error) => {
+                    console.error('Error al buscar persona:', error);
+                }
+            );
+    }
+    
+
+    buscarPersonaPorCorreoYMostrarMensaje(cedulaValue: string, correoValue: string): void {
+        this.personaService.buscarPersonaPorCorreo(correoValue)
+            .subscribe(
+                (correoEncontrado: boolean) => {
+                    if (correoEncontrado) {
+                        console.log(`Persona con correo ${correoValue} encontrada.`);
+                        this.correoRegistrado = true;
+                        const confirmationDialog = this.confirmationService.open({
+                            title: 'Ocurrió un error',
+                            message: `La cédula y correo ya han sido registrados`,
+                            actions: {
+                              confirm: {
+                                show: true,
+                                label: 'OK',
+                                color: 'primary'
+                              },
+                              cancel: {
+                                show: false,
+                                label: 'Cancelar'
+                              }
+                            }
+                          });
+                
+                          confirmationDialog.afterClosed().subscribe(result => {
+                            if (result === 'confirmed') {
+                              this.cedulaField.nativeElement.focus();
+                            }
+                          });
+                    } else {
+                        console.log(`Persona con correo ${correoValue} no encontrada.`);
+                        this.correoRegistrado = false;
+                        const confirmationDialog = this.confirmationService.open({
+                            title: 'Ocurrió un error',
+                            message: 'La cédula ' + cedulaValue +' ya ha sido registrada',
+                            actions: {
+                              confirm: {
+                                show: true,
+                                label: 'OK',
+                                color: 'primary'
+                              },
+                              cancel: {
+                                show: false,
+                                label: 'Cancelar'
+                              }
+                            }
+                          });
+                
+                          confirmationDialog.afterClosed().subscribe(result => {
+                            if (result === 'confirmed') {
+                              this.cedulaField.nativeElement.focus();
+                            }
+                          });
+                    }
+                },
+                (error) => {
+                    console.error('Error al buscar persona:', error);
+                }
+            );
+    }
+
+    // Método para buscar el correo si esta en la BD
+
+    buscarPersonaPorCorreo(correoValue: string): void {
+        this.personaService.buscarPersonaPorCorreo(correoValue)
+            .subscribe(
+                (encontrada: boolean) => {
+                    if (encontrada) {
+                        console.log(`Persona con correo ${correoValue} encontrada.`);
+                        this.correoRegistrado = true;
+                        const confirmationDialog = this.confirmationService.open({
+                            title: 'Ocurrió un error',
+                            message: 'El correo ' + correoValue + ' ya ha sido registrado',
+                            actions: {
+                              confirm: {
+                                show: true,
+                                label: 'OK',
+                                color: 'primary'
+                              },
+                              cancel: {
+                                show: false,
+                                label: 'Cancelar'
+                              }
+                            }
+                          });
+                
+                          confirmationDialog.afterClosed().subscribe(result => {
+                            if (result === 'confirmed') {
+                              this.correoField.nativeElement.focus();
+                            }
+                          });
+                    } else {
+                        console.log(`Persona con correo ${correoValue} no encontrada.`);
+                        this.correoRegistrado = false;
+                        this.signUp();
+                    }
+                },
+                (error) => {
+                    console.error('Error al buscar persona:', error);
+                }
+            );
+    }
+
+    // Método para registrar a un nuevo usuario
+
     signUp(): void {
         this.persona.estado = true;
         this.persona.nacionalidad = "Ecuador"
@@ -139,6 +282,28 @@ export class SignUpComponent implements OnInit {
 
         this.formCode = true;
         this.banVerificacion = 0;
+        this.personaService.savePersona(this.persona).subscribe(data => {
+            console.log(data);
+            this.user.persona = data;
+            const rolId = 4; // ID del rol
+            this.usuarioService.registrarUsuarioConFoto(this.user, rolId, this.selectedFile)
+                .subscribe(
+                    (response) => {
+                        console.log(response);
+                        this.alertCod = {
+                            type: 'success',
+                            message: 'Su registro se a realizado correctamente',
+                        };
+                        this.showAlert = true;
+                    },
+                    (error) => {
+                        this.alertCod = {
+                            type: 'error',
+                            message: 'Ha ocurrido un error al crear el usuario',
+                        };
+                        this.showAlert = true;
+                    }
+                );
 
         this.email.subject = "Su código de verificación es:"
         this.email.to = this.persona.correo;
@@ -168,6 +333,7 @@ export class SignUpComponent implements OnInit {
                 }
         });
 
+        });
 
     }
 
@@ -315,7 +481,6 @@ function calcularEdad(fechaNacimiento: Date): number {
 }
 
 
-
 export function edadMinimaValidator(): ValidatorFn {
     return (control: AbstractControl): ValidationErrors | null => {
         const fechaNacimiento = control.value;
@@ -332,3 +497,4 @@ export function edadMinimaValidator(): ValidatorFn {
         return null;
     };
 }
+

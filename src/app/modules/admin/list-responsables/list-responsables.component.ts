@@ -111,31 +111,31 @@ export class ListResponsableComponent {
  ////////////////////////////////////// Inicio  Filtrados de Tabla
  usuarios:any;
  ///Cedula
-   FiltroCedulaAsc(): void {
-     this.usuarioService.obtenerListaResponsable().subscribe(
-       (datos: Usuario[]) => {
-         // Ordena el array de usuarios por  cedula asc
-         this.usuarios = datos.sort((a, b) => a.persona.cedula - b.persona.cedula);
-         this.dataSource = new MatTableDataSource<Usuario>(this.usuarios);
-       },
-       error => {
-         console.error('Ocurrió un error al obtener la lista de personas responsables:', error);
-       }
-     );
-   }
-   FiltroCedulaDesc(): void {
-     this.usuarioService.obtenerListaResponsable().subscribe(
-       (datos: Usuario[]) => {
-         // Ordena el array de usuarios por cedula en forma descendente
-         this.usuarios = datos.sort((a, b) => b.persona.cedula - a.persona.cedula);
-         this.dataSource = new MatTableDataSource<Usuario>(this.usuarios);
-       },
-       error => {
-         console.error('Ocurrió un error al obtener la lista de personas responsables:', error);
-       }
-     );
-   }
- 
+    /*FiltroCedulaAsc(): void {
+      this.usuarioService.obtenerListaResponsable().subscribe(
+        (datos: Usuario[]) => {
+          // Ordena el array de usuarios por  cedula asc
+          this.usuarios = datos.sort((a, b) => a.persona.cedula - b.persona.cedula);
+          this.dataSource = new MatTableDataSource<Usuario>(this.usuarios);
+        },
+        error => {
+          console.error('Ocurrió un error al obtener la lista de personas responsables:', error);
+        }
+      );
+    }
+    FiltroCedulaDesc(): void {
+      this.usuarioService.obtenerListaResponsable().subscribe(
+        (datos: Usuario[]) => {
+          // Ordena el array de usuarios por cedula en forma descendente
+          this.usuarios = datos.sort((a, b) => b.persona.cedula - a.persona.cedula);
+          this.dataSource = new MatTableDataSource<Usuario>(this.usuarios);
+        },
+        error => {
+          console.error('Ocurrió un error al obtener la lista de personas responsables:', error);
+        }
+      );
+    }
+  */
    //celular
    FiltroCelularAsc(): void {
      this.usuarioService.obtenerListaResponsable().subscribe(
@@ -239,6 +239,7 @@ export class ListResponsableComponent {
      this.ejecutarPrimeraFuncion = !this.ejecutarPrimeraFuncion;
    }
    //Cedula
+   /*
    ejecutarFuncionCedula(): void {
      if (this.ejecutarPrimeraFuncion) {
        this.FiltroCedulaAsc();
@@ -247,6 +248,7 @@ export class ListResponsableComponent {
      }
      this.cambiarFuncionAEjecutar();
    }
+    */
    //Nombres
    ejecutarFuncionNombres(): void {
      if (this.ejecutarPrimeraFuncion) {

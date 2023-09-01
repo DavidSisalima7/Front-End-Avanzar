@@ -348,6 +348,14 @@ export class ClassyLayoutComponent implements OnInit, OnDestroy
                                     type : 'basic',
                                     icon : 'heroicons_outline:document-text',
                                     link : '/list-empre-serv'
+                                },
+
+                                {
+                                    id   : 'ecommerce',
+                                    title: 'Publicaciones',
+                                    type : 'basic',
+                                    icon : 'heroicons_outline:document-text',
+                                    link : '/ecommerce'
                                 }
                             ]
                         },

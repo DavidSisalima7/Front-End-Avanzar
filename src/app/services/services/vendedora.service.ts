@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { Observable, catchError, throwError } from 'rxjs';
 import { Vendedor } from '../models/vendedora';
 
 @Injectable({
@@ -17,5 +17,9 @@ export class VendedorService {
     return this.http.post<Vendedor>(url, vendedor);
   }
   
+
+  buscarVendedoraId(idVendedora: any): Observable<Vendedor> {
+    return this.http.get<Vendedor>(`${this.baseUrl}/buscar/${idVendedora}`)
+  }
 
 }
