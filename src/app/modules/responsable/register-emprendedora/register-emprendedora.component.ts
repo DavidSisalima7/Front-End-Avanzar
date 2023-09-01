@@ -1,6 +1,6 @@
 import { user } from './../../../mock-api/common/user/data';
 import { FuseAlertType } from './../../../../@fuse/components/alert/alert.types';
-import { Component, OnInit, ViewEncapsulation, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewEncapsulation, ViewChild, ElementRef } from '@angular/core';
 import { AbstractControl, FormGroup, FormsModule, NgForm, ReactiveFormsModule, UntypedFormBuilder, UntypedFormGroup, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCheckboxModule } from '@angular/material/checkbox';
@@ -10,7 +10,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatRadioModule } from '@angular/material/radio';
 import { MatSelectModule } from '@angular/material/select';
-import { MatStepperModule } from '@angular/material/stepper';
+import { MatStepper, MatStepperModule } from '@angular/material/stepper';
 import { MatTableModule } from '@angular/material/table';
 import { MatTabsModule } from '@angular/material/tabs';
 import { MatDatepickerModule } from '@angular/material/datepicker';
@@ -26,6 +26,8 @@ import { FuseCardComponent } from '@fuse/components/card';
 import { VendedorService } from 'app/services/services/vendedora.service';
 import { Vendedor } from 'app/services/models/vendedora';
 import Swal from 'sweetalert2';
+import { FuseConfirmationService } from '@fuse/services/confirmation';
+import { Router } from '@angular/router';
 
 @Component({
     selector: 'register-emprendedora',
@@ -39,6 +41,9 @@ import Swal from 'sweetalert2';
 })
 export class RegisterEmpreRespComponent implements OnInit {
     @ViewChild('signUpNgForm') signUpNgForm: NgForm;
+    @ViewChild('cedulaField') cedulaField: ElementRef;
+    @ViewChild('correoField') correoField: ElementRef;
+    @ViewChild('horizontalStepper') horizontalStepper: MatStepper;
 
     alert: { type: FuseAlertType; message: string } = {
         type: 'success',
@@ -57,7 +62,9 @@ export class RegisterEmpreRespComponent implements OnInit {
     clickedButtonValue: number = 0; // Inicializar con 0
     selectedImageSrc: string = null;
 
-
+    cedulaRegistrada: boolean = false;
+    correoRegistrado: boolean = false;
+    canProceedToNextStep = true;
 
     /**
      * Constructor
@@ -66,6 +73,8 @@ export class RegisterEmpreRespComponent implements OnInit {
         private personaService: PersonaService,
         private usuarioService: UserService,
         private datePipe: DatePipe,
+        private router: Router,
+        private confirmationService: FuseConfirmationService,
         private vendedorService: VendedorService
     ) {
 
@@ -83,24 +92,24 @@ export class RegisterEmpreRespComponent implements OnInit {
         // Horizontal stepper form
         this.horizontalStepperForm = this._formBuilder.group({
             step1: this._formBuilder.group({
-                cedula : ['', [Validators.required, validarLongitud()]],
-                primerNombre : ['', Validators.required],
-                segundoNombre : ['', Validators.required],
-                primerApellido : ['', Validators.required],
-                segundoApellido : ['', Validators.required],
-                correo   : ['', [Validators.required, Validators.email]],
-                direccion : ['', Validators.required],
+                cedula: ['', [Validators.required, validarLongitud()]],
+                primerNombre: ['', Validators.required],
+                segundoNombre: ['', Validators.required],
+                primerApellido: ['', Validators.required],
+                segundoApellido: ['', Validators.required],
+                correo: ['', [Validators.required, Validators.email]],
+                direccion: ['', Validators.required],
                 celular: ['', [Validators.required, validarLongitud()]],
-                fechaNacimiento : ['', [Validators.required, edadMinimaValidator()]],
-                genero : ['', Validators.required],
-                nacionalidad : ['', Validators.required],
+                fechaNacimiento: ['', [Validators.required, edadMinimaValidator()]],
+                genero: ['', Validators.required],
+                nacionalidad: ['', Validators.required],
             }),
             step2: this._formBuilder.group({
                 usuario: ['', Validators.required],
-                email : ['', Validators.required],
-                password : ['', [Validators.required, validarcontra()]],
-                avatar : [''],
-                descripcion    : [''],
+                email: ['', Validators.required],
+                password: ['', [Validators.required, validarcontra()]],
+                avatar: [''],
+                descripcion: [''],
             }),
             step3: this._formBuilder.group({
                 rolUser: ['Responsable', Validators.required],
@@ -133,6 +142,153 @@ export class RegisterEmpreRespComponent implements OnInit {
 
     }
 
+    // Método para capturar la cédula del formulario
+
+    capturarCedulaYBuscar(): void {
+        const cedulaValue = this.horizontalStepperForm.get('step1.cedula').value;
+        const correoValue = this.horizontalStepperForm.get('step1.correo').value;
+        console.log(`Cédula capturada: ${cedulaValue}`);
+        console.log(`Correo capturado: ${correoValue}`);
+        this.buscarPersonaPorCedula(cedulaValue);
+    }
+
+    // Método para buscar la cédula si esta en la BD
+
+    buscarPersonaPorCedula(cedulaValue: string): void {
+        this.personaService.buscarPersonaPorCedula(cedulaValue)
+            .subscribe(
+                (cedulaEncontrada: boolean) => {
+                    if (cedulaEncontrada) {
+                        console.log(`Persona con cédula ${cedulaValue} encontrada.`);
+                        this.cedulaRegistrada = true;
+                        const correoValue = this.horizontalStepperForm.get('step1.correo').value;
+                        this.buscarPersonaPorCorreoYMostrarMensaje(cedulaValue, correoValue);
+                    } else {
+                        console.log(`Persona con cédula ${cedulaValue} no encontrada.`);
+                        this.cedulaRegistrada = false;
+                        const correoValue = this.horizontalStepperForm.get('step1.correo').value;
+                        this.buscarPersonaPorCorreo(correoValue);
+                    }
+                },
+                (error) => {
+                    console.error('Error al buscar persona:', error);
+                }
+            );
+    }
+
+
+    buscarPersonaPorCorreoYMostrarMensaje(cedulaValue: string, correoValue: string): void {
+        this.personaService.buscarPersonaPorCorreo(correoValue)
+            .subscribe(
+                (correoEncontrado: boolean) => {
+                    if (correoEncontrado) {
+                        console.log(`Persona con correo ${correoValue} encontrada.`);
+                        this.correoRegistrado = true;
+                        const confirmationDialog = this.confirmationService.open({
+                            title: 'Ocurrió un error',
+                            message: `La cédula y correo ya han sido registrados`,
+                            actions: {
+                                confirm: {
+                                    show: true,
+                                    label: 'OK',
+                                    color: 'primary'
+                                },
+                                cancel: {
+                                    show: false,
+                                    label: 'Cancelar'
+                                }
+                            }
+                        });
+
+                        confirmationDialog.afterClosed().subscribe(result => {
+                            if (result === 'confirmed') {
+                                this.cedulaField.nativeElement.focus();
+                            }
+                        });
+                        this.canProceedToNextStep = false;
+                        console.log('Paso: ' + this.canProceedToNextStep)
+                    } else {
+                        console.log(`Persona con correo ${correoValue} no encontrada.`);
+                        this.correoRegistrado = false;
+                        const confirmationDialog = this.confirmationService.open({
+                            title: 'Ocurrió un error',
+                            message: 'La cédula ' + cedulaValue + ' ya ha sido registrada',
+                            actions: {
+                                confirm: {
+                                    show: true,
+                                    label: 'OK',
+                                    color: 'primary'
+                                },
+                                cancel: {
+                                    show: false,
+                                    label: 'Cancelar'
+                                }
+                            }
+                        });
+
+                        confirmationDialog.afterClosed().subscribe(result => {
+                            if (result === 'confirmed') {
+                                this.cedulaField.nativeElement.focus();
+                            }
+                        });
+                        this.canProceedToNextStep = false;
+                        console.log('Paso: ' + this.canProceedToNextStep)
+                    }
+                },
+                (error) => {
+                    console.error('Error al buscar persona:', error);
+                }
+            );
+    }
+
+    // Método para buscar el correo si esta en la BD
+
+    buscarPersonaPorCorreo(correoValue: string): void {
+        this.personaService.buscarPersonaPorCorreo(correoValue)
+            .subscribe(
+                (encontrada: boolean) => {
+                    if (encontrada) {
+                        console.log(`Persona con correo ${correoValue} encontrada.`);
+                        this.correoRegistrado = true;
+
+                        const confirmationDialog = this.confirmationService.open({
+                            title: 'Ocurrió un error',
+                            message: 'El correo ' + correoValue + ' ya ha sido registrado',
+                            actions: {
+                                confirm: {
+                                    show: true,
+                                    label: 'OK',
+                                    color: 'primary'
+                                },
+                                cancel: {
+                                    show: false,
+                                    label: 'Cancelar'
+                                }
+                            }
+                        });
+
+                        confirmationDialog.afterClosed().subscribe(result => {
+                            if (result === 'confirmed') {
+                                this.correoField.nativeElement.focus();
+                            }
+                        });
+                        this.canProceedToNextStep = false;
+                        console.log('Paso: ' + this.canProceedToNextStep)
+                    } else {
+                        console.log(`Persona con correo ${correoValue} no encontrada.`);
+                        this.correoRegistrado = false;
+                        this.canProceedToNextStep = true;
+                        console.log('Paso: ' + this.canProceedToNextStep)
+                        if (this.canProceedToNextStep) {
+                            this.horizontalStepper.next(); // Avanzar al siguiente paso
+                        }
+                    }
+                },
+                (error) => {
+                    console.error('Error al buscar persona:', error);
+                }
+            );
+    }
 
     registrarPersona(): void {
         // Obtén los valores de los FormControls del FormGroup
@@ -199,14 +355,34 @@ export class RegisterEmpreRespComponent implements OnInit {
                         this.vendedor.usuario = response;
                         this.vendedorService.registrarVendedor(this.vendedor, this.clickedButtonValue).subscribe(dataVendedora => {
                             console.log(dataVendedora);
-                            this.alert = {
-                                type: 'success',
-                                message: 'Su registro se a realizado correctamente',
-                            };
-                            this.showAlert = true;
-                            setTimeout(() => {
-                                this.showAlert = false; // Ocultar la alerta después de 4 segundos
-                            }, 4000);
+                            const confirmationDialog = this.confirmationService.open({
+                                title: 'Éxito',
+                                message: 'Registro de emprendedora exitosa',
+                                icon: {
+                                    show: true,
+                                    name: 'heroicons_outline:check-circle',
+                                    color: 'success',
+                                },
+                                actions: {
+                                    confirm: {
+                                        show: true,
+                                        label: 'Ver lista',
+                                        color: 'primary'
+                                    },
+                                    cancel: {
+                                        show: true,
+                                        label: 'Registrar nuevo'
+                                    }
+                                }
+                            });
+
+                            confirmationDialog.afterClosed().subscribe(result => {
+                                if (result === 'confirmed') {
+                                    this.router.navigate(['/list-empre-resp']);
+                                } else {
+                                    this.horizontalStepper.reset();
+                                }
+                            });
                         },
                             (error) => {
                                 this.alert = {
@@ -286,8 +462,8 @@ export class RegisterEmpreRespComponent implements OnInit {
 
 
 
-    }  
-    /* Metodo para validar la cedula y celular de 10 digitos*/
+}
+/* Metodo para validar la cedula y celular de 10 digitos*/
 
 function validarLongitud(): ValidatorFn {
     return (control: AbstractControl): ValidationErrors | null => {
