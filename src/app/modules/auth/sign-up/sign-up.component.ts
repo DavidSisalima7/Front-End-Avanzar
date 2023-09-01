@@ -252,6 +252,7 @@ export class SignUpComponent implements OnInit {
                     } else {
                         console.log(`Persona con correo ${correoValue} no encontrada.`);
                         this.correoRegistrado = false;
+                        this.formCode = true;
                         this.signUp();
                     }
                 },
@@ -280,31 +281,8 @@ export class SignUpComponent implements OnInit {
         this.persona.genero = generoSeleccionado;
 
 
-        this.formCode = true;
+     
         this.banVerificacion = 0;
-        this.personaService.savePersona(this.persona).subscribe(data => {
-            console.log(data);
-            this.user.persona = data;
-            const rolId = 4; // ID del rol
-            this.usuarioService.registrarUsuarioConFoto(this.user, rolId, this.selectedFile)
-                .subscribe(
-                    (response) => {
-                        console.log(response);
-                        this.alertCod = {
-                            type: 'success',
-                            message: 'Su registro se a realizado correctamente',
-                        };
-                        this.showAlert = true;
-                    },
-                    (error) => {
-                        this.alertCod = {
-                            type: 'error',
-                            message: 'Ha ocurrido un error al crear el usuario',
-                        };
-                        this.showAlert = true;
-                    }
-                );
-
         this.email.subject = "Su código de verificación es:"
         this.email.to = this.persona.correo;
         this.showCode = false;
@@ -333,7 +311,6 @@ export class SignUpComponent implements OnInit {
                 }
         });
 
-        });
 
     }
 
