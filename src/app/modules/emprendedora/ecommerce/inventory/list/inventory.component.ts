@@ -43,11 +43,11 @@ import { CategoriaProductoService } from 'app/services/services/categoriaProduct
                 }
 
                 @screen md {
-                    grid-template-columns: 48px 112px auto 112px 72px;
+                    grid-template-columns: 48px 230px auto 112px 72px;
                 }
 
                 @screen lg {
-                    grid-template-columns: 48px 112px auto 112px 96px 96px 72px;
+                    grid-template-columns: 48px 230px auto 112px 96px 96px 72px;
                 }
             }
         `,
@@ -333,6 +333,9 @@ export class InventoryListComponent implements OnInit, AfterViewInit, OnDestroy 
     updateselectedPublicaciones(): void {
         // Get the product object
         const post = this.selectedPublicacionForm.getRawValue();
+
+        // Remove the currentImageIndex field
+        delete post.currentImageIndex;
 
         this._vendedoraService.buscarVendedoraId(this.user.id).subscribe((vendedor) => {
             post.vendedor = vendedor;
