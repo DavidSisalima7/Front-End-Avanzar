@@ -14,7 +14,7 @@ import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatSort, MatSortModule } from '@angular/material/sort';
 import { fuseAnimations } from '@fuse/animations';
 import { FuseConfirmationService } from '@fuse/services/confirmation';
-import { debounceTime, map, merge, Observable, Subject, switchMap, takeUntil } from 'rxjs';
+import { debounceTime, forkJoin, map, merge, Observable, Subject, switchMap, takeUntil } from 'rxjs';
 import { InventoryService } from '../inventory.service';
 import { InventarioProductos, CategoriaProducto, InventarioPublicaciones, CategoriaPublicacion, InventoryPagination } from '../inventory.types';
 import { ProductosService } from 'app/services/services/producto.service';
@@ -325,10 +325,8 @@ export class InventoryListComponent implements OnInit, AfterViewInit, OnDestroy 
         });
     }
 
-    /**
-     * Update the selected product using the form data
-     */
-    updateselectedPublicacion(): void {
+
+    updateselectedPublicaciones(): void {
         // Get the product object
         const post = this.selectedPublicacionForm.getRawValue();
 
@@ -365,6 +363,36 @@ export class InventoryListComponent implements OnInit, AfterViewInit, OnDestroy 
             // Show a success message
             this.showFlashMessage('success');
         });
+
+        
+    }
+
+    /**
+     * Update the selected product using the form data
+     */
+    updateselectedPublicacion(): void {
+        // Get the product object
+        const post = this.selectedPublicacionForm.getRawValue();
+        const vendedor$ = this._vendedoraService.buscarVendedoraId(this.user.id);
+        const publicacion$ = this._publicacionService.buscarPublicacionId(post.idPublicacion);
+
+        forkJoin([vendedor$,publicacion$]).subscribe(([vendedor, publicacion]) => {
+        this.publication.vendedor = vendedor;
+        this.publication.productos = publicacion.productos;
+        this.publication.productos.miniaturaProducto = " ";
+        this.publication.productos.nombreProducto = post.nombreProducto;
+        this.publication.productos.precioProducto=post.precioProducto;
+        this.publication.productos.cantidadDisponible=post.cantidadDisponible;
+        this.publication.productos.pesoProducto=post.pesoProducto;
+        this.publication.tituloPublicacion=post.tituloPublicacion;
+        this.publication.descripcionPublicacion=post.descripcionPublicacion;
+        console.log("datos",this.publication)
+        // Ahora que todos los datos están disponibles, puedes actualizar la publicación completa
+        this._inventoryService.updatePublicacion(post.idPublicacion, this.publication).subscribe(() => {
+            // Show a success message
+            this.showFlashMessage('success');
+        });
+    });
 
         
     }
