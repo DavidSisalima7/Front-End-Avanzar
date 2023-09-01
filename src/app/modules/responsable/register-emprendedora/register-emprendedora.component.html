@@ -13,12 +13,12 @@
                 </div>
                 <div class="flex items-center ml-1 whitespace-nowrap">
                     <mat-icon class="icon-size-5 text-secondary" [svgIcon]="'heroicons_mini:chevron-right'"></mat-icon>
-                    <a class="ml-1 text-primary-500">Emprendedora</a>
+                    <a class="ml-1 text-primary-500" href="/list-empre-resp">Lista Emprendedoras</a>
                 </div>
 
                 <div class="flex items-center ml-1 whitespace-nowrap">
                     <mat-icon class="icon-size-5 text-secondary" [svgIcon]="'heroicons_mini:chevron-right'"></mat-icon>
-                    <a class="ml-1 text-primary-500">Registro</a>
+                    <a class="ml-1 text-primary-500">Registro Emprendedora</a>
                 </div>
 
 
@@ -26,7 +26,7 @@
             <!-- Title -->
             <div class="mt-2">
                 <h2 class="text-3xl md:text-4xl font-extrabold tracking-tight leading-7 sm:leading-10 truncate">
-                    Formulario de Registro
+                    Registro Emprendedora
                 </h2>
             </div>
         </div>
@@ -55,7 +55,7 @@
                         <mat-form-field class="flex-auto">
                             <mat-label>Cédula</mat-label>
                             <input matInput [formControlName]="'cedula'" [placeholder]="'Cedula'" maxlength="10"
-                                pattern="[0-9]*">
+                                pattern="[0-9]*" #cedulaField>
                             <mat-icon class="icon-size-5" matPrefix [svgIcon]="'heroicons_solid:identification'"></mat-icon>
                             <mat-error *ngIf="horizontalStepperForm.get('step1.cedula').hasError('required')">
                                 Este campo es requerido.
@@ -134,7 +134,7 @@
                         <mat-form-field class="flex-auto">
                             <mat-label>Correo Electrónico</mat-label>
                             <input matInput [formControlName]="'correo'" [placeholder]="'Correo Electronico'"
-                            pattern="[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}" />
+                            pattern="[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}" #correoField/>
                         <mat-error *ngIf="
                         horizontalStepperForm.get('step1.correo').hasError('required')
                     ">Este campo es requerido</mat-error>
@@ -236,7 +236,7 @@
                 <div class="flex justify-end">
                     <button class="px-8" mat-flat-button [color]="'primary'"
                         [disabled]="horizontalStepperStep1.stepControl.pristine || horizontalStepperStep1.stepControl.invalid"
-                        type="button" matStepperNext>
+                        type="button" (click)="capturarCedulaYBuscar()" #horizontalStepper>
                         Next
                     </button>
                 </div>
@@ -280,7 +280,7 @@
                 <div class="flex">
                     <mat-form-field class="w-full">
                         <mat-label>Contraseña</mat-label>
-                        <input id="password" matInput type="password" [formControlName]="'password'" #passwordField />
+                        <input id="password" matInput type="password" [formControlName]="'password'" #passwordField maxlength="8" pattern="^(?!.*\s).*$"/>
                         <button mat-icon-button type="button" (click)="
                                 passwordField.type === 'password'
                                     ? (passwordField.type = 'text')
@@ -291,7 +291,13 @@
                             <mat-icon class="icon-size-5" *ngIf="passwordField.type === 'text'"
                                 [svgIcon]="'heroicons_solid:eye-slash'"></mat-icon>
                         </button>
-                        <mat-error> Contraseña requerida </mat-error>
+                        <mat-error *ngIf="horizontalStepperForm.get('step2.password').hasError('required')">Este campo es
+                            requerido</mat-error>
+                        <mat-error
+                            *ngIf="horizontalStepperForm.get('step2.password').hasError('longitudInvalida') && (!horizontalStepperForm.get('step2.password').hasError('pattern'))">La
+                            contraseña debe contener 8 dígitos</mat-error>
+                        <mat-error *ngIf="horizontalStepperForm.get('step2.password').hasError('pattern')">Contraseña
+                            inválida</mat-error>
                     </mat-form-field>
                 </div>
                 <div class="flex">
@@ -600,8 +606,7 @@
                     <button class="px-8 mr-2" mat-flat-button [color]="'accent'" type="button" matStepperPrevious>
                         Back
                     </button>
-                    <button class="px-8" mat-flat-button [color]="'primary'" type="reset" (click)="registrarPersona()"
-                        (click)="horizontalStepper.reset();">
+                    <button class="px-8" mat-flat-button [color]="'primary'" type="reset" (click)="registrarPersona()">
                         Guardar Cambios
                     </button>
                 </div>

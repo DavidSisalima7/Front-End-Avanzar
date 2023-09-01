@@ -82,7 +82,7 @@
                 <div class="grid grid-cols-2 gap-6">
                     <mat-form-field class="w-full">
                         <mat-label>Cédula</mat-label>
-                        <input id="cedula" matInput [formControlName]="'cedula'" [(ngModel)]="persona.cedula" maxlength="10" pattern="[0-9]*" />
+                        <input id="cedula" matInput [formControlName]="'cedula'" [(ngModel)]="persona.cedula" maxlength="10" pattern="[0-9]*" #cedulaField/>
                         <mat-error *ngIf="
                             signUpForm.get('cedula').hasError('required')
                         ">Este campo es requerido</mat-error>
@@ -167,7 +167,7 @@
                     <mat-form-field class="w-full">
                         <mat-label>Correo Electrónico</mat-label>
                         <input id="email" matInput [formControlName]="'correo'" [(ngModel)]="persona.correo"
-                            pattern="[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}" />
+                            pattern="[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}" #correoField/>
                         <mat-error *ngIf="
                             signUpForm.get('correo').hasError('required')
                         ">Este campo es requerido</mat-error>
