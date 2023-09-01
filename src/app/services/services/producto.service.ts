@@ -1,5 +1,5 @@
 import { Injectable } from "@angular/core";
-import { Productos } from "../models/productos";
+import { Productos, ProductosModels } from "../models/productos";
 import { HttpClient } from "@angular/common/http";
 import { catchError, map, Observable, ReplaySubject, tap, throwError } from 'rxjs';
 
@@ -30,7 +30,7 @@ import { catchError, map, Observable, ReplaySubject, tap, throwError } from 'rxj
     eliminadoLogico(id: any) {
       return this.http.put(`${this.url}/eliminadoLogico/${id}`, null);
     }
-    actualizarProducto(id: number, producto: Productos): Observable<object> {
+    actualizarProducto(id: number, producto: ProductosModels): Observable<object> {
       return this.http.put(`${this.url}/actualizar/${id}`, producto);
     }
 
