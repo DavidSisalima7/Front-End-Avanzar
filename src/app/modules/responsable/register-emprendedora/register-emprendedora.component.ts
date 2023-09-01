@@ -1,3 +1,4 @@
+import { DetalleSubscripcion } from './../../../services/models/detalleSubscripcion';
 import { user } from './../../../mock-api/common/user/data';
 import { FuseAlertType } from './../../../../@fuse/components/alert/alert.types';
 import { Component, OnInit, ViewEncapsulation, ViewChild, ElementRef } from '@angular/core';
@@ -28,6 +29,7 @@ import { Vendedor } from 'app/services/models/vendedora';
 import Swal from 'sweetalert2';
 import { FuseConfirmationService } from '@fuse/services/confirmation';
 import { Router } from '@angular/router';
+import { DetalleSubscripcionService } from 'app/services/services/detalleSubscripcion.service';
 
 @Component({
     selector: 'register-emprendedora',
@@ -55,6 +57,7 @@ export class RegisterEmpreRespComponent implements OnInit {
     horizontalStepperForm: FormGroup;
     persona: Persona = new Persona();
     vendedor: Vendedor = new Vendedor();
+    detalleMembresia: DetalleSubscripcion = new DetalleSubscripcion();
     selectedDate: Date;
     selectedFile: File | null = null;
     user: User = new User();
@@ -75,7 +78,8 @@ export class RegisterEmpreRespComponent implements OnInit {
         private datePipe: DatePipe,
         private router: Router,
         private confirmationService: FuseConfirmationService,
-        private vendedorService: VendedorService
+        private vendedorService: VendedorService,
+        private detalleSubscripcion: DetalleSubscripcionService
     ) {
 
 
@@ -355,6 +359,12 @@ export class RegisterEmpreRespComponent implements OnInit {
                         this.vendedor.usuario = response;
                         this.vendedorService.registrarVendedor(this.vendedor, this.clickedButtonValue).subscribe(dataVendedora => {
                             console.log(dataVendedora);
+
+                            this.detalleMembresia.vendedor = dataVendedora;
+                            this.detalleSubscripcion.updateDetalleSubscripcion(dataVendedora.detalleSubscripcion.idDetalle_subscripcion, this.detalleMembresia).subscribe(dataDetalle => {
+                                console.log("Update", dataDetalle);
+                            });
+                            
                             const confirmationDialog = this.confirmationService.open({
                                 title: 'Éxito',
                                 message: 'Registro de emprendedora exitosa',
