@@ -71,7 +71,7 @@
                             <div
                                 class="hidden lg:block"
                                 [mat-sort-header]="'estado'">
-                                Activo
+                                Activa
                             </div>
                             <div class="hidden sm:block">Detalles</div>
                         </div>
@@ -136,12 +136,12 @@
 
                                     <!-- Active -->
                                     <div class="hidden lg:block">
-                                        <ng-container *ngIf="publicacion.productos.estadoProducto">
+                                        <ng-container *ngIf="publicacion.estado">
                                             <mat-icon
                                                 class="text-green-400 icon-size-5"
                                                 [svgIcon]="'heroicons_solid:check'"></mat-icon>
                                         </ng-container>
-                                        <ng-container *ngIf="!publicacion.productos.estadoProducto">
+                                        <ng-container *ngIf="!publicacion.estado">
                                             <mat-icon
                                                 class="text-gray-400 icon-size-5"
                                                 [svgIcon]="'heroicons_solid:x-mark'"></mat-icon>
