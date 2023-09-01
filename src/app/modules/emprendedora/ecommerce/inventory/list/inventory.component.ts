@@ -14,7 +14,7 @@ import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatSort, MatSortModule } from '@angular/material/sort';
 import { fuseAnimations } from '@fuse/animations';
 import { FuseConfirmationService } from '@fuse/services/confirmation';
-import { debounceTime, map, merge, Observable, Subject, switchMap, takeUntil } from 'rxjs';
+import { debounceTime, forkJoin, map, merge, Observable, Subject, switchMap, takeUntil } from 'rxjs';
 import { InventoryService } from '../inventory.service';
 import { InventarioProductos, CategoriaProducto, InventarioPublicaciones, CategoriaPublicacion, InventoryPagination } from '../inventory.types';
 import { ProductosService } from 'app/services/services/producto.service';
@@ -164,11 +164,9 @@ export class InventoryListComponent implements OnInit, AfterViewInit, OnDestroy 
         // Get the products
 
         this.publicaciones$ = this._inventoryService.publicaciones$;
-        
-       
-
         console.log(this.publicaciones$)
-  
+
+
 
         // Subscribe to search input field value changes
         this.searchInputControl.valueChanges
@@ -249,7 +247,7 @@ export class InventoryListComponent implements OnInit, AfterViewInit, OnDestroy 
         // If the product is already selected...
         if (this.selectedPublicacion && this.selectedPublicacion.idPublicacion === publicacionId) {
             // Close the details
-            console.log("cerrar")
+            
             this.closeDetails();
             return;
         }
@@ -258,7 +256,7 @@ export class InventoryListComponent implements OnInit, AfterViewInit, OnDestroy 
         this._inventoryService.getPublicacionById(publicacionId)
             .subscribe((product) => {
                 // Set the selected product
-                console.log("abrir")
+                
                 this.selectedPublicacion = product;
 
                 this.selectedPublicacionForm.patchValue(product);
@@ -290,7 +288,7 @@ export class InventoryListComponent implements OnInit, AfterViewInit, OnDestroy 
      */
     cycleImages(forward: boolean = true): void {
         // Get the image count and current image index
-        const count = this.selectedPublicacionForm.get('images').value.length;
+        const count = this.selectedPublicacionForm.get('imagenes').value.length;
         const currentIndex = this.selectedPublicacionForm.get('currentImageIndex').value;
 
         // Calculate the next and previous index
@@ -327,10 +325,8 @@ export class InventoryListComponent implements OnInit, AfterViewInit, OnDestroy 
         });
     }
 
-    /**
-     * Update the selected product using the form data
-     */
-    updateselectedPublicacion(): void {
+
+    updateselectedPublicaciones(): void {
         // Get the product object
         const post = this.selectedPublicacionForm.getRawValue();
 
@@ -372,6 +368,36 @@ export class InventoryListComponent implements OnInit, AfterViewInit, OnDestroy 
     }
 
     /**
+     * Update the selected product using the form data
+     */
+    updateselectedPublicacion(): void {
+        // Get the product object
+        const post = this.selectedPublicacionForm.getRawValue();
+        const vendedor$ = this._vendedoraService.buscarVendedoraId(this.user.id);
+        const publicacion$ = this._publicacionService.buscarPublicacionId(post.idPublicacion);
+
+        forkJoin([vendedor$,publicacion$]).subscribe(([vendedor, publicacion]) => {
+        this.publication.vendedor = vendedor;
+        this.publication.productos = publicacion.productos;
+        this.publication.productos.miniaturaProducto = " ";
+        this.publication.productos.nombreProducto = post.nombreProducto;
+        this.publication.productos.precioProducto=post.precioProducto;
+        this.publication.productos.cantidadDisponible=post.cantidadDisponible;
+        this.publication.productos.pesoProducto=post.pesoProducto;
+        this.publication.tituloPublicacion=post.tituloPublicacion;
+        this.publication.descripcionPublicacion=post.descripcionPublicacion;
+        console.log("datos",this.publication)
+        // Ahora que todos los datos están disponibles, puedes actualizar la publicación completa
+        this._inventoryService.updatePublicacion(post.idPublicacion, this.publication).subscribe(() => {
+            // Show a success message
+            this.showFlashMessage('success');
+        });
+    });
+
+        
+    }
+
+    /**
      * Delete the selected post using the form data
      */
     deleteselectedPublicacion(): void {
@@ -391,10 +417,11 @@ export class InventoryListComponent implements OnInit, AfterViewInit, OnDestroy 
             // If the confirm button pressed...
             if (result === 'confirmed') {
                 // Get the product object
-                const post = this.selectedPublicacionForm.getRawValue();
+                const publicacion = this.selectedPublicacionForm.getRawValue();
 
                 // Delete the post on the server
-                this._inventoryService.deleteProduct(post.idPublicacion).subscribe(() => {
+                this._inventoryService.deletePublicacion(publicacion.idPublicacion).subscribe(() => {
+                   
                     // Close the details
                     this.closeDetails();
                 });

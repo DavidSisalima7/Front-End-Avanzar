@@ -2,6 +2,7 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, catchError, filter, map, Observable, of, switchMap, take, tap, throwError } from 'rxjs';
 import { InventarioProductos, CategoriaProducto, InventoryPagination, InventarioPublicaciones, CategoriaPublicacion } from './inventory.types';
+import { Publicacion } from 'app/services/models/publicaciones';
 
 @Injectable({providedIn: 'root'})
 export class InventoryService
@@ -14,6 +15,8 @@ export class InventoryService
     private _pagination: BehaviorSubject<InventoryPagination | null> = new BehaviorSubject(null);
     private _publicaciones: BehaviorSubject<InventarioPublicaciones[] | null> = new BehaviorSubject(null);
     private _categoriesPublicacion: BehaviorSubject<CategoriaPublicacion[] | null> = new BehaviorSubject(null);
+
+    selectedPublicacion: Publicacion | null = null;
 
     /**
      * Constructor
@@ -62,7 +65,7 @@ export class InventoryService
 
 
     listarServicio(): void {
-        this._httpClient.get<InventarioPublicaciones[]>("http://localhost:8080/api/publicaciones/listar")
+        this._httpClient.get<InventarioPublicaciones[]>("http://localhost:8080/api/publicaciones/visibles")
           .subscribe((data) => {
             this._publicaciones.next(data); // Actualiza el BehaviorSubject con los datos obtenidos
           });
@@ -192,80 +195,61 @@ export class InventoryService
         );
     }
 
-    /**
-     * Update product
-     *
-     * @param id
-     * @param publicacion
-     */
-    updatePublicacion(id: number, publicacion: InventarioPublicaciones): Observable<InventarioPublicaciones>
-    {
-
+    updatePublicacion(id: number, publicacion: Publicacion): Observable<Publicacion> {
         const url = `http://localhost:8080/api/publicaciones/actualizar/${id}`;
-
-        return this.publicaciones$.pipe(
-            take(1),
-            switchMap(publicaciones => this._httpClient.put<InventarioPublicaciones>(url, {
-                id,
-                publicacion,
-            }).pipe(
-                map((updatedPublicacion) =>
-                {
-                    // Find the index of the updated product
-                    const index = publicaciones.findIndex(item => item.idPublicacion === id);
-
-                    // Update the product
-                    publicaciones[index] = updatedPublicacion;
-
-                    // Update the publicaciones
-                    this._publicaciones.next(publicaciones);
-
-                    // Return the updated product
-                    return updatedPublicacion;
-                }),
-                switchMap(updatedPublicacion => this.publicacion$.pipe(
+        
+        return this._httpClient.put<Publicacion>(url, publicacion).pipe(
+            switchMap(updatedPublicacion => {
+                // Actualización exitosa en el servidor
+                // Actualiza la lista de publicaciones en el frontend
+                return this.publicaciones$.pipe(
                     take(1),
-                    filter(item => item && item.idPublicacion === id),
-                    tap(() =>
-                    {
-                        // Update the product if it's selected
-                        this._publicacion.next(updatedPublicacion);
-
-                        // Return the updated product
+                    map(publicaciones => {
+                        const index = publicaciones.findIndex(item => item.idPublicacion === id);
+                        if (index !== -1) {
+                            publicaciones[index] = updatedPublicacion;
+                        }
+                        this._publicaciones.next(publicaciones);
                         return updatedPublicacion;
                     }),
-                )),
-            )),
+                    switchMap(() => {
+                        // Si la publicación editada es la seleccionada, actualiza también la publicación seleccionada
+                        if (this.selectedPublicacion && this.selectedPublicacion.idPublicacion === id) {
+                            this._publicacion.next(updatedPublicacion);
+                        }
+                        return of(updatedPublicacion);
+                    })
+                );
+            })
         );
     }
+    
 
-    /**
-     * Delete the product
-     *
-     * @param id
-     */
-    deleteProduct(id: number): Observable<boolean>
-    {
-        return this.publicaciones$.pipe(
-            take(1),
-            switchMap(publicaciones => this._httpClient.delete('http://localhost:8080/api/publicaciones/eliminar/', {params: {id}}).pipe(
-                map((isDeleted: boolean) =>
-                {
-                    // Find the index of the deleted product
-                    const index = publicaciones.findIndex(item => item.idPublicacion === id);
-
-                    // Delete the product
-                    publicaciones.splice(index, 1);
-
-                    // Update the publicaciones
-                    this._publicaciones.next(publicaciones);
-
-                    // Return the deleted status
-                    return isDeleted;
-                }),
-            )),
+    
+    deletePublicacion(id: number): Observable<boolean> {
+        return this._httpClient.put<boolean>(`http://localhost:8080/api/publicaciones/eliminar/${id}`,null).pipe(
+            switchMap(isDeleted => {
+                if (isDeleted) {
+                    // Eliminación exitosa, actualiza la lista
+                    return this.publicaciones$.pipe(
+                        take(1),
+                        map(publicaciones => {
+                            const index = publicaciones.findIndex(item => item.idPublicacion === id);
+                            if (index !== -1) {
+                                publicaciones.splice(index, 1);
+                                this._publicaciones.next(publicaciones);
+                            }
+                            return true; // Retorna true si se eliminó correctamente de la lista
+                        })
+                    );
+                } else {
+                    // No se pudo eliminar
+                    return of(false);
+                }
+            })
         );
     }
+    
 
 
 }

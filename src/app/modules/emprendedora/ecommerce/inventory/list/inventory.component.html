@@ -71,7 +71,7 @@
                             <div
                                 class="hidden lg:block"
                                 [mat-sort-header]="'estado'">
-                                Activo
+                                Activa
                             </div>
                             <div class="hidden sm:block">Detalles</div>
                         </div>
@@ -80,7 +80,7 @@
                             <ng-container *ngFor="let publicacion of publicaciones; trackBy: trackByFn">
                                 <div class="inventory-grid grid items-center gap-4 py-3 px-6 md:px-8 border-b">
 
-                                    <!-- Image 
+                                    <!-- Image -->
                                     <div class="flex items-center">
                                         <div class="relative flex flex-0 items-center justify-center w-12 h-12 mr-6 rounded overflow-hidden border">
                                             <img
@@ -95,8 +95,6 @@
                                             </div>
                                         </div>
                                     </div>
-
-                                    -->
 
                                     <!-- SKU -->
                                     <div class="hidden md:block truncate">
@@ -138,12 +136,12 @@
 
                                     <!-- Active -->
                                     <div class="hidden lg:block">
-                                        <ng-container *ngIf="publicacion.productos.estadoProducto">
+                                        <ng-container *ngIf="publicacion.estado">
                                             <mat-icon
                                                 class="text-green-400 icon-size-5"
                                                 [svgIcon]="'heroicons_solid:check'"></mat-icon>
                                         </ng-container>
-                                        <ng-container *ngIf="!publicacion.productos.estadoProducto">
+                                        <ng-container *ngIf="!publicacion.estado">
                                             <mat-icon
                                                 class="text-gray-400 icon-size-5"
                                                 [svgIcon]="'heroicons_solid:x-mark'"></mat-icon>
@@ -199,14 +197,14 @@
                                 <div class="flex flex-col items-center sm:items-start mb-8 sm:mb-0">
                                     <div class="flex flex-col items-center">
                                         <div class="w-32 h-44 border rounded overflow-hidden">
-                                            <ng-container *ngIf="selectedPublicacionForm.get('imagenes').value.length; else noImage">
+                                             <ng-container *ngIf="selectedPublicacionForm.get('imagenes').value.length; else noImage">
                                                 <img
                                                     class="w-full h-full object-cover"
                                                     [src]="selectedPublicacionForm.get('imagenes').value[selectedPublicacionForm.get('currentImageIndex').value]">
                                             </ng-container>
                                             <ng-template #noImage>
                                                 <span class="flex items-center min-h-20 text-lg font-semibold">NO IMAGEN</span>
-                                            </ng-template>
+                                            </ng-template> 
                                         </div>
                                         <div
                                             class="flex items-center mt-2 whitespace-nowrap"
@@ -219,7 +217,7 @@
                                                     [svgIcon]="'heroicons_mini:arrow-long-left'"></mat-icon>
                                             </button>
                                             <span class="font-sm mx-2">
-                                                {{selectedPublicacionForm.get('currentImageIndex').value + 1}} of {{selectedPublicacionForm.get('images').value.length}}
+                                                {{selectedPublicacionForm.get('currentImageIndex').value + 1}} of {{selectedPublicacionForm.get('imagenes').value.length}}
                                             </span>
                                             <button
                                                 mat-icon-button
@@ -312,6 +310,7 @@
                                             <mat-label>Precio</mat-label>
                                             <span matSuffix>$</span>
                                             <input
+                                            type="number"
                                                 matInput
                                                 [formControlName]="'precioProducto'">
                                         </mat-form-field>
@@ -332,6 +331,7 @@
                                             <mat-label>Peso</mat-label>
                                             <span matSuffix>lbs.</span>
                                             <input
+                                                type="number"
                                                 matInput
                                                 [formControlName]="'pesoProducto'">
                                         </mat-form-field>
