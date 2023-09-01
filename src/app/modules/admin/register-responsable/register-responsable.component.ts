@@ -1,6 +1,6 @@
 import { user } from './../../../mock-api/common/user/data';
 import { FuseAlertType } from './../../../../@fuse/components/alert/alert.types';
-import { Component, OnInit, ViewEncapsulation, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewEncapsulation, ViewChild, ElementRef } from '@angular/core';
 import { AbstractControl, FormGroup, FormsModule, NgForm, ReactiveFormsModule, UntypedFormBuilder, UntypedFormGroup, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCheckboxModule } from '@angular/material/checkbox';
@@ -10,10 +10,10 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatRadioModule } from '@angular/material/radio';
 import { MatSelectModule } from '@angular/material/select';
-import { MatStepperModule } from '@angular/material/stepper';
+import { MatStepper, MatStepperModule } from '@angular/material/stepper';
 import { MatTableModule } from '@angular/material/table';
 import { MatTabsModule } from '@angular/material/tabs';
-import {MatDatepickerModule} from '@angular/material/datepicker';
+import { MatDatepickerModule } from '@angular/material/datepicker';
 import { PersonaService } from 'app/services/services/persona.service';
 import { UserService } from 'app/core/user/user.service';
 import { Persona } from 'app/services/models/persona';
@@ -21,23 +21,28 @@ import { DatePipe, NgIf } from '@angular/common';
 import { FuseAlertComponent } from '@fuse/components/alert';
 import { fuseAnimations } from '@fuse/animations';
 import { User } from 'app/core/user/user.types';
+import { FuseConfirmationService } from '@fuse/services/confirmation';
+import { Router } from '@angular/router';
 
 @Component({
-    selector     : 'register-responsable',
-    templateUrl  : './register-responsable.component.html',
+    selector: 'register-responsable',
+    templateUrl: './register-responsable.component.html',
     encapsulation: ViewEncapsulation.None,
     animations: fuseAnimations,
-    standalone   : true,
-    imports      : [MatIconModule, FormsModule, ReactiveFormsModule, MatStepperModule, MatFormFieldModule, MatInputModule, MatSelectModule, MatOptionModule, 
-        MatButtonModule, MatCheckboxModule, MatRadioModule,MatTableModule,MatTabsModule,MatDatepickerModule,
+    standalone: true,
+    imports: [MatIconModule, FormsModule, ReactiveFormsModule, MatStepperModule, MatFormFieldModule, MatInputModule, MatSelectModule, MatOptionModule,
+        MatButtonModule, MatCheckboxModule, MatRadioModule, MatTableModule, MatTabsModule, MatDatepickerModule,
         NgIf, FuseAlertComponent],
 })
-export class RegisterResponsableComponent implements OnInit
-{
+export class RegisterResponsableComponent implements OnInit {
     @ViewChild('signUpNgForm') signUpNgForm: NgForm;
+    @ViewChild('cedulaField') cedulaField: ElementRef;
+    @ViewChild('correoField') correoField: ElementRef;
+    @ViewChild('horizontalStepper') horizontalStepper: MatStepper;
+
 
     alert: { type: FuseAlertType; message: string } = {
-        type   : 'success',
+        type: 'success',
         message: '',
     };
 
@@ -45,20 +50,25 @@ export class RegisterResponsableComponent implements OnInit
 
     horizontalStepperForm: FormGroup;
     persona: Persona = new Persona();
-    selectedDate:Date;
+    selectedDate: Date;
     selectedFile: File | null = null;
     selectedImageSrc: string = null;
-    user: User=new User();
+    user: User = new User();
+
+    cedulaRegistrada: boolean = false;
+    correoRegistrado: boolean = false;
+    canProceedToNextStep = true;
 
     /**
      * Constructor
      */
-    constructor(private _formBuilder: UntypedFormBuilder, 
-                private personaService: PersonaService, 
-                private usuarioService: UserService,
-                private datePipe:DatePipe
-                )
-    {
+    constructor(private _formBuilder: UntypedFormBuilder,
+        private personaService: PersonaService,
+        private usuarioService: UserService,
+        private confirmationService: FuseConfirmationService,
+        private router: Router,
+        private datePipe: DatePipe
+    ) {
 
 
     }
@@ -70,29 +80,28 @@ export class RegisterResponsableComponent implements OnInit
     /**
      * On init
      */
-    ngOnInit(): void
-    {
+    ngOnInit(): void {
         // Horizontal stepper form
         this.horizontalStepperForm = this._formBuilder.group({
             step1: this._formBuilder.group({
-                cedula : ['', [Validators.required, validarLongitud()]],
-                primerNombre : ['', Validators.required],
-                segundoNombre : ['', Validators.required],
-                primerApellido : ['', Validators.required],
-                segundoApellido : ['', Validators.required],
-                correo   : ['', [Validators.required, Validators.email]],
-                direccion : ['', Validators.required],
+                cedula: ['', [Validators.required, validarLongitud()]],
+                primerNombre: ['', Validators.required],
+                segundoNombre: ['', Validators.required],
+                primerApellido: ['', Validators.required],
+                segundoApellido: ['', Validators.required],
+                correo: ['', [Validators.required, Validators.email]],
+                direccion: ['', Validators.required],
                 celular: ['', [Validators.required, validarLongitud()]],
-                fechaNacimiento : ['', [Validators.required, edadMinimaValidator()]],
-                genero : ['', Validators.required],
-                nacionalidad : ['', Validators.required],
+                fechaNacimiento: ['', [Validators.required, edadMinimaValidator()]],
+                genero: ['', Validators.required],
+                nacionalidad: ['', Validators.required],
             }),
             step2: this._formBuilder.group({
                 usuario: ['', Validators.required],
-                email : ['', Validators.required],
-                password : ['', [Validators.required, validarcontra()]],
-                avatar : [''],
-                descripcion    : [''],
+                email: ['', Validators.required],
+                password: ['', [Validators.required, validarcontra()]],
+                avatar: [''],
+                descripcion: [''],
             }),
             step3: this._formBuilder.group({
                 rolUser: ['Responsable', Validators.required],
@@ -100,31 +109,178 @@ export class RegisterResponsableComponent implements OnInit
         });
 
 
-            // Listen to changes in the 'correo' field in step1
-    this.horizontalStepperForm
-    .get('step1.correo')
-    .valueChanges.subscribe((correoValue) => {
-      // Set the value of 'email' in step2 to the same value as 'correo'
-      this.horizontalStepperForm.get('step2.email').setValue(correoValue);
-    });
+        // Listen to changes in the 'correo' field in step1
+        this.horizontalStepperForm
+            .get('step1.correo')
+            .valueChanges.subscribe((correoValue) => {
+                // Set the value of 'email' in step2 to the same value as 'correo'
+                this.horizontalStepperForm.get('step2.email').setValue(correoValue);
+            });
 
-    this.horizontalStepperForm.valueChanges.subscribe((formValues) => {
-        const primerNombreValue = formValues.step1.primerNombre;
-        const primerApellidoValue = formValues.step1.primerApellido;
-    
-        const usuarioValue = primerNombreValue + ' ' + primerApellidoValue;
-    
-        // Verifica si el valor actual es diferente antes de establecerlo
-        const currentUsuarioValue = this.horizontalStepperForm.get('step2.usuario').value;
-        if (currentUsuarioValue !== usuarioValue) {
-            this.horizontalStepperForm.get('step2.usuario').setValue(usuarioValue);
-        }
-    });
-    
+        this.horizontalStepperForm.valueChanges.subscribe((formValues) => {
+            const primerNombreValue = formValues.step1.primerNombre;
+            const primerApellidoValue = formValues.step1.primerApellido;
+
+            const usuarioValue = primerNombreValue + ' ' + primerApellidoValue;
+
+            // Verifica si el valor actual es diferente antes de establecerlo
+            const currentUsuarioValue = this.horizontalStepperForm.get('step2.usuario').value;
+            if (currentUsuarioValue !== usuarioValue) {
+                this.horizontalStepperForm.get('step2.usuario').setValue(usuarioValue);
+            }
+        });
+
 
 
     }
 
+    // Método para capturar la cédula del formulario
+    
+    capturarCedulaYBuscar(): void {
+        const cedulaValue = this.horizontalStepperForm.get('step1.cedula').value;
+        const correoValue = this.horizontalStepperForm.get('step1.correo').value;
+        console.log(`Cédula capturada: ${cedulaValue}`);
+        console.log(`Correo capturado: ${correoValue}`);
+        this.buscarPersonaPorCedula(cedulaValue);
+    }
+
+    // Método para buscar la cédula si esta en la BD
+
+    buscarPersonaPorCedula(cedulaValue: string): void {
+        this.personaService.buscarPersonaPorCedula(cedulaValue)
+            .subscribe(
+                (cedulaEncontrada: boolean) => {
+                    if (cedulaEncontrada) {
+                        console.log(`Persona con cédula ${cedulaValue} encontrada.`);
+                        this.cedulaRegistrada = true;
+                        const correoValue = this.horizontalStepperForm.get('step1.correo').value;
+                        this.buscarPersonaPorCorreoYMostrarMensaje(cedulaValue, correoValue);
+                    } else {
+                        console.log(`Persona con cédula ${cedulaValue} no encontrada.`);
+                        this.cedulaRegistrada = false;
+                        const correoValue = this.horizontalStepperForm.get('step1.correo').value;
+                        this.buscarPersonaPorCorreo(correoValue);
+                    }
+                },
+                (error) => {
+                    console.error('Error al buscar persona:', error);
+                }
+            );
+    }
+    
+
+    buscarPersonaPorCorreoYMostrarMensaje(cedulaValue: string, correoValue: string): void {
+        this.personaService.buscarPersonaPorCorreo(correoValue)
+            .subscribe(
+                (correoEncontrado: boolean) => {
+                    if (correoEncontrado) {
+                        console.log(`Persona con correo ${correoValue} encontrada.`);
+                        this.correoRegistrado = true;
+                        const confirmationDialog = this.confirmationService.open({
+                            title: 'Ocurrió un error',
+                            message: `La cédula y correo ya han sido registrados`,
+                            actions: {
+                              confirm: {
+                                show: true,
+                                label: 'OK',
+                                color: 'primary'
+                              },
+                              cancel: {
+                                show: false,
+                                label: 'Cancelar'
+                              }
+                            }
+                          });
+                
+                          confirmationDialog.afterClosed().subscribe(result => {
+                            if (result === 'confirmed') {
+                              this.cedulaField.nativeElement.focus();
+                            }
+                          });
+                          this.canProceedToNextStep = false;
+                          console.log('Paso: ' +  this.canProceedToNextStep)
+                    } else {
+                        console.log(`Persona con correo ${correoValue} no encontrada.`);
+                        this.correoRegistrado = false;
+                        const confirmationDialog = this.confirmationService.open({
+                            title: 'Ocurrió un error',
+                            message: 'La cédula ' + cedulaValue +' ya ha sido registrada',
+                            actions: {
+                              confirm: {
+                                show: true,
+                                label: 'OK',
+                                color: 'primary'
+                              },
+                              cancel: {
+                                show: false,
+                                label: 'Cancelar'
+                              }
+                            }
+                          });
+                
+                          confirmationDialog.afterClosed().subscribe(result => {
+                            if (result === 'confirmed') {
+                              this.cedulaField.nativeElement.focus();
+                            }
+                          });
+                          this.canProceedToNextStep = false;
+                          console.log('Paso: ' +  this.canProceedToNextStep)
+                    }
+                },
+                (error) => {
+                    console.error('Error al buscar persona:', error);
+                }
+            );
+    }
+
+    // Método para buscar el correo si esta en la BD
+
+    buscarPersonaPorCorreo(correoValue: string): void {
+        this.personaService.buscarPersonaPorCorreo(correoValue)
+            .subscribe(
+                (encontrada: boolean) => {
+                    if (encontrada) {
+                        console.log(`Persona con correo ${correoValue} encontrada.`);
+                        this.correoRegistrado = true;
+                        
+                        const confirmationDialog = this.confirmationService.open({
+                            title: 'Ocurrió un error',
+                            message: 'El correo ' + correoValue + ' ya ha sido registrado',
+                            actions: {
+                              confirm: {
+                                show: true,
+                                label: 'OK',
+                                color: 'primary'
+                              },
+                              cancel: {
+                                show: false,
+                                label: 'Cancelar'
+                              }
+                            }
+                          });
+                
+                          confirmationDialog.afterClosed().subscribe(result => {
+                            if (result === 'confirmed') {
+                              this.correoField.nativeElement.focus();
+                            }
+                          });
+                          this.canProceedToNextStep = false;
+                          console.log('Paso: ' +  this.canProceedToNextStep)
+                    } else {
+                        console.log(`Persona con correo ${correoValue} no encontrada.`);
+                        this.correoRegistrado = false;
+                        this.canProceedToNextStep = true;
+                        console.log('Paso: ' +  this.canProceedToNextStep)
+                        if (this.canProceedToNextStep) {
+                            this.horizontalStepper.next(); // Avanzar al siguiente paso
+                        }
+                    }
+                },
+                (error) => {
+                    console.error('Error al buscar persona:', error);
+                }
+            );
+    }
 
     registrarPersona(): void {
         // Obtén los valores de los FormControls del FormGroup
@@ -152,10 +308,10 @@ export class RegisterResponsableComponent implements OnInit
 
         this.persona.cedula = cedula;
         this.persona.primer_nombre = primerNombre;
-        this.persona.segundo_nombre = segundoNombre;  
+        this.persona.segundo_nombre = segundoNombre;
         this.persona.primer_apellido = primerApellido;
-        this.persona.segundo_apellido = segundoApellido; 
-        this.persona.fecha_nacimiento = formattedDate; 
+        this.persona.segundo_apellido = segundoApellido;
+        this.persona.fecha_nacimiento = formattedDate;
         this.persona.genero = genero;
         this.persona.correo = correoElectronico;
         this.persona.direccion = direccion;
@@ -175,7 +331,7 @@ export class RegisterResponsableComponent implements OnInit
         this.user.visible = true;
 
         // ... otros campos ...
-    
+
         // Luego, realiza la llamada al servicio para guardar la persona y el usuario
         // ... código para guardar persona y usuario ...
         this.personaService.savePersona(this.persona).subscribe(data => {
@@ -183,26 +339,52 @@ export class RegisterResponsableComponent implements OnInit
             this.user.persona = data;
             const rolId = 2; // ID del rol
             this.usuarioService.registrarUsuarioConFoto(this.user, rolId, this.selectedFile)
-              .subscribe(
-                  (response) => {
-                      console.log(response);
-                      this.alert = {
-                          type   : 'success',
-                          message: 'Su registro se a realizado correctamente',
-                      };
-                      this.showAlert = true;
-                  },
-                  (error) => {
-                      this.alert = {
-                          type   : 'error',
-                          message: 'Ha ocurrido un error al crear el usuario',
-                      };
-                      this.showAlert = true;
-                  }
+                .subscribe(
+                    (response) => {
+                        console.log(response);
+                        const confirmationDialog = this.confirmationService.open({
+                            title: 'Éxito',
+                            message: 'Registro de responsable de ventas exitosa',
+                            icon: {
+                                show: true,
+                                name : 'heroicons_outline:check-circle',
+                                color: 'success',
+                            },
+                            actions: {
+                              confirm: {
+                                show: true,
+                                label: 'Ver lista',
+                                color: 'primary'
+                              },
+                              cancel: {
+                                show: true,
+                                label: 'Registrar nuevo'
+                              }
+                            }
+                          });
+                
+                          confirmationDialog.afterClosed().subscribe(result => {
+                            if (result === 'confirmed') {
+                                this.router.navigate(['/list-responsables']);
+                            } else {
+                                this.horizontalStepper.reset();
+                            }
+                          });
+                    },
+                    (error) => {
+                        this.alert = {
+                            type: 'error',
+                            message: 'Ha ocurrido un error al crear el usuario',
+                        };
+                        this.showAlert = true;
+                        setTimeout(() => {
+                            this.showAlert = false; // Ocultar la alerta después de 4 segundos
+                        }, 4000);
+                    }
                 );
-              
-          })
-    
+
+        })
+
         // Restablece el formulario después de guardar los datos
     }
     /*
@@ -215,17 +397,17 @@ export class RegisterResponsableComponent implements OnInit
     upload(event: any) {
         const file = event.target.files[0];
         if (file) {
-          this.selectedFile = file;
-      
-          // Crear una URL de objeto para la imagen y asignarla a selectedImageSrc
-          const reader = new FileReader();
-          reader.onload = (e: any) => {
-            this.selectedImageSrc = e.target.result;
-          };
-          reader.readAsDataURL(file);
+            this.selectedFile = file;
+
+            // Crear una URL de objeto para la imagen y asignarla a selectedImageSrc
+            const reader = new FileReader();
+            reader.onload = (e: any) => {
+                this.selectedImageSrc = e.target.result;
+            };
+            reader.readAsDataURL(file);
         }
-      }
-      
+    }
+
 
     alerta(): void {
         this.alert = {
@@ -233,7 +415,7 @@ export class RegisterResponsableComponent implements OnInit
             message: 'Su registro se ha realizado correctamente',
         };
         this.showAlert = true;
-    
+
         setTimeout(() => {
             this.showAlert = false; // Ocultar la alerta después de 4 segundos
         }, 4000); // 4000 milisegundos = 4 segundos

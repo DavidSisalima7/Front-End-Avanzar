@@ -10,17 +10,14 @@ import { Productos } from 'app/services/models/productos';
 import { ProductosService } from 'app/services/services/producto.service';
 import { MatButtonModule } from '@angular/material/button';
 import { debounceTime, map, merge, Observable, Subject, switchMap, takeUntil } from 'rxjs';
-import { PersonaService } from 'app/services/services/persona.service';
-import { Persona } from 'app/services/models/persona';
-import { Usuario } from 'app/services/models/usuario';
-import { UserService } from 'app/core/user/user.service';
 import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
-
-
+import Swal from 'sweetalert2';
 //DIALOGOS
 import { MatDialog } from '@angular/material/dialog';
 import { MailboxComposeComponent } from 'app/modules/responsable/compose/compose.component';
+import { ServiciosService } from 'app/services/services/servicios.service';
+import { Servicios } from 'app/services/models/servicios';
 
 
 @Component({
@@ -29,12 +26,13 @@ import { MailboxComposeComponent } from 'app/modules/responsable/compose/compose
     templateUrl  : './list-servicios.component.html',
     encapsulation: ViewEncapsulation.None,
     imports: [MatFormFieldModule, MatInputModule, MatTableModule, MatSortModule, MatPaginatorModule,
-      MatIconModule, MatButtonModule, CommonModule],
+        MatIconModule, MatButtonModule, CommonModule],
 })
 export class ListRespServiciosComponent
+
 {
-  displayedColumns: string[] = ['idProducto', 'nombreProducto', 'precioProducto', 'cantidaDisponible', 'estado'];
-  dataSource: MatTableDataSource<Productos>;
+    displayedColumns: string[] = ['nombre', 'descripcion', 'precio', 'estado','editar','delete'];
+  dataSource: MatTableDataSource<Servicios>;
 
 
   @ViewChild(MatPaginator) paginator: MatPaginator;
@@ -43,32 +41,23 @@ export class ListRespServiciosComponent
   searchInputControl: UntypedFormControl = new UntypedFormControl();
   private _unsubscribeAll: Subject<any> = new Subject<any>();
   isLoading: boolean = false;
-
-
-
-  /**
-   * Constructor
-   */
-  constructor(private productoService: ProductosService, private _router: Router,private _matDialog: MatDialog
+  constructor(private serviciosService: ServiciosService, private _router: Router,private _matDialog: MatDialog
     ) {
   }
   ngOnInit(): void {
-    this.listarRegistros();
+    this.listarRegistrosServicios();
 
   }
-
-
-  listarRegistros() {
-    this.productoService.listarProducto().subscribe(
-      (datos: Productos[]) => {
-        this.dataSource = new MatTableDataSource<Productos>(datos);
+  listarRegistrosServicios() {
+    this.serviciosService.listarServicio().subscribe(
+      (datos: Servicios[]) => {
+        this.dataSource = new MatTableDataSource<Servicios>(datos);
       },
       error => {
-        console.error('Ocurrió un error al obtener la lista de personas responsables:', error);
+        console.error('Ocurrió un error al obtener la lista de los productos:', error);
       }
     );
   }
-
   applyFilter(event: Event) {
     const filterValue = (event.target as HTMLInputElement).value;
     this.dataSource.filter = filterValue.trim().toLowerCase();
@@ -78,8 +67,8 @@ export class ListRespServiciosComponent
     }
   }
 
-  redirectToRegisterResponsable() {
-    this._router.navigate(['/register-productos']);
+  redirectToRegisterServicios() {
+    this._router.navigate(['/register-Servicios']);
   }
 
 
@@ -95,4 +84,184 @@ export class ListRespServiciosComponent
                 console.log('Compose dialog was closed!');
             });
     }
+/////////////////////////Filtro de los Servicios
+servicios:any;
+ ///descripcion
+   FiltroDescripcionAsc(): void {
+     this.serviciosService.listarServicio().subscribe(
+       (datos: Servicios[]) => {
+         // Ordena el array de Servicios por decsripcion asc
+         this.servicios = datos.sort((a, b) => a.descripcionServicio.localeCompare(b.descripcionServicio));
+         this.dataSource = new MatTableDataSource<Servicios>(this.servicios);
+       },
+       error => {
+        console.error('Ocurrió un error al obtener la lista de Servicios:', error);
+       }
+     );
+   }
+   FiltroDescripcionDesc(): void {
+     this.serviciosService.listarServicio().subscribe(
+       (datos: Servicios[]) => {
+         // Ordena el array de Servicios por descripcion en forma descendente
+         this.servicios = datos.sort((a, b) => a.descripcionServicio.localeCompare(b.descripcionServicio));
+         this.dataSource = new MatTableDataSource<Servicios>(this.servicios);
+       },
+       error => {
+        console.error('Ocurrió un error al obtener la lista de Servicios:', error);
+       }
+     );
+   }
+ 
+   //Nombre de productos
+   FiltroNombreAsc(): void {
+     this.serviciosService.listarServicio().subscribe(
+       (datos: Servicios[]) => {
+         // Ordena el array de Servicios por el nombre acs
+         this.servicios = datos.sort((a, b) => a.nombreServicio.localeCompare(b.nombreServicio));
+         this.dataSource = new MatTableDataSource<Servicios>(this.servicios);
+       },
+       error => {
+         console.error('Ocurrió un error al obtener la lista de Servicios:', error);
+       }
+     );
+   }
+   FiltroNombreDesc(): void {
+    this.serviciosService.listarServicio().subscribe(
+      (datos: Servicios[]) => {
+        // Ordena el array de Servicios por el nombre acs
+        this.servicios = datos.sort((a, b) => b.nombreServicio.localeCompare(a.nombreServicio));
+        this.dataSource = new MatTableDataSource<Servicios>(this.servicios);
+      },
+      error => {
+        console.error('Ocurrió un error al obtener la lista de Servicios:', error);
+      }
+    );
+  }
+
+ //precio
+ FiltroprecioAsc(): void {
+  this.serviciosService.listarServicio().subscribe(
+    (datos: Servicios[]) => {
+      // Ordena el array de Servicios por precio asc
+      this.servicios = datos.sort((a, b) => a.precioServicio - b.precioServicio);
+      this.dataSource = new MatTableDataSource<Servicios>(this.servicios);
+    },
+    error => {
+     console.error('Ocurrió un error al obtener la lista de Servicios:', error);
+    }
+  );
+}
+ FiltroprecioDesc(): void {
+  this.serviciosService.listarServicio().subscribe(
+    (datos: Servicios[]) => {
+      // Ordena el array de Servicios por el precio en forma descendente
+      this.servicios = datos.sort((a, b) => b.precioServicio - a.precioServicio);
+      this.dataSource = new MatTableDataSource<Servicios>(this.servicios);
+    
+    },
+    error => {
+     console.error('Ocurrió un error al obtener la lista de Servicios:', error);
+    }
+  );
+}
+ FiltroEstadoActivo() {
+  // Ordena el array de Servicios por estado activo
+ this.serviciosService.obtenerListServicioOrdenA().subscribe(
+   (datos: Servicios[]) => {
+     this.dataSource = new MatTableDataSource<Servicios>(datos);
+   },
+   error => {
+    console.error('Ocurrió un error al obtener la lista de Servicios:', error);
+   }
+ );
+}
+FiltroEstadoInactivo() {
+ // Ordena el array de Servicios por estado inactivo
+ this.serviciosService.obtenerListServicioOrdenI().subscribe(
+   (datos: Servicios[]) => {
+     this.dataSource = new MatTableDataSource<Servicios>(datos);
+   },
+   error => {
+    console.error('Ocurrió un error al obtener la lista de Servicios:', error);
+   }
+ );
+}
+  
+   ejecutarPrimeraFuncion: boolean = true;
+   cambiarFuncionAEjecutar(): void {
+     this.ejecutarPrimeraFuncion = !this.ejecutarPrimeraFuncion;
+   }
+   //Nombre
+   ejecutarFuncionNombre(): void {
+     if (this.ejecutarPrimeraFuncion) {
+       this.FiltroNombreAsc();
+     } else {
+       this.FiltroNombreDesc();
+     }
+     this.cambiarFuncionAEjecutar();
+   }
+   //cantidada
+   ejecutarFuncionDescripcion(): void {
+     if (this.ejecutarPrimeraFuncion) {
+       this.FiltroDescripcionAsc();
+     } else {
+       this.FiltroDescripcionDesc();
+     }
+     this.cambiarFuncionAEjecutar();
+   }
+   //precio
+   ejecutarFuncionPrecio(): void {
+     if (this.ejecutarPrimeraFuncion) {
+       this.FiltroprecioAsc();
+     } else {
+       this.FiltroprecioDesc();
+     }
+     this.cambiarFuncionAEjecutar();
+   }
+   //Estado
+   ejecutarFuncionEstado(): void {
+     if (this.ejecutarPrimeraFuncion) {
+       this.FiltroEstadoActivo();
+     } else {
+       this.FiltroEstadoInactivo();
+     }
+     this.cambiarFuncionAEjecutar();
+   }
+
+
+///////////////////////// Fin de filtro
+
+////////eliminado lógico de servicios
+selectedServivio:any;
+productSelect: any;
+verficarEstado: any;
+seleccionarServicio(servicio: any) {
+  this.selectedServivio = servicio.idServicio;
+  this.serviciosService.buscarServicioActivo(this.selectedServivio).subscribe(
+    (servicioEncontrado) => {
+      this.verficarEstado=servicioEncontrado;
+    if (this.verficarEstado === null){
+    Swal.fire(
+      'Acción no disponible',
+      'El servicio ya se encuentra inactivo',
+      'error',
+          );
+    
+    }else{
+      this.serviciosService.eliminadoLogico(this.selectedServivio).subscribe(
+        (dataservencontrada) => {
+          this.listarRegistrosServicios();
+          Swal.fire(
+            'Acción Exitosa',
+            'Servicio Eliminado.',
+            'success'
+                );
+          return;
+        } );
+     
+    }
+  });
+}
+
+
 }

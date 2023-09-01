@@ -1,5 +1,5 @@
 import { DatePipe, NgIf } from '@angular/common';
-import { Component, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
 import { AbstractControl, FormsModule, NgForm, ReactiveFormsModule, UntypedFormBuilder, UntypedFormGroup, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCheckboxModule } from '@angular/material/checkbox';
@@ -16,9 +16,14 @@ import { FuseAlertComponent, FuseAlertType } from '@fuse/components/alert';
 import { AuthService } from 'app/core/auth/auth.service';
 import { UserService } from 'app/core/user/user.service';
 import { User } from 'app/core/user/user.types';
+import { EmailDto } from 'app/services/models/emailDto';
 import { Persona } from 'app/services/models/persona';
 import { Usuario } from 'app/services/models/usuario';
+import { EmailService } from 'app/services/services/email.service';
 import { PersonaService } from 'app/services/services/persona.service';
+import Swal from 'sweetalert2';
+import { FuseConfirmationService } from '@fuse/services/confirmation';
+
 
 
 @Component({
@@ -34,23 +39,40 @@ import { PersonaService } from 'app/services/services/persona.service';
 export class SignUpComponent implements OnInit {
     @ViewChild('signUpNgForm') signUpNgForm: NgForm;
 
-    alert: { type: FuseAlertType; message: string } = {
+    alertCod: { type: FuseAlertType; message: string } = {
+        type: 'success',
+        message: '',
+    };
+    alertReg: { type: FuseAlertType; message: string } = {
         type: 'success',
         message: '',
     };
     signUpForm: UntypedFormGroup;
     showAlert: boolean = false;
-
+    showCode: boolean = false;
     //fechas
     selectedDate: Date;
+    //intentos de verifición
+    protected banVerificacion = 0;
+    protected codeInt = "";
+    protected codeRec = "";
+    protected formCode = false;
+    protected returnForm = false;
+    //llamar componentes html para darle propiedades
+    @ViewChild('btnCodeVerHtml') btnCodeVer: ElementRef;
+    @ViewChild('inputCodeHmtl') inputCode: ElementRef;
+    @ViewChild('cedulaField') cedulaField: ElementRef;
+    @ViewChild('correoField') correoField: ElementRef;
 
+    email: EmailDto = new EmailDto();
     persona: Persona = new Persona();
     user: User = new User();
     selectedFile: File | null = null;
     //Variable para el combo Box de genero que almacena el resultado
     public generoSeleccionado: string;
 
-
+    cedulaRegistrada: boolean = false;
+    correoRegistrado: boolean = false;
 
     /**
      * Constructor
@@ -61,6 +83,8 @@ export class SignUpComponent implements OnInit {
         private _router: Router,
         private personaService: PersonaService,
         private usuarioService: UserService,
+        private emailService: EmailService,
+        private confirmationService: FuseConfirmationService,
         private datePipe: DatePipe
     ) {
     }
@@ -100,9 +124,146 @@ export class SignUpComponent implements OnInit {
         return this.signUpForm.valid && this.signUpForm.get('agreements').value;
     }
 
-    /**
-     * Sign up
-     */
+    // Método para capturar la cédula del formulario
+
+    capturarCedulaYBuscar(): void {
+        const cedulaValue = this.signUpForm.get('cedula').value;
+        const correoValue = this.signUpForm.get('correo').value;
+        console.log(`Cédula capturada: ${cedulaValue}`);
+        console.log(`Correo capturado: ${correoValue}`);
+        this.buscarPersonaPorCedula(cedulaValue);
+    }
+
+    // Método para buscar la cédula si esta en la BD
+
+    buscarPersonaPorCedula(cedulaValue: string): void {
+        this.personaService.buscarPersonaPorCedula(cedulaValue)
+            .subscribe(
+                (cedulaEncontrada: boolean) => {
+                    if (cedulaEncontrada) {
+                        console.log(`Persona con cédula ${cedulaValue} encontrada.`);
+                        this.cedulaRegistrada = true;
+                        const correoValue = this.signUpForm.get('correo').value;
+                        this.buscarPersonaPorCorreoYMostrarMensaje(cedulaValue, correoValue);
+                    } else {
+                        console.log(`Persona con cédula ${cedulaValue} no encontrada.`);
+                        this.cedulaRegistrada = false;
+                        const correoValue = this.signUpForm.get('correo').value;
+                        this.buscarPersonaPorCorreo(correoValue);
+                    }
+                },
+                (error) => {
+                    console.error('Error al buscar persona:', error);
+                }
+            );
+    }
+    
+
+    buscarPersonaPorCorreoYMostrarMensaje(cedulaValue: string, correoValue: string): void {
+        this.personaService.buscarPersonaPorCorreo(correoValue)
+            .subscribe(
+                (correoEncontrado: boolean) => {
+                    if (correoEncontrado) {
+                        console.log(`Persona con correo ${correoValue} encontrada.`);
+                        this.correoRegistrado = true;
+                        const confirmationDialog = this.confirmationService.open({
+                            title: 'Ocurrió un error',
+                            message: `La cédula y correo ya han sido registrados`,
+                            actions: {
+                              confirm: {
+                                show: true,
+                                label: 'OK',
+                                color: 'primary'
+                              },
+                              cancel: {
+                                show: false,
+                                label: 'Cancelar'
+                              }
+                            }
+                          });
+                
+                          confirmationDialog.afterClosed().subscribe(result => {
+                            if (result === 'confirmed') {
+                              this.cedulaField.nativeElement.focus();
+                            }
+                          });
+                    } else {
+                        console.log(`Persona con correo ${correoValue} no encontrada.`);
+                        this.correoRegistrado = false;
+                        const confirmationDialog = this.confirmationService.open({
+                            title: 'Ocurrió un error',
+                            message: 'La cédula ' + cedulaValue +' ya ha sido registrada',
+                            actions: {
+                              confirm: {
+                                show: true,
+                                label: 'OK',
+                                color: 'primary'
+                              },
+                              cancel: {
+                                show: false,
+                                label: 'Cancelar'
+                              }
+                            }
+                          });
+                
+                          confirmationDialog.afterClosed().subscribe(result => {
+                            if (result === 'confirmed') {
+                              this.cedulaField.nativeElement.focus();
+                            }
+                          });
+                    }
+                },
+                (error) => {
+                    console.error('Error al buscar persona:', error);
+                }
+            );
+    }
+
+    // Método para buscar el correo si esta en la BD
+
+    buscarPersonaPorCorreo(correoValue: string): void {
+        this.personaService.buscarPersonaPorCorreo(correoValue)
+            .subscribe(
+                (encontrada: boolean) => {
+                    if (encontrada) {
+                        console.log(`Persona con correo ${correoValue} encontrada.`);
+                        this.correoRegistrado = true;
+                        const confirmationDialog = this.confirmationService.open({
+                            title: 'Ocurrió un error',
+                            message: 'El correo ' + correoValue + ' ya ha sido registrado',
+                            actions: {
+                              confirm: {
+                                show: true,
+                                label: 'OK',
+                                color: 'primary'
+                              },
+                              cancel: {
+                                show: false,
+                                label: 'Cancelar'
+                              }
+                            }
+                          });
+                
+                          confirmationDialog.afterClosed().subscribe(result => {
+                            if (result === 'confirmed') {
+                              this.correoField.nativeElement.focus();
+                            }
+                          });
+                    } else {
+                        console.log(`Persona con correo ${correoValue} no encontrada.`);
+                        this.correoRegistrado = false;
+                        this.formCode = true;
+                        this.signUp();
+                    }
+                },
+                (error) => {
+                    console.error('Error al buscar persona:', error);
+                }
+            );
+    }
+
+    // Método para registrar a un nuevo usuario
+
     signUp(): void {
         this.persona.estado = true;
         this.persona.nacionalidad = "Ecuador"
@@ -120,32 +281,36 @@ export class SignUpComponent implements OnInit {
         this.persona.genero = generoSeleccionado;
 
 
-        this.personaService.savePersona(this.persona).subscribe(data => {
-            console.log(data);
-            this.user.persona = data;
-            const rolId = 4; // ID del rol
-            this.usuarioService.registrarUsuarioConFoto(this.user, rolId, this.selectedFile)
-                .subscribe(
-                    (response) => {
-                        console.log(response);
-                        this.alert = {
-                            type: 'success',
-                            message: 'Su registro se a realizado correctamente',
-                        };
-                        this.showAlert = true;
-                    },
-                    (error) => {
-                        this.alert = {
-                            type: 'error',
-                            message: 'Ha ocurrido un error al crear el usuario',
-                        };
-                        this.showAlert = true;
-                    }
-                );
+     
+        this.banVerificacion = 0;
+        this.email.subject = "Su código de verificación es:"
+        this.email.to = this.persona.correo;
+        this.showCode = false;
+        //regresar al formulario
+        this.returnForm = false;
+        this.emailService.sendCodeVer(this.email)
+            .subscribe({
 
-            this.signUpNgForm.resetForm();
+                next: (reponse) => {
+                    
+                    this.alertCod = {
+                        type: 'success',
+                        message: 'Código enviado revise en Spam o Recibidos',
+                    };
+                    this.codeRec = reponse.text;
+                    this.showCode = true;
+                    this.returnForm = true;
+                },
+                error: (error) => {
+                    this.alertCod = {
+                        type: 'error',
+                        message: 'Ha ocurrido al enviar el código',
+                    };
+                    this.showCode = true;
+                    this.returnForm = true;
+                }
+        });
 
-        })
 
     }
 
@@ -165,6 +330,87 @@ export class SignUpComponent implements OnInit {
         } */
     }
 
+    /* Metodo para verificafar el código de verificación*/
+    protected CodeVer() {
+
+
+        if (this.banVerificacion < 3) {
+
+            if (this.codeInt !== "") {
+
+                if (this.codeRec === this.codeInt) {
+                    this.returnForm = false;
+                    this.personaService.savePersona(this.persona)
+
+
+                    this.personaService.savePersona(this.persona).subscribe(data => {
+                        console.log(data);
+                        this.user.persona = data;
+                        const rolId = 4; // ID del rol
+                        this.usuarioService.registrarUsuarioConFoto(this.user, rolId, this.selectedFile)
+                            .subscribe({
+                                next: (response) => {
+                                   
+                                    this.alertReg = {
+                                        type: 'success',
+                                        message: 'Su registro se a realizado correctamente',
+                                    };
+                                    this.showAlert = true;
+                                    setTimeout(function () {
+                                        window.location.href = 'http://localhost:4200/'; // URL a la que deseas redirigir
+                                    }, 1500);
+                                },
+                                error: (error) => {
+                                    this.alertReg = {
+                                        type: 'error',
+                                        message: 'Ha ocurrido un error al crear el usuario',
+                                    };
+                                    this.showAlert = true;
+                                    this.returnForm = true;
+                                }
+                            });
+
+                        this.signUpNgForm.resetForm();
+
+                    })
+
+
+                } else {
+                    this.banVerificacion++;
+                    this.inputCode.nativeElement.classList.remove('bg-red-400');
+                    switch (this.banVerificacion) {
+
+                        case 1:
+
+                            this.btnCodeVer.nativeElement.textContent = "2 Intentos";
+
+                            break;
+                        case 2:
+
+                            this.btnCodeVer.nativeElement.textContent = "1 Intento";
+
+                            break;
+                        case 3:
+                            this.btnCodeVer.nativeElement.textContent = "Demasiados intentos";
+                            this.btnCodeVer.nativeElement.classList.replace('bg-indigo-600', 'bg-red-400');
+                            this.btnCodeVer.nativeElement.classList.replace('hover:bg-indigo-500', 'hover:bg-red-400');
+                            this.inputCode.nativeElement.classList.add('bg-red-400');
+                            break;
+
+                    }
+                }
+
+            } else {
+
+                this.inputCode.nativeElement.classList.add('bg-red-400');
+            }
+
+        }
+
+
+    }
+
+
 }
 
 /* Metodo para validar la cedula y celular de 10 digitos*/
@@ -178,7 +424,7 @@ function validarLongitud(): ValidatorFn {
         }
 
         return null;
-    };   
+    };
 }
 
 /* Metodo para validar la contraseña de 8 digitos*/
@@ -193,7 +439,7 @@ function validarcontra(): ValidatorFn {
 
         return null;
     };
-    
+
 }
 
 /* Metodo para validar que el usuario sea mayor de edad*/
@@ -212,7 +458,6 @@ function calcularEdad(fechaNacimiento: Date): number {
 }
 
 
-
 export function edadMinimaValidator(): ValidatorFn {
     return (control: AbstractControl): ValidationErrors | null => {
         const fechaNacimiento = control.value;
@@ -229,3 +474,4 @@ export function edadMinimaValidator(): ValidatorFn {
         return null;
     };
 }
+

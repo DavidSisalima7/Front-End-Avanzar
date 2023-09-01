@@ -1,5 +1,62 @@
 <div class="flex flex-col sm:flex-row items-center md:items-start sm:justify-center md:justify-start flex-auto min-w-0">
-    <div
+
+    <div *ngIf="formCode" class="flex min-h-full w-120 flex-col justify-center px-6 py-12 lg:px-8">
+        <div class="sm:mx-auto sm:w-full sm:max-w-sm">
+            <img class="mx-auto h-20 w-auto" src="assets/images/logo/avanzar.png" alt="Your Company">
+            <h2 class="mt-10 text-center text-2xl font-bold leading-9 tracking-tight">Código de verificación</h2>
+        </div>
+
+        <div class="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
+            <form class="space-y-6" action="#" method="POST">
+                <div>
+                    <label for="email" class="block text-1xl font-medium leading-6 ">Correo Electrónico</label>
+                    <div class="mt-2">
+                        <label
+                            class="block w-full bg-slate-400 rounded-md py-1.5 shadow-sm  ring-inset focus:ring-2 focus:ring-inset sm:text-lg sm:leading-6">{{persona.correo}}</label>
+                    </div>
+                </div>
+
+                <div>
+                    <div class="flex items-center justify-between">
+                        <label for="password" class="block text-1xl font-medium leading-6 ">Código</label>
+
+                    </div>
+
+                    <!-- Alert -->
+                    <fuse-alert *ngIf="showCode" [appearance]="'outline'" [showIcon]="true"
+                        [type]="alertCod.type" [@shake]="alertCod.type === 'error'">
+                        {{ alertCod.message }}
+                    </fuse-alert>
+                    
+                    <div class="mt-2">
+                        <input id="codigo" name="codigo" type="text" placeholder="1283"
+                            class="block w-full rounded-md border-0 py-1.5  shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-500 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-lg sm:leading-6"
+                            [(ngModel)]="codeInt" #inputCodeHmtl>
+                    </div>
+                </div>
+
+                <div>
+                    <button type="submit"
+                        class="flex w-full justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-1xl font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+                        (click)="CodeVer()" #btnCodeVerHtml>Registrar</button>
+                </div>
+            </form>
+
+            <p class="mt-10 text-center text-1xl  text-gray-500 hover:cursor-pointer">
+
+                <btn class="font-semibold leading-6 text-indigo-600 " (click)="formCode=false " *ngIf="returnForm"><-- Regresar </btn>
+
+            </p>
+            <!-- Alert -->
+            <fuse-alert class="mt-8" *ngIf="showAlert" [appearance]="'outline'" [showIcon]="false" [type]="alertReg.type"
+                [@shake]="alertReg.type === 'error'">
+                {{ alertReg.message }}
+            </fuse-alert>
+        </div>
+    </div>
+
+
+    <div *ngIf="!formCode"
         class="md:flex md:items-center md:justify-end w-full sm:w-auto md:h-full md:w-1/2 py-8 px-4 sm:p-12 md:p-16 sm:rounded-2xl md:rounded-none sm:shadow md:shadow-none sm:bg-card">
         <div class="w-full max-w-120 sm:w-120 mx-auto sm:mx-0">
             <!-- Logo -->
@@ -17,11 +74,7 @@
                 </a>
             </div>
 
-            <!-- Alert -->
-            <fuse-alert class="mt-8" *ngIf="showAlert" [appearance]="'outline'" [showIcon]="false" [type]="alert.type"
-                [@shake]="alert.type === 'error'">
-                {{ alert.message }}
-            </fuse-alert>
+
 
             <!-- Sign Up form -->
             <form class="mt-8" [formGroup]="signUpForm" #signUpNgForm="ngForm">
@@ -29,8 +82,7 @@
                 <div class="grid grid-cols-2 gap-6">
                     <mat-form-field class="w-full">
                         <mat-label>Cédula</mat-label>
-                        <input id="cedula" matInput [formControlName]="'cedula'" [(ngModel)]="persona.cedula"
-                            maxlength="10" pattern="[0-9]*" />
+                        <input id="cedula" matInput [formControlName]="'cedula'" [(ngModel)]="persona.cedula" maxlength="10" pattern="[0-9]*" #cedulaField/>
                         <mat-error *ngIf="
                             signUpForm.get('cedula').hasError('required')
                         ">Este campo es requerido</mat-error>
@@ -40,6 +92,7 @@
                             cédula debe contener 10 dígitos</mat-error>
                         <mat-error *ngIf="signUpForm.get('cedula').hasError('pattern')">Solo se permiten números en la
                             cédula</mat-error>
+                        
                     </mat-form-field>
 
                     <!-- Primer Nombre field -->
@@ -114,7 +167,7 @@
                     <mat-form-field class="w-full">
                         <mat-label>Correo Electrónico</mat-label>
                         <input id="email" matInput [formControlName]="'correo'" [(ngModel)]="persona.correo"
-                            pattern="[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}" />
+                            pattern="[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}" #correoField/>
                         <mat-error *ngIf="
                             signUpForm.get('correo').hasError('required')
                         ">Este campo es requerido</mat-error>
@@ -161,7 +214,7 @@
                     <mat-form-field class="w-full">
                         <mat-label>Fecha de Nacimiento</mat-label>
                         <input id="fecha_nacimiento" matInput [formControlName]="'fecha_nacimiento'"
-                            [matDatepicker]="picker1" [(ngModel)]="selectedDate" readonly/>
+                            [matDatepicker]="picker1" [(ngModel)]="selectedDate" readonly />
                         <mat-error *ngIf="
                             signUpForm.get('fecha_nacimiento').hasError('required')
                         ">Este campo es requerido</mat-error>
@@ -190,7 +243,7 @@
                     <mat-checkbox class="-ml-2" [color]="'primary'" [formControlName]="'agreements'">
                         <span>Acepto</span>
                         <a class="ml-1 text-primary-500 hover:underline" [routerLink]="['./']">Términos</a>
-                        <span>y</span>
+                        <span> y</span>
                         <a class="ml-1 text-primary-500 hover:underline" [routerLink]="['./']">Política de
                             privacidad</a>
                     </mat-checkbox>
@@ -205,7 +258,7 @@
 
                 <!-- Submit button -->
                 <button class="fuse-mat-button-large w-full mt-6" mat-flat-button [color]="'primary'"
-                    [disabled]="!isFormValidAndAccepted()" (click)="signUp()">
+                    [disabled]="!isFormValidAndAccepted()" (click)="capturarCedulaYBuscar()">
                     <span *ngIf="!signUpForm.disabled">
                         Crear su cuenta gratuitamente
                     </span>

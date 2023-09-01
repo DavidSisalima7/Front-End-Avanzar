@@ -136,20 +136,20 @@ export class SingInComponent implements OnInit {
     
               switch (userRole.nombre) {
                 case 'ADMIN':
-                  console.log('es admin');
+                 
                   this._router.navigate(['/dash-admin']);
 
                   break;
                 case 'RESPONSABLE_VENTAS':
-                  console.log('es responsable');
+                  
                   this._router.navigate(['/dash-resp']);
                   break;
                 case 'EMPRENDEDORA':
-                  console.log('es emprendedora');
+                  
                   this._router.navigate(['/dash-empre']);
                   break;
                 case 'CLIENTE':
-                  console.log('es cliente');
+                  
                   this._router.navigate(['/home-cli']);
                   break;
                 default:
