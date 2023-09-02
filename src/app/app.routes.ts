@@ -125,6 +125,7 @@ export const appRoutes: Route[] = [
                 {path: 'list-empre-publi', loadChildren: () => import('app/modules/emprendedora/list-publicaciones/list-publicacion.routes')},
                 {path: 'reg-empre-prod', loadChildren: () => import('app/modules/emprendedora/register-producto/register-producto.routes')},
                 {path: 'ecommerce', loadChildren: () => import('app/modules/emprendedora/ecommerce/ecommerce.routes')},
+                {path: 'ecommerce-servicios', loadChildren: () => import('app/modules/emprendedora/ecommerce copy/ecommerce.routes')},
                 {path: 'reg-empre-serv', loadChildren: () => import('app/modules/emprendedora/register-servicio/register-servicio.routes')},
                 {path: 'profile-empre', loadChildren: () => import('app/modules/emprendedora/profile/profile.routes')},
             ]

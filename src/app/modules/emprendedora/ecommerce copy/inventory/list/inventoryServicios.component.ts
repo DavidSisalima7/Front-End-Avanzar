@@ -1,4 +1,3 @@
-import { products } from './../../../../../mock-api/apps/ecommerce/inventory/data';
 import { AsyncPipe, CurrencyPipe, NgClass, NgFor, NgIf, NgTemplateOutlet } from '@angular/common';
 import { AfterViewInit, ChangeDetectionStrategy, ChangeDetectorRef, Component, OnDestroy, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
 import { FormsModule, ReactiveFormsModule, UntypedFormBuilder, UntypedFormControl, UntypedFormGroup, Validators } from '@angular/forms';
@@ -15,24 +14,23 @@ import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatSort, MatSortModule } from '@angular/material/sort';
 import { fuseAnimations } from '@fuse/animations';
 import { FuseConfirmationService } from '@fuse/services/confirmation';
-import { debounceTime, forkJoin, map, merge, Observable, Subject, switchMap, takeUntil } from 'rxjs';
-import { InventoryService } from '../inventory.service';
-import { InventarioProductos, CategoriaProducto, InventarioPublicaciones, CategoriaPublicacion, InventoryPagination } from '../inventory.types';
-import { ProductosService } from 'app/services/services/producto.service';
-import { Productos, ProductosModels } from 'app/services/models/productos';
+import { InventarioServicios, CategoriaServicio, InventarioPublicaciones, CategoriaPublicacion, InventoryPagination } from '../inventoryServicios.types';
+import {forkJoin, debounceTime, map, merge, Observable, Subject, switchMap, takeUntil } from 'rxjs';
 import { Usuario } from 'app/services/models/usuario';
-import { UserService } from 'app/core/user/user.service';
-import { User } from 'app/core/user/user.types';
 import { Publicacion } from 'app/services/models/publicaciones';
+import { InventoryServiceServicios } from '../inventoryServicios.service';
 import { VendedorService } from 'app/services/services/vendedora.service';
-import { CategoriaPublicacionService } from 'app/services/services/categoria.service';
+import { UserService } from 'app/core/user/user.service';
+import { CategoriaServicioService } from 'app/services/services/categoriaServicio.service';
 import { PublicacionesService } from 'app/services/services/publicaciones.service';
-import { CategoriaProductoService } from 'app/services/services/categoriaProducto.service';
+import { ServiciosService } from 'app/services/services/servicios.service';
+import { User } from 'app/core/user/user.types';
+import { ServicioModels } from 'app/services/models/servicios';
 
 @Component({
-    selector: 'inventory-list',
-    templateUrl: './inventory.component.html',
-    styles: [
+    selector       : 'inventory-list',
+    templateUrl    : './inventoryServicios.component.html',
+    styles         : [
         /* language=SCSS */
         `
             .inventory-grid {
@@ -52,20 +50,20 @@ import { CategoriaProductoService } from 'app/services/services/categoriaProduct
             }
         `,
     ],
-    encapsulation: ViewEncapsulation.None,
+    encapsulation  : ViewEncapsulation.None,
     changeDetection: ChangeDetectionStrategy.OnPush,
-    animations: fuseAnimations,
-    standalone: true,
-    imports: [NgIf, MatProgressBarModule, MatFormFieldModule, MatIconModule, MatInputModule, FormsModule, ReactiveFormsModule, MatButtonModule, MatSortModule, NgFor, NgTemplateOutlet, MatPaginatorModule, NgClass, MatSlideToggleModule, MatSelectModule, MatOptionModule, MatCheckboxModule, MatRippleModule, AsyncPipe, CurrencyPipe],
+    animations     : fuseAnimations,
+    standalone     : true,
+    imports        : [NgIf, MatProgressBarModule, MatFormFieldModule, MatIconModule, MatInputModule, FormsModule, ReactiveFormsModule, MatButtonModule, MatSortModule, NgFor, NgTemplateOutlet, MatPaginatorModule, NgClass, MatSlideToggleModule, MatSelectModule, MatOptionModule, MatCheckboxModule, MatRippleModule, AsyncPipe, CurrencyPipe],
 })
-export class InventoryListComponent implements OnInit, AfterViewInit, OnDestroy {
+export class InventoryListComponentService implements OnInit, AfterViewInit, OnDestroy
+{
     @ViewChild(MatPaginator) private _paginator: MatPaginator;
     @ViewChild(MatSort) private _sort: MatSort;
 
-
     publicaciones$: Observable<InventarioPublicaciones[]>;
     categoriesPublicacion: CategoriaPublicacion[];
-    categoriesProducto: CategoriaProducto[];
+    categoriesServicio: CategoriaServicio[];
     flashMessage: 'success' | 'error' | null = null;
     isLoading: boolean = false;
     pagination: InventoryPagination;
@@ -76,7 +74,7 @@ export class InventoryListComponent implements OnInit, AfterViewInit, OnDestroy 
     user: Usuario;
     publication = new Publicacion();
     idPublicacion: any;
-    producto = new ProductosModels();
+    servicio = new ServicioModels();
     categoriaExtraida: any;
 
     /**
@@ -86,12 +84,12 @@ export class InventoryListComponent implements OnInit, AfterViewInit, OnDestroy 
         private _changeDetectorRef: ChangeDetectorRef,
         private _fuseConfirmationService: FuseConfirmationService,
         private _formBuilder: UntypedFormBuilder,
-        private _inventoryService: InventoryService,
+        private _inventoryService: InventoryServiceServicios,
         private _vendedoraService: VendedorService,
         private _userService: UserService,
-        private _categoriaService: CategoriaProductoService,
+        private _categoriaService: CategoriaServicioService,
         private _publicacionService: PublicacionesService,
-        private _productoService: ProductosService
+        private _servicioService: ServiciosService
     ) {
     }
 
@@ -109,15 +107,15 @@ export class InventoryListComponent implements OnInit, AfterViewInit, OnDestroy 
         this.selectedPublicacionForm = this._formBuilder.group({
             idPublicacion: [''],
             categoria: [''],
-            nombreProducto: ['', [Validators.required]],
+            nombreServicio: ['', [Validators.required]],
             tituloPublicacion: ['', [Validators.required]],
             descripcionPublicacion: [''],
             tipos: [''],
             vendedor: [''],
             cantidadDisponible: [''],
-            precioProducto: [''],
-            pesoProducto: [''],
-            miniaturaProducto: [''],
+            precioServicio: [''],
+            tiempoServicio: [''],
+            miniaturaServicio: [''],
             imagenes: [[]],
             currentImageIndex: [0], // Image index that is currently being viewed 
             estado: [false],
@@ -128,9 +126,9 @@ export class InventoryListComponent implements OnInit, AfterViewInit, OnDestroy 
         // Get the categoriesProduct
         this._inventoryService.categoriesProducto$
             .pipe(takeUntil(this._unsubscribeAll))
-            .subscribe((categories: CategoriaProducto[]) => {
+            .subscribe((categories: CategoriaServicio[]) => {
                 // Update the categories
-                this.categoriesProducto = categories;
+                this.categoriesServicio = categories;
 
                 // Mark for check
                 this._changeDetectorRef.markForCheck();
@@ -180,7 +178,7 @@ export class InventoryListComponent implements OnInit, AfterViewInit, OnDestroy 
                 switchMap((query) => {
                     this.closeDetails();
                     this.isLoading = true;
-                    return this._inventoryService.getProducts(0, 10, 'tituloPublicacion', 'asc', query);
+                    return this._inventoryService.getPublicacionesServicios(0, 10, 'tituloPublicacion', 'asc', query);
                 }),
                 map(() => {
                     this.isLoading = false;
@@ -220,7 +218,7 @@ export class InventoryListComponent implements OnInit, AfterViewInit, OnDestroy 
                 switchMap(() => {
                     this.closeDetails();
                     this.isLoading = true;
-                    return this._inventoryService.getProducts(this._paginator.pageIndex, this._paginator.pageSize, this._sort.active, this._sort.direction);
+                    return this._inventoryService.getPublicacionesServicios(this._paginator.pageIndex, this._paginator.pageSize, this._sort.active, this._sort.direction);
                 }),
                 map(() => {
                     this.isLoading = false;
@@ -258,21 +256,21 @@ export class InventoryListComponent implements OnInit, AfterViewInit, OnDestroy 
 
         // Get the product by id
         this._inventoryService.getPublicacionById(publicacionId)
-            .subscribe((product) => {
+            .subscribe((servicio) => {
                 // Set the selected product
                 
-                this.selectedPublicacion = product;
+                this.selectedPublicacion = servicio;
 
-                this.selectedPublicacionForm.patchValue(product);
-                this.selectedPublicacionForm.get('nombreProducto').setValue(product.productos.nombreProducto);
-                this.selectedPublicacionForm.get('precioProducto').setValue(product.productos.precioProducto);
-                this.selectedPublicacionForm.get('cantidadDisponible').setValue(product.productos.cantidadDisponible);
-                this.selectedPublicacionForm.get('pesoProducto').setValue(product.productos.pesoProducto);
-                this.selectedPublicacionForm.get('vendedor').setValue(product.vendedor.usuario.name);
-                const selectedCategoryId = product.categoria.idCategoria; // Assuming you have an 'id' property in the category object
+                this.selectedPublicacionForm.patchValue(servicio);
+                this.selectedPublicacionForm.get('nombreServicio').setValue(servicio.servicios.nombreServicio);
+                this.selectedPublicacionForm.get('precioServicio').setValue(servicio.servicios.precioServicio);
+                this.selectedPublicacionForm.get('cantidadDisponible').setValue(servicio.servicios.cantidadDisponible);
+                this.selectedPublicacionForm.get('tiempoServicio').setValue(servicio.servicios.tiempoServicio);
+                this.selectedPublicacionForm.get('vendedor').setValue(servicio.vendedor.usuario.name);
+                const selectedCategoryId = servicio.categoria.idCategoria; // Assuming you have an 'id' property in the category object
                 this.selectedPublicacionForm.get('tipos').setValue(selectedCategoryId);
 
-                const selectedCategoryIdProducto = product.productos.categoriaProducto.idCategoriaProducto; 
+                const selectedCategoryIdProducto = servicio.servicios.categoriaServicio.idCategoriaServicio; 
                 this.selectedPublicacionForm.get('categoria').setValue(selectedCategoryIdProducto);
 
                 // Mark for check
@@ -330,7 +328,44 @@ export class InventoryListComponent implements OnInit, AfterViewInit, OnDestroy 
     }
 
 
-  
+    updateselectedPublicaciones(): void {
+        // Get the product object
+        const post = this.selectedPublicacionForm.getRawValue();
+
+        // Remove the currentImageIndex field
+        delete post.currentImageIndex;
+
+        this._vendedoraService.buscarVendedoraId(this.user.id).subscribe((vendedor) => {
+            post.vendedor = vendedor;
+            this.publication.vendedor = vendedor;
+        });
+
+
+        this._publicacionService.buscarPublicacionId(post.idPublicacion).subscribe((publicacion) => {
+            post.servicios = publicacion.servicios;
+            this.publication.servicios = publicacion.servicios; 
+            this.publication.servicios.miniaturaServicio = null;
+            this.publication.servicios.nombreServicio = post.nombreServicio;
+        });
+
+        this.publication.idPublicacion = post.idPublicacion;
+        this.publication.tituloPublicacion = post.tituloPublicacion;
+        this.publication.descripcionPublicacion = post.descripcionPublicacion;
+        this.publication.estado = post.estado;
+        this.publication.imagenes = post.imagenes;
+
+        this.publication.productos = null;
+
+        console.log(this.publication);
+
+        // Update the post on the server
+        this._inventoryService.updatePublicacion(post.idPublicacion, this.publication).subscribe(() => {
+            // Show a success message
+            this.showFlashMessage('success');
+        });
+
+        
+    }
 
     /**
      * Update the selected product using the form data
@@ -343,8 +378,8 @@ export class InventoryListComponent implements OnInit, AfterViewInit, OnDestroy 
 
         forkJoin([vendedor$,publicacion$]).subscribe(([vendedor, publicacion]) => {
         this.publication.vendedor = vendedor;
-        this.publication.productos = publicacion.productos;
-        this.publication.productos.miniaturaProducto = " ";
+        this.publication.servicios = publicacion.servicios;
+        this.publication.servicios.miniaturaServicio = " ";
         this.publication.tituloPublicacion=post.tituloPublicacion;
         this.publication.descripcionPublicacion=post.descripcionPublicacion;
         this.publication.estado=post.estado;
@@ -355,19 +390,17 @@ export class InventoryListComponent implements OnInit, AfterViewInit, OnDestroy 
         this._inventoryService.updatePublicacion(post.idPublicacion, this.publication).subscribe(() => {
             // Show a success message
 
-            this._categoriaService.getCategoriaProducto(post.categoria).subscribe((categoria) => {
+            this._categoriaService.getCategoriaServicio(post.categoria).subscribe((categoria) => {
             this.categoriaExtraida = categoria;
             console.log("Cat Seleccionada", this.categoriaExtraida);
             
-            this.producto.cantidadDisponible = post.cantidadDisponible;
-            this.producto.pesoProducto = post.pesoProducto;
-            this.producto.precioProducto = post.precioProducto;
-            this.producto.nombreProducto = post.nombreProducto;
-            this.producto.categoriaProducto = this.categoriaExtraida;
+            this.servicio.cantidadDisponible = post.cantidadDisponible;
+            this.servicio.tiempoServicio = post.tiempoServicio;
+            this.servicio.precioServicio = post.precioServicio;
+            this.servicio.nombreServicio = post.nombreServicio;
+            this.servicio.categoriaServicio = this.categoriaExtraida;
 
-
-            
-            this._productoService.actualizarProducto(this.publication.productos.idProducto, this.producto).subscribe(() => {
+            this._servicioService.actualizarServicioPublicaciones(this.publication.servicios.idServicio, this.servicio).subscribe(() => {
                 // Show a success message
                 this.showFlashMessage('success');
             });  

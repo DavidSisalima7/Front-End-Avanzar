@@ -8,7 +8,7 @@ import { Observable, catchError, throwError } from 'rxjs';
 })
 export class CategoriaProductoService {
 
-  private baseUrl = 'http://localhost:8080/api/categoriaProducto'; // Cambia la URL a la de tu servidor
+  private baseUrl = 'http://localhost:8080/api/categoriaProducto'; 
 
   constructor(private http: HttpClient) { }
 
