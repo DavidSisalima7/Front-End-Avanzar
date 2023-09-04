@@ -49,6 +49,17 @@ export class ListEmprendedorasResponsableComponent
       this.listarUsuariosEmp();
   
     }
+    listarRegistros() {
+      this.usuarioService.obtenerListaResponsable().subscribe(
+        (datos: Usuario[]) => {
+          this.dataSource = new MatTableDataSource<Usuario>(datos);
+        },
+        error => {
+          console.error('Ocurrió un error al obtener la lista de personas responsables:', error);
+        }
+      );
+    }
+    
     listarUsuariosEmp() {
       this.usuarioService.obtenerListaEmprendedor().subscribe(
         (datos: Usuario[]) => {
