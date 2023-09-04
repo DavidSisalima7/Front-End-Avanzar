@@ -1,5 +1,5 @@
 import { Injectable } from "@angular/core";
-import { Servicios } from "../models/servicios";
+import { ServicioModels, Servicios } from "../models/servicios";
 import { HttpClient } from "@angular/common/http";
 import { catchError, map, Observable, ReplaySubject, tap, throwError } from 'rxjs';
 
@@ -52,4 +52,8 @@ export class ServiciosService {
         catchError(this.handleError)
         );
 }
+
+  actualizarServicioPublicaciones(id: number, servicio: ServicioModels): Observable<object> {
+  return this.http.put(`${this.url}/actualizar/${id}`, servicio);
+  }
 }

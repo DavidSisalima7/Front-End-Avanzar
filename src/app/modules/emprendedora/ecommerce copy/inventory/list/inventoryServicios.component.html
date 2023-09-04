@@ -9,7 +9,7 @@
             <mat-progress-bar [mode]="'indeterminate'"></mat-progress-bar>
         </div>
         <!-- Title -->
-        <div class="text-4xl font-extrabold tracking-tight">Publicaciones de Productos</div>
+        <div class="text-4xl font-extrabold tracking-tight">Publicaciones de Servicios</div>
         <!-- Actions -->
         <div class="flex shrink-0 items-center mt-6 sm:mt-0 sm:ml-4">
             <!-- Search -->
@@ -53,13 +53,13 @@
                             matSortDisableClear>
                             <div></div>
                             <div
-                                [mat-sort-header]="'nombreProducto'">
+                                [mat-sort-header]="'nombreServicio'">
                                 Producto
                             </div>
                             <div [mat-sort-header]="'tituloPublicacion'">Publicación</div>
                             <div
                                 class="hidden sm:block"
-                                [mat-sort-header]="'precioProducto'">
+                                [mat-sort-header]="'precioServicio'">
                                 Precio
                             </div>
                             <div
@@ -84,12 +84,12 @@
                                         <div class="relative flex flex-0 items-center justify-center w-12 h-12 mr-6 rounded overflow-hidden border">
                                             <img
                                                 class="w-8"
-                                                *ngIf="publicacion.productos.miniaturaProducto"
+                                                *ngIf="publicacion.servicios.miniaturaServicio"
                                                 [alt]="'Publicacion thumbnail image'"
-                                                [src]="publicacion.productos.miniaturaProducto">
+                                                [src]="publicacion.servicios.miniaturaServicio">
                                             <div
                                                 class="flex items-center justify-center w-full h-full text-xs font-semibold leading-none text-center uppercase"
-                                                *ngIf="!publicacion.productos.miniaturaProducto">
+                                                *ngIf="!publicacion.servicios.miniaturaServicio">
                                                 NO IMG
                                             </div>
                                         </div>
@@ -97,7 +97,7 @@
 
                                     <!-- SKU -->
                                     <div class="hidden md:block truncate">
-                                        {{publicacion.productos.nombreProducto}}
+                                        {{publicacion.servicios.nombreServicio}}
                                     </div>
 
                                     <!-- Name -->
@@ -107,28 +107,28 @@
 
                                     <!-- Price -->
                                     <div class="hidden sm:block">
-                                        {{publicacion.productos.precioProducto | currency:'USD':'symbol':'1.2-2'}}
+                                        {{publicacion.servicios.precioServicio | currency:'USD':'symbol':'1.2-2'}}
                                     </div>
 
                                     <!-- Stock -->
                                     <div class="hidden lg:flex items-center">
-                                        <div class="min-w-4">{{publicacion.productos.cantidadDisponible}}</div>
+                                        <div class="min-w-4">{{publicacion.servicios.cantidadDisponible}}</div>
                                         <!-- Low stock -->
                                         <div
                                             class="flex items-end ml-2 w-1 h-4 bg-red-200 rounded overflow-hidden"
-                                            *ngIf="publicacion.productos.cantidadDisponible < 20">
+                                            *ngIf="publicacion.servicios.cantidadDisponible < 20">
                                             <div class="flex w-full h-1/3 bg-red-600"></div>
                                         </div>
                                         <!-- Medium stock -->
                                         <div
                                             class="flex items-end ml-2 w-1 h-4 bg-orange-200 rounded overflow-hidden"
-                                            *ngIf="publicacion.productos.cantidadDisponible >= 20 && publicacion.productos.cantidadDisponible < 30">
+                                            *ngIf="publicacion.servicios.cantidadDisponible >= 20 && publicacion.servicios.cantidadDisponible < 30">
                                             <div class="flex w-full h-2/4 bg-orange-400"></div>
                                         </div>
                                         <!-- High stock -->
                                         <div
                                             class="flex items-end ml-2 w-1 h-4 bg-green-100 rounded overflow-hidden"
-                                            *ngIf="publicacion.productos.cantidadDisponible >= 30">
+                                            *ngIf="publicacion.servicios.cantidadDisponible >= 30">
                                             <div class="flex w-full h-full bg-green-400"></div>
                                         </div>
                                     </div>
@@ -263,7 +263,7 @@
                                             <mat-label>Nombre del Producto</mat-label>
                                             <input
                                                 matInput
-                                                [formControlName]="'nombreProducto'">
+                                                [formControlName]="'nombreServicio'">
                                         </mat-form-field>
 
                                         <mat-form-field class="w-full">
@@ -284,8 +284,8 @@
                                         <mat-form-field class="w-3/3 pr-2">
                                             <mat-label>Categoria</mat-label>
                                             <mat-select [formControlName]="'categoria'">
-                                                <ng-container *ngFor="let categoria of categoriesProducto">
-                                                    <mat-option [value]="categoria.idCategoriaProducto">
+                                                <ng-container *ngFor="let categoria of categoriesServicio">
+                                                    <mat-option [value]="categoria.idCategoriaServicio">
                                                         {{categoria.nombreCategoria}}
                                                     </mat-option>
                                                 </ng-container>
@@ -311,7 +311,7 @@
                                             <input
                                             type="number"
                                                 matInput
-                                                [formControlName]="'precioProducto'">
+                                                [formControlName]="'precioServicio'">
                                         </mat-form-field>
 
                                         <mat-form-field class="w-3/3 pr-2">
@@ -327,12 +327,12 @@
                                     <!-- Weight & Tags -->
                                     <div class="flex flex-col w-full lg:w-1/4 sm:pl-8">
                                         <mat-form-field class="w-full">
-                                            <mat-label>Peso</mat-label>
-                                            <span matSuffix>lbs.</span>
+                                            <mat-label>Tiempo Servicio</mat-label>
+                                            <span matSuffix>horas.</span>
                                             <input
                                                 type="number"
                                                 matInput
-                                                [formControlName]="'pesoProducto'">
+                                                [formControlName]="'tiempoServicio'">
                                         </mat-form-field>
 
                                     </div>

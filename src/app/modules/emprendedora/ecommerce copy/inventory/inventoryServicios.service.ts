@@ -1,24 +1,21 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, catchError, filter, map, Observable, of, switchMap, take, tap, throwError } from 'rxjs';
-import { InventarioProductos, CategoriaProducto, InventoryPagination, InventarioPublicaciones, CategoriaPublicacion } from './inventory.types';
+import { CategoriaServicio, InventoryPagination, InventarioPublicaciones, CategoriaPublicacion, InventarioServicios } from './inventoryServicios.types';
 import { Publicacion } from 'app/services/models/publicaciones';
 
 @Injectable({providedIn: 'root'})
-export class InventoryService
+export class InventoryServiceServicios
 {
     // Private
-    private _product: BehaviorSubject<InventarioProductos | null> = new BehaviorSubject(null);
-    private _productos: BehaviorSubject<InventarioProductos[] | null> = new BehaviorSubject(null);
+    private _servicio: BehaviorSubject<InventarioServicios | null> = new BehaviorSubject(null);
+    private _servicios: BehaviorSubject<InventarioServicios[] | null> = new BehaviorSubject(null);
     private _publicacion: BehaviorSubject<InventarioPublicaciones | null> = new BehaviorSubject(null);
-    private _categoriesProducto: BehaviorSubject<CategoriaProducto[] | null> = new BehaviorSubject(null);
+    private _categoriesServicio: BehaviorSubject<CategoriaServicio[] | null> = new BehaviorSubject(null);
     private _pagination: BehaviorSubject<InventoryPagination | null> = new BehaviorSubject(null);
     private _publicaciones: BehaviorSubject<InventarioPublicaciones[] | null> = new BehaviorSubject(null);
     private _categoriesPublicacion: BehaviorSubject<CategoriaPublicacion[] | null> = new BehaviorSubject(null);
 
-    /**
-     * Constructor
-     */
     constructor(private _httpClient: HttpClient)
     {
         this.listarServicio(); // Llama a tu método para cargar los datos iniciales
@@ -31,9 +28,9 @@ export class InventoryService
     /**
      * Getter for categories
      */
-    get categoriesProducto$(): Observable<CategoriaProducto[]>
+    get categoriesProducto$(): Observable<CategoriaServicio[]>
     {
-        return this._categoriesProducto.asObservable();
+        return this._categoriesServicio.asObservable();
     }
 
     get pagination$(): Observable<InventoryPagination>
@@ -41,9 +38,9 @@ export class InventoryService
         return this._pagination.asObservable();
     }
 
-    get product$(): Observable<InventarioProductos>
+    get servicio$(): Observable<InventarioServicios>
     {
-        return this._product.asObservable();
+        return this._servicio.asObservable();
     }
 
     get publicacion$(): Observable<InventarioPublicaciones>
@@ -56,14 +53,14 @@ export class InventoryService
         return this._publicaciones.asObservable();
     }
 
-    get productos$(): Observable<InventarioProductos[]>
+    get servicios$(): Observable<InventarioServicios[]>
     {
-        return this._productos.asObservable();
+        return this._servicios.asObservable();
     }
 
 
     listarServicio(): void {
-        this._httpClient.get<InventarioPublicaciones[]>("http://localhost:8080/api/publicaciones/listaPublicacionesXProductos")
+        this._httpClient.get<InventarioPublicaciones[]>("http://localhost:8080/api/publicaciones/listaPublicacionesXServicios")
           .subscribe((data) => {
             this._publicaciones.next(data); // Actualiza el BehaviorSubject con los datos obtenidos
           });
@@ -82,12 +79,12 @@ export class InventoryService
     /**
      * Get categories
      */
-    getCategoriesProducto(): Observable<CategoriaProducto[]>
+    getCategoriesServicio(): Observable<CategoriaServicio[]>
     {
-        return this._httpClient.get<CategoriaProducto[]>('http://localhost:8080/api/categoriaProducto/listar').pipe(
+        return this._httpClient.get<CategoriaServicio[]>('http://localhost:8080/api/categoriaServicio/listar').pipe(
             tap((categories) =>
             {
-                this._categoriesProducto.next(categories);
+                this._categoriesServicio.next(categories);
             }),
         );
     }
@@ -106,14 +103,14 @@ export class InventoryService
      * Get publicationes
      *
      *
-     *  @param page
+     * @param page
      * @param size
      * @param sort
      * @param order
      * @param search
      */
 
-    getProducts(
+    getPublicacionesServicios(
         page: number = 0,
         size: number = 10,
         sort: string = 'tituloPublicacion',
@@ -129,14 +126,14 @@ export class InventoryService
           .set('search', search);
       
         return this._httpClient
-          .get<{ pagination: InventoryPagination; products: InventarioPublicaciones[] }>('http://localhost:8080/api/publicaciones/listar', {
+          .get<{ pagination: InventoryPagination; servicios: InventarioPublicaciones[] }>('http://localhost:8080/api/publicaciones/listar', {
             params: params
           })
           .pipe(
-            map((response) => response.products),
+            map((response) => response.servicios),
              // Extrae solo la lista de productos
             catchError((error) => {
-              console.error('Error al obtener productos', error);
+              console.error('Error al obtener publicaciones de servicios', error);
               return throwError(error); // Propaga el error hacia arriba
             })
           );
@@ -180,7 +177,7 @@ export class InventoryService
     {
         return this.publicaciones$.pipe(
             take(1),
-            switchMap(publicaciones => this._httpClient.post<InventarioPublicaciones>('http://localhost:8080/api/publicaciones/registrar', {}).pipe(
+            switchMap(publicaciones => this._httpClient.post<InventarioPublicaciones>('http://localhost:8080/api/publicaciones/registrarServicios', {}).pipe(
                 map((newPublicacion) =>
                 {
                     // Update the products with the new product
@@ -257,3 +254,4 @@ export class InventoryService
 
 
 }
+
