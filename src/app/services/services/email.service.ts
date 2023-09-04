@@ -16,5 +16,8 @@ export class EmailService {
     return this.http.post<EmailDto>(url,e);
   }
 
+  sendresetCode(e:EmailDto):Observable<boolean>{
+    return this.http.put<boolean>(`${this.url}/resetPass/`, e);
+  }
 
 }
