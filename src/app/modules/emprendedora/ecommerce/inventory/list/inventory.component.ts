@@ -94,8 +94,7 @@ export class InventoryListComponent implements OnInit, AfterViewInit, OnDestroy 
         private _categoriaService: CategoriaProductoService,
         private _publicacionService: PublicacionesService,
         private _productoService: ProductosService,
-        private _matDialog: MatDialog
-        
+        private _matDialog: MatDialog,
     
         ) 
         {
@@ -176,9 +175,6 @@ export class InventoryListComponent implements OnInit, AfterViewInit, OnDestroy 
         // Get the products
 
         this.publicaciones$ = this._inventoryService.publicaciones$;
-        console.log(this.publicaciones$)
-
-
 
         // Subscribe to search input field value changes
         this.searchInputControl.valueChanges
@@ -317,76 +313,60 @@ export class InventoryListComponent implements OnInit, AfterViewInit, OnDestroy 
         }
     }
 
-    /**
-     * Create product
-     */
-    createPublicacion(): void {
-        // Create the product
-        
-
-        this._inventoryService.createPublicacion().subscribe((newPublicacion) => {
-            // Go to new product
-            this.selectedPublicacion = newPublicacion;
-
-            // Fill the form
-            this.selectedPublicacionForm.patchValue(newPublicacion);
-
-            this.selectedPublicacionForm.get('vendedor').setValue(this.user.name);
-            // Mark for check
-            this._changeDetectorRef.markForCheck();
-        });
-    }
-
-
-  
 
     /**
      * Update the selected product using the form data
      */
+    
     updateselectedPublicacion(): void {
-        // Get the product object
-        const post = this.selectedPublicacionForm.getRawValue();
-        const vendedor$ = this._vendedoraService.buscarVendedoraId(this.user.id);
-        const publicacion$ = this._publicacionService.buscarPublicacionId(post.idPublicacion);
+    // Get the form values
+    const post = this.selectedPublicacionForm.getRawValue();
 
-        forkJoin([vendedor$,publicacion$]).subscribe(([vendedor, publicacion]) => {
+    // Fetch the vendedor and publicacion data using observables
+    const vendedor$ = this._vendedoraService.buscarVendedoraId(this.user.id);
+    const publicacion$ = this._publicacionService.buscarPublicacionId(post.idPublicacion);
+
+    forkJoin([vendedor$, publicacion$]).subscribe(([vendedor, publicacion]) => {
+        // Assign the fetched data to this.publication
         this.publication.vendedor = vendedor;
         this.publication.productos = publicacion.productos;
-        this.publication.productos.miniaturaProducto = " ";
-        this.publication.tituloPublicacion=post.tituloPublicacion;
-        this.publication.descripcionPublicacion=post.descripcionPublicacion;
-        this.publication.estado=post.estado;
-        
-        console.log("datos",this.publication);
-        console.log("Categoria", post.categoria);
-        // Ahora que todos los datos están disponibles, puedes actualizar la publicación completa
-        this._inventoryService.updatePublicacion(post.idPublicacion, this.publication).subscribe(() => {
-            // Show a success message
+        this.publication.productos.miniaturaProducto = " "; // ¿Estás seguro de que esto debería ser una cadena?
 
-            this._categoriaService.getCategoriaProducto(post.categoria).subscribe((categoria) => {
+        this.publication.tituloPublicacion = post.tituloPublicacion;
+        this.publication.descripcionPublicacion = post.descripcionPublicacion;
+        this.publication.estado = post.estado;
+
+        // Fetch the categoria data using another observable
+        this._categoriaService.getCategoriaProducto(post.categoria).subscribe((categoria) => {
             this.categoriaExtraida = categoria;
-            console.log("Cat Seleccionada", this.categoriaExtraida);
-            
+
+            // Assign the remaining properties of this.producto
             this.producto.cantidadDisponible = post.cantidadDisponible;
             this.producto.pesoProducto = post.pesoProducto;
             this.producto.precioProducto = post.precioProducto;
             this.producto.nombreProducto = post.nombreProducto;
             this.producto.categoriaProducto = this.categoriaExtraida;
-
-
+            this.producto.descripcionProducto = post.descripcionPublicacion;
+            this._changeDetectorRef.detectChanges();
             
+            // Update the producto using _productoService
             this._productoService.actualizarProducto(this.publication.productos.idProducto, this.producto).subscribe(() => {
-                // Show a success message
+                // Show a success message or perform further actions
+                this._changeDetectorRef.detectChanges();
+            });
+
+            // Update the publicacion using _inventoryService
+            this._inventoryService.updatePublicacion(post.idPublicacion, this.publication).subscribe(() => {
+                // Show a success message or perform further actions
                 this.showFlashMessage('success');
-            });  
-
-        });
-
+                this._changeDetectorRef.detectChanges();
+            });
         });
     });
-
-        
-    }
+   
+}
+   
+    
 
     /**
      * Delete the selected post using the form data
@@ -455,7 +435,7 @@ export class InventoryListComponent implements OnInit, AfterViewInit, OnDestroy 
     {
         // Open the dialog
         const dialogRef = this._matDialog.open(ModalProductoComponent);
-
+        
         dialogRef.afterClosed()
             .subscribe((result) =>
             {

@@ -22,6 +22,7 @@ export class InventoryService
     constructor(private _httpClient: HttpClient)
     {
         this.listarServicio(); // Llama a tu método para cargar los datos iniciales
+     
     }
 
     // -----------------------------------------------------------------------------------------------------
@@ -68,6 +69,8 @@ export class InventoryService
             this._publicaciones.next(data); // Actualiza el BehaviorSubject con los datos obtenidos
           });
       }
+
+
 
     get categoriesPublicacion$(): Observable<CategoriaPublicacion[]>
     {
@@ -176,11 +179,11 @@ export class InventoryService
     }
 
 
-    createPublicacion(): Observable<InventarioPublicaciones>
+    createPublicacion(publicacion:InventarioPublicaciones): Observable<InventarioPublicaciones>
     {
         return this.publicaciones$.pipe(
             take(1),
-            switchMap(publicaciones => this._httpClient.post<InventarioPublicaciones>('http://localhost:8080/api/publicaciones/registrar', {}).pipe(
+            switchMap(publicaciones => this._httpClient.post<InventarioPublicaciones>('http://localhost:8080/api/publicaciones/registrar',publicacion).pipe(
                 map((newPublicacion) =>
                 {
                     // Update the products with the new product
@@ -192,6 +195,8 @@ export class InventoryService
             )),
         );
     }
+   
+    
 
     updatePublicacion(id: number, publicacion: InventarioPublicaciones): Observable<InventarioPublicaciones>
     {
