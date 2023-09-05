@@ -17,6 +17,7 @@
       <mat-form-field id="datos">
         <mat-label>Cedula</mat-label>
         <input id= "cedula" [(ngModel)]="Personas.cedula "matInput  matInput [formControlName]="'cedula'">
+        <mat-error *ngIf="composeForm.get('cedula').hasError('required')">Cedula es requerida</mat-error>
       </mat-form-field>
     </div>
 
@@ -24,6 +25,7 @@
       <mat-form-field id="datos">
         <mat-label>Primer Nombre</mat-label>
         <input id= "primer_nombre " [(ngModel)]="Personas.primer_nombre "matInput [formControlName]="'primerNombre'">
+        <mat-error *ngIf="composeForm.get('primerNombre').hasError('required')">Nombre es requerido</mat-error>
       </mat-form-field>
 
       
@@ -35,11 +37,13 @@
       <mat-form-field id="datos">
         <mat-label>Correo</mat-label>
         <input id= "correo " [(ngModel)]="Personas.correo" matInput [formControlName]="'correoElectronico'">
+        <mat-error *ngIf="composeForm.get('correoElectronico').hasError('required')">Correo es requerido</mat-error>
       </mat-form-field>
 
       <mat-form-field>
         <mat-label>Celular</mat-label>
         <input id= "celular " [(ngModel)]="Personas.celular" matInput [formControlName]="'celular'">
+        <mat-error *ngIf="composeForm.get('celular').hasError('required')">Celular es requerido</mat-error>
       </mat-form-field>
     </div>
 
@@ -58,6 +62,7 @@
     <mat-form-field class="flex-auto">
       <mat-label>Direccion</mat-label>
       <input id= "direccion " [(ngModel)]="Personas.direccion" matInput [formControlName]="'direccion'">
+      <mat-error *ngIf="composeForm.get('direccion').hasError('required')">Direccion es requerida</mat-error>
       <textarea matInput [rows]="3"></textarea>
       <mat-icon class="icon-size-5" matPrefix [svgIcon]="'heroicons_solid:bars-3-bottom-left'"></mat-icon>
     </mat-form-field>
@@ -65,6 +70,7 @@
     <mat-form-field class="flex-auto">
       <mat-label>Descripcion</mat-label>
       <input id= "descripcion " [(ngModel)]="Personas.descripcion" matInput [formControlName]="'descripcion'">
+      <mat-error *ngIf="composeForm.get('descripcion').hasError('required')">Descripcion es requerida</mat-error>
       <textarea matInput [rows]="3"></textarea>
       <mat-icon class="icon-size-5" matPrefix [svgIcon]="'heroicons_solid:bars-3-bottom-left'"></mat-icon>
     </mat-form-field>
@@ -76,10 +82,12 @@
         <input id="password" matInput type="password" [formControlName]="'password'" #passwordField>
         <button mat-icon-button type="button"
           (click)="passwordField.type === 'password' ? passwordField.type ='text' : passwordField.type = 'password'" matSuffix>
+          
           <mat-icon class="icon-size-5" *ngIf="passwordField.type === 'password'" [svgIcon]="'heroicons_solid:eye'"></mat-icon>
           <mat-icon class="icon-size-5" *ngIf="passwordField.type === 'text'" [svgIcon]="'heroicons_solid:eye-slash'"></mat-icon>
+          
         </button>
-        <mat-error>Password is required</mat-error>
+        <mat-error *ngIf="composeForm.get('password').hasError('required')">Contraseña es requerida</mat-error>
       </mat-form-field>
     </div>
 
