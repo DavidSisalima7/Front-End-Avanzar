@@ -20,7 +20,7 @@ import Swal from 'sweetalert2';
 
 //DIALOGOS
 import { MatDialog } from '@angular/material/dialog';
-import { MailboxComposeComponent } from 'app/modules/admin/compose/compose.component';
+import { MailboxComposeComponent } from 'app/modules/admin/composeresponsable/compose.component';
 import { FuseAlertService } from '@fuse/components/alert';
 
 
@@ -33,7 +33,7 @@ import { FuseAlertService } from '@fuse/components/alert';
             MatIconModule, MatButtonModule, CommonModule],
 })
 export class ListResponsableComponent {
-  displayedColumns: string[] = ['cedula','nombres', 'correo', 'celular','estado','editar','delete'];
+  displayedColumns: string[] = ['cedula','primer_nombre', 'correo', 'celular','estado','editar','delete'];
   dataSource: MatTableDataSource<Usuario>;
 
 

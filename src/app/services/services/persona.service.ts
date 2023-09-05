@@ -26,4 +26,7 @@ export class PersonaService {
   actualizarPersona(cedula: string, persona: Persona): Observable<object> {
     return this.http.put(`${this.url}/actualizar1/${cedula}`, persona);
   }
+  listarPersona(): Observable<Persona[]> {
+    return this.http.get<Persona[]>(`${this.url}/listar`);
+  }
 }

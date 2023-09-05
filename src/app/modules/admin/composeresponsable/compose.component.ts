@@ -152,12 +152,12 @@ export class MailboxComposeComponent implements OnInit
 
       this.Personas.cedula= this.composeForm.get('cedula')?.value;
       this.Personas.primer_nombre= this.composeForm.get('primerNombre')?.value;
-      this.Personas.segundo_nombre= this.composeForm.get('segundoNombre')?.value;
-      this.Personas.primer_apellido= this.composeForm.get('primerApellido')?.value;
-      this.Personas.segundo_apellido= this.composeForm.get('segundoApellido')?.value;
-      this.Personas.genero= this.composeForm.get('genero')?.value;
-      this.Personas.fecha_nacimiento= this.composeForm.get('fechaNacimiento')?.value;
-      this.Personas.nacionalidad= this.composeForm.get('nacionalidad')?.value;
+      // this.Personas.segundo_nombre= this.composeForm.get('segundoNombre')?.value;
+      // this.Personas.primer_apellido= this.composeForm.get('primerApellido')?.value;
+      // this.Personas.segundo_apellido= this.composeForm.get('segundoApellido')?.value;
+      // this.Personas.genero= this.composeForm.get('genero')?.value;
+      // this.Personas.fecha_nacimiento= this.composeForm.get('fechaNacimiento')?.value;
+      // this.Personas.nacionalidad= this.composeForm.get('nacionalidad')?.value;
       this.Personas.correo= this.composeForm.get('correoElectronico')?.value;
       this.Personas.direccion= this.composeForm.get('direccion')?.value;
       this.Personas.celular= this.composeForm.get('celular')?.value;
