@@ -73,7 +73,7 @@
 
         <ng-container matColumnDef="nombres">
           <th mat-header-cell *matHeaderCellDef mat-sort-header (click)="ejecutarFuncionNombres()"> Nombres</th>
-          <td mat-cell *matCellDef="let row"> {{row.name}} </td>
+          <td mat-cell *matCellDef="let row"> {{row.persona.primer_nombre}} </td>
         </ng-container>
 
         <ng-container matColumnDef="correo">
@@ -88,10 +88,9 @@
 
         <ng-container matColumnDef="estado">
           <th mat-header-cell *matHeaderCellDef mat-sort-header (click)="ejecutarFuncionEstado()"> Estado </th>
-          <td mat-cell *matCellDef="let row">
-            {{ row.visible ? 'Activo' : 'Inactivo' }}
-          </td>
+          <td mat-cell *matCellDef="let row"> {{ row.persona.estado ? 'activo' : 'inactivo' }} </td>
         </ng-container>
+
         <ng-container matColumnDef="editar">
           <th mat-header-cell *matHeaderCellDef>Editar</th>
           <td mat-cell *matCellDef="let row">

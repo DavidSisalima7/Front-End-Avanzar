@@ -21,7 +21,7 @@ import Swal from 'sweetalert2';
 //DIALOGOS
 import { MatDialog } from '@angular/material/dialog';
 import { MailboxComposeComponent } from 'app/modules/admin/compose/compose.component';
-
+import { MailboxeditarComponent } from 'app/modules/responsable/editar/editar.component';
 
 @Component({
   selector: 'list-emprendedoras',

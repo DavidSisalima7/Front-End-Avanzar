@@ -23,8 +23,7 @@ import Swal from 'sweetalert2';
 
 //DIALOGOS
 import { MatDialog } from '@angular/material/dialog';
-import { MailboxComposeComponent } from 'app/modules/admin/compose/compose.component';
-
+import { MailboxComposeComponent } from 'app/modules/responsable/compose/compose.component';
 
 @Component({
   selector: 'list-cliente',
