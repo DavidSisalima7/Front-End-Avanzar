@@ -278,6 +278,23 @@ export class ClassyLayoutComponent implements OnInit, OnDestroy
                             }
                         ]
                     },
+                    {
+                        id      : 'subscripcion',
+                        title   : 'Subscripción',
+                        subtitle: 'Información de membresia',
+                        type    : 'group',
+                        icon    : 'memory',
+                        children: [
+                            {
+                                id   : 'planes',
+                                title: 'Planes',
+                                type : 'basic',
+                                icon : 'heroicons_outline:check-badge',
+                                link : '/planes-resp'
+                            }
+                        ],
+
+                    },
 
                     {
                         id      : 'perfil',
@@ -368,6 +385,23 @@ export class ClassyLayoutComponent implements OnInit, OnDestroy
                             ]
                         },
 
+                        {
+                            id      : 'plan',
+                            title   : 'Planes',
+                            subtitle: 'Adquirir o renovar membresia',
+                            type    : 'group',
+                            icon    : 'memory',
+                            children: [
+                                {
+                                    id   : 'subscripcion',
+                                    title: 'Subscripción',
+                                    type : 'basic',
+                                    icon : 'heroicons_outline:check-badge',
+                                    link : '/subscripcion-empre'
+                                }
+                            ],
+    
+                        },
                        
     
                         {
@@ -383,6 +417,14 @@ export class ClassyLayoutComponent implements OnInit, OnDestroy
                                     type : 'basic',
                                     icon : 'heroicons_outline:user-circle',
                                     link : '/profile-empre'
+                                },
+
+                                {
+                                    id   : 'settings',
+                                    title: 'Cofiguración',
+                                    type : 'basic',
+                                    icon : 'heroicons_outline:cog-6-tooth',
+                                    link : '/config-empre'
                                 }
                             ]
                         }
@@ -431,6 +473,14 @@ export class ClassyLayoutComponent implements OnInit, OnDestroy
                                     type : 'basic',
                                     icon : 'heroicons_outline:user-circle',
                                     link : '/profile-cli'
+                                },
+
+                                {
+                                    id   : 'settings',
+                                    title: 'Cofiguración',
+                                    type : 'basic',
+                                    icon : 'heroicons_outline:cog-6-tooth',
+                                    link : '/config-cli'
                                 }
                             ]
                         }

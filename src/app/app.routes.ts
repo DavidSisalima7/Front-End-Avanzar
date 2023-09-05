@@ -104,6 +104,7 @@ export const appRoutes: Route[] = [
                 {path: 'profile-resp', loadChildren: () => import('app/modules/responsable/profile/profile.routes')},
                 {path: 'config-resp', loadChildren: () => import('app/modules/responsable/settings/settings.routes')},
                 {path: 'list-serv-resp', loadChildren: () => import('app/modules/responsable/list-servicios/list-servicios.routes')},
+                {path: 'planes-resp', loadChildren: () => import('app/modules/responsable/planes/planes.routes')},
 
             ]
         },
@@ -128,8 +129,8 @@ export const appRoutes: Route[] = [
                 {path: 'ecommerce-servicios', loadChildren: () => import('app/modules/emprendedora/ecommerce copy/ecommerce.routes')},
                 {path: 'reg-empre-serv', loadChildren: () => import('app/modules/emprendedora/register-servicio/register-servicio.routes')},
                 {path: 'profile-empre', loadChildren: () => import('app/modules/emprendedora/profile/profile.routes')},
-                {path: 'config-empre', loadChildren: () => import('app/modules/client/settings/settings.routes')},
-
+                {path: 'config-empre', loadChildren: () => import('app/modules/emprendedora/settings/settings.routes')},
+                {path: 'subscripcion-empre', loadChildren: () => import('app/modules/emprendedora/subscripcion/subscripcion.routes')},
             ]
         },
 
