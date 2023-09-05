@@ -23,7 +23,7 @@
 
     <div class="flex">
       <mat-form-field id="datos">
-        <mat-label>Primer Nombre</mat-label>
+        <mat-label>Nombre</mat-label>
         <input id= "primer_nombre " [(ngModel)]="Personas.primer_nombre "matInput [formControlName]="'primerNombre'">
         <mat-error *ngIf="composeForm.get('primerNombre').hasError('required')">Nombre es requerido</mat-error>
       </mat-form-field>
