@@ -23,15 +23,35 @@
 
     <div class="flex">
       <mat-form-field id="datos">
-        <mat-label>Nombre</mat-label>
+        <mat-label>Primer Nombre</mat-label>
         <input id= "primer_nombre " [(ngModel)]="Personas.primer_nombre "matInput [formControlName]="'primerNombre'">
-        <mat-error *ngIf="composeForm.get('primerNombre').hasError('required')">Nombre es requerido</mat-error>
+        <mat-error *ngIf="composeForm.get('primerNombre').hasError('required')">Primer nombre es requerido</mat-error>
       </mat-form-field>
 
+
+      <mat-form-field id="datos">
+        <mat-label>Segundo Nombre</mat-label>
+        <input id= "segundo_nombre " [(ngModel)]="Personas.segundo_nombre "matInput [formControlName]="'segundoNombre'">
+        <mat-error *ngIf="composeForm.get('primerNombre').hasError('required')">Segundo nombre es requerido</mat-error>
+      </mat-form-field>
       
     </div>
 
-    
+    <div class="flex">
+      <mat-form-field id="datos">
+        <mat-label>Primer Apellido</mat-label>
+        <input id= "primer_apellido " [(ngModel)]="Personas.primer_apellido "matInput [formControlName]="'primerApellido'">
+        <mat-error *ngIf="composeForm.get('primerNombre').hasError('required')">Primer nombre es requerido</mat-error>
+      </mat-form-field>
+
+
+      <mat-form-field id="datos">
+        <mat-label>Segundo Apellido</mat-label>
+        <input id= "segundo_apellido " [(ngModel)]="Personas.segundo_apellido "matInput [formControlName]="'segundoApellido'">
+        <mat-error *ngIf="composeForm.get('primerNombre').hasError('required')">Segundo nombre es requerido</mat-error>
+      </mat-form-field>
+      
+    </div>
 
     <div class="flex">
       <mat-form-field id="datos">
@@ -46,21 +66,51 @@
         <mat-error *ngIf="composeForm.get('celular').hasError('required')">Celular es requerido</mat-error>
       </mat-form-field>
     </div>
-
-    
-
+   
     <mat-form-field>
-        <mat-label>Estado</mat-label>
-        <mat-select formControlName="estado" >
-          <mat-option value="activo">Activo</mat-option>
-          <mat-option value="inactivo">Inactivo</mat-option>
+      <mat-label>Estado</mat-label>
+      <mat-select formControlName="estado" >
+        <mat-option value="activo">Activo</mat-option>
+        <mat-option value="inactivo">Inactivo</mat-option>
+      </mat-select>
+    </mat-form-field>
+    <div class="flex">
+      <mat-form-field>
+        <mat-label>Fecha de Nacimiento</mat-label>
+        <input matInput [matDatepicker]="picker" [(ngModel)]="Personas.fecha_nacimiento" [formControlName]="'fechaNacimiento'">
+        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+        <mat-datepicker #picker></mat-datepicker>
+      </mat-form-field>
+    </div>
+  <div class="flex">
+      <mat-form-field>
+        <mat-label>Genero</mat-label>
+       
+        <mat-select formControlName="genero" >
+          <input id= "genero " [(ngModel)]="Personas.genero" matInput [formControlName]="'genero'">
+          <mat-option value="Hombre">Hombre</mat-option>
+          <mat-option value="Mujer">Mujer</mat-option>
+          <mat-option value="Otro">Otro..</mat-option>
         </mat-select>
       </mat-form-field>
 
-      
-   
+
+     
+      <mat-form-field>
+        <mat-label>Nacionalidad</mat-label>
+       
+        <mat-select formControlName="nacionalidad" >
+          <input id= "nacionalidad " [(ngModel)]="Personas.nacionalidad" matInput [formControlName]="'nacionalidad'">
+          <mat-option value="Ecuatoriana">Ecuatoriana</mat-option>
+          <mat-option value="Colombiana">Colombiana</mat-option>
+          <mat-option value="Peruana">Peruana</mat-option>
+        </mat-select>
+      </mat-form-field>
+
+    </div>
+
     <mat-form-field class="flex-auto">
-      <mat-label>Direccion</mat-label>
+      <mat-label>Dirección</mat-label>
       <input id= "direccion " [(ngModel)]="Personas.direccion" matInput [formControlName]="'direccion'">
       <mat-error *ngIf="composeForm.get('direccion').hasError('required')">Direccion es requerida</mat-error>
       <textarea matInput [rows]="3"></textarea>
@@ -68,7 +118,7 @@
     </mat-form-field>
 
     <mat-form-field class="flex-auto">
-      <mat-label>Descripcion</mat-label>
+      <mat-label>Descripción</mat-label>
       <input id= "descripcion " [(ngModel)]="Personas.descripcion" matInput [formControlName]="'descripcion'">
       <mat-error *ngIf="composeForm.get('descripcion').hasError('required')">Descripcion es requerida</mat-error>
       <textarea matInput [rows]="3"></textarea>

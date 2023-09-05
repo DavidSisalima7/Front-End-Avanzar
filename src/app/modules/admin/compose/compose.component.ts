@@ -16,6 +16,7 @@ import { Persona } from 'app/services/models/persona';
 import { MatTableDataSource } from '@angular/material/table';
 import { validacion } from 'app/services/models/validacion';
 import { FuseAlertType } from '@fuse/components/alert/alert.types';
+import { Usuario } from 'app/services/models/usuario';
 @Component({
     selector     : 'mailbox-compose',
     templateUrl  : './compose.component.html',
@@ -49,8 +50,11 @@ export class MailboxComposeComponent implements OnInit
   alertCurrentPass: { type: FuseAlertType; message: string } = {
     type: 'error',
     message: '',
-  };    
+  };  
   Personas: Persona = new Persona();
+  usuario: Usuario = new Usuario();
+
+
   composeForm: UntypedFormGroup;
   copyFields: { cc: boolean; bcc: boolean } = {
       cc : false,
@@ -98,9 +102,10 @@ export class MailboxComposeComponent implements OnInit
       genero: ['', Validators.required],
       nacionalidad: ['', Validators.required],
       estado: [true, Validators.required],
+      estados: [true, Validators.required],
       password: ['', Validators.required],
     });
-}
+  }
   // -----------------------------------------------------------------------------------------------------
   // @ Public methods
   // -----------------------------------------------------------------------------------------------------
@@ -191,29 +196,31 @@ export class MailboxComposeComponent implements OnInit
   saveAsDraft(): void
   {
 
-    this.Personas.cedula= this.composeForm.get('cedula')?.value;
-    this.Personas.primer_nombre= this.composeForm.get('primerNombre')?.value;
-    // this.Personas.segundo_nombre= this.composeForm.get('segundoNombre')?.value;
-    // this.Personas.primer_apellido= this.composeForm.get('primerApellido')?.value;
-    // this.Personas.segundo_apellido= this.composeForm.get('segundoApellido')?.value;
-    // this.Personas.genero= this.composeForm.get('genero')?.value;
-    // this.Personas.fecha_nacimiento= this.composeForm.get('fechaNacimiento')?.value;
-    // this.Personas.nacionalidad= this.composeForm.get('nacionalidad')?.value;
-    this.Personas.descripcion= this.composeForm.get('descripcion')?.value;
-    this.Personas.correo= this.composeForm.get('correoElectronico')?.value;
-    this.Personas.direccion= this.composeForm.get('direccion')?.value;
-    this.Personas.celular= this.composeForm.get('celular')?.value;
-    
-  
-
-    
+    this.Personas.cedula = this.composeForm.get('cedula')?.value;
+    this.Personas.primer_nombre = this.composeForm.get('primerNombre')?.value;
+    this.Personas.segundo_nombre = this.composeForm.get('segundoNombre')?.value;
+    this.Personas.primer_apellido = this.composeForm.get('primerApellido')?.value;
+    this.Personas.segundo_apellido = this.composeForm.get('segundoApellido')?.value;
+    this.Personas.genero = this.composeForm.get('genero')?.value;
+    this.Personas.fecha_nacimiento = this.composeForm.get('fechaNacimiento')?.value;
+    this.Personas.nacionalidad = this.composeForm.get('nacionalidad')?.value;
+    this.Personas.descripcion = this.composeForm.get('descripcion')?.value;
+    this.Personas.correo = this.composeForm.get('correoElectronico')?.value;
+    this.Personas.direccion = this.composeForm.get('direccion')?.value;
+    this.Personas.celular = this.composeForm.get('celular')?.value;
+     
     const estadoSeleccionado = this.composeForm.get('estado').value;
-this.Personas.estado = estadoSeleccionado === 'activo';
-console.log('Estado seleccionado:', this.Personas.estado);
-  
-
-   
+     this.Personas.estado = estadoSeleccionado === 'activo';
+     console.log('Estado seleccionado:', this.Personas.estado);
+        
+    
 }
+ 
+      
+//     
+
+     
+
 
   /**
    * Send the message
