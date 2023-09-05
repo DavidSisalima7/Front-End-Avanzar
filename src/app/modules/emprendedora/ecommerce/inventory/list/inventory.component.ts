@@ -28,7 +28,9 @@ import { VendedorService } from 'app/services/services/vendedora.service';
 import { CategoriaPublicacionService } from 'app/services/services/categoria.service';
 import { PublicacionesService } from 'app/services/services/publicaciones.service';
 import { CategoriaProductoService } from 'app/services/services/categoriaProducto.service';
-
+//DIALOGOS
+import { MatDialog } from '@angular/material/dialog';
+import { ModalProductoComponent } from 'app/modules/emprendedora/modal-producto/modal-producto.component';
 @Component({
     selector: 'inventory-list',
     templateUrl: './inventory.component.html',
@@ -91,14 +93,20 @@ export class InventoryListComponent implements OnInit, AfterViewInit, OnDestroy 
         private _userService: UserService,
         private _categoriaService: CategoriaProductoService,
         private _publicacionService: PublicacionesService,
-        private _productoService: ProductosService
-    ) {
+        private _productoService: ProductosService,
+        private _matDialog: MatDialog
+        
+    
+        ) 
+        {
     }
 
     // -----------------------------------------------------------------------------------------------------
     // @ Lifecycle hooks
     // -----------------------------------------------------------------------------------------------------
 
+
+    
     /**
      * On init
      */
@@ -440,4 +448,20 @@ export class InventoryListComponent implements OnInit, AfterViewInit, OnDestroy 
     trackByFn(index: number, item: any): any {
         return item.id || index;
     }
+
+
+    //ABRIR EL MODAL
+  openComposeDialog(): void
+    {
+        // Open the dialog
+        const dialogRef = this._matDialog.open(ModalProductoComponent);
+
+        dialogRef.afterClosed()
+            .subscribe((result) =>
+            {
+                console.log('Compose dialog was closed!');
+            });
+    }
 }
+
+

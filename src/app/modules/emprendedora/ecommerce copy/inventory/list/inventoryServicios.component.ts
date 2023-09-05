@@ -27,6 +27,10 @@ import { ServiciosService } from 'app/services/services/servicios.service';
 import { User } from 'app/core/user/user.types';
 import { ServicioModels } from 'app/services/models/servicios';
 
+//DIALOGOS
+import { MatDialog } from '@angular/material/dialog';
+import { ModalServicioComponent } from 'app/modules/emprendedora/modal-servicio/modal-servicio.component';
+
 @Component({
     selector       : 'inventory-list',
     templateUrl    : './inventoryServicios.component.html',
@@ -89,7 +93,8 @@ export class InventoryListComponentService implements OnInit, AfterViewInit, OnD
         private _userService: UserService,
         private _categoriaService: CategoriaServicioService,
         private _publicacionService: PublicacionesService,
-        private _servicioService: ServiciosService
+        private _servicioService: ServiciosService,
+        private _matDialog: MatDialog
     ) {
     }
 
@@ -472,5 +477,18 @@ export class InventoryListComponentService implements OnInit, AfterViewInit, OnD
      */
     trackByFn(index: number, item: any): any {
         return item.id || index;
+    }
+
+    //ABRIR EL MODAL
+  openComposeDialog(): void
+    {
+        // Open the dialog
+        const dialogRef = this._matDialog.open(ModalServicioComponent);
+
+        dialogRef.afterClosed()
+            .subscribe((result) =>
+            {
+                console.log('Compose dialog was closed!');
+            });
     }
 }
