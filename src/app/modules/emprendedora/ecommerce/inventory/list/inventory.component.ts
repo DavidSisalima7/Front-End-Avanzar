@@ -1,3 +1,4 @@
+
 import { products } from './../../../../../mock-api/apps/ecommerce/inventory/data';
 import { AsyncPipe, CurrencyPipe, NgClass, NgFor, NgIf, NgTemplateOutlet } from '@angular/common';
 import { AfterViewInit, ChangeDetectionStrategy, ChangeDetectorRef, Component, OnDestroy, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
@@ -94,7 +95,8 @@ export class InventoryListComponent implements OnInit, AfterViewInit, OnDestroy 
         private _categoriaService: CategoriaProductoService,
         private _publicacionService: PublicacionesService,
         private _productoService: ProductosService,
-        private _matDialog: MatDialog,
+        private _matDialog: MatDialog
+        
     
         ) 
         {
@@ -126,7 +128,7 @@ export class InventoryListComponent implements OnInit, AfterViewInit, OnDestroy 
             pesoProducto: [''],
             miniaturaProducto: [''],
             imagenes: [[]],
-            currentImageIndex: [0], // Índice de la imagen que se está visualizando 
+            currentImageIndex: [0], // Image index that is currently being viewed 
             estado: [false],
         });
 
@@ -176,6 +178,7 @@ export class InventoryListComponent implements OnInit, AfterViewInit, OnDestroy 
 
         this.publicaciones$ = this._inventoryService.publicaciones$;
         console.log(this.publicaciones$)
+
 
 
         // Subscribe to search input field value changes
@@ -315,11 +318,12 @@ export class InventoryListComponent implements OnInit, AfterViewInit, OnDestroy 
         }
     }
 
+    
+
 
     /**
      * Update the selected product using the form data
      */
-    
     updateselectedPublicacion(): void {
     // Get the form values
     const post = this.selectedPublicacionForm.getRawValue();
@@ -367,8 +371,6 @@ export class InventoryListComponent implements OnInit, AfterViewInit, OnDestroy 
     });
    
 }
-   
-    
 
     /**
      * Delete the selected post using the form data
@@ -437,7 +439,7 @@ export class InventoryListComponent implements OnInit, AfterViewInit, OnDestroy 
     {
         // Open the dialog
         const dialogRef = this._matDialog.open(ModalProductoComponent);
-        
+
         dialogRef.afterClosed()
             .subscribe((result) =>
             {
@@ -445,5 +447,6 @@ export class InventoryListComponent implements OnInit, AfterViewInit, OnDestroy 
             });
     }
 }
+
 
 

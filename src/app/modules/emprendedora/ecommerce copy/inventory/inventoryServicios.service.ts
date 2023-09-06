@@ -1,3 +1,4 @@
+
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, catchError, filter, map, Observable, of, switchMap, take, tap, throwError } from 'rxjs';
@@ -18,7 +19,7 @@ export class InventoryServiceServicios
 
     constructor(private _httpClient: HttpClient)
     {
-        this.listarServicio();
+        this.listarServicio(); // Llama a tu método para cargar los datos iniciales
     }
 
     // -----------------------------------------------------------------------------------------------------
@@ -173,8 +174,6 @@ export class InventoryServiceServicios
     }
 
 
-
-
     createPublicacion(publicacion:InventarioPublicaciones,files: any|null): Observable<InventarioPublicaciones>
     {
         const formData: FormData = new FormData();
@@ -203,7 +202,6 @@ export class InventoryServiceServicios
             )),
         );
     } 
-
 
     updatePublicacion(id: number, publicacion: InventarioPublicaciones): Observable<InventarioPublicaciones>
     {
@@ -269,4 +267,5 @@ export class InventoryServiceServicios
 
 
 }
+
 

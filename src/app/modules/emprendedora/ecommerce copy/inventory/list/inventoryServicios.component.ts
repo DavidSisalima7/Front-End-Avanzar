@@ -1,3 +1,4 @@
+
 import { AsyncPipe, CurrencyPipe, NgClass, NgFor, NgIf, NgTemplateOutlet } from '@angular/common';
 import { AfterViewInit, ChangeDetectionStrategy, ChangeDetectorRef, Component, OnDestroy, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
 import { FormsModule, ReactiveFormsModule, UntypedFormBuilder, UntypedFormControl, UntypedFormGroup, Validators } from '@angular/forms';
@@ -19,9 +20,8 @@ import {forkJoin, debounceTime, map, merge, Observable, Subject, switchMap, take
 import { Usuario } from 'app/services/models/usuario';
 import { Publicacion } from 'app/services/models/publicaciones';
 import { InventoryServiceServicios } from '../inventoryServicios.service';
-import { VendedorService } from 'app/services/services/vendedora.service';
+
 import { UserService } from 'app/core/user/user.service';
-import { CategoriaServicioService } from 'app/services/services/categoriaServicio.service';
 import { PublicacionesService } from 'app/services/services/publicaciones.service';
 import { ServiciosService } from 'app/services/services/servicios.service';
 import { User } from 'app/core/user/user.types';
@@ -29,7 +29,10 @@ import { ServicioModels } from 'app/services/models/servicios';
 
 //DIALOGOS
 import { MatDialog } from '@angular/material/dialog';
+import { CategoriaServicioService } from 'app/services/services/categoriaServicio.service';
+import { VendedorService } from 'app/services/services/vendedora.service';
 import { ModalServicioComponent } from 'app/modules/emprendedora/modal-servicio/modal-servicio.component';
+
 
 @Component({
     selector       : 'inventory-list',
@@ -122,7 +125,7 @@ export class InventoryListComponentService implements OnInit, AfterViewInit, OnD
             tiempoServicio: [''],
             miniaturaServicio: [''],
             imagenes: [[]],
-            currentImageIndex: [0], // Índice de la imagen que se está visualizando
+            currentImageIndex: [0], // Image index that is currently being viewed 
             estado: [false],
         });
 
@@ -312,53 +315,52 @@ export class InventoryListComponentService implements OnInit, AfterViewInit, OnD
         }
     }
 
-
-
+    
     /**
      * Update the selected product using the form data
      */
     updateselectedPublicacion(): void {
-        // Get the product object
-        const post = this.selectedPublicacionForm.getRawValue();
-        const vendedor$ = this._vendedoraService.buscarVendedoraId(this.user.id);
-        const publicacion$ = this._publicacionService.buscarPublicacionId(post.idPublicacion);
+    // Get the product object
+    const post = this.selectedPublicacionForm.getRawValue();
+    const vendedor$ = this._vendedoraService.buscarVendedoraId(this.user.id);
+    const publicacion$ = this._publicacionService.buscarPublicacionId(post.idPublicacion);
 
-        forkJoin([vendedor$,publicacion$]).subscribe(([vendedor, publicacion]) => {
-        this.publication.vendedor = vendedor;
-        this.publication.servicios = publicacion.servicios;
-        this.publication.servicios.miniaturaServicio = " ";
-        this.publication.tituloPublicacion=post.tituloPublicacion;
-        this.publication.descripcionPublicacion=post.descripcionPublicacion;
-        this.publication.estado=post.estado;
+    forkJoin([vendedor$,publicacion$]).subscribe(([vendedor, publicacion]) => {
+    this.publication.vendedor = vendedor;
+    this.publication.servicios = publicacion.servicios;
+    this.publication.servicios.miniaturaServicio = " ";
+    this.publication.tituloPublicacion=post.tituloPublicacion;
+    this.publication.descripcionPublicacion=post.descripcionPublicacion;
+    this.publication.estado=post.estado;
+    
+    console.log("datos",this.publication);
+    console.log("Categoria", post.categoria);
+    // Ahora que todos los datos están disponibles, puedes actualizar la publicación completa
+    this._inventoryService.updatePublicacion(post.idPublicacion, this.publication).subscribe(() => {
+        // Show a success message
+
+        this._categoriaService.getCategoriaServicio(post.categoria).subscribe((categoria) => {
+        this.categoriaExtraida = categoria;
+        console.log("Cat Seleccionada", this.categoriaExtraida);
         
-        console.log("datos",this.publication);
-        console.log("Categoria", post.categoria);
-        // Ahora que todos los datos están disponibles, puedes actualizar la publicación completa
-        this._inventoryService.updatePublicacion(post.idPublicacion, this.publication).subscribe(() => {
+        this.servicio.cantidadDisponible = post.cantidadDisponible;
+        this.servicio.tiempoServicio = post.tiempoServicio;
+        this.servicio.precioServicio = post.precioServicio;
+        this.servicio.nombreServicio = post.nombreServicio;
+        this.servicio.categoriaServicio = this.categoriaExtraida;
+
+        this._servicioService.actualizarServicioPublicaciones(this.publication.servicios.idServicio, this.servicio).subscribe(() => {
             // Show a success message
+            this.showFlashMessage('success');
+        });  
 
-            this._categoriaService.getCategoriaServicio(post.categoria).subscribe((categoria) => {
-            this.categoriaExtraida = categoria;
-            console.log("Cat Seleccionada", this.categoriaExtraida);
-            
-            this.servicio.cantidadDisponible = post.cantidadDisponible;
-            this.servicio.tiempoServicio = post.tiempoServicio;
-            this.servicio.precioServicio = post.precioServicio;
-            this.servicio.nombreServicio = post.nombreServicio;
-            this.servicio.categoriaServicio = this.categoriaExtraida;
-
-            this._servicioService.actualizarServicioPublicaciones(this.publication.servicios.idServicio, this.servicio).subscribe(() => {
-                // Show a success message
-                this.showFlashMessage('success');
-            });  
-
-        });
-
-        });
     });
 
-        
-    }
+    });
+});
+
+    
+}
 
     /**
      * Delete the selected post using the form data
@@ -434,3 +436,4 @@ export class InventoryListComponentService implements OnInit, AfterViewInit, OnD
             });
     }
 }
+

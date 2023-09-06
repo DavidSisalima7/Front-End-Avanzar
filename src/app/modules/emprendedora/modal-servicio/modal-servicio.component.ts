@@ -290,8 +290,8 @@ export class ModalServicioComponent implements OnInit
             // Atributos de servicio
             this.servicio.cantidadDisponible = post.cantidadDisponible;
             this.servicio.tiempoServicio = post.tiempoServicio;
-            this.servicio.precioServicio = post.precioProducto;
-            this.servicio.nombreServicio = post.nombreProducto;
+            this.servicio.precioServicio = post.precioServicio;
+            this.servicio.nombreServicio = post.nombreServicio;
             this.servicio.categoriaServicio = categoriaServicio;
             this.servicio.descripcionServicio = post.descripcionPublicacion;
             this.servicio.estado = true;
