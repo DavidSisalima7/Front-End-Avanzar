@@ -1,6 +1,6 @@
 import { AsyncPipe, CurrencyPipe, NgClass, NgFor, NgIf, NgTemplateOutlet } from '@angular/common';
-import { ChangeDetectorRef, ElementRef,Component, OnInit, Renderer2, ViewEncapsulation } from '@angular/core';
-import { FormsModule, ReactiveFormsModule, UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
+import { ChangeDetectorRef, ElementRef, Component, OnInit, Renderer2, ViewEncapsulation, ViewChild } from '@angular/core';
+import { FormsModule, NgForm, ReactiveFormsModule, UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatDialogRef } from '@angular/material/dialog';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -45,6 +45,7 @@ export class ModalProductoComponent implements OnInit {
             ['clean'],
         ],
     };
+    @ViewChild('modalProductoNgForm') modalProductoNgForm: NgForm;
 
     publicaciones$: Observable<InventarioPublicaciones[]>;
     //Extraer las categorias de los productos
@@ -54,32 +55,32 @@ export class ModalProductoComponent implements OnInit {
     flashMessage: 'success' | 'error' | null = null;
     user: Usuario;
     publication = new Publicacion();
+    idPublicacion: any;
     producto = new ProductosModels();
     selectedPublicacion: InventarioPublicaciones | null = null;
 
     uploadedPhotos: File[] = [];
     imagePreviews: string[] = [];
-  
+
     onFileSelected(event: any) {
-      const files: FileList = event.target.files;
-      for (let i = 0; i < files.length; i++) {
-        const file = files[i];
-        this.uploadedPhotos.push(file);
-  
-        // Mostrar la vista previa de la imagen
-        const reader = new FileReader();
-        reader.onload = (e: any) => {
-          this.imagePreviews.push(e.target.result);
-        };
-        reader.readAsDataURL(file);
-      }
+        const files: FileList = event.target.files;
+        for (let i = 0; i < files.length; i++) {
+            const file = files[i];
+            this.uploadedPhotos.push(file);
+            // Mostrar la vista previa de la imagen
+            const reader = new FileReader();
+            reader.onload = (e: any) => {
+                this.imagePreviews.push(e.target.result);
+            };
+            reader.readAsDataURL(file);
+        }
     }
 
     removePhoto(index: number) {
         this.uploadedPhotos.splice(index, 1);
         this.imagePreviews.splice(index, 1);
-      }
-      
+    }
+
 
     /**
      * Constructor
@@ -95,7 +96,7 @@ export class ModalProductoComponent implements OnInit {
         private _productoService: ProductosService,
         private _publicacionService: PublicacionesService,
         private _categoriaService: CategoriaPublicacionService,
-        private el: ElementRef, 
+        private el: ElementRef,
         private renderer: Renderer2
 
     ) {
@@ -105,24 +106,24 @@ export class ModalProductoComponent implements OnInit {
         event.preventDefault();
         event.stopPropagation();
         this.renderer.addClass(this.el.nativeElement.querySelector('.border-dashed'), 'border-blue-500');
-      }
-    
-      onDragLeave(event: any) {
+    }
+
+    onDragLeave(event: any) {
         event.preventDefault();
         event.stopPropagation();
         this.renderer.removeClass(this.el.nativeElement.querySelector('.border-dashed'), 'border-blue-500');
-      }
-    
-      onDrop(event: any) {
+    }
+
+    onDrop(event: any) {
         event.preventDefault();
         event.stopPropagation();
         this.renderer.removeClass(this.el.nativeElement.querySelector('.border-dashed'), 'border-blue-500');
         const files = event.dataTransfer.files;
         this.onFileSelected(files);
-        
-      }
-      
-      
+
+    }
+
+
 
     // -----------------------------------------------------------------------------------------------------
     // @ Lifecycle hooks
@@ -142,18 +143,18 @@ export class ModalProductoComponent implements OnInit {
         // Create the form
         this.selectedPublicacionForm = this._formBuilder.group({
             idPublicacion: [''],
-            categoria: [''],
+            categoria: ['',Validators.required],
             nombreProducto: ['', [Validators.required]],
             tituloPublicacion: ['', [Validators.required]],
             descripcionPublicacion: [''],
-            tipos: [''],
+            tipos: ['',Validators.required],
             vendedor: [this.user.name],
             cantidadDisponible: [''],
-            precioProducto: [''],
+            precioProducto: ['',Validators.required],
             pesoProducto: [''],
             miniaturaProducto: [''],
             imagenes: [[]],
-            currentImageIndex: [0], // Image index that is currently being viewed 
+            currentImageIndex: [0], // Índice de la imagen que se está visualizando
             estado: [true],
         });
 
@@ -231,13 +232,15 @@ export class ModalProductoComponent implements OnInit {
 
             // Mark for check
             this._changeDetectorRef.markForCheck();
-        }, 3000);
+        }, 8000);
     }
 
     /**
      * Discard the message
      */
     discard(): void {
+         // Close the dialog
+         this.matDialogRef.close();
     }
 
     /**
@@ -249,16 +252,35 @@ export class ModalProductoComponent implements OnInit {
     /**
      * Send the message
      */
+
+
     send(): void {
+
+        if ( this.selectedPublicacionForm.invalid )
+        {
+            return;
+        }
+
+        this.selectedPublicacionForm.disable();
+
         const post = this.selectedPublicacionForm.getRawValue();
         const vendedor$ = this._vendedoraService.buscarVendedoraId(this.user.id);
-        const categoria$ = this._categoriaService.buscarCategoriaId(post.tipos)
-        const categoriaProducto$ = this._categoriaProductoService.getCategoriaProducto(post.categoria)
-        //fecha actual
+        const categoria$ = this._categoriaService.buscarCategoriaId(post.tipos);
+        const categoriaProducto$ = this._categoriaProductoService.getCategoriaProducto(post.categoria);
+
+        // Fecha actual
         const fecha = new Date().toISOString();
 
-        //lista de imágenes predefinidas vacía
-        const imagenesPredefinidas: string[] = [];
+        // Lista de imágenes predefinidas vacía
+        const imagenesSeleccionadas: File[] = [];
+
+        if (this.uploadedPhotos.length > 0) {
+            imagenesSeleccionadas.push(...this.uploadedPhotos);
+            const primeraImagen = imagenesSeleccionadas[0];
+            const baseUrl = 'http://localhost:8080';
+            const urlCompleta = `${baseUrl}/api/publicaciones/${primeraImagen.name}`;
+            this.producto.miniaturaProducto = urlCompleta;
+        }
 
         forkJoin([vendedor$, categoriaProducto$, categoria$]).subscribe(([vendedor, categoriaProducto, categoria]) => {
             this.publication.vendedor = vendedor;
@@ -268,9 +290,8 @@ export class ModalProductoComponent implements OnInit {
             this.publication.estado = post.estado;
             this.publication.visible = true;
             this.publication.fechaPublicacion = new Date(fecha);
-            this.publication.imagenes = imagenesPredefinidas;
 
-            //Atributos de producto
+            // Atributos de producto
             this.producto.cantidadDisponible = post.cantidadDisponible;
             this.producto.pesoProducto = post.pesoProducto;
             this.producto.precioProducto = post.precioProducto;
@@ -278,16 +299,23 @@ export class ModalProductoComponent implements OnInit {
             this.producto.categoriaProducto = categoriaProducto;
             this.producto.descripcionProducto = post.descripcionPublicacion;
             this.producto.estadoProducto = true;
-            this.producto.miniaturaProducto = null;
+
+
+            // Llamar al servicio para guardar el producto
             this._productoService.saveProducto(this.producto).subscribe((data) => {
-
                 this.publication.productos = data;
-                this._inventoryService.createPublicacion(this.publication).subscribe(() => {
-                    this.showFlashMessage('success');
-                });
 
+                // Llamar al servicio para crear la publicación con las imágenes
+                this._inventoryService.createPublicacion(this.publication, imagenesSeleccionadas).subscribe((newPublicacion) => {
+                    //this.publication = newPublicacion;
+                    this.showFlashMessage('success');
+                    this.selectedPublicacionForm.enable();
+                });
             });
+
 
         });
     }
+
+
 }

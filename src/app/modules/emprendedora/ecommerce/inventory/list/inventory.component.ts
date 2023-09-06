@@ -126,7 +126,7 @@ export class InventoryListComponent implements OnInit, AfterViewInit, OnDestroy 
             pesoProducto: [''],
             miniaturaProducto: [''],
             imagenes: [[]],
-            currentImageIndex: [0], // Image index that is currently being viewed 
+            currentImageIndex: [0], // Índice de la imagen que se está visualizando 
             estado: [false],
         });
 

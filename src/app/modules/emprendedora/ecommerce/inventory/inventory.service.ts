@@ -1,12 +1,11 @@
-import { HttpClient, HttpParams } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, catchError, filter, map, Observable, of, switchMap, take, tap, throwError } from 'rxjs';
 import { InventarioProductos, CategoriaProducto, InventoryPagination, InventarioPublicaciones, CategoriaPublicacion } from './inventory.types';
 import { Publicacion } from 'app/services/models/publicaciones';
 
-@Injectable({providedIn: 'root'})
-export class InventoryService
-{
+@Injectable({ providedIn: 'root' })
+export class InventoryService {
     // Private
     private _product: BehaviorSubject<InventarioProductos | null> = new BehaviorSubject(null);
     private _productos: BehaviorSubject<InventarioProductos[] | null> = new BehaviorSubject(null);
@@ -19,10 +18,9 @@ export class InventoryService
     /**
      * Constructor
      */
-    constructor(private _httpClient: HttpClient)
-    {
+    constructor(private _httpClient: HttpClient) {
         this.listarServicio(); // Llama a tu método para cargar los datos iniciales
-     
+
     }
 
     // -----------------------------------------------------------------------------------------------------
@@ -32,48 +30,41 @@ export class InventoryService
     /**
      * Getter for categories
      */
-    get categoriesProducto$(): Observable<CategoriaProducto[]>
-    {
+    get categoriesProducto$(): Observable<CategoriaProducto[]> {
         return this._categoriesProducto.asObservable();
     }
 
-    get pagination$(): Observable<InventoryPagination>
-    {
+    get pagination$(): Observable<InventoryPagination> {
         return this._pagination.asObservable();
     }
 
-    get product$(): Observable<InventarioProductos>
-    {
+    get product$(): Observable<InventarioProductos> {
         return this._product.asObservable();
     }
 
-    get publicacion$(): Observable<InventarioPublicaciones>
-    {
+    get publicacion$(): Observable<InventarioPublicaciones> {
         return this._publicacion.asObservable();
     }
 
-    get publicaciones$(): Observable<InventarioPublicaciones[]>
-    {
+    get publicaciones$(): Observable<InventarioPublicaciones[]> {
         return this._publicaciones.asObservable();
     }
 
-    get productos$(): Observable<InventarioProductos[]>
-    {
+    get productos$(): Observable<InventarioProductos[]> {
         return this._productos.asObservable();
     }
 
 
     listarServicio(): void {
         this._httpClient.get<InventarioPublicaciones[]>("http://localhost:8080/api/publicaciones/listaPublicacionesXProductos")
-          .subscribe((data) => {
-            this._publicaciones.next(data); // Actualiza el BehaviorSubject con los datos obtenidos
-          });
-      }
+            .subscribe((data) => {
+                this._publicaciones.next(data); // Actualiza el BehaviorSubject con los datos obtenidos
+            });
+    }
 
 
 
-    get categoriesPublicacion$(): Observable<CategoriaPublicacion[]>
-    {
+    get categoriesPublicacion$(): Observable<CategoriaPublicacion[]> {
         return this._categoriesPublicacion.asObservable();
     }
 
@@ -85,78 +76,59 @@ export class InventoryService
     /**
      * Get categories
      */
-    getCategoriesProducto(): Observable<CategoriaProducto[]>
-    {
+    getCategoriesProducto(): Observable<CategoriaProducto[]> {
         return this._httpClient.get<CategoriaProducto[]>('http://localhost:8080/api/categoriaProducto/listar').pipe(
-            tap((categories) =>
-            {
+            tap((categories) => {
                 this._categoriesProducto.next(categories);
             }),
         );
     }
 
-    getCategoriesPublicacion(): Observable<CategoriaPublicacion[]>
-    {
+    getCategoriesPublicacion(): Observable<CategoriaPublicacion[]> {
         return this._httpClient.get<CategoriaPublicacion[]>('http://localhost:8080/api/categoria/listar').pipe(
-            tap((categories) =>
-            {
+            tap((categories) => {
                 this._categoriesPublicacion.next(categories);
             }),
         );
     }
 
-    /**
-     * Get publicationes
-     *
-     *
-     *  @param page
+     /**
+     * Get products
+     * @param page
      * @param size
      * @param sort
      * @param order
      * @param search
      */
+     getProducts(page: number = 0, size: number = 10, sort: string = 'name', order: 'asc' | 'desc' | '' = 'asc', search: string = ''):
+     Observable<{ pagination: InventoryPagination; products: InventarioPublicaciones[] }>
+ {
+     return this._httpClient.get<{ pagination: InventoryPagination; products: InventarioPublicaciones[] }>('http://localhost:8080/api/publicaciones/listaPublicacionesXProductos', {
+         params: {
+             page: '' + page,
+             size: '' + size,
+             sort,
+             order,
+             search,
+         },
+     }).pipe(
+         tap((response) =>
+         {
+             this._pagination.next(response.pagination);
+             this._publicaciones.next(response.products);
+         }),
+     );
+ }
 
-    getProducts(
-        page: number = 0,
-        size: number = 10,
-        sort: string = 'tituloPublicacion',
-        order: 'asc' | 'desc' | '' = 'asc',
-        search: string = ''
-      ): Observable<InventarioPublicaciones[]> {
-        // Construir los parámetros de la solicitud HTTP
-        const params = new HttpParams()
-          .set('page', '' + page)
-          .set('size', '' + size)
-          .set('sort', sort)
-          .set('order', order)
-          .set('search', search);
-      
-        return this._httpClient
-          .get<{ pagination: InventoryPagination; products: InventarioPublicaciones[] }>('http://localhost:8080/api/publicaciones/listar', {
-            params: params
-          })
-          .pipe(
-            map((response) => response.products),
-             // Extrae solo la lista de productos
-            catchError((error) => {
-              console.error('Error al obtener productos', error);
-              return throwError(error); // Propaga el error hacia arriba
-            })
-          );
-      }
-      
-    
-    
+
 
     /**
      * Get product by id
      */
-    getPublicacionById(id: number): Observable<InventarioPublicaciones>
-    {
+    getPublicacionById(id: number): Observable<InventarioPublicaciones> {
         return this._publicaciones.pipe(
             take(1),
-            map((publicaciones) =>
-            {
+            map((publicaciones) => {
                 // Find the product
                 const publicacion = publicaciones.find(item => item.idPublicacion === id) || null;
 
@@ -166,10 +138,8 @@ export class InventoryService
                 // Return the publicacion
                 return publicacion;
             }),
-            switchMap((publicacion) =>
-            {
-                if ( !publicacion )
-                {
+            switchMap((publicacion) => {
+                if (!publicacion) {
                     return throwError('Could not found publicacion with id of ' + id + '!');
                 }
 
@@ -179,11 +149,23 @@ export class InventoryService
     }
 
 
-    createPublicacion(publicacion:InventarioPublicaciones): Observable<InventarioPublicaciones>
+    createPublicacion(publicacion:InventarioPublicaciones,files: any|null): Observable<InventarioPublicaciones>
     {
+        const formData: FormData = new FormData();
+        formData.append('publicacion', JSON.stringify(publicacion));
+    
+        if (files && files.length > 0) {
+          for (const file of files) {
+            formData.append('files', file, file.name);
+          }
+        }
+    
+        const headers = new HttpHeaders();
+        headers.append('Content-Type', 'multipart/form-data');
+
         return this.publicaciones$.pipe(
             take(1),
-            switchMap(publicaciones => this._httpClient.post<InventarioPublicaciones>('http://localhost:8080/api/publicaciones/registrar',publicacion).pipe(
+            switchMap(publicaciones => this._httpClient.post<InventarioPublicaciones>('http://localhost:8080/api/publicaciones/registrarConFoto', formData, { headers: headers }).pipe(
                 map((newPublicacion) =>
                 {
                     // Update the products with the new product
@@ -194,18 +176,50 @@ export class InventoryService
                 }),
             )),
         );
-    }
-   
-    
+    } 
 
-    updatePublicacion(id: number, publicacion: InventarioPublicaciones): Observable<InventarioPublicaciones>
-    {
+
+    createPublicacionx(publicacion: InventarioPublicaciones, files: any|null): Observable<InventarioPublicaciones> {
+        const formData: FormData = new FormData();
+        formData.append('publicacion', JSON.stringify(publicacion));
+    
+        if (files && files.length > 0) {
+          for (const file of files) {
+            formData.append('files', file, file.name);
+          }
+        }
+    
+        const headers = new HttpHeaders();
+        headers.append('Content-Type', 'multipart/form-data'); // Puede que necesites ajustar los encabezados según lo que espera tu backend
+    
+        return this._httpClient.post<InventarioPublicaciones>('http://localhost:8080/api/publicaciones/registrarConFoto', formData, { headers: headers }).pipe(
+          map((newPublicacion) => {
+            // Puedes manejar la respuesta del backend aquí si es necesario
+            return newPublicacion;
+          }),
+          catchError(this.handleError<InventarioPublicaciones>('createPublicacion'))
+        );
+      }
+    
+      // Función para manejar errores
+      private handleError<T>(operation = 'operation', result?: T) {
+        return (error: any): Observable<T> => {
+          console.error(error); // Log the error
+          // Puedes realizar un manejo de errores más sofisticado aquí si es necesario
+          return of(result as T);
+        };
+      }
+
+
+
+
+
+    updatePublicacion(id: number, publicacion: InventarioPublicaciones): Observable<InventarioPublicaciones> {
         return this.publicaciones$.pipe(
             take(1),
-            switchMap(publicaciones => this._httpClient.put<InventarioPublicaciones>(`http://localhost:8080/api/publicaciones/actualizar/${id}`,publicacion
+            switchMap(publicaciones => this._httpClient.put<InventarioPublicaciones>(`http://localhost:8080/api/publicaciones/actualizar/${id}`, publicacion
             ).pipe(
-                map((updatedPublicacion) =>
-                {
+                map((updatedPublicacion) => {
                     // Find the index of the updated product
                     const index = publicaciones.findIndex(item => item.idPublicacion === id);
 
@@ -221,8 +235,7 @@ export class InventoryService
                 switchMap(updatedPublicacion => this.publicacion$.pipe(
                     take(1),
                     filter(item => item && item.idPublicacion === id),
-                    tap(() =>
-                    {
+                    tap(() => {
                         // Update the product if it's selected
                         this._publicacion.next(updatedPublicacion);
 
@@ -234,9 +247,9 @@ export class InventoryService
         );
     }
 
-    
+
     deletePublicacion(id: number): Observable<boolean> {
-        return this._httpClient.put<boolean>(`http://localhost:8080/api/publicaciones/eliminar/${id}`,null).pipe(
+        return this._httpClient.put<boolean>(`http://localhost:8080/api/publicaciones/eliminar/${id}`, null).pipe(
             switchMap(isDeleted => {
                 if (isDeleted) {
                     // Eliminación exitosa, actualiza la lista
@@ -258,7 +271,7 @@ export class InventoryService
             })
         );
     }
-    
+
 
 
 }

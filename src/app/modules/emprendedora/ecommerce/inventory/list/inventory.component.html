@@ -84,9 +84,9 @@
                                     <div class="flex items-center">
                                         <div class="relative flex flex-0 items-center justify-center w-12 h-12 mr-6 rounded overflow-hidden border">
                                             <img
-                                                class="w-8"
+                                                class="w-12 h-12"
                                                 *ngIf="publicacion.productos.miniaturaProducto"
-                                                [alt]="'Publicacion thumbnail image'"
+                                                [alt]="'Publicacion image'"
                                                 [src]="publicacion.productos.miniaturaProducto">
                                             <div
                                                 class="flex items-center justify-center w-full h-full text-xs font-semibold leading-none text-center uppercase"
@@ -169,14 +169,14 @@
                         </ng-container>
                     </div>
 
-                 <!--    <mat-paginator
+                  <!--  <mat-paginator
                         class="sm:absolute sm:inset-x-0 sm:bottom-0 border-b sm:border-t sm:border-b-0 z-10 bg-gray-50 dark:bg-transparent"
                         [ngClass]="{'pointer-events-none': isLoading}"
                         [length]="pagination.length"
                         [pageIndex]="pagination.page"
                         [pageSize]="pagination.size"
                         [pageSizeOptions]="[5, 10, 25, 100]"
-                        [showFirstLastButtons]="true"></mat-paginator> -->
+                        [showFirstLastButtons]="true"></mat-paginator>  -->
 
                 </ng-container>
             </ng-container>
@@ -196,7 +196,7 @@
                                 <!-- Product images and status -->
                                 <div class="flex flex-col items-center sm:items-start mb-8 sm:mb-0">
                                     <div class="flex flex-col items-center">
-                                        <div class="w-32 h-44 border rounded overflow-hidden">
+                                        <div class="w-64 h-64 border rounded overflow-hidden">
                                              <ng-container *ngIf="selectedPublicacionForm.get('imagenes').value.length; else noImage">
                                                 <img
                                                     class="w-full h-full object-cover"
