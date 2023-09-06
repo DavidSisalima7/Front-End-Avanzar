@@ -19,8 +19,7 @@ export class InventoryService {
      * Constructor
      */
     constructor(private _httpClient: HttpClient) {
-        this.listarServicio(); // Llama a tu método para cargar los datos iniciales
-
+        this.listarServicio(); 
     }
 
     // -----------------------------------------------------------------------------------------------------
@@ -177,41 +176,6 @@ export class InventoryService {
             )),
         );
     } 
-
-
-    createPublicacionx(publicacion: InventarioPublicaciones, files: any|null): Observable<InventarioPublicaciones> {
-        const formData: FormData = new FormData();
-        formData.append('publicacion', JSON.stringify(publicacion));
-    
-        if (files && files.length > 0) {
-          for (const file of files) {
-            formData.append('files', file, file.name);
-          }
-        }
-    
-        const headers = new HttpHeaders();
-        headers.append('Content-Type', 'multipart/form-data'); // Puede que necesites ajustar los encabezados según lo que espera tu backend
-    
-        return this._httpClient.post<InventarioPublicaciones>('http://localhost:8080/api/publicaciones/registrarConFoto', formData, { headers: headers }).pipe(
-          map((newPublicacion) => {
-            // Puedes manejar la respuesta del backend aquí si es necesario
-            return newPublicacion;
-          }),
-          catchError(this.handleError<InventarioPublicaciones>('createPublicacion'))
-        );
-      }
-    
-      // Función para manejar errores
-      private handleError<T>(operation = 'operation', result?: T) {
-        return (error: any): Observable<T> => {
-          console.error(error); // Log the error
-          // Puedes realizar un manejo de errores más sofisticado aquí si es necesario
-          return of(result as T);
-        };
-      }
-
-
-
 
 
     updatePublicacion(id: number, publicacion: InventarioPublicaciones): Observable<InventarioPublicaciones> {

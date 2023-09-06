@@ -122,7 +122,7 @@ export class InventoryListComponentService implements OnInit, AfterViewInit, OnD
             tiempoServicio: [''],
             miniaturaServicio: [''],
             imagenes: [[]],
-            currentImageIndex: [0], // Image index that is currently being viewed 
+            currentImageIndex: [0], // Índice de la imagen que se está visualizando
             estado: [false],
         });
 
@@ -312,65 +312,7 @@ export class InventoryListComponentService implements OnInit, AfterViewInit, OnD
         }
     }
 
-    /**
-     * Create product
-     */
-    createPublicacion(): void {
-        // Create the product
-        
 
-        this._inventoryService.createPublicacion().subscribe((newPublicacion) => {
-            // Go to new product
-            this.selectedPublicacion = newPublicacion;
-
-            // Fill the form
-            this.selectedPublicacionForm.patchValue(newPublicacion);
-
-            this.selectedPublicacionForm.get('vendedor').setValue(this.user.name);
-            // Mark for check
-            this._changeDetectorRef.markForCheck();
-        });
-    }
-
-
-    updateselectedPublicaciones(): void {
-        // Get the product object
-        const post = this.selectedPublicacionForm.getRawValue();
-
-        // Remove the currentImageIndex field
-        delete post.currentImageIndex;
-
-        this._vendedoraService.buscarVendedoraId(this.user.id).subscribe((vendedor) => {
-            post.vendedor = vendedor;
-            this.publication.vendedor = vendedor;
-        });
-
-
-        this._publicacionService.buscarPublicacionId(post.idPublicacion).subscribe((publicacion) => {
-            post.servicios = publicacion.servicios;
-            this.publication.servicios = publicacion.servicios; 
-            this.publication.servicios.miniaturaServicio = null;
-            this.publication.servicios.nombreServicio = post.nombreServicio;
-        });
-
-        this.publication.idPublicacion = post.idPublicacion;
-        this.publication.tituloPublicacion = post.tituloPublicacion;
-        this.publication.descripcionPublicacion = post.descripcionPublicacion;
-        this.publication.estado = post.estado;
-        this.publication.imagenes = post.imagenes;
-
-        this.publication.productos = null;
-
-        console.log(this.publication);
-
-        // Update the post on the server
-        this._inventoryService.updatePublicacion(post.idPublicacion, this.publication).subscribe(() => {
-            // Show a success message
-            this.showFlashMessage('success');
-        });
-
-        
-    }
 
     /**
      * Update the selected product using the form data

@@ -17,7 +17,7 @@ export class ProductosModels {
     estadoProducto: boolean;
     descripcionProducto: string;
     miniaturaProducto: string;
-    pesoProducto: number;
+    pesoProducto: string;
     categoriaProducto: CategoriesProd;
 }
 

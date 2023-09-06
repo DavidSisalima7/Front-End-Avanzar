@@ -47,7 +47,7 @@ export class ModalProductoComponent implements OnInit {
     };
     @ViewChild('modalProductoNgForm') modalProductoNgForm: NgForm;
 
-    publicaciones$: Observable<InventarioPublicaciones[]>;
+    
     //Extraer las categorias de los productos
     categoriesProducto: CategoriaProducto[];
     categoriesPublicacion: CategoriaPublicacion[];
@@ -94,7 +94,6 @@ export class ModalProductoComponent implements OnInit {
         private _vendedoraService: VendedorService,
         private _categoriaProductoService: CategoriaProductoService,
         private _productoService: ProductosService,
-        private _publicacionService: PublicacionesService,
         private _categoriaService: CategoriaPublicacionService,
         private el: ElementRef,
         private renderer: Renderer2
@@ -180,7 +179,6 @@ export class ModalProductoComponent implements OnInit {
             });
 
 
-        this.publicaciones$ = this._inventoryService.publicaciones$;
 
 
 
