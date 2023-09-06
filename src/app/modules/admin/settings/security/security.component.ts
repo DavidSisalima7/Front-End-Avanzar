@@ -72,12 +72,12 @@ export class SettingsSecurityComponent implements OnInit {
 
     // Create the form
     this.securityForm = this._formBuilder.group({
-      currentPassword: ['', [Validators.required]],
-      newPassword: ['', [Validators.required, this.testLongPass()]],
-      repPassword: ['', [Validators.required, this.equalPass()]],
+      currentPassword: ['', [Validators.required,  validarcontra()]],
+      newPassword: ['', [Validators.required, validarcontra()]],
+      repPassword: ['', [Validators.required, this.equalPass(),  validarcontra()]],
       twoStep: [true],
       askPasswordChange: [false],
-    });
+  });
     //autoevaluar si coinciden las pass
     this.securityForm.get('newPassword').valueChanges.subscribe(() => {
       this.securityForm.get('repPassword').updateValueAndValidity();
@@ -187,5 +187,18 @@ export class SettingsSecurityComponent implements OnInit {
     }
 
   }
+
+}
+
+function validarcontra(): ValidatorFn {
+  return (control: AbstractControl): ValidationErrors | null => {
+      const longitud = control.value as string;
+
+      if (longitud && longitud.length !== 8) {
+          return { longitudInvalida: true };
+      }
+
+      return null;
+  };
 
 }

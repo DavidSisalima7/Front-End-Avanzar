@@ -105,7 +105,7 @@
 
             <div class="sm:col-span-2">
                 <mat-form-field class="w-full" [subscriptSizing]="'dynamic'">
-                    <mat-label>Genero</mat-label>
+                    <mat-label>Género</mat-label>
                     <mat-icon
                         class="icon-size-5"
                         [svgIcon]="'heroicons_solid:users'"
@@ -133,7 +133,7 @@
                 <mat-form-field
                     class="w-full"
                     [subscriptSizing]="'dynamic'">
-                    <mat-label>Sobre mi</mat-label>
+                    <mat-label>Sobre mí</mat-label>
                     <textarea
                         matInput
                         [formControlName]="'description'"
@@ -211,14 +211,8 @@
             <div class="sm:col-span-2">
                 <mat-form-field class="w-full" [subscriptSizing]="'dynamic'">
                     <mat-label>Fecha de Nacimiento</mat-label>
-                    <input
-                        [formControlName]="'dateBirth'"
-                        matInput
-                        [matDatepicker]="picker1"
-                        [(ngModel)]="selectedDate">
-                    <mat-datepicker-toggle
-                        matSuffix
-                        [for]="picker1"></mat-datepicker-toggle>
+                    <input [formControlName]="'dateBirth'" matInput readonly>
+                    <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
                     <mat-datepicker #picker1></mat-datepicker>
                 </mat-form-field>
             </div>

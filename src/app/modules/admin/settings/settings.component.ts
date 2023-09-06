@@ -50,14 +50,14 @@ export class SettingsComponent implements OnInit, OnDestroy
             {
                 id         : 'account',
                 icon       : 'heroicons_outline:user-circle',
-                title      : 'Account',
-                description: 'Manage your public profile and private information',
+                title      : 'Cuenta',
+                description: 'Administra tu perfil público e información privada',
             },
             {
                 id         : 'security',
                 icon       : 'heroicons_outline:lock-closed',
-                title      : 'Security',
-                description: 'Manage your password and 2-step verification preferences',
+                title      : 'Seguridad',
+                description: 'Administra tu contraseña',
             },
             
         ];

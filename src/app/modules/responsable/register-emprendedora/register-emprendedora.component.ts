@@ -364,7 +364,7 @@ export class RegisterEmpreRespComponent implements OnInit {
                             this.detalleSubscripcion.updateDetalleSubscripcion(dataVendedora.detalleSubscripcion.idDetalle_subscripcion, this.detalleMembresia).subscribe(dataDetalle => {
                                 console.log("Update", dataDetalle);
                             });
-                            
+
                             const confirmationDialog = this.confirmationService.open({
                                 title: 'Éxito',
                                 message: 'Registro de emprendedora exitosa',
@@ -444,27 +444,72 @@ export class RegisterEmpreRespComponent implements OnInit {
         this.clickedButtonValue = buttonValue;
         if (buttonValue === 1) {
 
-            Swal.fire(
-                'Acción Exitosa',
-                'Seleccionado Plan Gratuito.',
-                'success'
-            );
+            const confirmationDialog = this.confirmationService.open({
+                title: 'Éxito',
+                message: 'Seleccionado Plan Gratuito',
+                icon: {
+                    show: true,
+                    name: 'heroicons_outline:check-circle',
+                    color: 'success',
+                },
+                actions: {
+                    confirm: {
+                        show: true,
+                        label: 'OK',
+                        color: 'primary'
+                    },
+                    cancel: {
+                        show: false,
+                        label: 'Cancelar'
+                    }
+                }
+            });
 
         } else if (buttonValue === 2) {
 
-            Swal.fire(
-                'Acción Exitosa',
-                'Seleccionado Plan Premium',
-                'success'
-            );
+            const confirmationDialog = this.confirmationService.open({
+                title: 'Éxito',
+                message: 'Seleccionado Plan Premium',
+                icon: {
+                    show: true,
+                    name: 'heroicons_outline:check-circle',
+                    color: 'success',
+                },
+                actions: {
+                    confirm: {
+                        show: true,
+                        label: 'OK',
+                        color: 'primary'
+                    },
+                    cancel: {
+                        show: false,
+                        label: 'Cancelar'
+                    }
+                }
+            });
 
         } else if (buttonValue === 3) {
 
-            Swal.fire(
-                'Acción Exitosa',
-                'Seleccionado Plan Gold',
-                'success'
-            );
+            const confirmationDialog = this.confirmationService.open({
+                title: 'Éxito',
+                message: 'Seleccionado Plan Gold',
+                icon: {
+                    show: true,
+                    name: 'heroicons_outline:check-circle',
+                    color: 'success',
+                },
+                actions: {
+                    confirm: {
+                        show: true,
+                        label: 'OK',
+                        color: 'primary'
+                    },
+                    cancel: {
+                        show: false,
+                        label: 'Cancelar'
+                    }
+                }
+            });
 
         }
 
