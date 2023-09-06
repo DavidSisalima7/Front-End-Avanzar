@@ -15,8 +15,8 @@ import { catchError, map, Observable, ReplaySubject, tap, throwError } from 'rxj
       return throwError('Error en el servicio. Por favor, inténtalo de nuevo más tarde.');
     }
 
-    saveProducto(producto: Productos): Observable<Productos> {
-      return this.http.post<Productos>(`${this.url}/registrar`, producto);
+    saveProducto(producto: ProductosModels): Observable<ProductosModels> {
+      return this.http.post<ProductosModels>(`${this.url}/registrar`, producto);
     }
   
     listarProducto(): Observable<Productos[]> {

@@ -12,6 +12,9 @@ export class PublicacionesService {
 
   constructor(private http: HttpClient) { }
 
+  guardarPublicación(post: Publicacion): Observable<Publicacion> {
+    return this.http.post<Publicacion>(`${this.baseUrl}/registrar`, post);
+  }
 
   buscarPublicacionId(idPublicacion: any): Observable<Publicacion> {
     return this.http.get<Publicacion>(`${this.baseUrl}/buscar/${idPublicacion}`)

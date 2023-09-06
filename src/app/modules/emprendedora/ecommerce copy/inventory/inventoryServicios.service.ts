@@ -1,4 +1,5 @@
-import { HttpClient, HttpParams } from '@angular/common/http';
+
+import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, catchError, filter, map, Observable, of, switchMap, take, tap, throwError } from 'rxjs';
 import { CategoriaServicio, InventoryPagination, InventarioPublicaciones, CategoriaPublicacion, InventarioServicios } from './inventoryServicios.types';
@@ -173,11 +174,23 @@ export class InventoryServiceServicios
     }
 
 
-    createPublicacion(): Observable<InventarioPublicaciones>
+    createPublicacion(publicacion:InventarioPublicaciones,files: any|null): Observable<InventarioPublicaciones>
     {
+        const formData: FormData = new FormData();
+        formData.append('publicacion', JSON.stringify(publicacion));
+    
+        if (files && files.length > 0) {
+          for (const file of files) {
+            formData.append('files', file, file.name);
+          }
+        }
+    
+        const headers = new HttpHeaders();
+        headers.append('Content-Type', 'multipart/form-data'); //para que se acepten archivos multipart file
+
         return this.publicaciones$.pipe(
             take(1),
-            switchMap(publicaciones => this._httpClient.post<InventarioPublicaciones>('http://localhost:8080/api/publicaciones/registrarServicios', {}).pipe(
+            switchMap(publicaciones => this._httpClient.post<InventarioPublicaciones>('http://localhost:8080/api/publicaciones/registrarConFoto', formData, { headers: headers }).pipe(
                 map((newPublicacion) =>
                 {
                     // Update the products with the new product
@@ -188,7 +201,7 @@ export class InventoryServiceServicios
                 }),
             )),
         );
-    }
+    } 
 
     updatePublicacion(id: number, publicacion: InventarioPublicaciones): Observable<InventarioPublicaciones>
     {
@@ -254,4 +267,5 @@ export class InventoryServiceServicios
 
 
 }
+
 

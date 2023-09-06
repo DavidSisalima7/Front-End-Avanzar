@@ -15,8 +15,8 @@ export class ServiciosService {
     console.error('Ocurrió un error:', error);
     return throwError('Error en el servicio. Por favor, inténtalo de nuevo más tarde.');
   }
-  saveServicio(servicio: Servicios): Observable<Servicios> {
-    return this.http.post<Servicios>(`${this.url}/registrar`, servicio);
+  saveServicio(servicio: ServicioModels): Observable<ServicioModels> {
+    return this.http.post<ServicioModels>(`${this.url}/registrar`, servicio);
   }
 
   listarServicio(): Observable<Servicios[]> {

@@ -13,7 +13,7 @@ export class ServicioModels {
     descripcionServicio:string;
     precioServicio:string;
     estado:boolean;
-    tiempoServicio:number;
+    tiempoServicio:string;
     cantidadDisponible: number;
     miniaturaServicio:string;
     categoriaServicio:CategoriaServicio;

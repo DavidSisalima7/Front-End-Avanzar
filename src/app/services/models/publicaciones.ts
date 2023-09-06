@@ -7,6 +7,7 @@ export class Publicacion{
     tituloPublicacion: string;
     descripcionPublicacion: string;
     estado: boolean;
+    visible?:boolean;
     fechaPublicacion: Date;
     imagenes: string[];
     vendedor?: Vendedor ;
