@@ -1,5 +1,5 @@
 import { TextFieldModule } from '@angular/cdk/text-field';
-import { CommonModule } from '@angular/common';
+import { CommonModule, DatePipe } from '@angular/common';
 import { ChangeDetectionStrategy, Component, OnInit, Renderer2, ViewChild, ViewEncapsulation } from '@angular/core';
 import { FormsModule, NgForm, ReactiveFormsModule, UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
@@ -56,8 +56,12 @@ export class SettingsAccountComponent implements OnInit
     showAlert: boolean = false;
     selectedDate: Date | null = null;
 
-    onDateChange(event: MatDatepickerInputEvent<Date>) {
-    this.selectedDate = event.value;
+    onDateChange(event: MatDatepickerInputEvent<Date>): void {
+      // Formatea la fecha seleccionada en 'dd/MM/yyyy'
+      const formattedDate = this.datePipe.transform(event.value, 'dd/MM/yyyy');
+      
+      // Actualiza el valor del control 'dateBirth' en el formulario
+      this.accountForm.get('dateBirth').setValue(formattedDate);
     }
   
     paises = [
@@ -73,7 +77,8 @@ export class SettingsAccountComponent implements OnInit
     constructor(
         private _formBuilder: UntypedFormBuilder,
         private _userService: UserService,
-        private renderer:Renderer2
+        private renderer:Renderer2,
+        private datePipe: DatePipe
     )
     {
     }
@@ -94,10 +99,6 @@ export class SettingsAccountComponent implements OnInit
             {
                 this.user = user;
             });
-
-        const dateOfBirth = new Date(this.user.persona.fecha_nacimiento); // Convertir a objeto Date
-        this.selectedDate = dateOfBirth;
-        
         
         // Create the form
         this.accountForm = this._formBuilder.group({
@@ -114,7 +115,7 @@ export class SettingsAccountComponent implements OnInit
             description:[this.user.persona.descripcion],
             nationality:[this.user.persona.nacionalidad],
             genero:[this.user.persona.genero],
-            dateBirth: [dateOfBirth] 
+            dateBirth: [this.formatDate(this.user.persona.fecha_nacimiento)]
             
         });
 
@@ -144,7 +145,8 @@ export class SettingsAccountComponent implements OnInit
 
         this.showAlert = false;
 
-        const usuarioId = this.usuario.id; 
+        const usuarioId = this.usuario.id;
+        const formattedDate = this.datePipe.transform(this.accountForm.get('dateBirth').value, 'dd/MM/yyyy'); 
         const usuarioActualizado = {
             persona: {
               primer_nombre: this.accountForm.value.Firstname,
@@ -156,7 +158,7 @@ export class SettingsAccountComponent implements OnInit
               direccion: this.accountForm.value.address,
               nacionalidad:this.accountForm.value.nationality,
               genero:this.accountForm.value.genero,
-              fecha_nacimiento:this.accountForm.value.dateBirth,
+              fecha_nacimiento: formattedDate,
               descripcion:this.accountForm.value.description
             },
             username:this.accountForm.value.email,
@@ -179,7 +181,17 @@ export class SettingsAccountComponent implements OnInit
         );
       }
       
-
+      formatDate(dateString: string): string {
+        const [day, month, year] = dateString.split('/');
+        const monthsInSpanish = [
+          'January', 'February', 'March', 'April', 'May', 'June',
+          'July', 'August', 'September', 'Octuber', 'November', 'December'
+        ];
+      
+        const monthName = monthsInSpanish[parseInt(month) - 1];
+      
+        return `${monthName} ${day}, ${year}`;
+      }
 
 
 }

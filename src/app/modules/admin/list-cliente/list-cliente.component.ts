@@ -24,6 +24,7 @@ import Swal from 'sweetalert2';
 //DIALOGOS
 import { MatDialog } from '@angular/material/dialog';
 import { MailboxComposeComponent } from 'app/modules/admin/compose/compose.component';
+import { FuseConfirmationService } from '@fuse/services/confirmation';
 
 
 @Component({
@@ -31,11 +32,11 @@ import { MailboxComposeComponent } from 'app/modules/admin/compose/compose.compo
   standalone: true,
   templateUrl: './list-cliente.component.html',
   encapsulation: ViewEncapsulation.None,
-  imports: [MatFormFieldModule, MatInputModule, MatTableModule, MatSortModule, MatPaginatorModule, 
-            MatIconModule, MatButtonModule, CommonModule],
+  imports: [MatFormFieldModule, MatInputModule, MatTableModule, MatSortModule, MatPaginatorModule,
+    MatIconModule, MatButtonModule, CommonModule],
 })
 export class ListAdminClienteComponent {
-  displayedColumns: string[] = ['cedula','nombres', 'correo', 'celular','estado','editar','delete'];
+  displayedColumns: string[] = ['cedula', 'nombres', 'correo', 'celular', 'estado', 'editar', 'delete'];
   dataSource: MatTableDataSource<Usuario>;
 
 
@@ -48,8 +49,8 @@ export class ListAdminClienteComponent {
   /**
    * Constructor
    */
-  constructor(private usuarioService: UserService, private _router: Router,private _matDialog: MatDialog,
-    ) {
+  constructor(private usuarioService: UserService, private _router: Router, private _matDialog: MatDialog, private confirmationService: FuseConfirmationService,
+  ) {
   }
   ngOnInit(): void {
     this.listarRegistros();
@@ -66,8 +67,8 @@ export class ListAdminClienteComponent {
     );
   }
   ////////////////////////////////////// Inicio  Filtrados de Tabla
-  usuarios:any;
-///Cedula
+  usuarios: any;
+  ///Cedula
   FiltroCedulaAsc(): void {
     this.usuarioService.obtenerListaCliente().subscribe(
       (datos: Usuario[]) => {
@@ -118,58 +119,58 @@ export class ListAdminClienteComponent {
       }
     );
   }
-//Nombres
-FiltroNombreAsc(): void {
-  this.usuarioService.obtenerListaCliente().subscribe(
-    (datos: Usuario[]) => {
-      // Ordena el array de usuarios por el nombre asc
-      this.usuarios = datos.sort((a, b) => a.name.localeCompare(b.name));
-      this.dataSource = new MatTableDataSource<Usuario>(this.usuarios);
-    },
-    error => {
-      console.error('Ocurrió un error al obtener la lista de personas responsables:', error);
-    }
-  );
-}
-FiltroNombreDesc(): void {
-  this.usuarioService.obtenerListaCliente().subscribe(
-    (datos: Usuario[]) => {
-      // Ordena el array de usuarios por el nombre desc
-      this.usuarios = datos.sort((a, b) => b.name.localeCompare(a.name));
-      this.dataSource = new MatTableDataSource<Usuario>(this.usuarios);
-    },
-    error => {
-      console.error('Ocurrió un error al obtener la lista de personas responsables:', error);
-    }
-  );
-}
-//Correos
-FiltroCorreoAsc(): void {
-  this.usuarioService.obtenerListaCliente().subscribe(
-    (datos: Usuario[]) => {
-      // Ordena el array de usuarios por el correo asc
-      this.usuarios = datos.sort((a, b) => a.persona.correo.localeCompare(b.persona.correo));
-      this.dataSource = new MatTableDataSource<Usuario>(this.usuarios);
-    },
-    error => {
-      console.error('Ocurrió un error al obtener la lista de personas responsables:', error);
-    }
-  );
-}
-FiltroCorreoDesc(): void {
-  this.usuarioService.obtenerListaCliente().subscribe(
-    (datos: Usuario[]) => {
-      // Ordena el array de usuarios por el correo desc
-      this.usuarios = datos.sort((a, b) => b.persona.correo.localeCompare(a.persona.correo));
-      this.dataSource = new MatTableDataSource<Usuario>(this.usuarios);
-    },
-    error => {
-      console.error('Ocurrió un error al obtener la lista de personas responsables:', error);
-    }
-  );
-}
+  //Nombres
+  FiltroNombreAsc(): void {
+    this.usuarioService.obtenerListaCliente().subscribe(
+      (datos: Usuario[]) => {
+        // Ordena el array de usuarios por el nombre asc
+        this.usuarios = datos.sort((a, b) => a.name.localeCompare(b.name));
+        this.dataSource = new MatTableDataSource<Usuario>(this.usuarios);
+      },
+      error => {
+        console.error('Ocurrió un error al obtener la lista de personas responsables:', error);
+      }
+    );
+  }
+  FiltroNombreDesc(): void {
+    this.usuarioService.obtenerListaCliente().subscribe(
+      (datos: Usuario[]) => {
+        // Ordena el array de usuarios por el nombre desc
+        this.usuarios = datos.sort((a, b) => b.name.localeCompare(a.name));
+        this.dataSource = new MatTableDataSource<Usuario>(this.usuarios);
+      },
+      error => {
+        console.error('Ocurrió un error al obtener la lista de personas responsables:', error);
+      }
+    );
+  }
+  //Correos
+  FiltroCorreoAsc(): void {
+    this.usuarioService.obtenerListaCliente().subscribe(
+      (datos: Usuario[]) => {
+        // Ordena el array de usuarios por el correo asc
+        this.usuarios = datos.sort((a, b) => a.persona.correo.localeCompare(b.persona.correo));
+        this.dataSource = new MatTableDataSource<Usuario>(this.usuarios);
+      },
+      error => {
+        console.error('Ocurrió un error al obtener la lista de personas responsables:', error);
+      }
+    );
+  }
+  FiltroCorreoDesc(): void {
+    this.usuarioService.obtenerListaCliente().subscribe(
+      (datos: Usuario[]) => {
+        // Ordena el array de usuarios por el correo desc
+        this.usuarios = datos.sort((a, b) => b.persona.correo.localeCompare(a.persona.correo));
+        this.dataSource = new MatTableDataSource<Usuario>(this.usuarios);
+      },
+      error => {
+        console.error('Ocurrió un error al obtener la lista de personas responsables:', error);
+      }
+    );
+  }
   FiltroEstadoActivo() {
-     // Ordena el array de usuarios por estado activo
+    // Ordena el array de usuarios por estado activo
     this.usuarioService.obtenerListClientOrdenA().subscribe(
       (datos: Usuario[]) => {
         this.dataSource = new MatTableDataSource<Usuario>(datos);
@@ -190,7 +191,7 @@ FiltroCorreoDesc(): void {
       }
     );
   }
- 
+
   ejecutarPrimeraFuncion: boolean = true;
   cambiarFuncionAEjecutar(): void {
     this.ejecutarPrimeraFuncion = !this.ejecutarPrimeraFuncion;
@@ -240,7 +241,7 @@ FiltroCorreoDesc(): void {
     }
     this.cambiarFuncionAEjecutar();
   }
- ////////////////////////////////////// Fin  Filtrados de Tabla
+  ////////////////////////////////////// Fin  Filtrados de Tabla
 
   applyFilter(event: Event) {
     const filterValue = (event.target as HTMLInputElement).value;
@@ -255,7 +256,7 @@ FiltroCorreoDesc(): void {
     this._router.navigate(['/register-cliente']);
   }
 
-  selectedCliente:any;
+  selectedCliente: any;
   usernameSelect: any;
   verficarEstado: any;
   seleccionarCliente(usuario: any) {
@@ -263,41 +264,89 @@ FiltroCorreoDesc(): void {
     this.usernameSelect = usuario.username;
     this.usuarioService.BuscarUsername(this.usernameSelect).subscribe(
       (usuarioEncontrado) => {
-        this.verficarEstado=usuarioEncontrado;
-      if (this.verficarEstado === null){
-      Swal.fire(
-        'Acción no disponible',
-        'El usuario ya se encuentra inactivo',
-        'error',
-            );
-      
-      }else{
-        this.usuarioService.eliminadoLogico(this.selectedCliente).subscribe(
-          (datapersencontrada) => {
-            this.listarRegistros();
-            Swal.fire(
-              'Acción Exitosa',
-              'Usuario Desactivado.',
-              'success'
-                  );
-            return;
-          } );
-       
-      }
-    });
+        this.verficarEstado = usuarioEncontrado;
+        if (this.verficarEstado === null) {
+          const confirmationDialog = this.confirmationService.open({
+            title: 'Ocurrió un error',
+            message: 'Acción no disponible, El usuario ya se encuentra inactivo',
+            actions: {
+              confirm: {
+                show: true,
+                label: 'OK',
+                color: 'primary'
+              },
+              cancel: {
+                show: false,
+                label: 'Cancelar'
+              }
+            }
+          });
+
+        } else {
+
+          const confirmationDialog = this.confirmationService.open({
+            title: 'Confirmación',
+            message: '¿Está seguro de desactivar a este usuario?',
+            icon: {
+              show: true,
+              name: 'heroicons_outline:information-circle',
+              color: 'info',
+            },
+            actions: {
+              confirm: {
+                show: true,
+                label: 'Si estoy seguro',
+                color: 'primary'
+              },
+              cancel: {
+                show: true,
+                label: 'Cancelar'
+              }
+            }
+          });
+          confirmationDialog.afterClosed().subscribe(result => {
+            if (result === 'confirmed') {
+              this.usuarioService.eliminadoLogico(this.selectedCliente).subscribe(
+                (datapersencontrada) => {
+                  this.listarRegistros();
+                  const confirmationDialog = this.confirmationService.open({
+                    title: 'Éxito',
+                    message: 'El usuario ha sido desactivado',
+                    icon: {
+                      show: true,
+                      name: 'heroicons_outline:check-circle',
+                      color: 'success',
+                    },
+                    actions: {
+                      confirm: {
+                        show: true,
+                        label: 'OK',
+                        color: 'primary'
+                      },
+                      cancel: {
+                        show: false,
+                        label: 'Cancelar'
+                      }
+                    }
+                  });
+                });
+            } else {
+
+            }
+          });
+        }
+      });
   }
 
 
   //ABRIR EL MODAL
-  openComposeDialog(): void
-    {
-        // Open the dialog
-        const dialogRef = this._matDialog.open(MailboxComposeComponent);
+  openComposeDialog(): void {
+    // Open the dialog
+    const dialogRef = this._matDialog.open(MailboxComposeComponent);
 
-        dialogRef.afterClosed()
-            .subscribe((result) =>
-            {
-                console.log('Compose dialog was closed!');
-            });
-    }
+    dialogRef.afterClosed()
+      .subscribe((result) => {
+        console.log('Compose dialog was closed!');
+      });
+  }
 }

@@ -135,7 +135,7 @@ export class RegisterResponsableComponent implements OnInit {
     }
 
     // Método para capturar la cédula del formulario
-    
+
     capturarCedulaYBuscar(): void {
         const cedulaValue = this.horizontalStepperForm.get('step1.cedula').value;
         const correoValue = this.horizontalStepperForm.get('step1.correo').value;
@@ -167,7 +167,7 @@ export class RegisterResponsableComponent implements OnInit {
                 }
             );
     }
-    
+
 
     buscarPersonaPorCorreoYMostrarMensaje(cedulaValue: string, correoValue: string): void {
         this.personaService.buscarPersonaPorCorreo(correoValue)
@@ -180,51 +180,51 @@ export class RegisterResponsableComponent implements OnInit {
                             title: 'Ocurrió un error',
                             message: `La cédula y correo ya han sido registrados`,
                             actions: {
-                              confirm: {
-                                show: true,
-                                label: 'OK',
-                                color: 'primary'
-                              },
-                              cancel: {
-                                show: false,
-                                label: 'Cancelar'
-                              }
+                                confirm: {
+                                    show: true,
+                                    label: 'OK',
+                                    color: 'primary'
+                                },
+                                cancel: {
+                                    show: false,
+                                    label: 'Cancelar'
+                                }
                             }
-                          });
-                
-                          confirmationDialog.afterClosed().subscribe(result => {
+                        });
+
+                        confirmationDialog.afterClosed().subscribe(result => {
                             if (result === 'confirmed') {
-                              this.cedulaField.nativeElement.focus();
+                                this.cedulaField.nativeElement.focus();
                             }
-                          });
-                          this.canProceedToNextStep = false;
-                          console.log('Paso: ' +  this.canProceedToNextStep)
+                        });
+                        this.canProceedToNextStep = false;
+                        console.log('Paso: ' + this.canProceedToNextStep)
                     } else {
                         console.log(`Persona con correo ${correoValue} no encontrada.`);
                         this.correoRegistrado = false;
                         const confirmationDialog = this.confirmationService.open({
                             title: 'Ocurrió un error',
-                            message: 'La cédula ' + cedulaValue +' ya ha sido registrada',
+                            message: 'La cédula ' + cedulaValue + ' ya ha sido registrada',
                             actions: {
-                              confirm: {
-                                show: true,
-                                label: 'OK',
-                                color: 'primary'
-                              },
-                              cancel: {
-                                show: false,
-                                label: 'Cancelar'
-                              }
+                                confirm: {
+                                    show: true,
+                                    label: 'OK',
+                                    color: 'primary'
+                                },
+                                cancel: {
+                                    show: false,
+                                    label: 'Cancelar'
+                                }
                             }
-                          });
-                
-                          confirmationDialog.afterClosed().subscribe(result => {
+                        });
+
+                        confirmationDialog.afterClosed().subscribe(result => {
                             if (result === 'confirmed') {
-                              this.cedulaField.nativeElement.focus();
+                                this.cedulaField.nativeElement.focus();
                             }
-                          });
-                          this.canProceedToNextStep = false;
-                          console.log('Paso: ' +  this.canProceedToNextStep)
+                        });
+                        this.canProceedToNextStep = false;
+                        console.log('Paso: ' + this.canProceedToNextStep)
                     }
                 },
                 (error) => {
@@ -242,35 +242,35 @@ export class RegisterResponsableComponent implements OnInit {
                     if (encontrada) {
                         console.log(`Persona con correo ${correoValue} encontrada.`);
                         this.correoRegistrado = true;
-                        
+
                         const confirmationDialog = this.confirmationService.open({
                             title: 'Ocurrió un error',
                             message: 'El correo ' + correoValue + ' ya ha sido registrado',
                             actions: {
-                              confirm: {
-                                show: true,
-                                label: 'OK',
-                                color: 'primary'
-                              },
-                              cancel: {
-                                show: false,
-                                label: 'Cancelar'
-                              }
+                                confirm: {
+                                    show: true,
+                                    label: 'OK',
+                                    color: 'primary'
+                                },
+                                cancel: {
+                                    show: false,
+                                    label: 'Cancelar'
+                                }
                             }
-                          });
-                
-                          confirmationDialog.afterClosed().subscribe(result => {
+                        });
+
+                        confirmationDialog.afterClosed().subscribe(result => {
                             if (result === 'confirmed') {
-                              this.correoField.nativeElement.focus();
+                                this.correoField.nativeElement.focus();
                             }
-                          });
-                          this.canProceedToNextStep = false;
-                          console.log('Paso: ' +  this.canProceedToNextStep)
+                        });
+                        this.canProceedToNextStep = false;
+                        console.log('Paso: ' + this.canProceedToNextStep)
                     } else {
                         console.log(`Persona con correo ${correoValue} no encontrada.`);
                         this.correoRegistrado = false;
                         this.canProceedToNextStep = true;
-                        console.log('Paso: ' +  this.canProceedToNextStep)
+                        console.log('Paso: ' + this.canProceedToNextStep)
                         if (this.canProceedToNextStep) {
                             this.horizontalStepper.next(); // Avanzar al siguiente paso
                         }
@@ -347,29 +347,29 @@ export class RegisterResponsableComponent implements OnInit {
                             message: 'Registro de responsable de ventas exitosa',
                             icon: {
                                 show: true,
-                                name : 'heroicons_outline:check-circle',
+                                name: 'heroicons_outline:check-circle',
                                 color: 'success',
                             },
                             actions: {
-                              confirm: {
-                                show: true,
-                                label: 'Ver lista',
-                                color: 'primary'
-                              },
-                              cancel: {
-                                show: true,
-                                label: 'Registrar nuevo'
-                              }
+                                confirm: {
+                                    show: true,
+                                    label: 'Ver lista',
+                                    color: 'primary'
+                                },
+                                cancel: {
+                                    show: true,
+                                    label: 'Registrar nuevo'
+                                }
                             }
-                          });
-                
-                          confirmationDialog.afterClosed().subscribe(result => {
+                        });
+
+                        confirmationDialog.afterClosed().subscribe(result => {
                             if (result === 'confirmed') {
                                 this.router.navigate(['/list-responsables']);
                             } else {
                                 this.horizontalStepper.reset();
                             }
-                          });
+                        });
                     },
                     (error) => {
                         this.alert = {

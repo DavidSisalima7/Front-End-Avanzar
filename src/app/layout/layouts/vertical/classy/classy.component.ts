@@ -177,7 +177,7 @@ export class ClassyLayoutComponent implements OnInit, OnDestroy
                                 id   : 'list-resp',
                                 title: 'Responsables Ventas',
                                 type : 'basic',
-                                icon : 'heroicons_outline:document-text',
+                                icon : 'heroicons_outline:user-group',
                                 link : '/list-responsables'
                             },
 
@@ -185,14 +185,14 @@ export class ClassyLayoutComponent implements OnInit, OnDestroy
                                 id   : 'list-empren',
                                 title: 'Emprendedoras',
                                 type : 'basic',
-                                icon : 'heroicons_outline:document-text',
+                                icon : 'heroicons_outline:user-group',
                                 link : '/list-emprend'
                             },
                             {
                                 id   : 'list-clie',
                                 title: 'Clientes',
                                 type : 'basic',
-                                icon : 'heroicons_outline:document-text',
+                                icon : 'heroicons_outline:user-group',
                                 link : '/list-clie'
                             }
                         ]
@@ -215,7 +215,7 @@ export class ClassyLayoutComponent implements OnInit, OnDestroy
 
                             {
                                 id   : 'settings',
-                                title: 'Cofiguración',
+                                title: 'Configuración',
                                 type : 'basic',
                                 icon : 'heroicons_outline:cog-6-tooth',
                                 link : '/config-admin'
@@ -257,7 +257,7 @@ export class ClassyLayoutComponent implements OnInit, OnDestroy
                                 id   : 'list-emprendedoras',
                                 title: 'Emprendedoras',
                                 type : 'basic',
-                                icon : 'heroicons_outline:document-text',
+                                icon : 'heroicons_outline:user-group',
                                 link : '/list-empre-resp'
                             },
 
@@ -265,7 +265,7 @@ export class ClassyLayoutComponent implements OnInit, OnDestroy
                                 id   : 'list-productos',
                                 title: 'Productos',
                                 type : 'basic',
-                                icon : 'heroicons_outline:document-text',
+                                icon : 'heroicons_outline:shopping-cart',
                                 link : '/list-prod-resp'
                             },
 
@@ -273,7 +273,7 @@ export class ClassyLayoutComponent implements OnInit, OnDestroy
                                 id   : 'list-servicios',
                                 title: 'Servicios',
                                 type : 'basic',
-                                icon : 'heroicons_outline:document-text',
+                                icon : 'heroicons_outline:shopping-cart',
                                 link : '/list-serv-resp'
                             }
                         ]
@@ -313,7 +313,7 @@ export class ClassyLayoutComponent implements OnInit, OnDestroy
 
                             {
                                 id   : 'settings',
-                                title: 'Cofiguración',
+                                title: 'Configuración',
                                 type : 'basic',
                                 icon : 'heroicons_outline:cog-6-tooth',
                                 link : '/config-resp'
@@ -355,7 +355,7 @@ export class ClassyLayoutComponent implements OnInit, OnDestroy
                                     id   : 'list-prod',
                                     title: 'Productos',
                                     type : 'basic',
-                                    icon : 'heroicons_outline:document-text',
+                                    icon : 'heroicons_outline:shopping-cart',
                                     link : '/list-empre-prod'
                                 },
     
@@ -363,15 +363,15 @@ export class ClassyLayoutComponent implements OnInit, OnDestroy
                                     id   : 'list-serv',
                                     title: 'Servicios',
                                     type : 'basic',
-                                    icon : 'heroicons_outline:document-text',
+                                    icon : 'heroicons_outline:shopping-cart',
                                     link : '/list-empre-serv'
                                 },
 
-                                {
+                                {                                           
                                     id   : 'ecommerce',
                                     title: 'Publicaciones Productos',
                                     type : 'basic',
-                                    icon : 'heroicons_outline:document-text',
+                                    icon : 'heroicons_outline:chat-bubble-left-right',
                                     link : '/ecommerce'
                                 },
 
@@ -379,7 +379,7 @@ export class ClassyLayoutComponent implements OnInit, OnDestroy
                                     id   : 'ecommerce-servicios',
                                     title: 'Publicaciones Servicios',
                                     type : 'basic',
-                                    icon : 'heroicons_outline:document-text',
+                                    icon : 'heroicons_outline:chat-bubble-left-right',
                                     link : '/ecommerce-servicios'
                                 }
                             ]
@@ -421,7 +421,7 @@ export class ClassyLayoutComponent implements OnInit, OnDestroy
 
                                 {
                                     id   : 'settings',
-                                    title: 'Cofiguración',
+                                    title: 'Configuración',
                                     type : 'basic',
                                     icon : 'heroicons_outline:cog-6-tooth',
                                     link : '/config-empre'
@@ -445,14 +445,14 @@ export class ClassyLayoutComponent implements OnInit, OnDestroy
                                     id   : 'productos',
                                     title: 'Productos',
                                     type : 'basic',
-                                    icon : 'heroicons_outline:chart-pie',
+                                    icon : 'heroicons_outline:shopping-cart',
                                     link : '/prod-cli'
                                 },
                                 {
                                     id   : 'servicios',
                                     title: 'Servicios',
                                     type : 'basic',
-                                    icon : 'heroicons_outline:chart-pie',
+                                    icon : 'heroicons_outline:shopping-cart',
                                     link : '/serv-cli'
                                 }
                             ],
@@ -477,7 +477,7 @@ export class ClassyLayoutComponent implements OnInit, OnDestroy
 
                                 {
                                     id   : 'settings',
-                                    title: 'Cofiguración',
+                                    title: 'Configuración',
                                     type : 'basic',
                                     icon : 'heroicons_outline:cog-6-tooth',
                                     link : '/config-cli'

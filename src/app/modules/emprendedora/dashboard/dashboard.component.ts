@@ -17,17 +17,16 @@ import { User } from 'app/core/user/user.types';
 import { UserComponent } from 'app/layout/common/user/user.component';
 
 @Component({
-    selector     : 'dashboard-emprendedora',
-    standalone   : true,
+    selector: 'dashboard-emprendedora',
+    standalone: true,
     changeDetection: ChangeDetectionStrategy.OnPush,
-    templateUrl  : './dashboard.component.html',
+    templateUrl: './dashboard.component.html',
     encapsulation: ViewEncapsulation.None,
-    imports        : [TranslocoModule, UserComponent, MatIconModule, MatButtonModule, MatRippleModule, MatMenuModule, MatTabsModule, MatButtonToggleModule, NgApexchartsModule, NgFor, NgIf, MatTableModule, NgClass, CurrencyPipe],
+    imports: [TranslocoModule, UserComponent, MatIconModule, MatButtonModule, MatRippleModule, MatMenuModule, MatTabsModule, MatButtonToggleModule, NgApexchartsModule, NgFor, NgIf, MatTableModule, NgClass, CurrencyPipe],
 
 })
 
-export class DashboardEmprendedoraComponentimplements implements OnInit, OnDestroy
-{
+export class DashboardEmprendedoraComponentimplements implements OnInit, OnDestroy {
     chartGithubIssues: ApexOptions = {};
     chartTaskDistribution: ApexOptions = {};
     chartBudgetDistribution: ApexOptions = {};
@@ -38,7 +37,7 @@ export class DashboardEmprendedoraComponentimplements implements OnInit, OnDestr
     user: User;
     selectedProject: string = 'ACME Corp. Backend App';
     private _unsubscribeAll: Subject<any> = new Subject<any>();
-
+    nombreUsuario: string;
     /**
      * Constructor
      */
@@ -46,8 +45,7 @@ export class DashboardEmprendedoraComponentimplements implements OnInit, OnDestr
         private _dashboardService: dashboardService,
         private _router: Router,
         private _userService: UserService,
-    )
-    {
+    ) {
     }
 
     // -----------------------------------------------------------------------------------------------------
@@ -57,13 +55,14 @@ export class DashboardEmprendedoraComponentimplements implements OnInit, OnDestr
     /**
      * On init
      */
-    ngOnInit(): void
-    {
+    ngOnInit(): void {
+        const parsedData = JSON.parse(localStorage.getItem('user'));
+        this.nombreUsuario = parsedData.persona.primer_nombre;
+
         // Get the data
         this._dashboardService.data$
             .pipe(takeUntil(this._unsubscribeAll))
-            .subscribe((data) =>
-            {
+            .subscribe((data) => {
                 // Store the data
                 this.data = data;
 
@@ -73,8 +72,7 @@ export class DashboardEmprendedoraComponentimplements implements OnInit, OnDestr
 
         this._userService.user$
             .pipe((takeUntil(this._unsubscribeAll)))
-            .subscribe((user: User) =>
-            {
+            .subscribe((user: User) => {
                 this.user = user;
             });
 
@@ -82,12 +80,10 @@ export class DashboardEmprendedoraComponentimplements implements OnInit, OnDestr
         window['Apex'] = {
             chart: {
                 events: {
-                    mounted: (chart: any, options?: any): void =>
-                    {
+                    mounted: (chart: any, options?: any): void => {
                         this._fixSvgFill(chart.el);
                     },
-                    updated: (chart: any, options?: any): void =>
-                    {
+                    updated: (chart: any, options?: any): void => {
                         this._fixSvgFill(chart.el);
                     },
                 },
@@ -98,8 +94,7 @@ export class DashboardEmprendedoraComponentimplements implements OnInit, OnDestr
     /**
      * On destroy
      */
-    ngOnDestroy(): void
-    {
+    ngOnDestroy(): void {
         // Unsubscribe from all subscriptions
         this._unsubscribeAll.next(null);
         this._unsubscribeAll.complete();
@@ -115,8 +110,7 @@ export class DashboardEmprendedoraComponentimplements implements OnInit, OnDestr
      * @param index
      * @param item
      */
-    trackByFn(index: number, item: any): any
-    {
+    trackByFn(index: number, item: any): any {
         return item.id || index;
     }
 
@@ -134,8 +128,7 @@ export class DashboardEmprendedoraComponentimplements implements OnInit, OnDestr
      * @param element
      * @private
      */
-    private _fixSvgFill(element: Element): void
-    {
+    private _fixSvgFill(element: Element): void {
         // Current URL
         const currentURL = this._router.url;
 
@@ -144,8 +137,7 @@ export class DashboardEmprendedoraComponentimplements implements OnInit, OnDestr
         // 3. Insert the 'currentURL' at the front of the 'fill' attribute value
         Array.from(element.querySelectorAll('*[fill]'))
             .filter(el => el.getAttribute('fill').indexOf('url(') !== -1)
-            .forEach((el) =>
-            {
+            .forEach((el) => {
                 const attrVal = el.getAttribute('fill');
                 el.setAttribute('fill', `url(${currentURL}${attrVal.slice(attrVal.indexOf('#'))}`);
             });
@@ -156,35 +148,34 @@ export class DashboardEmprendedoraComponentimplements implements OnInit, OnDestr
      *
      * @private
      */
-    private _prepareChartData(): void
-    {
+    private _prepareChartData(): void {
         // Github issues
         this.chartGithubIssues = {
-            chart      : {
+            chart: {
                 fontFamily: 'inherit',
-                foreColor : 'inherit',
-                height    : '100%',
-                type      : 'line',
-                toolbar   : {
+                foreColor: 'inherit',
+                height: '100%',
+                type: 'line',
+                toolbar: {
                     show: false,
                 },
-                zoom      : {
+                zoom: {
                     enabled: false,
                 },
             },
-            colors     : ['#64748B', '#94A3B8'],
-            dataLabels : {
-                enabled        : true,
+            colors: ['#64748B', '#94A3B8'],
+            dataLabels: {
+                enabled: true,
                 enabledOnSeries: [0],
-                background     : {
+                background: {
                     borderWidth: 0,
                 },
             },
-            grid       : {
+            grid: {
                 borderColor: 'var(--fuse-border)',
             },
-            labels     : this.data.githubIssues.labels,
-            legend     : {
+            labels: this.data.githubIssues.labels,
+            legend: {
                 show: false,
             },
             plotOptions: {
@@ -192,42 +183,42 @@ export class DashboardEmprendedoraComponentimplements implements OnInit, OnDestr
                     columnWidth: '50%',
                 },
             },
-            series     : this.data.githubIssues.series,
-            states     : {
+            series: this.data.githubIssues.series,
+            states: {
                 hover: {
                     filter: {
-                        type : 'darken',
+                        type: 'darken',
                         value: 0.75,
                     },
                 },
             },
-            stroke     : {
+            stroke: {
                 width: [3, 0],
             },
-            tooltip    : {
+            tooltip: {
                 followCursor: true,
-                theme       : 'dark',
+                theme: 'dark',
             },
-            xaxis      : {
+            xaxis: {
                 axisBorder: {
                     show: false,
                 },
-                axisTicks : {
+                axisTicks: {
                     color: 'var(--fuse-border)',
                 },
-                labels    : {
+                labels: {
                     style: {
                         colors: 'var(--fuse-text-secondary)',
                     },
                 },
-                tooltip   : {
+                tooltip: {
                     enabled: false,
                 },
             },
-            yaxis      : {
+            yaxis: {
                 labels: {
                     offsetX: -16,
-                    style  : {
+                    style: {
                         colors: 'var(--fuse-text-secondary)',
                     },
                 },
@@ -236,20 +227,20 @@ export class DashboardEmprendedoraComponentimplements implements OnInit, OnDestr
 
         // Task distribution
         this.chartTaskDistribution = {
-            chart      : {
+            chart: {
                 fontFamily: 'inherit',
-                foreColor : 'inherit',
-                height    : '100%',
-                type      : 'polarArea',
-                toolbar   : {
+                foreColor: 'inherit',
+                height: '100%',
+                type: 'polarArea',
+                toolbar: {
                     show: false,
                 },
-                zoom      : {
+                zoom: {
                     enabled: false,
                 },
             },
-            labels     : this.data.taskDistribution.labels,
-            legend     : {
+            labels: this.data.taskDistribution.labels,
+            legend: {
                 position: 'bottom',
             },
             plotOptions: {
@@ -257,36 +248,36 @@ export class DashboardEmprendedoraComponentimplements implements OnInit, OnDestr
                     spokes: {
                         connectorColors: 'var(--fuse-border)',
                     },
-                    rings : {
+                    rings: {
                         strokeColor: 'var(--fuse-border)',
                     },
                 },
             },
-            series     : this.data.taskDistribution.series,
-            states     : {
+            series: this.data.taskDistribution.series,
+            states: {
                 hover: {
                     filter: {
-                        type : 'darken',
+                        type: 'darken',
                         value: 0.75,
                     },
                 },
             },
-            stroke     : {
+            stroke: {
                 width: 2,
             },
-            theme      : {
+            theme: {
                 monochrome: {
-                    enabled       : true,
-                    color         : '#93C5FD',
+                    enabled: true,
+                    color: '#93C5FD',
                     shadeIntensity: 0.75,
-                    shadeTo       : 'dark',
+                    shadeTo: 'dark',
                 },
             },
-            tooltip    : {
+            tooltip: {
                 followCursor: true,
-                theme       : 'dark',
+                theme: 'dark',
             },
-            yaxis      : {
+            yaxis: {
                 labels: {
                     style: {
                         colors: 'var(--fuse-text-secondary)',
@@ -297,95 +288,95 @@ export class DashboardEmprendedoraComponentimplements implements OnInit, OnDestr
 
         // Budget distribution
         this.chartBudgetDistribution = {
-            chart      : {
+            chart: {
                 fontFamily: 'inherit',
-                foreColor : 'inherit',
-                height    : '100%',
-                type      : 'radar',
-                sparkline : {
+                foreColor: 'inherit',
+                height: '100%',
+                type: 'radar',
+                sparkline: {
                     enabled: true,
                 },
             },
-            colors     : ['#818CF8'],
-            dataLabels : {
-                enabled   : true,
-                formatter : (val: number): string | number => `${val}%`,
+            colors: ['#818CF8'],
+            dataLabels: {
+                enabled: true,
+                formatter: (val: number): string | number => `${val}%`,
                 textAnchor: 'start',
-                style     : {
-                    fontSize  : '13px',
+                style: {
+                    fontSize: '13px',
                     fontWeight: 500,
                 },
                 background: {
                     borderWidth: 0,
-                    padding    : 4,
+                    padding: 4,
                 },
-                offsetY   : -15,
+                offsetY: -15,
             },
-            markers    : {
+            markers: {
                 strokeColors: '#818CF8',
-                strokeWidth : 4,
+                strokeWidth: 4,
             },
             plotOptions: {
                 radar: {
                     polygons: {
-                        strokeColors   : 'var(--fuse-border)',
+                        strokeColors: 'var(--fuse-border)',
                         connectorColors: 'var(--fuse-border)',
                     },
                 },
             },
-            series     : this.data.budgetDistribution.series,
-            stroke     : {
+            series: this.data.budgetDistribution.series,
+            stroke: {
                 width: 2,
             },
-            tooltip    : {
+            tooltip: {
                 theme: 'dark',
-                y    : {
+                y: {
                     formatter: (val: number): string => `${val}%`,
                 },
             },
-            xaxis      : {
-                labels    : {
-                    show : true,
+            xaxis: {
+                labels: {
+                    show: true,
                     style: {
-                        fontSize  : '12px',
+                        fontSize: '12px',
                         fontWeight: '500',
                     },
                 },
                 categories: this.data.budgetDistribution.categories,
             },
-            yaxis      : {
-                max       : (max: number): number => parseInt((max + 10).toFixed(0), 10),
+            yaxis: {
+                max: (max: number): number => parseInt((max + 10).toFixed(0), 10),
                 tickAmount: 7,
             },
         };
 
         // Weekly expenses
         this.chartWeeklyExpenses = {
-            chart  : {
+            chart: {
                 animations: {
                     enabled: false,
                 },
                 fontFamily: 'inherit',
-                foreColor : 'inherit',
-                height    : '100%',
-                type      : 'line',
-                sparkline : {
+                foreColor: 'inherit',
+                height: '100%',
+                type: 'line',
+                sparkline: {
                     enabled: true,
                 },
             },
-            colors : ['#22D3EE'],
-            series : this.data.weeklyExpenses.series,
-            stroke : {
+            colors: ['#22D3EE'],
+            series: this.data.weeklyExpenses.series,
+            stroke: {
                 curve: 'smooth',
             },
             tooltip: {
                 theme: 'dark',
             },
-            xaxis  : {
-                type      : 'category',
+            xaxis: {
+                type: 'category',
                 categories: this.data.weeklyExpenses.labels,
             },
-            yaxis  : {
+            yaxis: {
                 labels: {
                     formatter: (val): string => `$${val}`,
                 },
@@ -394,31 +385,31 @@ export class DashboardEmprendedoraComponentimplements implements OnInit, OnDestr
 
         // Monthly expenses
         this.chartMonthlyExpenses = {
-            chart  : {
+            chart: {
                 animations: {
                     enabled: false,
                 },
                 fontFamily: 'inherit',
-                foreColor : 'inherit',
-                height    : '100%',
-                type      : 'line',
-                sparkline : {
+                foreColor: 'inherit',
+                height: '100%',
+                type: 'line',
+                sparkline: {
                     enabled: true,
                 },
             },
-            colors : ['#4ADE80'],
-            series : this.data.monthlyExpenses.series,
-            stroke : {
+            colors: ['#4ADE80'],
+            series: this.data.monthlyExpenses.series,
+            stroke: {
                 curve: 'smooth',
             },
             tooltip: {
                 theme: 'dark',
             },
-            xaxis  : {
-                type      : 'category',
+            xaxis: {
+                type: 'category',
                 categories: this.data.monthlyExpenses.labels,
             },
-            yaxis  : {
+            yaxis: {
                 labels: {
                     formatter: (val): string => `$${val}`,
                 },
@@ -427,31 +418,31 @@ export class DashboardEmprendedoraComponentimplements implements OnInit, OnDestr
 
         // Yearly expenses
         this.chartYearlyExpenses = {
-            chart  : {
+            chart: {
                 animations: {
                     enabled: false,
                 },
                 fontFamily: 'inherit',
-                foreColor : 'inherit',
-                height    : '100%',
-                type      : 'line',
-                sparkline : {
+                foreColor: 'inherit',
+                height: '100%',
+                type: 'line',
+                sparkline: {
                     enabled: true,
                 },
             },
-            colors : ['#FB7185'],
-            series : this.data.yearlyExpenses.series,
-            stroke : {
+            colors: ['#FB7185'],
+            series: this.data.yearlyExpenses.series,
+            stroke: {
                 curve: 'smooth',
             },
             tooltip: {
                 theme: 'dark',
             },
-            xaxis  : {
-                type      : 'category',
+            xaxis: {
+                type: 'category',
                 categories: this.data.yearlyExpenses.labels,
             },
-            yaxis  : {
+            yaxis: {
                 labels: {
                     formatter: (val): string => `$${val}`,
                 },

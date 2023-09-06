@@ -18,6 +18,7 @@ import Swal from 'sweetalert2';
 //DIALOGOS
 import { MatDialog } from '@angular/material/dialog';
 import { MailboxeditarComponent} from 'app/modules/responsable/editar/editar.component';
+import { FuseConfirmationService } from '@fuse/services/confirmation';
 
 
 @Component({
@@ -42,7 +43,7 @@ export class ListEmprendedorasResponsableComponent
   isLoading: boolean = false;
 
     constructor(private usuarioService: UserService, private _router: Router,
-      private productoService: ProductosService,private _matDialog: MatDialog)
+      private productoService: ProductosService,private _matDialog: MatDialog, private confirmationService: FuseConfirmationService,)
     {
     }
     ngOnInit(): void {
@@ -107,26 +108,77 @@ export class ListEmprendedorasResponsableComponent
       (usuarioEncontrado) => {
         this.verficarEstado=usuarioEncontrado;
       if (this.verficarEstado === null){
-      Swal.fire(
-        'Acción no disponible',
-        'El usuario ya se encuentra inactivo',
-        'error',
-            );
-      
-      }else{
-        this.usuarioService.eliminadoLogico(this.selectedEmprendedora).subscribe(
-          (datapersencontrada) => {
-            this.listarUsuariosEmp();
-            Swal.fire(
-              'Acción Exitosa',
-              'Usuario Desactivado.',
-              'success'
-                  );
-            return;
-          } );
-       
-      }
-    });
+      const confirmationDialog = this.confirmationService.open({
+            title: 'Ocurrió un error',
+            message: 'Acción no disponible, El usuario ya se encuentra inactivo',
+            actions: {
+              confirm: {
+                show: true,
+                label: 'OK',
+                color: 'primary'
+              },
+              cancel: {
+                show: false,
+                label: 'Cancelar'
+              }
+            }
+          });
+
+        } else {
+          const confirmationDialog = this.confirmationService.open({
+            title: 'Confirmación',
+            message: '¿Está seguro de desactivar a este usuario?',
+            icon: {
+              show: true,
+              name: 'heroicons_outline:information-circle',
+              color: 'info',
+            },
+            actions: {
+              confirm: {
+                show: true,
+                label: 'Si estoy seguro',
+                color: 'primary'
+              },
+              cancel: {
+                show: true,
+                label: 'Cancelar'
+              }
+            }
+          });
+          confirmationDialog.afterClosed().subscribe(result => {
+            if (result === 'confirmed') {
+              this.usuarioService.eliminadoLogico(this.selectedEmprendedora).subscribe(
+                (datapersencontrada) => {
+                  this.listarUsuariosEmp();
+                  const confirmationDialog = this.confirmationService.open({
+                    title: 'Éxito',
+                    message: 'El usuario ha sido desactivado',
+                    icon: {
+                      show: true,
+                      name: 'heroicons_outline:check-circle',
+                      color: 'success',
+                    },
+                    actions: {
+                      confirm: {
+                        show: true,
+                        label: 'OK',
+                        color: 'primary'
+                      },
+                      cancel: {
+                        show: false,
+                        label: 'Cancelar'
+                      }
+                    }
+                  });
+                });
+            } else {
+
+            }
+          });
+
+
+        }
+      });
   }
 
  ////////////////////////////////////// Inicio  Filtrados de Tabla
