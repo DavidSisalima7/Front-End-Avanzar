@@ -281,6 +281,7 @@ export class ModalProductoComponent implements OnInit {
         }
 
         forkJoin([vendedor$, categoriaProducto$, categoria$]).subscribe(([vendedor, categoriaProducto, categoria]) => {
+            console.log(vendedor);
             this.publication.vendedor = vendedor;
             this.publication.categoria = categoria;
             this.publication.tituloPublicacion = post.tituloPublicacion;
@@ -298,14 +299,16 @@ export class ModalProductoComponent implements OnInit {
             this.producto.descripcionProducto = post.descripcionPublicacion;
             this.producto.estadoProducto = true;
 
-
+            console.log("Hola" , this.publication.vendedor  );
             // Llamar al servicio para guardar el producto
             this._productoService.saveProducto(this.producto).subscribe((data) => {
                 this.publication.productos = data;
 
+
                 // Llamar al servicio para crear la publicación con las imágenes
                 this._inventoryService.createPublicacion(this.publication, imagenesSeleccionadas).subscribe((newPublicacion) => {
                     //this.publication = newPublicacion;
+                    console.log("Ulti", newPublicacion);
                     this.showFlashMessage('success');
                     this.selectedPublicacionForm.enable();
                 });

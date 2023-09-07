@@ -19,7 +19,7 @@ export class VendedorService {
   
 
   buscarVendedoraId(idVendedora: any): Observable<Vendedor> {
-    return this.http.get<Vendedor>(`${this.baseUrl}/buscar/${idVendedora}`)
+    return this.http.get<Vendedor>(`${this.baseUrl}/usuario/${idVendedora}`)
   }
 
 }

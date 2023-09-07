@@ -366,6 +366,7 @@ export class InventoryListComponent implements OnInit, AfterViewInit, OnDestroy 
                 // Show a success message or perform further actions
                 this.showFlashMessage('success');
                 this._changeDetectorRef.detectChanges();
+                
             });
         });
     });

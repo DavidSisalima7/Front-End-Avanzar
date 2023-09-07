@@ -361,9 +361,8 @@ export class RegisterEmpreRespComponent implements OnInit {
                             console.log(dataVendedora);
 
                             this.detalleMembresia.vendedor = dataVendedora;
-                            this.detalleSubscripcion.updateDetalleSubscripcion(dataVendedora.detalleSubscripcion.idDetalle_subscripcion, this.detalleMembresia).subscribe(dataDetalle => {
-                                console.log("Update", dataDetalle);
-                            });
+                            console.log(dataVendedora)
+                            
 
                             const confirmationDialog = this.confirmationService.open({
                                 title: 'Éxito',

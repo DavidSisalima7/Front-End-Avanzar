@@ -6,5 +6,4 @@ export class Vendedor {
     idVendedor: number;
     nombreEmprendimiento:string;
     usuario ?: Usuario;
-    detalleSubscripcion ?: DetalleSubscripcion;
 }
