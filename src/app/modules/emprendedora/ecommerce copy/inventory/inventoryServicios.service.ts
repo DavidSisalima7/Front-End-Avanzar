@@ -178,12 +178,19 @@ export class InventoryServiceServicios
     {
         const formData: FormData = new FormData();
         formData.append('publicacion', JSON.stringify(publicacion));
-    
+
         if (files && files.length > 0) {
-          for (const file of files) {
-            formData.append('files', file, file.name);
+            // Verifica las extensiones de los archivos
+            const allowedExtensions = ['.png', '.jpg', '.jpeg'];
+            for (const file of files) {
+              const fileExtension = file.name.slice(((file.name.lastIndexOf(".") - 1) >>> 0) + 2).toLowerCase();
+              if (!allowedExtensions.includes(`.${fileExtension}`)) {
+                // Usa throwError para emitir un error observable
+                return throwError('Uno o más archivos no son imágenes PNG o JPG.');
+              }
+              formData.append('files', file, file.name);
+            }
           }
-        }
     
         const headers = new HttpHeaders();
         headers.append('Content-Type', 'multipart/form-data'); //para que se acepten archivos multipart file
