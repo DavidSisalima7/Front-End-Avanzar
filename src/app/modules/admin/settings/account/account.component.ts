@@ -35,7 +35,9 @@ export const MY_FORMATS: MatDateFormats = {
   changeDetection: ChangeDetectionStrategy.OnPush,
   animations: fuseAnimations,
   standalone: true,
-  imports: [FormsModule, ReactiveFormsModule, MatFormFieldModule, MatIconModule, MatInputModule, TextFieldModule, MatSelectModule, MatOptionModule, MatButtonModule, CommonModule, MatDatepickerModule],
+  imports: [FormsModule, ReactiveFormsModule, MatFormFieldModule, MatIconModule, 
+    MatInputModule, TextFieldModule, MatSelectModule, MatOptionModule, MatButtonModule, 
+    CommonModule, MatDatepickerModule],
   providers: [DatePipe],
 })
 export class SettingsAccountComponent implements OnInit {

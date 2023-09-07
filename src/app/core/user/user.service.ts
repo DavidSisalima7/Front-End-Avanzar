@@ -193,4 +193,12 @@ export class UserService {
     return this._httpClient.put(`${this.url}/eliminar/${id}`, null);
   }
 
+  buscarUserId(idUsuario: any): Observable<User> {
+    return this._httpClient.get<User>(`${this.url}/buscarUser/${idUsuario}`)
+  }
+
+  updateUserById(id: number, usuario: User): Observable<object> {
+    return this._httpClient.put(`${this.url}/actualizar/${id}`, usuario);
+  }
+
 }

@@ -75,19 +75,20 @@
                             <!-- Summary -->
                             <div class="flex flex-col flex-auto p-6 bg-card shadow rounded-2xl overflow-hidden">
                                 <div class="flex items-start justify-between">
-                                    <div class="text-lg font-medium tracking-tight leading-6 truncate">Summary</div>
+                                  <div class="text-lg font-medium tracking-tight leading-6 truncate">Summary</div>
                                 </div>
                                 <div class="flex flex-col items-center mt-2">
-                                    <div
-                                        class="text-7xl sm:text-8xl font-bold tracking-tight leading-none text-blue-500">
-                                        21</div>
-                                    <div class="text-lg font-medium text-blue-600 dark:text-blue-500">Due Tasks</div>
-                                    <div class="flex items-baseline justify-center w-full mt-5 text-secondary">
-                                        <div class="text-md font-medium truncate">Completed:</div>
-                                        <div class="ml-1.5 text-lg font-semibold">13</div>
-                                    </div>
+                                  <div class="text-7xl sm:text-8xl font-bold tracking-tight leading-none text-blue-500">
+                                    {{ usuariosActivos }}
+                                  </div>
+                                  <div class="text-lg font-medium text-blue-600 dark:text-blue-500">Usuarios Activos</div>
+                                  <div class="flex items-baseline justify-center w-full mt-5 text-secondary">
+                                    <div class="text-md font-medium truncate">Total Usuarios:</div>
+                                    <div class="ml-1.5 text-lg font-semibold">{{ usuarios }}</div>
+                                  </div>
                                 </div>
-                            </div>
+                              </div>
+                              
                             <!-- Overdue -->
                             <div class="flex flex-col flex-auto p-6 bg-card shadow rounded-2xl overflow-hidden">
                                 <div class="flex items-start justify-between">
@@ -107,11 +108,11 @@
                                 <div class="flex flex-col items-center mt-2">
                                     <div
                                         class="text-7xl sm:text-8xl font-bold tracking-tight leading-none text-red-500">
-                                        17</div>
-                                    <div class="text-lg font-medium text-red-600 dark:text-red-500">Tasks</div>
+                                        {{ clientes }}</div>
+                                    <div class="text-lg font-medium text-red-600 dark:text-red-500">Clientes</div>
                                     <div class="flex items-baseline justify-center w-full mt-5 text-secondary">
-                                        <div class="text-md font-medium truncate">From yesterday:</div>
-                                        <div class="ml-1.5 text-lg font-semibold">9</div>
+                                        <div class="text-md font-medium truncate">Usuarios:</div>
+                                        <div class="ml-1.5 text-lg font-semibold">{{usuarios}}</div>
                                     </div>
                                 </div>
                             </div>
@@ -134,11 +135,11 @@
                                 <div class="flex flex-col items-center mt-2">
                                     <div
                                         class="text-7xl sm:text-8xl font-bold tracking-tight leading-none text-amber-500">
-                                        24</div>
-                                    <div class="text-lg font-medium text-amber-600 dark:text-amber-500">Open</div>
+                                        {{ publicacionProductos }} </div>
+                                    <div class="text-lg font-medium text-amber-600 dark:text-amber-500">Productos Publicados</div>
                                     <div class="flex items-baseline justify-center w-full mt-5 text-secondary">
-                                        <div class="text-md font-medium truncate">Closed today:</div>
-                                        <div class="ml-1.5 text-lg font-semibold">19</div>
+                                        <div class="text-md font-medium truncate">Total Publicaciones:</div>
+                                        <div class="ml-1.5 text-lg font-semibold">{{totalPublicaciones}}</div>
                                     </div>
                                 </div>
                             </div>
@@ -161,11 +162,11 @@
                                 <div class="flex flex-col items-center mt-2">
                                     <div
                                         class="text-7xl sm:text-8xl font-bold tracking-tight leading-none text-green-500">
-                                        38</div>
-                                    <div class="text-lg font-medium text-green-600 dark:text-green-500">Proposals</div>
+                                        {{ publicacionServicios }}</div>
+                                    <div class="text-lg font-medium text-green-600 dark:text-green-500">Servicios Publicados</div>
                                     <div class="flex items-baseline justify-center w-full mt-5 text-secondary">
-                                        <div class="text-md font-medium truncate">Implemented:</div>
-                                        <div class="ml-1.5 text-lg font-semibold">16</div>
+                                        <div class="text-md font-medium truncate">Publicaciones:</div>
+                                        <div class="ml-1.5 text-lg font-semibold">{{ totalPublicaciones }}</div>
                                     </div>
                                 </div>
                             </div>

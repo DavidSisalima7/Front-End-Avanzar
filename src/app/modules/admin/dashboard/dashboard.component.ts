@@ -15,6 +15,7 @@ import { Subject, takeUntil } from 'rxjs';
 import { UserService } from 'app/core/user/user.service';
 import { User } from 'app/core/user/user.types';
 import { UserComponent } from 'app/layout/common/user/user.component';
+import { PersonaService } from 'app/services/services/persona.service';
 
 @Component({
     selector: 'dashboard',
@@ -37,6 +38,13 @@ export class DashboardAdminComponent implements OnInit, OnDestroy {
     private _unsubscribeAll: Subject<any> = new Subject<any>();
     nombreUsuario: string;
 
+    clientes: number = 0;
+    usuarios: number = 0;
+    usuariosActivos: number = 0;
+    emprendedoras: number = 0;
+    publicacionProductos: number = 0;
+    publicacionServicios: number = 0;
+    totalPublicaciones: number = 0;
 
 
     /**
@@ -46,10 +54,26 @@ export class DashboardAdminComponent implements OnInit, OnDestroy {
         private _router: Router,
         private _dashboardService: dashboardService,
         private _userService: UserService,
+        private _personaService: PersonaService
     ) {
     }
 
     ngOnInit(): void {
+
+        this._personaService.obtenerResumen().subscribe((res) => {
+
+            this.clientes = res.clientes;
+            this.usuarios = res.usuarios;
+            this.publicacionProductos = res.publicacionproductos;
+            this.publicacionServicios = res.publicacionservicios;
+            this.totalPublicaciones = res.totalpublicaciones;
+            this.usuariosActivos = res.usuariosactivos;
+            this.emprendedoras = res.emprendedoras;
+
+            console.log(res);
+            
+        });
+
 
         const parsedData = JSON.parse(localStorage.getItem('user'));
         this.nombreUsuario = parsedData.persona.primer_nombre;

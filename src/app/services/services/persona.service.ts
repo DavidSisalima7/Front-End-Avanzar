@@ -23,4 +23,14 @@ export class PersonaService {
   buscarPersonaPorCorreo(correo: string): Observable<boolean> {
     return this.http.get<boolean>(`${this.url}/findByCorreo/${correo}`);
   }
+
+  updatePersonaById(id: number, persona: Persona): Observable<object> {
+    return this.http.put(`${this.url}/actualizar/${id}`, persona);
+  }
+
+  obtenerResumen(): Observable<any> {
+    const url = `${this.url}/data1`;
+    return this.http.get(url);
+  }
+
 }
