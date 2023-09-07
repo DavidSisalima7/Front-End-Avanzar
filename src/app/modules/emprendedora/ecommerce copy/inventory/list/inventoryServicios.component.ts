@@ -1,3 +1,4 @@
+
 import { AsyncPipe, CurrencyPipe, NgClass, NgFor, NgIf, NgTemplateOutlet } from '@angular/common';
 import { AfterViewInit, ChangeDetectionStrategy, ChangeDetectorRef, Component, OnDestroy, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
 import { FormsModule, ReactiveFormsModule, UntypedFormBuilder, UntypedFormControl, UntypedFormGroup, Validators } from '@angular/forms';
@@ -19,9 +20,8 @@ import {forkJoin, debounceTime, map, merge, Observable, Subject, switchMap, take
 import { Usuario } from 'app/services/models/usuario';
 import { Publicacion } from 'app/services/models/publicaciones';
 import { InventoryServiceServicios } from '../inventoryServicios.service';
-import { VendedorService } from 'app/services/services/vendedora.service';
+
 import { UserService } from 'app/core/user/user.service';
-import { CategoriaServicioService } from 'app/services/services/categoriaServicio.service';
 import { PublicacionesService } from 'app/services/services/publicaciones.service';
 import { ServiciosService } from 'app/services/services/servicios.service';
 import { User } from 'app/core/user/user.types';
@@ -29,7 +29,10 @@ import { ServicioModels } from 'app/services/models/servicios';
 
 //DIALOGOS
 import { MatDialog } from '@angular/material/dialog';
+import { CategoriaServicioService } from 'app/services/services/categoriaServicio.service';
+import { VendedorService } from 'app/services/services/vendedora.service';
 import { ModalServicioComponent } from 'app/modules/emprendedora/modal-servicio/modal-servicio.component';
+
 
 @Component({
     selector       : 'inventory-list',
@@ -312,111 +315,52 @@ export class InventoryListComponentService implements OnInit, AfterViewInit, OnD
         }
     }
 
-    /**
-     * Create product
-     */
-    createPublicacion(): void {
-        // Create the product
-        
-
-        this._inventoryService.createPublicacion().subscribe((newPublicacion) => {
-            // Go to new product
-            this.selectedPublicacion = newPublicacion;
-
-            // Fill the form
-            this.selectedPublicacionForm.patchValue(newPublicacion);
-
-            this.selectedPublicacionForm.get('vendedor').setValue(this.user.name);
-            // Mark for check
-            this._changeDetectorRef.markForCheck();
-        });
-    }
-
-
-    updateselectedPublicaciones(): void {
-        // Get the product object
-        const post = this.selectedPublicacionForm.getRawValue();
-
-        // Remove the currentImageIndex field
-        delete post.currentImageIndex;
-
-        this._vendedoraService.buscarVendedoraId(this.user.id).subscribe((vendedor) => {
-            post.vendedor = vendedor;
-            this.publication.vendedor = vendedor;
-        });
-
-
-        this._publicacionService.buscarPublicacionId(post.idPublicacion).subscribe((publicacion) => {
-            post.servicios = publicacion.servicios;
-            this.publication.servicios = publicacion.servicios; 
-            this.publication.servicios.miniaturaServicio = null;
-            this.publication.servicios.nombreServicio = post.nombreServicio;
-        });
-
-        this.publication.idPublicacion = post.idPublicacion;
-        this.publication.tituloPublicacion = post.tituloPublicacion;
-        this.publication.descripcionPublicacion = post.descripcionPublicacion;
-        this.publication.estado = post.estado;
-        this.publication.imagenes = post.imagenes;
-
-        this.publication.productos = null;
-
-        console.log(this.publication);
-
-        // Update the post on the server
-        this._inventoryService.updatePublicacion(post.idPublicacion, this.publication).subscribe(() => {
-            // Show a success message
-            this.showFlashMessage('success');
-        });
-
-        
-    }
-
+    
     /**
      * Update the selected product using the form data
      */
     updateselectedPublicacion(): void {
-        // Get the product object
-        const post = this.selectedPublicacionForm.getRawValue();
-        const vendedor$ = this._vendedoraService.buscarVendedoraId(this.user.id);
-        const publicacion$ = this._publicacionService.buscarPublicacionId(post.idPublicacion);
+    // Get the product object
+    const post = this.selectedPublicacionForm.getRawValue();
+    const vendedor$ = this._vendedoraService.buscarVendedoraId(this.user.id);
+    const publicacion$ = this._publicacionService.buscarPublicacionId(post.idPublicacion);
 
-        forkJoin([vendedor$,publicacion$]).subscribe(([vendedor, publicacion]) => {
-        this.publication.vendedor = vendedor;
-        this.publication.servicios = publicacion.servicios;
-        this.publication.servicios.miniaturaServicio = " ";
-        this.publication.tituloPublicacion=post.tituloPublicacion;
-        this.publication.descripcionPublicacion=post.descripcionPublicacion;
-        this.publication.estado=post.estado;
+    forkJoin([vendedor$,publicacion$]).subscribe(([vendedor, publicacion]) => {
+    this.publication.vendedor = vendedor;
+    this.publication.servicios = publicacion.servicios;
+    this.publication.servicios.miniaturaServicio = " ";
+    this.publication.tituloPublicacion=post.tituloPublicacion;
+    this.publication.descripcionPublicacion=post.descripcionPublicacion;
+    this.publication.estado=post.estado;
+    
+    console.log("datos",this.publication);
+    console.log("Categoria", post.categoria);
+    // Ahora que todos los datos están disponibles, puedes actualizar la publicación completa
+    this._inventoryService.updatePublicacion(post.idPublicacion, this.publication).subscribe(() => {
+        // Show a success message
+
+        this._categoriaService.getCategoriaServicio(post.categoria).subscribe((categoria) => {
+        this.categoriaExtraida = categoria;
+        console.log("Cat Seleccionada", this.categoriaExtraida);
         
-        console.log("datos",this.publication);
-        console.log("Categoria", post.categoria);
-        // Ahora que todos los datos están disponibles, puedes actualizar la publicación completa
-        this._inventoryService.updatePublicacion(post.idPublicacion, this.publication).subscribe(() => {
+        this.servicio.cantidadDisponible = post.cantidadDisponible;
+        this.servicio.tiempoServicio = post.tiempoServicio;
+        this.servicio.precioServicio = post.precioServicio;
+        this.servicio.nombreServicio = post.nombreServicio;
+        this.servicio.categoriaServicio = this.categoriaExtraida;
+
+        this._servicioService.actualizarServicioPublicaciones(this.publication.servicios.idServicio, this.servicio).subscribe(() => {
             // Show a success message
+            this.showFlashMessage('success');
+        });  
 
-            this._categoriaService.getCategoriaServicio(post.categoria).subscribe((categoria) => {
-            this.categoriaExtraida = categoria;
-            console.log("Cat Seleccionada", this.categoriaExtraida);
-            
-            this.servicio.cantidadDisponible = post.cantidadDisponible;
-            this.servicio.tiempoServicio = post.tiempoServicio;
-            this.servicio.precioServicio = post.precioServicio;
-            this.servicio.nombreServicio = post.nombreServicio;
-            this.servicio.categoriaServicio = this.categoriaExtraida;
-
-            this._servicioService.actualizarServicioPublicaciones(this.publication.servicios.idServicio, this.servicio).subscribe(() => {
-                // Show a success message
-                this.showFlashMessage('success');
-            });  
-
-        });
-
-        });
     });
 
-        
-    }
+    });
+});
+
+    
+}
 
     /**
      * Delete the selected post using the form data
@@ -492,3 +436,4 @@ export class InventoryListComponentService implements OnInit, AfterViewInit, OnD
             });
     }
 }
+

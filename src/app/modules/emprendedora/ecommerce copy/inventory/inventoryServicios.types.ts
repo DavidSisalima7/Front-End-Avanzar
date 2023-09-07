@@ -8,7 +8,7 @@ export interface InventarioProductos {
     estadoProducto: boolean;
     descripcionProducto: string;
     miniaturaProducto: string;
-    pesoProducto: number;
+    pesoProducto: string;
     categoriaProducto: CategoriaProducto;
 }
 
@@ -18,7 +18,7 @@ export interface InventarioServicios {
     descripcionServicio:string;
     precioServicio:string;
     estado:boolean;
-    tiempoServicio:number;
+    tiempoServicio:string;
     cantidadDisponible: number;
     miniaturaServicio:string;
     categoriaServicio:CategoriaServicio;

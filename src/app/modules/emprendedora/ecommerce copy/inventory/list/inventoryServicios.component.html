@@ -31,14 +31,11 @@
                 class="ml-4"
                 mat-flat-button
                 [color]="'primary'"
-                (click)="createPublicacion()">
+                (click)="openComposeDialog()">
                 <mat-icon [svgIcon]="'heroicons_outline:plus'"></mat-icon>
                 <span class="ml-2 mr-1">Nueva Publicación</span>
             </button>
 
-            <button class="mx-6" mat-flat-button [color]="'accent'" (click)="openComposeDialog()">
-                Abrir el dialogo
-              </button>
         </div>
     </div>
 
@@ -264,7 +261,7 @@
 
                                         <!-- Name -->
                                         <mat-form-field class="w-full">
-                                            <mat-label>Nombre del Producto</mat-label>
+                                            <mat-label>Nombre del Servicio</mat-label>
                                             <input
                                                 matInput
                                                 [formControlName]="'nombreServicio'">
@@ -332,9 +329,9 @@
                                     <div class="flex flex-col w-full lg:w-1/4 sm:pl-8">
                                         <mat-form-field class="w-full">
                                             <mat-label>Tiempo Servicio</mat-label>
-                                            <span matSuffix>horas.</span>
+                                            
                                             <input
-                                                type="number"
+                                                type="text"
                                                 matInput
                                                 [formControlName]="'tiempoServicio'">
                                         </mat-form-field>
