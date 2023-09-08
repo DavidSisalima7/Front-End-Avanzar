@@ -1,9 +1,13 @@
 
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, catchError, filter, map, Observable, of, switchMap, take, tap, throwError } from 'rxjs';
+import { BehaviorSubject, catchError, filter, map, Observable, of, Subject, switchMap, take, takeUntil, tap, throwError } from 'rxjs';
 import { CategoriaServicio, InventoryPagination, InventarioPublicaciones, CategoriaPublicacion, InventarioServicios } from './inventoryServicios.types';
 import { Publicacion } from 'app/services/models/publicaciones';
+import { Usuario } from 'app/services/models/usuario';
+import { UserService } from 'app/core/user/user.service';
+import { VendedorService } from 'app/services/services/vendedora.service';
+import { Vendedor } from 'app/services/models/vendedora';
 
 @Injectable({providedIn: 'root'})
 export class InventoryServiceServicios
@@ -16,8 +20,11 @@ export class InventoryServiceServicios
     private _pagination: BehaviorSubject<InventoryPagination | null> = new BehaviorSubject(null);
     private _publicaciones: BehaviorSubject<InventarioPublicaciones[] | null> = new BehaviorSubject(null);
     private _categoriesPublicacion: BehaviorSubject<CategoriaPublicacion[] | null> = new BehaviorSubject(null);
+    private _unsubscribeAll: Subject<any> = new Subject<any>();
+    user: Usuario;
 
-    constructor(private _httpClient: HttpClient)
+
+    constructor(private _httpClient: HttpClient,private _userService: UserService, private _vendedoraService: VendedorService)
     {
         this.listarServicio(); // Llama a tu método para cargar los datos iniciales
     }
@@ -59,13 +66,35 @@ export class InventoryServiceServicios
         return this._servicios.asObservable();
     }
 
-
+    /*
     listarServicio(): void {
         this._httpClient.get<InventarioPublicaciones[]>("http://localhost:8080/api/publicaciones/listaPublicacionesXServicios")
           .subscribe((data) => {
             this._publicaciones.next(data); // Actualiza el BehaviorSubject con los datos obtenidos
           });
-      }
+      }*/
+
+      listarServicio(): void {
+        // Usar takeUntil para gestionar la suscripción
+        this._userService.user$
+            .pipe(
+                takeUntil(this._unsubscribeAll),
+                switchMap((user: Usuario) => {
+                    this.user = user;
+                    // Usar switchMap para cancelar la suscripción anterior y realizar una nueva
+                    return this._vendedoraService.buscarVendedoraId(this.user.id);
+                })
+            )
+            .subscribe((vendedora: Vendedor) => {
+                const vendedorId = vendedora.idVendedor;
+                console.log(vendedorId);
+                const url = `http://localhost:8080/api/publicaciones/listaPublicacionesXServicios/${vendedorId}`;
+                this._httpClient.get<InventarioPublicaciones[]>(url)
+                    .subscribe((data) => {
+                        this._publicaciones.next(data); // Actualiza el BehaviorSubject con los datos obtenidos
+                    });
+            });
+    }
 
     get categoriesPublicacion$(): Observable<CategoriaPublicacion[]>
     {

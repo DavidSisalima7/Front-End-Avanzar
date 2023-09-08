@@ -133,10 +133,8 @@
                     <mat-form-field class="w-3/3 pr-2">
                         <mat-label>Tipo</mat-label>
                         <mat-select [formControlName]="'tipos'">
-                            <ng-container
-                                *ngFor="let tipos of categoriesPublicacion"
-                            >
-                                <mat-option [value]="tipos.idCategoria">
+                            <ng-container *ngFor="let tipos of categoriesPublicacion; let i = index">
+                                <mat-option [value]="tipos.idCategoria" [disabled]="i !== 1">
                                     {{ tipos.nombreCategoria }}
                                 </mat-option>
                             </ng-container>
@@ -145,6 +143,7 @@
                             Este campo es requerido*
                         </mat-error>
                     </mat-form-field>
+                    
 
                     <mat-form-field class="w-3/3 pr-2">
                         <mat-label>Precio</mat-label>
