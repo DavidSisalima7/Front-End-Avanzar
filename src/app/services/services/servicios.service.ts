@@ -55,4 +55,7 @@ export class ServiciosService {
 buscarServicio(id: number): Observable<object> {
   return this.http.get(`${this.url}/buscar/${id}`);
 }
+ListarServicioxEmprendedor(id: number): Observable<object> {
+  return this.http.get(`${this.url}/ServicioxEmprendedora/${id}`);
+}
 }

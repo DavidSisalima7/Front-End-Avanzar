@@ -52,5 +52,9 @@ import { catchError, map, Observable, ReplaySubject, tap, throwError } from 'rxj
     buscarProducto(id: number): Observable<object> {
       return this.http.get(`${this.url}/buscar/${id}`);
     }
+        
+    ListarProductoxEmprendedor(id: number): Observable<object> {
+      return this.http.get(`${this.url}/ProductoxEmprendedora/${id}`);
+    }
 
   }
