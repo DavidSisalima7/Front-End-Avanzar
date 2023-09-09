@@ -28,18 +28,18 @@
                 <mat-label>Cedula</mat-label>
                 <input
                     matInput
-                    [formControlName]="'cedula'">
+             [formControlName]="'cedula'" [(ngModel)]="user.persona.cedula">
             </mat-form-field>
         </div>
 
         <div class="flex">
 
     
-            <mat-form-field id="datos">
+            <mat-form-field class="datos">
                 <mat-label>Primer Nombre</mat-label>
                 <input
                     matInput
-                    [formControlName]="'primerNombre'">
+                    [formControlName]="'primerNombre'" [(ngModel)]="user.persona.primer_nombre">
             </mat-form-field>
 
             
@@ -47,25 +47,25 @@
             <mat-label>Segundo Nombre</mat-label>
             <input
                 matInput
-                [formControlName]="'segundoNombre'">
+                [formControlName]="'segundoNombre'"  [(ngModel)]="user.persona.segundo_nombre">
         </mat-form-field>
 
         </div>
 
         
         <div class="flex">
-            <mat-form-field  id="datos">
+            <mat-form-field  class="datos">
                 <mat-label>Primer Apellido</mat-label>
                 <input
                     matInput
-                    [formControlName]="'segundoNombre'">
+                    [formControlName]="'primerApellido'"  [(ngModel)]="user.persona.primer_apellido">
             </mat-form-field>
     
             <mat-form-field>
                 <mat-label>Segundo Apellido</mat-label>
                 <input
                     matInput
-                    [formControlName]="'segundoNombre'">
+                    [formControlName]="'segundoApellido'"  [(ngModel)]="user.persona.segundo_apellido">
             </mat-form-field>
         
         </div>
@@ -73,11 +73,11 @@
 
         <div class="flex ">
 
-            <mat-form-field  id="datos" >
+            <mat-form-field  class="datos" >
                 <mat-label>Correo</mat-label>
                 <input
                     matInput
-                    [formControlName]="'correoElectronico'">
+                    [formControlName]="'correoElectronico'" [(ngModel)]="user.persona.correo">
             </mat-form-field>
     
     
@@ -86,33 +86,24 @@
                 <mat-label>Celular</mat-label>
                 <input
                     matInput
-                    [formControlName]="'celular'">
-            </mat-form-field>
-
-     
-        
+                    [formControlName]="'celular'" [(ngModel)]="user.persona.celular">
+            </mat-form-field>   
         </div>
-
-
- 
-
-        
-   
-
- 
 
         <mat-form-field>
             <mat-label>Fecha de Nacimiento</mat-label>
-            <input matInput [matDatepicker]="picker">
-            <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+            <input 
+           [(ngModel)]="date" [formControlName]="'fechaNacimiento'" name="fecha_nacmiento"
+            matInput [matDatepicker]="picker"  >
+            <mat-datepicker-toggle matIconSuffix [for]="picker" ></mat-datepicker-toggle>
             <mat-datepicker #picker></mat-datepicker>
           </mat-form-field>
 
-          <mat-form-field class="flex-auto gt-xs:pr-3"  id="datos">
-            <mat-label>Estado</mat-label>
-            <mat-select >
-                <mat-option value="country-1">Activo</mat-option>
-                <mat-option value="country-2">Inactivo</mat-option>
+          <mat-form-field class="flex-auto gt-xs:pr-3" >
+            <mat-label for="estado">Estado</mat-label>
+            <mat-select [(ngModel)]="selectEstado" [formControlName]="'estado'" name="estado"  id="estado">
+                <mat-option value="Activo">Activo</mat-option>
+                <mat-option value="Inactivo">Inactivo</mat-option>
             </mat-select>
         </mat-form-field>
 
@@ -121,46 +112,60 @@
                   
         <div class="flex">
 
-        <mat-form-field class="flex-auto gt-xs:pr-3"  id="datos">
+        <mat-form-field class="flex-auto gt-xs:pr-3"  id="genero">
             <mat-label>Genero</mat-label>
-            <mat-select >
-                <mat-option value="country-1">Hombre</mat-option>
-                <mat-option value="country-2">Mujer</mat-option>
-                <mat-option value="country-3">Otro..</mat-option>
+            <mat-select [(ngModel)]="user.persona.genero" [formControlName]="'genero'" name="genero">
+                <mat-option value="Masculino">Masculino</mat-option>
+                <mat-option value="Femenino">Femenino</mat-option>
+                <mat-option value="Otro">Otro ...</mat-option>
             </mat-select>
         </mat-form-field>
 
         <mat-form-field class="flex-auto gt-xs:pr-3">
             <mat-label>Nacionalidad</mat-label>
-            <mat-select >
-                <mat-option value="country-1">Ecuatoriano</mat-option>
-                <mat-option value="country-2">Peruano</mat-option>
-                <mat-option value="country-3">Colombiano</mat-option>
+            <mat-select [(ngModel)]="user.persona.nacionalidad" [formControlName]="'nacionalidad'" name="nacionalidad">
+                <mat-option value="Ecuatoriana">Ecuador</mat-option>
+                <mat-option value="Peru">Perú</mat-option>
+                <mat-option value="Colombia">Colombia</mat-option>
+                <mat-option value="Venezuela">Venezuela</mat-option>
+                <mat-option value="Chile">Chile</mat-option>
+                <mat-option value="Argentina">Argentina</mat-option>
+                <mat-option value="Brasil">Brasil</mat-option>
+                <mat-option value="Uruguay">Uruguay</mat-option>
+                <mat-option value="Paraguay">Paraguay</mat-option>
+                <mat-option value="Bolivia">Bolivia</mat-option>
+                <mat-option value="Mexico">México</mat-option>
+                <mat-option value="Estados Unidos">Estados Unidos</mat-option>
+                <mat-option value="Canada">Canadá</mat-option>
+                <mat-option value="España">España</mat-option>
+                <mat-option value="Otro">Otro ...</mat-option>
             </mat-select>
         </mat-form-field>
         
         </div>
 
-        <mat-form-field class="flex-auto">
-            <mat-label>Direccion</mat-label>
-            <textarea
-                matInput
-                [rows]="3"></textarea>
-            <mat-icon
-                class="icon-size-5"
-                matPrefix
-                [svgIcon]="'heroicons_solid:bars-3-bottom-left'"></mat-icon>
-        </mat-form-field>
+            <mat-form-field class="flex-auto">
+                <mat-label>Direccion</mat-label>
+                <textarea [(ngModel)]="user.persona.direccion"  [formControlName]="'direccion'" name="direccion"
+                    matInput
+                    [rows]="3" ></textarea>
+                <mat-icon
+                    class="icon-size-5"
+                    matPrefix
+                    [svgIcon]="'heroicons_solid:bars-3-bottom-left'"></mat-icon>
+            </mat-form-field>
+
+            
 
 
-        <div class="flex">
+        <!-- <div class="flex">
             <mat-form-field >
                 <mat-label>Contraseña</mat-label>
                 <input
                     id="password"
                     matInput
                     type="password"
-                    [formControlName]="'password'"
+                    [formControlName]="'password'" [(ngModel)]="user.password"
                     #passwordField>
                 <button
                     mat-icon-button
@@ -181,7 +186,7 @@
                 </mat-error>
             </mat-form-field>
 
-        </div>
+        </div> -->
 
 
         

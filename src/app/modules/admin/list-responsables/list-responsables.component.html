@@ -74,7 +74,10 @@
                   <ng-container matColumnDef="editar">
                     <th mat-header-cell *matHeaderCellDef>Editar</th>
                     <td mat-cell *matCellDef="let row">
-                      <button class="mx-6" mat-flat-button [color]="'accent'" (click)="openComposeDialog()">
+                      <button class="mx-6" mat-flat-button [color]="'accent'" (click)="openComposeDialog()" 
+                      (click)="CapturarElUsername(row.username)"
+                      (click)="CapturarIdPersona(row.persona.id_persona)"
+                      (click)="CapturarIdUser(row.id)">
                        <mat-icon [svgIcon]="'heroicons_mini:pencil'"></mat-icon>
                      </button>
                     </td>

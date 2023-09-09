@@ -31,6 +31,7 @@ import { FuseAlertService } from '@fuse/components/alert';
   encapsulation: ViewEncapsulation.None,
   imports: [MatFormFieldModule, MatInputModule, MatTableModule, MatSortModule, MatPaginatorModule, 
             MatIconModule, MatButtonModule, CommonModule],
+            
 })
 export class ListResponsableComponent {
   displayedColumns: string[] = ['cedula','nombres', 'correo', 'celular','estado','editar','delete'];
@@ -53,7 +54,7 @@ export class ListResponsableComponent {
     this.listarRegistros();
 
   }
-  listarRegistros() {
+   listarRegistros() {
     this.usuarioService.obtenerListaResponsable().subscribe(
       (datos: Usuario[]) => {
         this.dataSource = new MatTableDataSource<Usuario>(datos);
@@ -296,5 +297,15 @@ export class ListResponsableComponent {
             {
                 console.log('Compose dialog was closed!');
             });
+    }
+
+    CapturarElUsername(user: any){
+        localStorage.setItem('username', String(user));
+    }
+    CapturarIdPersona(id_persona: any){
+      localStorage.setItem('id_persona', String(id_persona));
+    }
+    CapturarIdUser(id: any){
+      localStorage.setItem('id', String(id));
     }
 }

@@ -2,6 +2,9 @@ import { Persona } from "app/services/models/persona";
 
 export class User
 {
+    constructor(){
+        this.persona= new Persona();
+    }
     id: number;
     name:string;
     username: string;
