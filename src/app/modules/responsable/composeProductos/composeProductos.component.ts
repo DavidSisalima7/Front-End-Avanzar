@@ -15,10 +15,10 @@ import { Productos } from 'app/services/models/productos';
 import Swal from 'sweetalert2';
 @Component({
     selector     : 'mailbox-compose',
-    templateUrl  : './compose.component.html',
+    templateUrl  : './composeProductos.component.html',
     encapsulation: ViewEncapsulation.None,
     standalone   : true,
-    styleUrls    : ['./compose.component.scss'],
+    styleUrls    : ['./composeProductos.component.scss'],
 
     imports      : [MatSelectModule,MatOptionModule,MatDatepickerModule,MatButtonModule, MatIconModule, FormsModule, ReactiveFormsModule, MatFormFieldModule, MatInputModule, NgIf, QuillEditorComponent],
 })

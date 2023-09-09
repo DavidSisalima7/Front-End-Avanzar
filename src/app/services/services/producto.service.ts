@@ -48,5 +48,9 @@ import { catchError, map, Observable, ReplaySubject, tap, throwError } from 'rxj
           catchError(this.handleError)
         );
     }
+    
+    buscarProducto(id: number): Observable<object> {
+      return this.http.get(`${this.url}/buscar/${id}`);
+    }
 
   }

@@ -1,6 +1,6 @@
 <div class="flex flex-col max-w-240 md:min-w-160 max-h-screen -m-6">
     <div class="flex flex-0 items-center justify-between h-16 pr-3 sm:pr-5 pl-6 sm:pl-8 bg-primary text-on-primary">
-        <div class="text-lg font-medium">Editar Emprendedoras</div>
+        <div class="text-lg font-medium">Editar Servicios</div>
         <button
             mat-icon-button
             (click)="saveAndClose()"
@@ -15,29 +15,36 @@
         [formGroup]="composeForm">
         <div class="flex">
             <mat-form-field>
-                <mat-label>Nombre del Producto</mat-label>
-                <input matInput [formControlName]="'nombre'" [(ngModel)]="productos.nombreProducto"> 
+                <mat-label>Nombre del Servicio</mat-label>
+                <input matInput [formControlName]="'nombre'" [(ngModel)]="servicio.nombreServicio"> 
             </mat-form-field>
             </div>
         <div class="flex">
-            <mat-form-field id="datos">
-                <mat-label>Precio</mat-label>
-                <input matInput [formControlName]="'precio'"[(ngModel)]="productos.precioProducto"> 
-            </mat-form-field>
         <mat-form-field>
-            <mat-label>Cantidad</mat-label>
-            <input matInput [formControlName]="'cantidad'" [(ngModel)]="productos.cantidadDisponible">
+            <mat-label>Precio</mat-label>
+            <input matInput [formControlName]="'precio'" [(ngModel)]="servicio.precioServicio">
              </mat-form-field>
-        </div>
-        <div class="flex">
-            <mat-form-field class="flex-auto gt-xs:pr-3" >
+             <mat-form-field class="flex-auto gt-xs:pr-3" >
                 <mat-label for="estado">Estado</mat-label>
-                <mat-select [(ngModel)]="productos.estado" [formControlName]="'estado'" name="estado"  id="estado">
+                <mat-select [(ngModel)]="servicio.estado" [formControlName]="'estado'" name="estado"  id="estado">
                     <mat-option [value]="true">Disponible</mat-option>
                     <mat-option [value]="false">Eliminado</mat-option>
                 </mat-select>
             </mat-form-field>
         </div>
+        <mat-form-field class="flex-auto">
+            <mat-label>Descripcion</mat-label>
+            <textarea [(ngModel)]="servicio.descripcionServicio"  [formControlName]="'descripcion'" name="descripcion"
+                matInput
+                [rows]="3" ></textarea>
+            <mat-icon
+                class="icon-size-5"
+                matPrefix
+                [svgIcon]="'heroicons_solid:bars-3-bottom-left'"></mat-icon>
+        </mat-form-field>
+
+
+
         <div class="flex flex-col sm:flex-row sm:items-center justify-between mt-4 sm:mt-6">
             <div class="-ml-2">        
             </div>

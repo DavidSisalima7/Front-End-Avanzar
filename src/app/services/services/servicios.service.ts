@@ -52,4 +52,7 @@ export class ServiciosService {
         catchError(this.handleError)
         );
 }
+buscarServicio(id: number): Observable<object> {
+  return this.http.get(`${this.url}/buscar/${id}`);
+}
 }

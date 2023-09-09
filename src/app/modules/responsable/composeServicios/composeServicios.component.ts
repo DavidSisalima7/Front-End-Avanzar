@@ -10,15 +10,15 @@ import { QuillEditorComponent } from 'ngx-quill';
 import {MatDatepickerModule} from '@angular/material/datepicker';
 import { MatOptionModule } from '@angular/material/core';
 import { MatSelectModule } from '@angular/material/select';
-import { ProductosService } from 'app/services/services/producto.service';
-import { Productos } from 'app/services/models/productos';
+import { Servicios } from 'app/services/models/servicios';
+import { ServiciosService } from 'app/services/services/servicios.service';
 import Swal from 'sweetalert2';
 @Component({
     selector     : 'mailbox-compose',
-    templateUrl  : './compose.component.html',
+    templateUrl  : './composeServicios.component.html',
     encapsulation: ViewEncapsulation.None,
     standalone   : true,
-    styleUrls    : ['./compose.component.scss'],
+    styleUrls    : ['./composeServicios.component.scss'],
 
     imports      : [MatSelectModule,MatOptionModule,MatDatepickerModule,MatButtonModule, MatIconModule, FormsModule, ReactiveFormsModule, MatFormFieldModule, MatInputModule, NgIf, QuillEditorComponent],
 })
@@ -43,7 +43,7 @@ export class MailboxComposeComponent implements OnInit
     constructor(
         public matDialogRef: MatDialogRef<MailboxComposeComponent>,
         private _formBuilder: UntypedFormBuilder,
-        private productoService: ProductosService,
+        private servicioService: ServiciosService,
     )
     {
     }
@@ -61,7 +61,7 @@ export class MailboxComposeComponent implements OnInit
         this.composeForm = this._formBuilder.group({
             nombre : ['', Validators.required],
                 precio : ['', Validators.required],
-                cantidad : ['', Validators.required],  
+                descripcion : ['', Validators.required],  
                 estado : ['', Validators.required],   
         });
         this.cargar_datos();
@@ -105,6 +105,8 @@ export class MailboxComposeComponent implements OnInit
      */
     discard(): void
     {
+        /////cerrar
+        //mensaje agregar
         this.matDialogRef.close();
     }
 
@@ -120,34 +122,33 @@ export class MailboxComposeComponent implements OnInit
      */
     send(): void
     {
-        this.ActualizarProducto();
+        this.ActualizarServicio();
     }
 
-    variableProd:any;
+    variableSer:any;
     data:any;
-    productos: Productos = new Productos();
+    servicio: Servicios = new Servicios();
     cargar_datos(){
-      this.variableProd = localStorage.getItem("idProductoSelected");
-      this.productoService.buscarProducto(this.variableProd).subscribe((dataproducto) =>{
-      this.data=dataproducto;
-      this.productos.nombreProducto = this.data.nombreProducto;
-      this.productos.precioProducto = this.data.precioProducto;
-      this.productos.cantidadDisponible = this.data.cantidadDisponible;
-      this.productos.estado = this.data.estado ? true : false;
+      this.variableSer = localStorage.getItem("idServiceSelected");
+      this.servicioService.buscarServicio(this.variableSer).subscribe((dataservicio) =>{
+      this.data=dataservicio;
+      this.servicio.nombreServicio = this.data.nombreServicio;
+      this.servicio.precioServicio = this.data.precioServicio;
+      this.servicio.descripcionServicio = this.data.descripcionServicio;
+      this.servicio.estado = this.data.estado ? true : false;
       })
     }
-    
 
-   ActualizarProducto(){
-    this.productoService.actualizarProducto(this.variableProd, this.productos).subscribe((data)=>{
-    Swal.fire(
-    'Acción Exitosa',
-    'Producto Actualizado',
-    'success'
-          );
-this.matDialogRef.close();
-    }, error=>{
-        console.log("Error al guardar");
-    });
-   }
+    ActualizarServicio(){
+    this.servicioService.actualizarServicio(this.variableSer, this.servicio).subscribe((data)=>{
+        Swal.fire(
+           'Acción Exitosa',
+           'Servicio Actualizado',
+           'success'
+                 );
+       this.matDialogRef.close();
+           }, error=>{
+               console.log("Error al guardar");
+           });
+          }
 }

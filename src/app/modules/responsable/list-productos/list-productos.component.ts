@@ -17,7 +17,7 @@ import Swal from 'sweetalert2';
 
 //DIALOGOS
 import { MatDialog } from '@angular/material/dialog';
-import { MailboxComposeComponent } from 'app/modules/responsable/compose/compose.component';
+import { MailboxComposeComponent } from 'app/modules/responsable/composeProductos/composeProductos.component';
 
 
 @Component({
@@ -267,6 +267,12 @@ seleccionarProducto(producto: any) {
     }
   });
 }
-
-
+//////////////////////////////llevar datos al compose
+  selectProducto:any;
+  seleccionarProductoEdit(producto: any) {
+    console.log('Se seleccionó el producto:', producto);
+    this.openComposeDialog();
+    this.selectProducto = producto.idProducto;
+    localStorage.setItem("idProductoSelected", String(producto.idProducto));
+  }
 }
