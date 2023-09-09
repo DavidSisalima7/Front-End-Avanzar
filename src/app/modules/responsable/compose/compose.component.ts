@@ -1,6 +1,6 @@
 import { NgIf } from '@angular/common';
-import { Component, OnInit, ViewEncapsulation } from '@angular/core';
-import { FormsModule, ReactiveFormsModule, UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
+import { Component, OnInit, ViewEncapsulation, ChangeDetectorRef } from '@angular/core';
+import { FormGroup, FormsModule, ReactiveFormsModule, UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatDialogRef } from '@angular/material/dialog';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -10,9 +10,15 @@ import { QuillEditorComponent } from 'ngx-quill';
 import {MatDatepickerModule} from '@angular/material/datepicker';
 import { MatOptionModule } from '@angular/material/core';
 import { MatSelectModule } from '@angular/material/select';
-import { ProductosService } from 'app/services/services/producto.service';
-import { Productos } from 'app/services/models/productos';
+import { UserService } from 'app/core/user/user.service';
+import { User } from 'app/core/user/user.types';
+import { Usuario } from 'app/services/models/usuario';
+import { Persona } from 'app/services/models/persona';
+import { DatePipe } from '@angular/common';
+import { PersonaService } from 'app/services/services/persona.service';
 import Swal from 'sweetalert2';
+import { MatTableDataSource } from '@angular/material/table';
+
 @Component({
     selector     : 'mailbox-compose',
     templateUrl  : './compose.component.html',
@@ -42,10 +48,12 @@ export class MailboxComposeComponent implements OnInit
      */
     constructor(
         public matDialogRef: MatDialogRef<MailboxComposeComponent>,
-        private _formBuilder: UntypedFormBuilder,
-        private productoService: ProductosService,
+        private _formBuilder: UntypedFormBuilder, private userService: UserService,
+        private datePipe: DatePipe, private personaService: PersonaService, private change: ChangeDetectorRef
     )
     {
+        this.ActualizarPersona();
+        this.Actualizar();
     }
 
     // -----------------------------------------------------------------------------------------------------
@@ -59,13 +67,25 @@ export class MailboxComposeComponent implements OnInit
     {
         // Create the form
         this.composeForm = this._formBuilder.group({
-            nombre : ['', Validators.required],
-                precio : ['', Validators.required],
-                cantidad : ['', Validators.required],  
+            cedula : ['', Validators.required],
+                primerNombre : ['', Validators.required],
+                segundoNombre : ['', Validators.required],
+                primerApellido : ['', Validators.required],
+                segundoApellido : ['', Validators.required],
+                correoElectronico : ['', [Validators.required, Validators.email]],
+                direccion : ['', Validators.required],
+                celular : ['', Validators.required],
+                fechaNacimiento : [null, Validators.required],
+                genero : ['', Validators.required],    
+                nacionalidad : ['', Validators.required],   
                 estado : ['', Validators.required],   
         });
-        this.cargar_datos();
+
+       this.Funciones();
     }
+    username:any;
+   
+    selectEstado:any;
 
     // -----------------------------------------------------------------------------------------------------
     // @ Public methods
@@ -106,7 +126,9 @@ export class MailboxComposeComponent implements OnInit
     discard(): void
     {
         this.matDialogRef.close();
+        
     }
+
 
     /**
      * Save the message as a draft
@@ -120,34 +142,116 @@ export class MailboxComposeComponent implements OnInit
      */
     send(): void
     {
-        this.ActualizarProducto();
+
+         this.ActualizarPersona();
+        this.Actualizar();
+        this.matDialogRef.close();
+
+          window.location.reload();
+
+    }
+    // Funciones que van en el OnInit 
+    Funciones(){
+        this.BuscarUser();
+        this.traerIdPersona();
+        this.traerIdUser();
+      }
+
+    // Funciones para tranformar la fecha 
+    private parseDate(dateString: string, format: string): Date {
+        const parts = dateString.split('/');
+        const day = parseInt(parts[0], 10);
+        const month = parseInt(parts[1], 10) - 1; // Restamos 1 porque los meses en JavaScript son 0-indexados
+        const year = parseInt(parts[2], 10);
+        return new Date(year, month, day);
+      }
+
+    
+    IdPersona: any;
+    traerIdPersona(){
+        this.IdPersona= localStorage.getItem('id_persona');
+        console.log('Este es el Id de persona: '+ this.IdPersona);
     }
 
-    variableProd:any;
-    data:any;
-    productos: Productos = new Productos();
-    cargar_datos(){
-      this.variableProd = localStorage.getItem("idProductoSelected");
-      this.productoService.buscarProducto(this.variableProd).subscribe((dataproducto) =>{
-      this.data=dataproducto;
-      this.productos.nombreProducto = this.data.nombreProducto;
-      this.productos.precioProducto = this.data.precioProducto;
-      this.productos.cantidadDisponible = this.data.cantidadDisponible;
-      this.productos.estado = this.data.estado ? true : false;
-      })
+    idUsuario: any;
+    traerIdUser(){
+        this.idUsuario= localStorage.getItem('id');
+        console.log('Este es el Id de User: '+ this.idUsuario);
     }
+
+    
+    date:Date;
+    formattedDate:any;
+    user: User = new User();
+    persona: Persona= new Persona(); 
+    BuscarUser(){
+        this.username= localStorage.getItem('username');
+        this.userService.BuscarUser(this.username).subscribe((response)=>{
+            this.user.persona.cedula = response.persona.cedula;
+            this.user.persona.primer_nombre=  response.persona.primer_nombre;
+            this.user.persona.primer_apellido=  response.persona.primer_apellido;
+            this.user.persona.segundo_nombre =  response.persona.segundo_nombre;
+            this.user.persona.segundo_apellido =  response.persona.segundo_apellido;
+            this.user.persona.celular =  response.persona.celular;
+            this.user.persona.correo= response.persona.correo;
+            // this.user.name= this.persona.primer_nombre;
+
+            // console.log(this.user.name);
+            // this.user.name=response.persona.primer_nombre +" " + response.persona.primer_apellido;
+
+            if( response.persona.estado == true){
+            this.selectEstado="Activo";
+            this.user.persona.estado=true;
+            }else{
+            this.selectEstado="Inactivo";
+            this.user.persona.estado=false;
+            }
+
+            this.user.persona.nacionalidad=  response.persona.nacionalidad;
+            this.user.persona.genero =  response.persona.genero;
+            this.user.persona.direccion= response.persona.direccion;
+            // Esta perte es de la fecha 
+            const parsedDate = this.parseDate( response.persona.fecha_nacimiento, 'dd/MM/yyyy');
+            this.formattedDate = this.datePipe.transform(parsedDate, 'MMMM dd, yyyy');
+            this.composeForm.get('fechaNacimiento').setValue(this.formattedDate);
+            this.user.persona.fecha_nacimiento = this.formattedDate;
+            this.date= new Date(this.formattedDate);
+            this.user.persona.fecha_nacimiento = response.persona.fecha_nacimiento;
+            console.log(this.user.name);
+        }, error=>{
+            console.log("Error al encontrar el username");
+        });
+    }
+
     
 
-   ActualizarProducto(){
-    this.productoService.actualizarProducto(this.variableProd, this.productos).subscribe((data)=>{
-    Swal.fire(
-    'Acción Exitosa',
-    'Producto Actualizado',
-    'success'
-          );
-this.matDialogRef.close();
-    }, error=>{
-        console.log("Error al guardar");
+    
+
+
+
+    // Esto vale 
+   ActualizarPersona(){
+
+
+    this.personaService.actualizarPersona(this.IdPersona, this.user.persona).subscribe(response=>{
+        // const formattedDate = this.datePipe.transform(this.selectedDate, 'dd/MM/yyyy');
+
+        console.log("Esto devuelve " +response);
+     
+
     });
    }
+
+   Actualizar(){
+    this.user.name = this.user.persona.primer_nombre + " " + this.user.persona.primer_apellido;
+
+    this.personaService.actualizarName(this.idUsuario, this.user).subscribe(response=>{
+        console.log("Usuario"+ response);
+         this.change.detectChanges();
+    });
+   }
+
+
+
 }
+

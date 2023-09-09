@@ -1,6 +1,8 @@
 <div class="flex flex-col max-w-240 md:min-w-160 max-h-screen -m-6">
+
+    <!-- Header -->
     <div class="flex flex-0 items-center justify-between h-16 pr-3 sm:pr-5 pl-6 sm:pl-8 bg-primary text-on-primary">
-        <div class="text-lg font-medium">Editar Emprendedoras</div>
+        <div class="text-lg font-medium">Editar Emprendedora</div>
         <button
             mat-icon-button
             (click)="saveAndClose()"
@@ -10,43 +12,145 @@
                 [svgIcon]="'heroicons_outline:x-mark'"></mat-icon>
         </button>
     </div>
+
+    <!-- Compose form -->
     <form
         class="flex flex-col flex-auto p-1 sm:p-8 overflow-y-auto"
         [formGroup]="composeForm">
         <div class="flex">
             <mat-form-field>
-                <mat-label>Nombre del Producto</mat-label>
-                <input matInput [formControlName]="'nombre'" [(ngModel)]="productos.nombreProducto"> 
+                <mat-label>Cedula</mat-label>
+                <input
+                    matInput
+             [formControlName]="'cedula'" [(ngModel)]="user.persona.cedula">
             </mat-form-field>
-            </div>
+        </div>
         <div class="flex">
-            <mat-form-field id="datos">
-                <mat-label>Precio</mat-label>
-                <input matInput [formControlName]="'precio'"[(ngModel)]="productos.precioProducto"> 
-            </mat-form-field>
+            <mat-form-field class="datos">
+                <mat-label>Primer Nombre</mat-label>
+                <input
+                    matInput
+                    [formControlName]="'primerNombre'" [(ngModel)]="user.persona.primer_nombre">
+            </mat-form-field> 
         <mat-form-field>
-            <mat-label>Cantidad</mat-label>
-            <input matInput [formControlName]="'cantidad'" [(ngModel)]="productos.cantidadDisponible">
-             </mat-form-field>
+            <mat-label>Segundo Nombre</mat-label>
+            <input
+                matInput
+                [formControlName]="'segundoNombre'"  [(ngModel)]="user.persona.segundo_nombre">
+        </mat-form-field>
+
         </div>
         <div class="flex">
-            <mat-form-field class="flex-auto gt-xs:pr-3" >
-                <mat-label for="estado">Estado</mat-label>
-                <mat-select [(ngModel)]="productos.estado" [formControlName]="'estado'" name="estado"  id="estado">
-                    <mat-option [value]="true">Disponible</mat-option>
-                    <mat-option [value]="false">Eliminado</mat-option>
-                </mat-select>
+            <mat-form-field  class="datos">
+                <mat-label>Primer Apellido</mat-label>
+                <input
+                    matInput
+                    [formControlName]="'primerApellido'"  [(ngModel)]="user.persona.primer_apellido">
             </mat-form-field>
+    
+            <mat-form-field>
+                <mat-label>Segundo Apellido</mat-label>
+                <input
+                    matInput
+                    [formControlName]="'segundoApellido'"  [(ngModel)]="user.persona.segundo_apellido">
+            </mat-form-field>
+        
         </div>
+        <div class="flex ">
+
+            <mat-form-field  class="datos" >
+                <mat-label>Correo</mat-label>
+                <input
+                    matInput
+                    [formControlName]="'correoElectronico'" [(ngModel)]="user.persona.correo">
+            </mat-form-field>
+ 
+            <mat-form-field>
+                <mat-label>Celular</mat-label>
+                <input
+                    matInput
+                    [formControlName]="'celular'" [(ngModel)]="user.persona.celular">
+            </mat-form-field>   
+        </div>
+
+        <mat-form-field>
+            <mat-label>Fecha de Nacimiento</mat-label>
+            <input 
+           [(ngModel)]="date" [formControlName]="'fechaNacimiento'" name="fecha_nacmiento"
+            matInput [matDatepicker]="picker"  >
+            <mat-datepicker-toggle matIconSuffix [for]="picker" ></mat-datepicker-toggle>
+            <mat-datepicker #picker></mat-datepicker>
+          </mat-form-field>
+
+          <mat-form-field class="flex-auto gt-xs:pr-3" >
+            <mat-label for="estado">Estado</mat-label>
+            <mat-select [(ngModel)]="selectEstado" [formControlName]="'estado'" name="estado"  id="estado">
+                <mat-option value="Activo">Activo</mat-option>
+                <mat-option value="Inactivo">Inactivo</mat-option>
+            </mat-select>
+        </mat-form-field>
+     
+        <div class="flex">
+        <mat-form-field class="flex-auto gt-xs:pr-3"  id="genero">
+            <mat-label>Genero</mat-label>
+            <mat-select [(ngModel)]="user.persona.genero" [formControlName]="'genero'" name="genero">
+                <mat-option value="Masculino">Masculino</mat-option>
+                <mat-option value="Femenino">Femenino</mat-option>
+                <mat-option value="Otro">Otro ...</mat-option>
+            </mat-select>
+        </mat-form-field>
+
+        <mat-form-field class="flex-auto gt-xs:pr-3">
+            <mat-label>Nacionalidad</mat-label>
+            <mat-select [(ngModel)]="user.persona.nacionalidad" [formControlName]="'nacionalidad'" name="nacionalidad">
+                <mat-option value="Ecuatoriana">Ecuador</mat-option>
+                <mat-option value="Peru">Perú</mat-option>
+                <mat-option value="Colombia">Colombia</mat-option>
+                <mat-option value="Venezuela">Venezuela</mat-option>
+                <mat-option value="Chile">Chile</mat-option>
+                <mat-option value="Argentina">Argentina</mat-option>
+                <mat-option value="Brasil">Brasil</mat-option>
+                <mat-option value="Uruguay">Uruguay</mat-option>
+                <mat-option value="Paraguay">Paraguay</mat-option>
+                <mat-option value="Bolivia">Bolivia</mat-option>
+                <mat-option value="Mexico">México</mat-option>
+                <mat-option value="Estados Unidos">Estados Unidos</mat-option>
+                <mat-option value="Canada">Canadá</mat-option>
+                <mat-option value="España">España</mat-option>
+                <mat-option value="Otro">Otro ...</mat-option>
+            </mat-select>
+        </mat-form-field>
+        
+        </div>
+
+            <mat-form-field class="flex-auto">
+                <mat-label>Direccion</mat-label>
+                <textarea [(ngModel)]="user.persona.direccion"  [formControlName]="'direccion'" name="direccion"
+                    matInput
+                    [rows]="3" ></textarea>
+                <mat-icon
+                    class="icon-size-5"
+                    matPrefix
+                    [svgIcon]="'heroicons_solid:bars-3-bottom-left'"></mat-icon>
+            </mat-form-field>
+        <!-- Actions -->
         <div class="flex flex-col sm:flex-row sm:items-center justify-between mt-4 sm:mt-6">
-            <div class="-ml-2">        
+            <div class="-ml-2">       
             </div>
             <div class="flex items-center mt-4 sm:mt-0">
-                <button  id="datos"class="ml-auto sm:ml-0" mat-stroked-button 
-                (click)="discard()"> Cancelar
+                <!-- Discard -->
+                <button  id="datos"
+                    class="ml-auto sm:ml-0"
+                    mat-stroked-button
+                    (click)="discard()">
+                    Cancelar
                 </button>
-                <button class="order-first sm:order-last" mat-flat-button
-                    [color]="'primary'"(click)="send()">Guardar
+                <button
+                    class="order-first sm:order-last"
+                    mat-flat-button
+                    [color]="'primary'"
+                    (click)="send()">
+                    Guardar
                 </button>
             </div>
         </div>

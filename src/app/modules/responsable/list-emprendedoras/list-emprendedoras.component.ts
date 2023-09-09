@@ -17,7 +17,7 @@ import Swal from 'sweetalert2';
 
 //DIALOGOS
 import { MatDialog } from '@angular/material/dialog';
-import { MailboxeditarComponent} from 'app/modules/responsable/editar/editar.component';
+import { MailboxComposeComponent} from 'app/modules/responsable/compose/compose.component';
 
 
 @Component({
@@ -77,7 +77,7 @@ export class ListEmprendedorasResponsableComponent
   openComposeDialog(): void
   {
       // Open the dialog
-      const dialogRef = this._matDialog.open(MailboxeditarComponent);
+      const dialogRef = this._matDialog.open(MailboxComposeComponent);
 
       dialogRef.afterClosed()
           .subscribe((result) =>
