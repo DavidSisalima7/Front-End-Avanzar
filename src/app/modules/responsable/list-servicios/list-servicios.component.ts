@@ -15,7 +15,7 @@ import { CommonModule } from '@angular/common';
 import Swal from 'sweetalert2';
 //DIALOGOS
 import { MatDialog } from '@angular/material/dialog';
-import { MailboxComposeComponent } from 'app/modules/responsable/compose/compose.component';
+import { MailboxComposeComponent } from 'app/modules/responsable/composeServicios/composeServicios.component';
 import { ServiciosService } from 'app/services/services/servicios.service';
 import { Servicios } from 'app/services/models/servicios';
 
@@ -279,6 +279,12 @@ seleccionarServicio(servicio: any) {
     }
   });
 }
-
+//////////////////////////////llevar datos al compose
+selectService:any;
+seleccionarServiceEdit(servicio: any) {
+  this.openComposeDialog();
+  this.selectService = servicio.idServicio;
+  localStorage.setItem("idServiceSelected", String(servicio.idServicio));
+}
 
 }

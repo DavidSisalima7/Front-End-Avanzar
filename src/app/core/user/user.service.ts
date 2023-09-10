@@ -201,4 +201,11 @@ export class UserService {
     return this._httpClient.put(`${this.url}/actualizar/${id}`, usuario);
   }
 
+      BuscarUser(username: any):Observable<Usuario> {
+        return this._httpClient.get<Usuario>(`${this.url}/buscar/${username}`);
+      }
+
+      
+  
+      
 }
