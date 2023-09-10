@@ -11,7 +11,6 @@ import { MatDatepicker, MatDatepickerModule } from '@angular/material/datepicker
 import { MatNativeDateModule, MatOptionModule } from '@angular/material/core';
 import { MatSelectModule } from '@angular/material/select';
 import { UserService } from 'app/core/user/user.service';
-import { ListResponsableComponent } from '../list-responsables/list-responsables.component';
 import { User } from 'app/core/user/user.types';
 import { Usuario } from 'app/services/models/usuario';
 import { TextFieldModule } from '@angular/cdk/text-field';
@@ -19,17 +18,18 @@ import { Persona } from 'app/services/models/persona';
 import { PersonaService } from 'app/services/services/persona.service';
 import { FuseConfirmationService } from '@fuse/services/confirmation';
 import { Router } from '@angular/router';
+import { ListAdminEmprendedorasComponent } from '../list-emprendedoras/list-emprendedoras.component';
+
 @Component({
   selector: 'mailbox-compose',
-  templateUrl: './compose.component.html',
+  templateUrl: './modal-emprendedora.component.html',
   encapsulation: ViewEncapsulation.None,
   standalone: true,
-  styleUrls: ['./compose.component.scss'],
-
+  styleUrls: ['./modal-emprendedora.component.scss'],
   imports: [MatSelectModule, MatOptionModule, MatDatepickerModule, MatButtonModule, MatIconModule, FormsModule, ReactiveFormsModule, MatFormFieldModule,
     MatInputModule, NgIf, QuillEditorComponent, CommonModule, MatNativeDateModule],
 })
-export class MailboxComposeComponent implements OnInit {
+export class ModalEmprendedoraComponent implements OnInit {
 
   composeForm: UntypedFormGroup;
   @ViewChild('picker1') picker1: MatDatepicker<Date>;
@@ -82,7 +82,7 @@ export class MailboxComposeComponent implements OnInit {
    * Constructor
    */
   constructor(
-    public matDialogRef: MatDialogRef<MailboxComposeComponent>,
+    public matDialogRef: MatDialogRef<ModalEmprendedoraComponent>,
     private _formBuilder: FormBuilder,
     private _userService: UserService,
     private datePipe: DatePipe,
@@ -101,7 +101,7 @@ export class MailboxComposeComponent implements OnInit {
    * On init
    */
   ngOnInit(): void {
-    this._userService.buscarUserId(ListResponsableComponent.idUsuarioSeleccionado).subscribe((data) => {
+    this._userService.buscarUserId(ListAdminEmprendedorasComponent.idUsuarioSeleccionado).subscribe((data) => {
       this.user = data;
       // Create the form inside the subscription
       this.composeForm = this._formBuilder.group({

@@ -31,11 +31,18 @@ import { Servicios } from 'app/services/models/servicios';
 export class ListRespServiciosComponent
 
 {
-    displayedColumns: string[] = ['nombre', 'descripcion', 'precio', 'estado','editar','delete'];
+    displayedColumns: string[] = ['nombre', 'precio', 'descripcion', 'estado','editar','delete'];
   dataSource: MatTableDataSource<Servicios>;
 
 
-  @ViewChild(MatPaginator) paginator: MatPaginator;
+  pageSizeOptions: number[] = [1, 5, 10, 50]; // Opciones de tamaño de página
+  pageSize: number = 10;
+  static idUsuarioSeleccionado: number;
+
+
+  services: Servicios[] = [];
+
+  @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
 
   searchInputControl: UntypedFormControl = new UntypedFormControl();
@@ -48,27 +55,37 @@ export class ListRespServiciosComponent
     this.listarRegistrosServicios();
 
   }
+
+  cambioTamanioPagina(event) {
+    this.paginator.pageIndex = 0; // Reinicia la página actual al cambiar el tamaño de página
+  }
+
+  nextPage() {
+    if (this.paginator.hasNextPage()) {
+      this.paginator.nextPage();
+    }
+  }
+
   listarRegistrosServicios() {
     this.serviciosService.listarServicio().subscribe(
       (datos: Servicios[]) => {
+        this.services = datos;
         this.dataSource = new MatTableDataSource<Servicios>(datos);
+        this.dataSource.paginator = this.paginator;
+        this.paginator.length = datos.length;
+        // Llama a nextPage() después de configurar el paginador
+        this.nextPage();
       },
       error => {
         console.error('Ocurrió un error al obtener la lista de los productos:', error);
       }
     );
   }
+
   applyFilter(event: Event) {
     const filterValue = (event.target as HTMLInputElement).value;
     this.dataSource.filter = filterValue.trim().toLowerCase();
 
-    if (this.dataSource.paginator) {
-      this.dataSource.paginator.firstPage();
-    }
-  }
-
-  redirectToRegisterServicios() {
-    this._router.navigate(['/register-Servicios']);
   }
 
 
