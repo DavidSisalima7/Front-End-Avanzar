@@ -32,6 +32,7 @@ export interface InventarioPublicaciones {
     estado: boolean;
     fechaPublicacion: Date;
     imagenes: string[];
+    tiempoTranscurrido:string;
     vendedor?: Vendedor ;
     categoria?: CategoriaPublicacion ;
     productos?: InventarioProductos;

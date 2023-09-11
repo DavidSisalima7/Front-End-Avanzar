@@ -12,6 +12,8 @@ import { fuseAnimations } from '@fuse/animations';
 import { FuseAlertComponent, FuseAlertType } from '@fuse/components/alert';
 import { AuthService } from 'app/core/auth/auth.service';
 import { UsuarioRolService } from 'app/services/services/usuarioRol.service';
+import { Subject } from 'rxjs';
+
 
 @Component({
     selector: 'auth-sign-in',
@@ -28,6 +30,7 @@ export class SingInComponent implements OnInit {
     //Variable para almacenar el nombre del rol del usuario que intenta ingresar al sistema
     rolUsuario:string;
     ROLINGRESADO: string = '';
+    private _unsubscribeAll: Subject<void> = new Subject<void>();
 
     @ViewChild('signInNgForm') signInNgForm: NgForm;
 
@@ -123,6 +126,8 @@ export class SingInComponent implements OnInit {
 
       // Disable the form
       this.signInForm.disable();
+
+
      this._authService.getUsuarioActual().subscribe(
        (user: any) => {
          if (user) {

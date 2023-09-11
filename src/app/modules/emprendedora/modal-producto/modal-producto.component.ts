@@ -299,7 +299,6 @@ export class ModalProductoComponent implements OnInit {
             this.producto.descripcionProducto = post.descripcionPublicacion;
             this.producto.estadoProducto = true;
 
-            console.log("Hola" , this.publication.vendedor  );
             // Llamar al servicio para guardar el producto
             this._productoService.saveProducto(this.producto).subscribe((data) => {
                 this.publication.productos = data;
@@ -308,7 +307,6 @@ export class ModalProductoComponent implements OnInit {
                 // Llamar al servicio para crear la publicación con las imágenes
                 this._inventoryService.createPublicacion(this.publication, imagenesSeleccionadas).subscribe((newPublicacion) => {
                     //this.publication = newPublicacion;
-                    console.log("Ulti", newPublicacion);
                     this.showFlashMessage('success');
                     this.selectedPublicacionForm.enable();
                 });

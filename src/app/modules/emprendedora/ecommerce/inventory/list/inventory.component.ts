@@ -180,7 +180,6 @@ export class InventoryListComponent implements OnInit, AfterViewInit, OnDestroy 
         // Get the products
 
         this.publicaciones$ = this._inventoryService.publicaciones$;
-        console.log(this.publicaciones$)
 
 
 

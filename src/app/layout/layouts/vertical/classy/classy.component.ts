@@ -434,13 +434,22 @@ export class ClassyLayoutComponent implements OnInit, OnDestroy
 
                     case 'CLIENTE':
                     newNavigation = [
+
                         {
                             id      : 'productos',
-                            title   : 'Productos',
-                            subtitle: 'Tipo de productos',
+                            title   : 'Publicaciones',
+                            subtitle: 'publicaciones',
                             type    : 'group',
                             icon    : 'memory',
                             children: [
+                                {
+                                    id   : 'publicaciones',
+                                    title: 'Publicaciones',
+                                    type : 'basic',
+                                    icon : 'heroicons_outline:shopping-cart',
+                                    link : '/home-cli'
+                                },
+
                                 {
                                     id   : 'productos',
                                     title: 'Productos',

@@ -9,6 +9,7 @@ export class Publicacion{
     estado: boolean;
     visible?:boolean;
     fechaPublicacion: Date;
+    tiempoTranscurrido:string;
     imagenes: string[];
     vendedor?: Vendedor ;
     categoria?: CategoriaPublicacion ;
