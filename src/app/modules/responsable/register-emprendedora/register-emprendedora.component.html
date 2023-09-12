@@ -1,4 +1,3 @@
-
 <div class="flex flex-col flex-auto min-w-0">
 
 
@@ -141,6 +140,7 @@
                         <mat-error *ngIf="horizontalStepperForm.get('step1.correo').hasError('pattern')">El correo
                             no es
                             válido</mat-error>
+                            <mat-icon class="icon-size-5" matPrefix [svgIcon]="'heroicons_solid:envelope'"></mat-icon>
                         </mat-form-field>
                     </div>
 
@@ -161,6 +161,7 @@
                             números en
                             el
                             celular</mat-error>
+                        <mat-icon class="icon-size-5" matPrefix [svgIcon]="'heroicons_solid:phone'"></mat-icon>    
                         </mat-form-field>
                     </div>
 

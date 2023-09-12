@@ -222,14 +222,14 @@
                                 <mat-option value="Uruguay">Uruguay</mat-option>
                                 <mat-option value="Paraguay">Paraguay</mat-option>
                                 <mat-option value="Bolivia">Bolivia</mat-option>
-                                <mat-option value="Mexico">México</mat-option>
+                                <mat-option value="México">México</mat-option>
                                 <mat-option value="Estados Unidos">Estados Unidos</mat-option>
-                                <mat-option value="Canada">Canadá</mat-option>
+                                <mat-option value="Canadá">Canadá</mat-option>
                                 <mat-option value="España">España</mat-option>
                                 <mat-option value="Otro">Otro ...</mat-option>
                             </mat-select>
                             <mat-icon class="icon-size-5" matPrefix [svgIcon]="'heroicons_solid:globe-americas'"></mat-icon>
-                            <mat-error *ngIf="horizontalStepperForm.get('step1.genero').hasError('required')">
+                            <mat-error *ngIf="horizontalStepperForm.get('step1.nacionalidad').hasError('required')">
                                 Este campo es requerido
                             </mat-error>
                         </mat-form-field>

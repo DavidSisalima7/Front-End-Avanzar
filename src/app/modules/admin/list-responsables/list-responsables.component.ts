@@ -63,7 +63,8 @@ export class ListResponsableComponent {
   }
 
   cambioTamanioPagina(event) {
-    this.paginator.pageIndex = 0; // Reinicia la página actual al cambiar el tamaño de página
+    this.paginator.pageIndex = event.pageIndex;
+    // También puedes agregar un console.log() aquí para depurar
   }
   
   nextPage() {

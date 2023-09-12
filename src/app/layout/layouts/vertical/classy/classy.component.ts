@@ -440,7 +440,7 @@ export class ClassyLayoutComponent implements OnInit, OnDestroy
                             title   : 'Publicaciones',
                             subtitle: 'publicaciones',
                             type    : 'group',
-                            icon    : 'memory',
+                            icon    : 'heroicons_outline: shopping-bag',
                             children: [
                                 {
                                     id   : 'publicaciones',

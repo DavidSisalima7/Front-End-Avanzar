@@ -1,7 +1,8 @@
 <div
     class="settings-cog fixed flex items-center justify-center right-0 w-10 h-10 shadow-lg rounded-l-lg z-90 cursor-pointer bg-red-600 bg-opacity-90 print:hidden"
     [class.lg:right-0]="config.layout === 'centered' || config.layout === 'material'"
-    [class.lg:right-16]="config.layout !== 'centered' && config.layout !== 'material'"
+    [class.lg:right-16]="config.layout !== 'centered' && config.layout !== 'material' && config.layout !== 'classy' && config.layout !== 'compact' && config.layout !== 'classic' && config.layout !== 'dense'
+    && config.layout !== 'futuristic' && config.layout !== 'thin' && config.layout !== 'enterprise' && config.layout !== 'modern'" 
     style="top: 275px"
     (click)="settingsDrawer.toggle()">
     <mat-icon
@@ -22,7 +23,7 @@
             <mat-icon
                 class="icon-size-7 text-current"
                 [svgIcon]="'heroicons_solid:cog-8-tooth'"></mat-icon>
-            <div class="ml-3 text-2xl font-semibold tracking-tight">Settings</div>
+            <div class="ml-3 text-2xl font-semibold tracking-tight">Configuraciones</div>
             <button
                 class="ml-auto"
                 mat-icon-button
@@ -36,7 +37,7 @@
         <div class="flex flex-col p-6">
 
             <!-- Theme -->
-            <div class="text-md font-semibold text-secondary">THEME</div>
+            <div class="text-md font-semibold text-secondary">TEMA</div>
             <div class="grid grid-cols-2 sm:grid-cols-3 gap-3 mt-6">
                 <ng-container *ngFor="let theme of config.themes">
                     <div
@@ -59,7 +60,7 @@
             <hr class="my-8">
 
             <!-- Scheme -->
-            <div class="text-md font-semibold text-secondary">SCHEME</div>
+            <div class="text-md font-semibold text-secondary">ESQUEMA</div>
             <div class="grid grid-cols-3 gap-3 justify-items-start mt-6">
                 <!-- Auto -->
                 <div
@@ -91,7 +92,7 @@
                     <div
                         class="flex items-center ml-2 font-medium leading-5"
                         [class.text-secondary]="config.scheme !== 'dark'">
-                        Dark
+                        Oscuro
                     </div>
                 </div>
                 <!-- Light -->
@@ -107,7 +108,7 @@
                     <div
                         class="flex items-center ml-2 font-medium leading-5"
                         [class.text-secondary]="config.scheme !== 'light'">
-                        Light
+                        Claro
                     </div>
                 </div>
             </div>
@@ -115,7 +116,7 @@
             <hr class="my-8">
 
             <!-- Layout -->
-            <div class="text-md font-semibold text-secondary">LAYOUT</div>
+            <div class="text-md font-semibold text-secondary">DISEÑO</div>
             <div class="grid grid-cols-3 gap-3 mt-6">
 
                 <!-- Empty -->
@@ -130,7 +131,7 @@
                     <div
                         class="mt-2 text-md font-medium text-center text-secondary"
                         [class.text-primary]="config.layout === 'empty'">
-                        Empty
+                        Vacío
                     </div>
                 </div>
 
@@ -164,7 +165,7 @@
                     <div
                         class="mt-2 text-md font-medium text-center text-secondary"
                         [class.text-primary]="config.layout === 'classic'">
-                        Classic
+                        Clásico
                     </div>
                 </div>
 
@@ -201,7 +202,7 @@
                     <div
                         class="mt-2 text-md font-medium text-center text-secondary"
                         [class.text-primary]="config.layout === 'classy'">
-                        Classy
+                        Elegante
                     </div>
                 </div>
 
@@ -234,7 +235,7 @@
                     <div
                         class="mt-2 text-md font-medium text-center text-secondary"
                         [class.text-primary]="config.layout === 'compact'">
-                        Compact
+                        Compacto
                     </div>
                 </div>
 
@@ -267,7 +268,7 @@
                     <div
                         class="mt-2 text-md font-medium text-center text-secondary"
                         [class.text-primary]="config.layout === 'dense'">
-                        Dense
+                        Denso
                     </div>
                 </div>
 
@@ -301,7 +302,7 @@
                     <div
                         class="mt-2 text-md font-medium text-center text-secondary"
                         [class.text-primary]="config.layout === 'futuristic'">
-                        Futuristic
+                        Futurístico
                     </div>
                 </div>
 
@@ -336,7 +337,7 @@
                     <div
                         class="mt-2 text-md font-medium text-center text-secondary"
                         [class.text-primary]="config.layout === 'thin'">
-                        Thin
+                        Fino
                     </div>
                 </div>
 
@@ -368,7 +369,7 @@
                     <div
                         class="mt-2 text-md font-medium text-center text-secondary"
                         [class.text-primary]="config.layout === 'centered'">
-                        Centered
+                        Centrado
                     </div>
                 </div>
 
@@ -400,7 +401,7 @@
                     <div
                         class="mt-2 text-md font-medium text-center text-secondary"
                         [class.text-primary]="config.layout === 'enterprise'">
-                        Enterprise
+                        Entretenido
                     </div>
                 </div>
 
@@ -462,7 +463,7 @@
                     <div
                         class="mt-2 text-md font-medium text-center text-secondary"
                         [class.text-primary]="config.layout === 'modern'">
-                        Modern
+                        Moderno
                     </div>
                 </div>
 

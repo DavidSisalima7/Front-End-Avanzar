@@ -40,7 +40,7 @@
 
   <div class="flex flex-auto overflow-hidden">
 
-    <div class="flex flex-col flex-auto sm:mb-18 overflow-hidden sm:overflow-y-auto">
+    <div class="flex flex-col flex-auto overflow-hidden sm:overflow-y-auto ">
       <table mat-table [dataSource]="dataSource" matSort>
 
         <ng-container matColumnDef="cedula">
@@ -104,6 +104,7 @@
 
   </div>
   <mat-paginator [pageSizeOptions]="pageSizeOptions" [pageSize]="pageSize" (page)="cambioTamanioPagina($event)"
-    [length]="dataSource?.data.length" [pageIndex]="paginator?.pageIndex">
-  </mat-paginator>
+  [length]="dataSource?.data.length" [pageIndex]="paginator?.pageIndex">
+</mat-paginator>
+
 </div>
