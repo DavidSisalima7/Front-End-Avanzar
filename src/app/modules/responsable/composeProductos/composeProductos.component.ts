@@ -139,7 +139,7 @@ export class MailboxComposeComponent implements OnInit
     
 
    ActualizarProducto(){
-    this.productoService.actualizarProducto(this.variableProd, this.productos).subscribe((data)=>{
+    this.productoService.actualizarProducto2(this.variableProd, this.productos).subscribe((data)=>{
     Swal.fire(
     'Acción Exitosa',
     'Producto Actualizado',

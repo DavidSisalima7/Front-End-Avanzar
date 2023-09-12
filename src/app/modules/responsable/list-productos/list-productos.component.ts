@@ -11,14 +11,13 @@ import { ProductosService } from 'app/services/services/producto.service';
 import { MatButtonModule } from '@angular/material/button';
 import { debounceTime, map, merge, Observable, Subject, switchMap, takeUntil } from 'rxjs';
 import { Router } from '@angular/router';
-import { CommonModule, CurrencyPipe } from '@angular/common';
+import { CommonModule } from '@angular/common';
 import Swal from 'sweetalert2';
 
 
 //DIALOGOS
 import { MatDialog } from '@angular/material/dialog';
 import { MailboxComposeComponent } from 'app/modules/responsable/composeProductos/composeProductos.component';
-import { ModalProductosComponent } from '../modal-productos/modal-productos.component';
 
 
 @Component({
@@ -28,22 +27,14 @@ import { ModalProductosComponent } from '../modal-productos/modal-productos.comp
     encapsulation: ViewEncapsulation.None,
     imports: [MatFormFieldModule, MatInputModule, MatTableModule, MatSortModule, MatPaginatorModule,
       MatIconModule, MatButtonModule, CommonModule],
-      providers: [CurrencyPipe]
 })
 export class ListProductosResponsableComponent
 {
-  displayedColumns: string[] = ['nombreProducto', 'precioProducto', 'cantidadDisponible', 'estado','editar','delete'];
+  displayedColumns: string[] = ['nombreProducto', 'precioProducto', 'cantidaDisponible', 'estado','editar','delete'];
   dataSource: MatTableDataSource<Productos>;
 
 
-  pageSizeOptions: number[] = [1, 5, 10, 50]; // Opciones de tamaño de página
-  pageSize: number = 10;
-  static idUsuarioSeleccionado: number;
-
-
-  products: Productos[] = [];
-
-  @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
+  @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
 
   searchInputControl: UntypedFormControl = new UntypedFormControl();
@@ -62,44 +53,35 @@ export class ListProductosResponsableComponent
     this.listarRegistrosProductos();
 
   }
-
-  cambioTamanioPagina(event) {
-    this.paginator.pageIndex = 0; // Reinicia la página actual al cambiar el tamaño de página
-  }
-
-  nextPage() {
-    if (this.paginator.hasNextPage()) {
-      this.paginator.nextPage();
-    }
-  }
-
   listarRegistrosProductos() {
     this.productoService.listarProducto().subscribe(
       (datos: Productos[]) => {
-        this.products = datos;
         this.dataSource = new MatTableDataSource<Productos>(datos);
-        this.dataSource.paginator = this.paginator;
-        this.paginator.length = datos.length;
-        // Llama a nextPage() después de configurar el paginador
-        this.nextPage();
       },
       error => {
         console.error('Ocurrió un error al obtener la lista de los productos:', error);
       }
     );
   }
-
   applyFilter(event: Event) {
     const filterValue = (event.target as HTMLInputElement).value;
     this.dataSource.filter = filterValue.trim().toLowerCase();
 
+    if (this.dataSource.paginator) {
+      this.dataSource.paginator.firstPage();
+    }
   }
+
+  redirectToRegisterProductos() {
+    this._router.navigate(['/register-productos']);
+  }
+
 
   //ABRIR EL MODAL
   openComposeDialog(): void
     {
         // Open the dialog
-        const dialogRef = this._matDialog.open(ModalProductosComponent);
+        const dialogRef = this._matDialog.open(MailboxComposeComponent);
 
         dialogRef.afterClosed()
             .subscribe((result) =>

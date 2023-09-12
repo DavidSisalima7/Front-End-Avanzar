@@ -5,10 +5,12 @@ import { MatIconModule } from '@angular/material/icon';
 import { ActivatedRoute, Router, RouterOutlet } from '@angular/router';
 import { FuseFullscreenComponent } from '@fuse/components/fullscreen';
 import { FuseLoadingBarComponent } from '@fuse/components/loading-bar';
-import { FuseHorizontalNavigationComponent, FuseNavigationService, FuseVerticalNavigationComponent } from '@fuse/components/navigation';
+import { FuseHorizontalNavigationComponent, FuseNavigationItem, FuseNavigationService, FuseVerticalNavigationComponent } from '@fuse/components/navigation';
 import { FuseMediaWatcherService } from '@fuse/services/media-watcher';
 import { NavigationService } from 'app/core/navigation/navigation.service';
 import { Navigation } from 'app/core/navigation/navigation.types';
+import { UserService } from 'app/core/user/user.service';
+import { User } from 'app/core/user/user.types';
 import { LanguagesComponent } from 'app/layout/common/languages/languages.component';
 import { MessagesComponent } from 'app/layout/common/messages/messages.component';
 import { NotificationsComponent } from 'app/layout/common/notifications/notifications.component';
@@ -28,6 +30,8 @@ export class MaterialLayoutComponent implements OnInit, OnDestroy
 {
     isScreenSmall: boolean;
     navigation: Navigation;
+    user: User;
+    rol: any;
     private _unsubscribeAll: Subject<any> = new Subject<any>();
 
     /**
@@ -37,6 +41,7 @@ export class MaterialLayoutComponent implements OnInit, OnDestroy
         private _activatedRoute: ActivatedRoute,
         private _router: Router,
         private _navigationService: NavigationService,
+        private _userService: UserService,
         private _fuseMediaWatcherService: FuseMediaWatcherService,
         private _fuseNavigationService: FuseNavigationService,
     )
@@ -65,12 +70,25 @@ export class MaterialLayoutComponent implements OnInit, OnDestroy
     ngOnInit(): void
     {
         // Subscribe to navigation data
+
+        const rolIngresado = localStorage.getItem('Rol');
+
+        this.swapNavigationData('mainNavigation');
+
         this._navigationService.navigation$
             .pipe(takeUntil(this._unsubscribeAll))
             .subscribe((navigation: Navigation) =>
             {
                 this.navigation = navigation;
             });
+
+            // Subscribe to the user service
+        this._userService.user$
+        .pipe((takeUntil(this._unsubscribeAll)))
+        .subscribe((user: User) =>
+        {
+            this.user = user;
+        });
 
         // Subscribe to media changes
         this._fuseMediaWatcherService.onMediaChange$
@@ -110,6 +128,373 @@ export class MaterialLayoutComponent implements OnInit, OnDestroy
         {
             // Toggle the opened status
             navigation.toggle();
+        }
+    }
+
+    swapNavigationData(navigationName: string): void {
+        // Obtiene el rol almacenado en el localStorage
+        const rolIngresado = localStorage.getItem('Rol');
+
+        // Define las opciones de navegación en función del rol
+        let newNavigation: FuseNavigationItem[] = [];
+
+        switch (rolIngresado) {
+            case 'ADMIN':
+                newNavigation = [
+                    // ... opciones de navegación para el rol de administrador
+                    {
+                        id      : 'tablero',
+                        title   : 'Tablero',
+                        subtitle: 'Acciones rápidas',
+                        type    : 'aside',
+                        icon    : 'heroicons_outline:home',
+                        children: [
+                            {
+                                id   : 'dashboard',
+                                title: 'Dashboard',
+                                type : 'basic',
+                                icon : 'heroicons_outline:chart-pie',
+                                link : '/dash-admin'
+                            }
+                        ],
+
+                    },
+
+                    // ... opciones de navegación para el rol de administrador
+                    {
+                        id      : 'listas',
+                        title   : 'Listados',
+                        subtitle: 'Detalles registros',
+                        type    : 'aside',
+                        icon    : 'heroicons_outline:clipboard-document-list',
+                        children: [
+                            {
+                                id   : 'list-resp',
+                                title: 'Responsables Ventas',
+                                type : 'basic',
+                                icon : 'heroicons_outline:user-group',
+                                link : '/list-responsables'
+                            },
+
+                            {
+                                id   : 'list-empren',
+                                title: 'Emprendedoras',
+                                type : 'basic',
+                                icon : 'heroicons_outline:user-group',
+                                link : '/list-emprend'
+                            },
+                            {
+                                id   : 'list-clie',
+                                title: 'Clientes',
+                                type : 'basic',
+                                icon : 'heroicons_outline:user-group',
+                                link : '/list-clie'
+                            }
+                        ]
+                    },
+
+                    {
+                        id      : 'perfil',
+                        title   : 'Perfil',
+                        subtitle: 'Información personal',
+                        type    : 'aside',
+                        icon    : 'heroicons_outline:user',
+                        children: [
+                            {
+                                id   : 'profile',
+                                title: 'Perfil',
+                                type : 'basic',
+                                icon : 'heroicons_outline:user-circle',
+                                link : '/profile-admin'
+                            },
+
+                            {
+                                id   : 'settings',
+                                title: 'Configuración',
+                                type : 'basic',
+                                icon : 'heroicons_outline:cog-6-tooth',
+                                link : '/config-admin'
+                            }
+                        ]
+                    }
+                ];
+                break;
+    
+            case 'RESPONSABLE_VENTAS':
+                newNavigation = [
+                    {
+                        id      : 'tablero',
+                        title   : 'Tablero',
+                        subtitle: 'Acciones rápidas',
+                        type    : 'aside',
+                        icon    : 'heroicons_outline:home',
+                        children: [
+                            {
+                                id   : 'dashboard',
+                                title: 'Dashboard',
+                                type : 'basic',
+                                icon : 'heroicons_outline:chart-pie',
+                                link : '/dash-resp'
+                            }
+                        ],
+
+                    },
+
+                    // ... opciones de navegación para el rol de administrador
+                    {
+                        id      : 'listas',
+                        title   : 'Listados',
+                        subtitle: 'Detalles registros',
+                        type    : 'aside',
+                        icon    : 'heroicons_outline:clipboard-document-list',
+                        children: [
+                            {
+                                id   : 'list-emprendedoras',
+                                title: 'Emprendedoras',
+                                type : 'basic',
+                                icon : 'heroicons_outline:user-group',
+                                link : '/list-empre-resp'
+                            },
+
+                            {
+                                id   : 'list-productos',
+                                title: 'Productos',
+                                type : 'basic',
+                                icon : 'heroicons_outline:shopping-cart',
+                                link : '/list-prod-resp'
+                            },
+
+                            {
+                                id   : 'list-servicios',
+                                title: 'Servicios',
+                                type : 'basic',
+                                icon : 'heroicons_outline:shopping-cart',
+                                link : '/list-serv-resp'
+                            }
+                        ]
+                    },
+                    {
+                        id      : 'subscripcion',
+                        title   : 'Subscripción',
+                        subtitle: 'Información de membresia',
+                        type    : 'aside',
+                        icon    : 'heroicons_outline:ticket',
+                        children: [
+                            {
+                                id   : 'planes',
+                                title: 'Planes',
+                                type : 'basic',
+                                icon : 'heroicons_outline:check-badge',
+                                link : '/planes-resp'
+                            }
+                        ],
+
+                    },
+
+                    {
+                        id      : 'perfil',
+                        title   : 'Perfil',
+                        subtitle: 'Información personal',
+                        type    : 'aside',
+                        icon    : 'heroicons_outline:user',
+                        children: [
+                            {
+                                id   : 'profile',
+                                title: 'Perfil',
+                                type : 'basic',
+                                icon : 'heroicons_outline:user-circle',
+                                link : '/profile-resp'
+                            },
+
+                            {
+                                id   : 'settings',
+                                title: 'Configuración',
+                                type : 'basic',
+                                icon : 'heroicons_outline:cog-6-tooth',
+                                link : '/config-resp'
+                            }
+                        ]
+                    }
+                ];
+                break;
+    
+                case 'EMPRENDEDORA':
+                    newNavigation = [
+                        {
+                            id      : 'tablero',
+                            title   : 'Tablero',
+                            subtitle: 'Acciones rápidas',
+                            type    : 'aside',
+                            icon    : 'heroicons_outline:home',
+                            children: [
+                                {
+                                    id   : 'dashboard',
+                                    title: 'Dashboard',
+                                    type : 'basic',
+                                    icon : 'heroicons_outline:chart-pie',
+                                    link : '/dash-empre'
+                                }
+                            ],
+    
+                        },
+    
+                        // ... opciones de navegación para el rol de administrador
+                        {
+                            id      : 'listas',
+                            title   : 'Listados',
+                            subtitle: 'Detalles registros',
+                            type    : 'aside',
+                            icon    : 'heroicons_outline:clipboard-document-list',
+                            children: [
+                                {
+                                    id   : 'list-prod',
+                                    title: 'Productos',
+                                    type : 'basic',
+                                    icon : 'heroicons_outline:shopping-cart',
+                                    link : '/list-empre-prod'
+                                },
+    
+                                {
+                                    id   : 'list-serv',
+                                    title: 'Servicios',
+                                    type : 'basic',
+                                    icon : 'heroicons_outline:shopping-cart',
+                                    link : '/list-empre-serv'
+                                },
+
+                                {                                           
+                                    id   : 'ecommerce',
+                                    title: 'Publicaciones Productos',
+                                    type : 'basic',
+                                    icon : 'heroicons_outline:chat-bubble-left-right',
+                                    link : '/ecommerce'
+                                },
+
+                                {
+                                    id   : 'ecommerce-servicios',
+                                    title: 'Publicaciones Servicios',
+                                    type : 'basic',
+                                    icon : 'heroicons_outline:chat-bubble-left-right',
+                                    link : '/ecommerce-servicios'
+                                }
+                            ]
+                        },
+
+                        {
+                            id      : 'plan',
+                            title   : 'Planes',
+                            subtitle: 'Adquirir o renovar membresia',
+                            type    : 'aside',
+                            icon    : 'heroicons_outline:ticket',
+                            children: [
+                                {
+                                    id   : 'subscripcion',
+                                    title: 'Subscripción',
+                                    type : 'basic',
+                                    icon : 'heroicons_outline:check-badge',
+                                    link : '/subscripcion-empre'
+                                }
+                            ],
+    
+                        },
+                       
+    
+                        {
+                            id      : 'perfil',
+                            title   : 'Perfil',
+                            subtitle: 'Información personal',
+                            type    : 'aside',
+                            icon    : 'heroicons_outline:user',
+                            children: [
+                                {
+                                    id   : 'profile',
+                                    title: 'Perfil',
+                                    type : 'basic',
+                                    icon : 'heroicons_outline:user-circle',
+                                    link : '/profile-empre'
+                                },
+
+                                {
+                                    id   : 'settings',
+                                    title: 'Configuración',
+                                    type : 'basic',
+                                    icon : 'heroicons_outline:cog-6-tooth',
+                                    link : '/config-empre'
+                                }
+                            ]
+                        }
+                    ];
+                    break;
+
+
+                    case 'CLIENTE':
+                    newNavigation = [
+                        {
+                            id      : 'productos',
+                            title   : 'Productos',
+                            subtitle: 'Tipo de productos',
+                            type    : 'aside',
+                            icon    : 'heroicons_outline:shopping-bag',
+                            children: [
+                                {
+                                    id   : 'productos',
+                                    title: 'Productos',
+                                    type : 'basic',
+                                    icon : 'heroicons_outline:shopping-cart',
+                                    link : '/prod-cli'
+                                },
+                                {
+                                    id   : 'servicios',
+                                    title: 'Servicios',
+                                    type : 'basic',
+                                    icon : 'heroicons_outline:shopping-cart',
+                                    link : '/serv-cli'
+                                }
+                            ],
+    
+                        },
+
+    
+                        {
+                            id      : 'perfil',
+                            title   : 'Perfil',
+                            subtitle: 'Información personal',
+                            type    : 'aside',
+                            icon    : 'heroicons_outline:user',
+                            children: [
+                                {
+                                    id   : 'profile',
+                                    title: 'Perfil',
+                                    type : 'basic',
+                                    icon : 'heroicons_outline:user-circle',
+                                    link : '/profile-cli'
+                                },
+
+                                {
+                                    id   : 'settings',
+                                    title: 'Configuración',
+                                    type : 'basic',
+                                    icon : 'heroicons_outline:cog-6-tooth',
+                                    link : '/config-cli'
+                                }
+                            ]
+                        }
+                    ];
+                    break;
+    
+            default:
+                newNavigation = [
+                    // Opciones de navegación predeterminadas para roles desconocidos o no válidos
+                ];
+        }
+    
+        // Obtén el componente de navegación
+        const navComponent = this._fuseNavigationService.getComponent<FuseVerticalNavigationComponent>(navigationName);
+    
+        // Actualiza las opciones de navegación y refresca el componente
+        if (navComponent) {
+            navComponent.navigation = newNavigation;
+            navComponent.refresh();
         }
     }
 }

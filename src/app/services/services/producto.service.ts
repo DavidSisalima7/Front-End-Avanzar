@@ -30,7 +30,12 @@ import { catchError, map, Observable, ReplaySubject, tap, throwError } from 'rxj
     eliminadoLogico(id: any) {
       return this.http.put(`${this.url}/eliminadoLogico/${id}`, null);
     }
+
     actualizarProducto(id: number, producto: ProductosModels): Observable<object> {
+      return this.http.put(`${this.url}/actualizar/${id}`, producto);
+    }
+
+    actualizarProducto2(id: number, producto: Productos): Observable<object> {
       return this.http.put(`${this.url}/actualizar/${id}`, producto);
     }
 
