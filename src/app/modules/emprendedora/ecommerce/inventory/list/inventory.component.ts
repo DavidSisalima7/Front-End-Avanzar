@@ -445,7 +445,7 @@ export class InventoryListComponent implements OnInit, AfterViewInit, OnDestroy 
                 next: (reponse) => {
                     if (reponse) {
                         
-                        openComposeDialog();
+                        this.openComposeDialog();
                     } else {
                         this.banLimitPost = true;
                         this.cd.detectChanges();
