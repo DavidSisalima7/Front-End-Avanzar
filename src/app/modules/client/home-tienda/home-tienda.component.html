@@ -332,7 +332,9 @@
                                                     "
                                                 ></mat-icon>
                                             </button>
-                                            <button mat-icon-button>
+
+                                             <button mat-icon-button
+                                            >
                                                 <mat-icon
                                                     class="icon-size-5 text-hint"
                                                     [svgIcon]="
@@ -340,6 +342,24 @@
                                                     "
                                                 ></mat-icon>
                                             </button>
+                                            <div class="flex items-center">
+                                                <button
+                                                    class="px-3"
+                                                    mat-button
+                                                    [color]="'primary'"
+                                                    (click)="openComposeDialog(publicacion.idPublicacion)"
+                                                >
+                                                    <span class="mr-1">Detalles</span>
+                                                    <mat-icon
+                                                        class="icon-size-5 transition-transform ease-in-out duration-150 rotate-0"
+            
+                                                        [svgIcon]="
+                                                            'heroicons_mini:chevron-down'
+                                                        "
+                                                    ></mat-icon>
+                                                </button>
+                                            </div>
+                                           
                                         </div>
                                     </div>
                                 </fuse-card>
