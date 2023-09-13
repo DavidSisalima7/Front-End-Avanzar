@@ -156,10 +156,10 @@ seleccionarProducto(producto: any) {
 }
 //////////////////////////////llevar datos al compose
   selectProducto:any;
-  seleccionarProductoEdit(producto: any) {
-    console.log('Se seleccionó el producto:', producto);
+  seleccionarProductoEdit(publicacion: any) {
+    console.log('Se seleccionó el producto:', publicacion);
     this.openComposeDialog();
-    this.selectProducto = producto.idProducto;
-    localStorage.setItem("idProductoSelected", String(producto.idProducto));
+    this.selectProducto = publicacion.idPrublicacion;
+    localStorage.setItem("idProductoSelected", String(publicacion.idPublicacion));
   }
 }

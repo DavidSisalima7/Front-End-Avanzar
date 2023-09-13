@@ -37,26 +37,36 @@
     <div class="flex flex-col flex-auto overflow-hidden sm:overflow-y-auto ">
       <table mat-table [dataSource]="dataSource" matSort>
 
-        <ng-container matColumnDef="nombre">
-          <th mat-header-cell *matHeaderCellDef mat-sort-header (click)="ejecutarFuncionNombre()"> Nombre Servicio </th>
-          <td mat-cell *matCellDef="let row"> {{row.nombreServicio}} </td>
+        <ng-container matColumnDef="nombreProducto">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header (click)="ejecutarFuncionNombre()"> Titulo Publicación </th>
+          <td mat-cell *matCellDef="let row"> {{row.tituloPublicacion}} </td>
         </ng-container>
 
-        <ng-container matColumnDef="descripcion">
-          <th mat-header-cell *matHeaderCellDef mat-sort-header (click)="ejecutarFuncionDescripcion()"> Descripción
-          </th>
-          <td mat-cell *matCellDef="let row"> {{row.descripcionServicio}} </td>
-        </ng-container>
         <!-- Name Column -->
-        <ng-container matColumnDef="precio">
-          <th mat-header-cell *matHeaderCellDef mat-sort-header (click)="ejecutarFuncionPrecio()"> Precio </th>
-          <td mat-cell *matCellDef="let row"> {{row.precioServicio}} </td>
+        <ng-container matColumnDef="precioProducto">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header (click)="ejecutarFuncionPrecio()"> Fecha Publicación </th>
+          <td mat-cell *matCellDef="let row"> {{row.fechaPublicacion}} </td>
+        </ng-container>
+
+        <!-- Fruit Column -->
+        <ng-container matColumnDef="cantidaDisponible">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header (click)="ejecutarFuncionCantidad()"> Nombre Producto </th>
+          <td mat-cell *matCellDef="let row">
+            {{ row.servicios.nombreServicio }}
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="vendedor">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header> Emprendedora </th>
+          <td mat-cell *matCellDef="let row">
+            {{ row.vendedor.usuario.name }}
+          </td>
         </ng-container>
 
         <ng-container matColumnDef="estado">
           <th mat-header-cell *matHeaderCellDef mat-sort-header (click)="ejecutarFuncionEstado()"> Activo </th>
           <td mat-cell *matCellDef="let row">
-            <ng-container *ngIf="row.visible; else inactivo">
+            <ng-container *ngIf="row.estado; else inactivo">
               <mat-icon class="text-green-400 icon-size-5" [svgIcon]="'heroicons_solid:check'"></mat-icon>
             </ng-container>
             <ng-template #inactivo>

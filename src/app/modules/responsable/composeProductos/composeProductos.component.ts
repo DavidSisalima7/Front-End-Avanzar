@@ -1,5 +1,5 @@
 import { NgIf } from '@angular/common';
-import { Component, OnInit, ViewEncapsulation } from '@angular/core';
+import { Component, EventEmitter, OnInit, Output, ViewEncapsulation } from '@angular/core';
 import { FormsModule, ReactiveFormsModule, UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatDialogRef } from '@angular/material/dialog';
@@ -11,8 +11,11 @@ import {MatDatepickerModule} from '@angular/material/datepicker';
 import { MatOptionModule } from '@angular/material/core';
 import { MatSelectModule } from '@angular/material/select';
 import { ProductosService } from 'app/services/services/producto.service';
-import { Productos } from 'app/services/models/productos';
+import { Productos, ProductosModels } from 'app/services/models/productos';
 import Swal from 'sweetalert2';
+import { Publicacion } from 'app/services/models/publicaciones';
+import { PublicacionesService } from 'app/services/services/publicaciones.service';
+import { Vendedor } from 'app/services/models/vendedora';
 @Component({
     selector     : 'mailbox-compose',
     templateUrl  : './composeProductos.component.html',
@@ -37,6 +40,8 @@ export class MailboxComposeComponent implements OnInit
         ],
     };
 
+
+    @Output() confirmacionCerrada: EventEmitter<boolean> = new EventEmitter<boolean>();
     /**
      * Constructor
      */
@@ -44,6 +49,7 @@ export class MailboxComposeComponent implements OnInit
         public matDialogRef: MatDialogRef<MailboxComposeComponent>,
         private _formBuilder: UntypedFormBuilder,
         private productoService: ProductosService,
+        private publicacionService: PublicacionesService,
     )
     {
     }
@@ -59,9 +65,15 @@ export class MailboxComposeComponent implements OnInit
     {
         // Create the form
         this.composeForm = this._formBuilder.group({
-            nombre : ['', Validators.required],
+                titulopubli : ['', Validators.required],
+                descripcionpubli : ['', Validators.required],
+                nombreProducto : ['', Validators.required],
+                vendedor: ['', Validators.required],
+                categoria: ['', Validators.required],
+                tipo: ['', Validators.required],
                 precio : ['', Validators.required],
                 cantidad : ['', Validators.required],  
+                peso: ['', Validators.required],
                 estado : ['', Validators.required],   
         });
         this.cargar_datos();
@@ -118,28 +130,35 @@ export class MailboxComposeComponent implements OnInit
     /**
      * Send the message
      */
-    send(): void
+    /*send(): void
     {
         this.ActualizarProducto();
-    }
+    }*/
 
     variableProd:any;
     data:any;
-    productos: Productos = new Productos();
+    publicacion: Publicacion = new Publicacion();
     cargar_datos(){
       this.variableProd = localStorage.getItem("idProductoSelected");
-      this.productoService.buscarProducto(this.variableProd).subscribe((dataproducto) =>{
+      this.publicacionService.buscarPublicacionId(this.variableProd).subscribe((dataproducto) =>{
       this.data=dataproducto;
-      this.productos.nombreProducto = this.data.nombreProducto;
-      this.productos.precioProducto = this.data.precioProducto;
-      this.productos.cantidadDisponible = this.data.cantidadDisponible;
-      this.productos.estado = this.data.estado ? true : false;
+      console.log(dataproducto);
+      this.publicacion.tituloPublicacion = this.data.tituloPublicacion;
+      this.publicacion.descripcionPublicacion = this.data.descripcionPublicacion
+      this.publicacion.productos.nombreProducto = this.data.productos.nombreProducto;
+      this.publicacion.vendedor.usuario.persona.primer_nombre = this.data.nombrevendedor;
+      this.publicacion.categoria.nombreCategoria = this.data.categoria;
+      this.publicacion.productos.categoriaProducto.nombreCategoria = this.data.tipo;
+      this.publicacion.productos.precioProducto = this.data.precio;
+      this.publicacion.productos.cantidadDisponible = this.data.cantidad;
+      this.publicacion.productos.pesoProducto = this.data.peso;
+      this.publicacion.estado = this.data.estado ? true : false;
       })
     }
     
 
-   ActualizarProducto(){
-    this.productoService.actualizarProducto2(this.variableProd, this.productos).subscribe((data)=>{
+   /*ActualizarProducto(){
+    this.productoService.actualizarProducto2(this.variableProd, this.publicacion).subscribe((data)=>{
     Swal.fire(
     'Acción Exitosa',
     'Producto Actualizado',
@@ -149,5 +168,5 @@ this.matDialogRef.close();
     }, error=>{
         console.log("Error al guardar");
     });
-   }
+   }*/
 }
