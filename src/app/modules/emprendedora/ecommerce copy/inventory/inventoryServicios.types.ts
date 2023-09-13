@@ -27,15 +27,13 @@ export interface InventarioServicios {
 export interface CategoriaProducto {
     idCategoriaProducto: number;
     nombreCategoria: string;
-    descripcion: string;
-    estado: boolean;
+
 }
 
 export interface CategoriaServicio {
     idCategoriaServicio: number;
     nombreCategoria: string;
-    descripcion: string;
-    estado: boolean;
+
 }
 export interface InventarioPublicaciones {
 
@@ -57,8 +55,7 @@ export interface CategoriaPublicacion {
 
     idCategoria: number;
     nombreCategoria: string;
-    descripcion: string;
-    estado: boolean;
+
 }
 
 export interface InventoryPagination {

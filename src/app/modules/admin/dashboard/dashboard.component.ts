@@ -34,7 +34,7 @@ export class DashboardAdminComponent implements OnInit, OnDestroy {
     chartYearlyExpenses: ApexOptions = {};
     data: any;
     user: User;
-    selectedProject: string = 'ACME Corp. Backend App';
+    selectedProject: string = 'Fundación Avanzar';
     private _unsubscribeAll: Subject<any> = new Subject<any>();
     nombreUsuario: string;
 
@@ -305,5 +305,13 @@ export class DashboardAdminComponent implements OnInit, OnDestroy {
                 },
             },
         };
+    }
+
+    redirectToConfiguracion() {
+        this._router.navigate(['/config-admin']);
+      }
+
+    redirectToProfile() {
+        this._router.navigate(['/profile-admin']);
     }
 }
