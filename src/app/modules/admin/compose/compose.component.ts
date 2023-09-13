@@ -1,6 +1,6 @@
 import { CommonModule, DatePipe, NgIf } from '@angular/common';
 import { Component, Inject, OnInit, ViewEncapsulation, ViewChild, Output, EventEmitter } from '@angular/core';
-import { FormBuilder, FormsModule, ReactiveFormsModule, UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
+import { AbstractControl, FormBuilder, FormsModule, ReactiveFormsModule, UntypedFormBuilder, UntypedFormGroup, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -30,6 +30,7 @@ import { Router } from '@angular/router';
     MatInputModule, NgIf, QuillEditorComponent, CommonModule, MatNativeDateModule],
 })
 export class MailboxComposeComponent implements OnInit {
+
   composeForm: UntypedFormGroup;
   @ViewChild('picker1') picker1: MatDatepicker<Date>;
 
@@ -60,7 +61,20 @@ export class MailboxComposeComponent implements OnInit {
 
   nacionalidades = [
     { value: 'Ecuador', label: 'Ecuador' },
+    { value: 'Perú', label: 'Perú' },
+    { value: 'Colombia', label: 'Colombia' },
     { value: 'Venezuela', label: 'Venezuela' },
+    { value: 'Chile', label: 'Chile' },
+    { value: 'Argentina', label: 'Argentina' },
+    { value: 'Brasil', label: 'Brasil' },
+    { value: 'Uruguay', label: 'Uruguay' },
+    { value: 'Paraguay', label: 'Paraguay' },
+    { value: 'Bolivia', label: 'Bolivia' },
+    { value: 'México', label: 'México' },
+    { value: 'Estados Unidos', label: 'Estados Unidos' },
+    { value: 'Canadá', label: 'Canadá' },
+    { value: 'España', label: 'España' },
+    { value: 'Otro', label: 'Otro ...' },
   ];
 
   user: User;
@@ -91,21 +105,19 @@ export class MailboxComposeComponent implements OnInit {
       this.user = data;
       // Create the form inside the subscription
       this.composeForm = this._formBuilder.group({
-        cedula: [this.user.persona.cedula, Validators.required],
+        cedula: [this.user.persona.cedula, [Validators.required, validarLongitud()]],
         primer_nombre: [this.user.persona.primer_nombre, Validators.required],
         segundo_nombre: [this.user.persona.segundo_nombre, Validators.required],
         primer_apellido: [this.user.persona.primer_apellido, Validators.required],
         segundo_apellido: [this.user.persona.segundo_apellido, Validators.required],
-        correo: [this.user.persona.correo, Validators.email],
-        celular: [this.user.persona.celular, Validators.required],
+        correo: [this.user.persona.correo, [Validators.required, Validators.email]],
+        celular: [this.user.persona.celular, [Validators.required, validarLongitud()]],
         direccion: [this.user.persona.direccion, Validators.required],
         estado: [this.user.enabled, Validators.required],
         genero: [this.user.persona.genero, Validators.required],
         nacionalidad: [this.user.persona.nacionalidad, Validators.required],
         fecha_nacimiento: [this.formatDate(this.user.persona.fecha_nacimiento)],
         // Agrega otros campos del formulario aquí
-
-
       });
 
     });
@@ -117,7 +129,9 @@ export class MailboxComposeComponent implements OnInit {
   // @ Public methods
   // -----------------------------------------------------------------------------------------------------
 
-
+  isFormInvalid(): boolean {
+    return this.composeForm.invalid || Object.values(this.composeForm.value).some((val) => val === '');
+  }
 
   updateUser(): void {
 
@@ -188,7 +202,7 @@ export class MailboxComposeComponent implements OnInit {
         });
 
 
-      }else{
+      } else {
 
       }
     });
@@ -255,4 +269,16 @@ export class MailboxComposeComponent implements OnInit {
    */
   send(): void {
   }
+}
+
+function validarLongitud(): ValidatorFn {
+  return (control: AbstractControl): ValidationErrors | null => {
+    const longitud = control.value as string;
+
+    if (longitud && longitud.length !== 10) {
+      return { longitudInvalida: true };
+    }
+
+    return null;
+  };
 }

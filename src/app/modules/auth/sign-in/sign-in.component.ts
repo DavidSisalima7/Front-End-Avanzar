@@ -133,9 +133,10 @@ export class SingInComponent implements OnInit {
          if (user) {
            // Si se reciben los detalles del usuario correctamente, almacénalos en el servicio
            this._authService.setUser(user);
+
            this._userRol.obtenerRolDeUsuario(user.id).subscribe(
             (userRole: any) => {
-                
+                 localStorage.setItem('idUser', user.id); 
               // Redirigir según el rol del usuario
               localStorage.setItem('Rol', userRole.nombre); // Guarda el valor en el localStorage
     

@@ -32,6 +32,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { CategoriaServicioService } from 'app/services/services/categoriaServicio.service';
 import { VendedorService } from 'app/services/services/vendedora.service';
 import { ModalServicioComponent } from 'app/modules/emprendedora/modal-servicio/modal-servicio.component';
+import { DetalleSubscripcionService } from 'app/services/services/detalleSubscripcion.service';
 
 
 @Component({
@@ -83,7 +84,7 @@ export class InventoryListComponentService implements OnInit, AfterViewInit, OnD
     idPublicacion: any;
     servicio = new ServicioModels();
     categoriaExtraida: any;
-
+    banLimitPost = false;
     /**
      * Constructor
      */
@@ -97,7 +98,9 @@ export class InventoryListComponentService implements OnInit, AfterViewInit, OnD
         private _categoriaService: CategoriaServicioService,
         private _publicacionService: PublicacionesService,
         private _servicioService: ServiciosService,
-        private _matDialog: MatDialog
+        private _matDialog: MatDialog,
+        private _detalleSubscripcionService: DetalleSubscripcionService,
+        private cd: ChangeDetectorRef
     ) {
     }
 
@@ -421,6 +424,30 @@ export class InventoryListComponentService implements OnInit, AfterViewInit, OnD
      */
     trackByFn(index: number, item: any): any {
         return item.id || index;
+    }
+
+    verifyLimtiPost(): void {
+        this._detalleSubscripcionService.limitPost()
+            .subscribe({
+
+                next: (reponse) => {
+                    if (reponse) {
+
+                        this.openComposeDialog();
+                    } else {
+                        this.banLimitPost = true;
+                        this.cd.detectChanges();
+                        setTimeout(() => {
+                            
+                            this.banLimitPost = false; // Después de 3 segundos, restablece a false
+                            this.cd.detectChanges();
+                        }, 2500);
+                    }
+                },
+                error: (error) => {
+
+                }
+            });
     }
 
     //ABRIR EL MODAL

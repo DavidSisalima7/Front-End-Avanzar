@@ -56,4 +56,10 @@ export class ServiciosService {
   actualizarServicioPublicaciones(id: number, servicio: ServicioModels): Observable<object> {
   return this.http.put(`${this.url}/actualizar/${id}`, servicio);
   }
+buscarServicio(id: number): Observable<object> {
+  return this.http.get(`${this.url}/buscar/${id}`);
+}
+ListarServicioxEmprendedor(id: number): Observable<object> {
+  return this.http.get(`${this.url}/ServicioxEmprendedora/${id}`);
+}
 }

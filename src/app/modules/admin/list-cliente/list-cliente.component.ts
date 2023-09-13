@@ -1,6 +1,3 @@
-
-
-
 import { Component, ViewChild, ViewEncapsulation } from '@angular/core';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
@@ -23,7 +20,7 @@ import Swal from 'sweetalert2';
 
 //DIALOGOS
 import { MatDialog } from '@angular/material/dialog';
-import { MailboxComposeComponent } from 'app/modules/admin/compose/compose.component';
+import { ModalClienteComponent } from 'app/modules/admin/modal-cliente/modal-cliente.component';
 import { FuseConfirmationService } from '@fuse/services/confirmation';
 
 
@@ -39,8 +36,13 @@ export class ListAdminClienteComponent {
   displayedColumns: string[] = ['cedula', 'nombres', 'correo', 'celular', 'estado', 'editar', 'delete'];
   dataSource: MatTableDataSource<Usuario>;
 
+  pageSizeOptions: number[] = [1, 5, 10, 50]; // Opciones de tamaño de página
+  pageSize: number = 10;
+  static idUsuarioSeleccionado: number;
 
-  @ViewChild(MatPaginator) paginator: MatPaginator;
+  users: Usuario[] = [];
+
+  @ViewChild(MatPaginator, {static: true}) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
 
   searchInputControl: UntypedFormControl = new UntypedFormControl();
@@ -56,10 +58,27 @@ export class ListAdminClienteComponent {
     this.listarRegistros();
 
   }
+
+  cambioTamanioPagina(event) {
+    this.paginator.pageIndex = event.pageIndex;
+    // También puedes agregar un console.log() aquí para depurar
+  }
+  
+  nextPage() {
+    if (this.paginator.hasNextPage()) {
+      this.paginator.nextPage();
+    }
+  }
+
   listarRegistros() {
     this.usuarioService.obtenerListaCliente().subscribe(
       (datos: Usuario[]) => {
+        this.users = datos;
         this.dataSource = new MatTableDataSource<Usuario>(datos);
+
+        this.dataSource.paginator = this.paginator;
+        this.paginator.length = datos.length;
+        this.nextPage();
       },
       error => {
         console.error('Ocurrió un error al obtener la lista de personas responsables:', error);
@@ -69,6 +88,7 @@ export class ListAdminClienteComponent {
   ////////////////////////////////////// Inicio  Filtrados de Tabla
   usuarios: any;
   ///Cedula
+  /*
   FiltroCedulaAsc(): void {
     this.usuarioService.obtenerListaCliente().subscribe(
       (datos: Usuario[]) => {
@@ -93,7 +113,7 @@ export class ListAdminClienteComponent {
       }
     );
   }
-
+*/
   //celular
   FiltroCelularAsc(): void {
     this.usuarioService.obtenerListaCliente().subscribe(
@@ -197,6 +217,7 @@ export class ListAdminClienteComponent {
     this.ejecutarPrimeraFuncion = !this.ejecutarPrimeraFuncion;
   }
   //Cedula
+  /*
   ejecutarFuncionCedula(): void {
     if (this.ejecutarPrimeraFuncion) {
       this.FiltroCedulaAsc();
@@ -204,7 +225,7 @@ export class ListAdminClienteComponent {
       this.FiltroCedulaDesc();
     }
     this.cambiarFuncionAEjecutar();
-  }
+  }*/
   //Nombres
   ejecutarFuncionNombres(): void {
     if (this.ejecutarPrimeraFuncion) {
@@ -247,9 +268,6 @@ export class ListAdminClienteComponent {
     const filterValue = (event.target as HTMLInputElement).value;
     this.dataSource.filter = filterValue.trim().toLowerCase();
 
-    if (this.dataSource.paginator) {
-      this.dataSource.paginator.firstPage();
-    }
   }
 
   redirectToRegisterCliente() {
@@ -340,13 +358,24 @@ export class ListAdminClienteComponent {
 
 
   //ABRIR EL MODAL
-  openComposeDialog(): void {
-    // Open the dialog
-    const dialogRef = this._matDialog.open(MailboxComposeComponent);
-
-    dialogRef.afterClosed()
-      .subscribe((result) => {
-        console.log('Compose dialog was closed!');
-      });
+  openComposeDialog(idUsuario: number): void {
+    // Abre el diálogo y pasa el idUsuario como dato
+  
+    ListAdminClienteComponent.idUsuarioSeleccionado = idUsuario;
+    console.log('idUsuarioSeleccionado', ListAdminClienteComponent.idUsuarioSeleccionado);
+  
+    const dialogRef = this._matDialog.open(ModalClienteComponent);
+  
+    dialogRef.componentInstance.confirmacionCerrada.subscribe((confirmado: boolean) => {
+      if (confirmado) {
+        dialogRef.close(); // Cierra el diálogo
+        // Realiza otras acciones aquí si es necesario
+        this.listarRegistros();
+      }
+    });
+  
+    dialogRef.afterClosed().subscribe((result) => {
+      console.log('Compose dialog was closed!');
+    });
   }
 }

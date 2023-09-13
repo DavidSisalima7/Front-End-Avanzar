@@ -7,16 +7,12 @@
         class="dark bg-gray-900 print:hidden"
         [mode]="'over'"
         [name]="'mainNavigation'"
-        [navigation]="navigation.default"
         [opened]="false">
         <!-- Navigation header hook -->
         <ng-container fuseVerticalNavigationContentHeader>
             <!-- Logo -->
             <div class="flex items-center h-20 pt-6 px-8">
-                <img
-                    class="w-24"
-                    src="assets/images/logo/logo-text-on-dark.svg"
-                    alt="Logo image">
+                <img class="w-15" src="assets/images/logo/avanzar.png">
             </div>
         </ng-container>
     </fuse-vertical-navigation>
@@ -34,28 +30,18 @@
                 <ng-container *ngIf="!isScreenSmall">
                     <div class="flex items-center mx-2">
                         <!-- Light version -->
-                        <img
-                            class="w-24 dark:hidden"
-                            src="assets/images/logo/logo-text.svg"
-                            alt="Logo image">
-                        <!-- Dark version -->
-                        <img
-                            class="hidden dark:flex w-24"
-                            src="assets/images/logo/logo-text-on-dark.svg"
-                            alt="Logo image">
+                        <img class="w-15" src="assets/images/logo/avanzar.png">
                     </div>
                 </ng-container>
                 <!-- Navigation toggle button -->
-                <ng-container *ngIf="isScreenSmall">
-                    <button
-                        mat-icon-button
-                        (click)="toggleNavigation('mainNavigation')">
-                        <mat-icon [svgIcon]="'heroicons_outline:bars-3'"></mat-icon>
-                    </button>
+                <ng-container *ngIf="!isScreenSmall">
+                    <button mat-icon-button (click)="toggleNavigation('mainNavigation')"
+                    (click)="swapNavigationData('mainNavigation');">
+                    <mat-icon [svgIcon]="'heroicons_outline:bars-3'"></mat-icon>
+                </button>
                 </ng-container>
                 <!-- Components -->
                 <div class="flex items-center pl-2 ml-auto space-x-1 sm:space-x-2">
-                    <languages></languages>
                     <fuse-fullscreen class="hidden md:block"></fuse-fullscreen>
                     <search [appearance]="'bar'"></search>
                     <shortcuts></shortcuts>
@@ -68,8 +54,7 @@
             <ng-container *ngIf="!isScreenSmall">
                 <div class="relative flex flex-auto flex-0 items-center h-16 px-4">
                     <fuse-horizontal-navigation
-                        [name]="'mainNavigation'"
-                        [navigation]="navigation.horizontal"></fuse-horizontal-navigation>
+                        [name]="'mainNavigation'"></fuse-horizontal-navigation>
                 </div>
             </ng-container>
         </div>

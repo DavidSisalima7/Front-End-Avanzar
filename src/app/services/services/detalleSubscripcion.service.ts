@@ -17,4 +17,7 @@ export class DetalleSubscripcionService {
     return this.http.put(`${this.baseUrl}/actualizar/${id}`, detalle);
   }
 
+  limitPost():Observable<Boolean>{
+    return this.http.get<Boolean>(`${this.baseUrl}/comprobarLimite`);
+  }
 }

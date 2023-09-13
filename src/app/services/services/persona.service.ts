@@ -3,6 +3,9 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, throwError } from 'rxjs';
 import { Persona } from '../models/persona';
+import { Usuario } from '../models/usuario';
+import { User } from 'app/core/user/user.types';
+
 
 @Injectable({
   providedIn: 'root'
@@ -32,5 +35,13 @@ export class PersonaService {
     const url = `${this.url}/data1`;
     return this.http.get(url);
   }
+  actualizarPersona(idPersona: any, persona: Persona): Observable<Persona> { 
+    return this.http.put<Persona>(`${this.url}/actualizar/${idPersona}`, persona);
+  }
+  
+  actualizarName(id: any, user: User): Observable<any> { 
+    return this.http.put<User>(`${this.url}/actualizarP/${id}`, user);
+  }
+  
 
 }

@@ -147,6 +147,7 @@ export const appRoutes: Route[] = [
                 {path: 'prod-cli', loadChildren: () => import('app/modules/client/productos-vent/productos-vent.routes')},
                 {path: 'serv-cli', loadChildren: () => import('app/modules/client/servicios-vent/servicios-vent.routes')},
                 {path: 'profile-cli', loadChildren: () => import('app/modules/client/profile/profile.routes')},
+                {path: 'fav-cli', loadChildren: () => import('app/modules/client/favoritos/favoritos.routes')},
                 {path: 'config-cli', loadChildren: () => import('app/modules/client/settings/settings.routes')},
 
             ]

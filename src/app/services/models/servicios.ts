@@ -23,6 +23,5 @@ export class ServicioModels {
 export class CategoriaServicio {
     idCategoriaServicio: number;
     nombreCategoria: string;
-    descripcion: string;
-    estado: boolean;
+
 }

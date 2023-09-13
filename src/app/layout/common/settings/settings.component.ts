@@ -42,6 +42,8 @@ export class SettingsComponent implements OnInit, OnDestroy
     themes: Themes;
     private _unsubscribeAll: Subject<any> = new Subject<any>();
 
+
+    
     /**
      * Constructor
      */

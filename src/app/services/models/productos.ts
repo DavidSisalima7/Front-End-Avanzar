@@ -1,7 +1,7 @@
 import { CategoriaProducto } from "app/modules/emprendedora/ecommerce/inventory/inventory.types";
 
 export class Productos {
-    idProducto: number;
+    idProducto?: number;
     nombreProducto: string='';
     precioProducto: number;
     cantidadDisponible:number;
@@ -25,6 +25,5 @@ export class ProductosModels {
 export class CategoriesProd {
     idCategoriaProducto: number;
     nombreCategoria: string;
-    descripcion: string;
-    estado: boolean;
+
 }
