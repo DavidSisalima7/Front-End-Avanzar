@@ -39,7 +39,7 @@ export class ListRespServiciosComponent
   pageSizeOptions: number[] = [1, 5, 10, 50]; // Opciones de tamaño de página
   pageSize: number = 10;
 
-
+  static idPublicacionSeleccionado: number;
 
   publicacion: Publicacion[] = [];
 
@@ -90,18 +90,28 @@ export class ListRespServiciosComponent
   }
 
 
-  //ABRIR EL MODAL
-  openComposeDialog(): void
-    {
-        // Open the dialog
-        const dialogRef = this._matDialog.open(MailboxComposeComponent);
+ //ABRIR EL MODAL
+ openComposeDialog(idPublicacion: number): void {
+  // Abre el diálogo y pasa el idUsuario como dato
 
-        dialogRef.afterClosed()
-            .subscribe((result) =>
-            {
-                console.log('Compose dialog was closed!');
-            });
+  ListRespServiciosComponent.idPublicacionSeleccionado = idPublicacion;
+  console.log('idUsuarioSeleccionado', ListRespServiciosComponent.idPublicacionSeleccionado);
+
+  const dialogRef = this._matDialog.open(MailboxComposeComponent);
+
+  dialogRef.componentInstance.confirmacionCerrada.subscribe((confirmado: boolean) => {
+    if (confirmado) {
+      dialogRef.close(); // Cierra el diálogo
+      // Realiza otras acciones aquí si es necesario
+      this.listarRegistrosServicios();
     }
+  });
+
+  dialogRef.afterClosed().subscribe((result) => {
+    console.log('Compose dialog was closed!');
+  });
+}
+
 /////////////////////////Filtro de los Servicios
 /*servicios:any;
  ///descripcion
@@ -281,11 +291,11 @@ seleccionarServicio(servicio: any) {
   });
 }
 //////////////////////////////llevar datos al compose
-selectService:any;
+/*selectService:any;
 seleccionarServiceEdit(servicio: any) {
   this.openComposeDialog();
   this.selectService = servicio.idServicio;
   localStorage.setItem("idServiceSelected", String(servicio.idServicio));
-}
+}*/
 
 }
