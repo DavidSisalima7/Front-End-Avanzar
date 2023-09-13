@@ -99,7 +99,7 @@
                     <mat-form-field class="w-full">
                         <mat-label>Primer Nombre</mat-label>
                         <input id="primernombre" matInput [formControlName]="'primernombre'"
-                            [(ngModel)]="persona.primer_nombre" pattern="^[A-Za-zñÑáéíóúÁÉÍÓÚ]+$" />
+                            [(ngModel)]="persona.primer_nombre" pattern="^[A-Za-zñÑáéíóúÁÉÍÓÚ]+(\s[A-Za-zñÑáéíóúÁÉÍÓÚ]+)*$" />
                         <mat-error *ngIf="
                             signUpForm.get('primernombre').hasError('required')
                         ">Este campo es requerido</mat-error>
@@ -112,7 +112,7 @@
                     <mat-form-field class="w-full">
                         <mat-label>Segundo Nombre</mat-label>
                         <input id="segundonombre" matInput [formControlName]="'segundonombre'"
-                            [(ngModel)]="persona.segundo_nombre" pattern="^[A-Za-zñÑáéíóúÁÉÍÓÚ]+$" />
+                            [(ngModel)]="persona.segundo_nombre" pattern="^[A-Za-zñÑáéíóúÁÉÍÓÚ]+(\s[A-Za-zñÑáéíóúÁÉÍÓÚ]+)*$" />
                         <mat-error *ngIf="
                             signUpForm.get('segundonombre').hasError('required')
                         ">Este campo es requerido</mat-error>
@@ -125,7 +125,7 @@
                     <mat-form-field class="w-full">
                         <mat-label>Primer Apellido</mat-label>
                         <input id="primerapellido" matInput [formControlName]="'primerapellido'"
-                            [(ngModel)]="persona.primer_apellido" pattern="^[A-Za-zñÑáéíóúÁÉÍÓÚ]+$" />
+                            [(ngModel)]="persona.primer_apellido" pattern="^[A-Za-zñÑáéíóúÁÉÍÓÚ]+(\s[A-Za-zñÑáéíóúÁÉÍÓÚ]+)*$" />
                         <mat-error *ngIf="
                             signUpForm.get('primerapellido').hasError('required')
                         ">Este campo es requerido</mat-error>
@@ -138,7 +138,7 @@
                     <mat-form-field class="w-full">
                         <mat-label>Segundo Apellido</mat-label>
                         <input id="segundoapellido" matInput [formControlName]="'segundoapellido'"
-                            [(ngModel)]="persona.segundo_apellido" pattern="^[A-Za-zñÑáéíóúÁÉÍÓÚ]+$" />
+                            [(ngModel)]="persona.segundo_apellido" pattern="^[A-Za-zñÑáéíóúÁÉÍÓÚ]+(\s[A-Za-zñÑáéíóúÁÉÍÓÚ]+)*$" />
                         <mat-error *ngIf="
                             signUpForm.get('segundoapellido').hasError('required')
                         ">Este campo es requerido</mat-error>

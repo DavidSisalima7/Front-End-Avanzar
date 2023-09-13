@@ -431,13 +431,22 @@ export class DenseLayoutComponent implements OnInit, OnDestroy {
 
                     case 'CLIENTE':
                     newNavigation = [
+
                         {
                             id      : 'productos',
-                            title   : 'Productos',
-                            subtitle: 'Tipo de productos',
+                            title   : 'Publicaciones',
+                            subtitle: 'publicaciones',
                             type    : 'collapsable',
                             icon    : 'heroicons_outline:shopping-bag',
                             children: [
+                                {
+                                    id   : 'publicaciones',
+                                    title: 'Publicaciones',
+                                    type : 'basic',
+                                    icon : 'heroicons_outline:shopping-cart',
+                                    link : '/home-cli'
+                                },
+
                                 {
                                     id   : 'productos',
                                     title: 'Productos',
@@ -456,6 +465,24 @@ export class DenseLayoutComponent implements OnInit, OnDestroy {
     
                         },
 
+
+                        {
+                            id      : 'destacados',
+                            title   : 'Destacados',
+                            subtitle: 'Publicaciones que te interesaron',
+                            type    : 'collapsable',
+                            icon    : 'heroicons_outline:star',
+                            children: [
+                                {
+                                    id   : 'favoritos',
+                                    title: 'Favoritos',
+                                    type : 'basic',
+                                    icon : 'heroicons_outline:chart-pie',
+                                    link : '/fav-cli'
+                                }
+                            ],
+    
+                        },
     
                         {
                             id      : 'perfil',
