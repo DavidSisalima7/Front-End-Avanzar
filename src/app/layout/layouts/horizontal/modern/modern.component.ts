@@ -308,35 +308,6 @@ export class ModernLayoutComponent implements OnInit, OnDestroy {
                     }
                 ];
                 break;
-    
-                case 'EMPRENDEDORA':
-                    newNavigation = [
-                        {
-                            id      : 'tablero',
-                            title   : 'Tablero',
-                            subtitle: 'Acciones rápidas',
-                            type    : 'aside',
-                            icon    : 'heroicons_outline:home',
-                            children: [
-                                {
-                                    id   : 'dashboard',
-                                    title: 'Dashboard',
-                                    type : 'basic',
-                                    icon : 'heroicons_outline:chart-pie',
-                                    link : '/dash-empre'
-                                }
-                            ],
-    
-                        },
-    
-                        // ... opciones de navegación para el rol de administrador
-                        {
-                            id      : 'listas',
-                            title   : 'Listados',
-                            subtitle: 'Detalles registros',
-                            type    : 'aside',
-                            icon    : 'heroicons_outline:clipboard-document-list',
-                            children: [
 
             case 'EMPRENDEDORA':
                 newNavigation = [
