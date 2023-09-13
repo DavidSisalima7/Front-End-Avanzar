@@ -17,7 +17,6 @@ import Swal from 'sweetalert2';
 
 //DIALOGOS
 import { MatDialog } from '@angular/material/dialog';
-import { MailboxeditarComponent } from 'app/modules/responsable/editar/editar.component';
 import { FuseConfirmationService } from '@fuse/services/confirmation';
 import { MailboxComposeComponent } from 'app/modules/responsable/compose/compose.component';
 
@@ -57,7 +56,8 @@ export class ListEmprendedorasResponsableComponent {
   }
 
   cambioTamanioPagina(event) {
-    this.paginator.pageIndex = 0; // Reinicia la página actual al cambiar el tamaño de página
+    this.paginator.pageIndex = event.pageIndex;
+    // También puedes agregar un console.log() aquí para depurar
   }
 
   nextPage() {
@@ -87,7 +87,6 @@ export class ListEmprendedorasResponsableComponent {
   applyFilter(event: Event) {
     const filterValue = (event.target as HTMLInputElement).value;
     this.dataSource.filter = filterValue.trim().toLowerCase();
-
   }
 
 
