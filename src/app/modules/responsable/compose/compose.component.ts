@@ -202,11 +202,6 @@ export class MailboxComposeComponent implements OnInit {
 
       }
     });
-
-
-
-
-
   }
 
 

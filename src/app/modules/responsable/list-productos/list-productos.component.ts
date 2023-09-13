@@ -33,8 +33,12 @@ export class ListProductosResponsableComponent
   displayedColumns: string[] = ['nombreProducto', 'precioProducto', 'cantidaDisponible', 'estado','editar','delete'];
   dataSource: MatTableDataSource<Productos>;
 
+  pageSizeOptions: number[] = [1, 5, 10, 50]; // Opciones de tamaño de página
+  pageSize: number = 10;
 
-  @ViewChild(MatPaginator) paginator: MatPaginator;
+  products: Productos[] = [];
+
+  @ViewChild(MatPaginator, {static: true}) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
 
   searchInputControl: UntypedFormControl = new UntypedFormControl();
@@ -53,10 +57,28 @@ export class ListProductosResponsableComponent
     this.listarRegistrosProductos();
 
   }
+
+  cambioTamanioPagina(event) {
+    this.paginator.pageIndex = event.pageIndex;
+    // También puedes agregar un console.log() aquí para depurar
+  }
+  
+  nextPage() {
+    if (this.paginator.hasNextPage()) {
+      this.paginator.nextPage();
+    }
+  }
+
   listarRegistrosProductos() {
     this.productoService.listarProducto().subscribe(
       (datos: Productos[]) => {
+        this.products = datos; // Asigna los datos a la propiedad users
         this.dataSource = new MatTableDataSource<Productos>(datos);
+
+        this.dataSource.paginator = this.paginator;
+        this.paginator.length = datos.length;
+        // Llama a nextPage() después de configurar el paginador
+        this.nextPage();
       },
       error => {
         console.error('Ocurrió un error al obtener la lista de los productos:', error);
