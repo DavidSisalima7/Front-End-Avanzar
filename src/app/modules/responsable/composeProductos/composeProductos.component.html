@@ -26,25 +26,25 @@
 
                     <mat-form-field class="w-full">
                         <mat-label>Titulo de publicación</mat-label>
-                        <input matInput [formControlName]="'titulopubli'" [(ngModel)]="publicacion.tituloPublicacion" />
+                        <input matInput [formControlName]="'titulopubli'" />
 
                     </mat-form-field>
 
                     <mat-form-field class="w-full">
                         <mat-label>Descripción</mat-label>
-                        <input matInput [formControlName]="'descripcionpubli'" [(ngModel)]="publicacion.descripcionPublicacion" />
+                        <input matInput [formControlName]="'descripcionpubli'"/>
                     </mat-form-field>
 
                     <!-- Name -->
                     <mat-form-field class="w-full">
                         <mat-label>Nombre del Producto</mat-label>
-                        <input matInput [formControlName]="'nombreProducto'" [(ngModel)]="publicacion.productos.nombreProducto"/>
+                        <input matInput [formControlName]="'nombreProducto'"/>
 
                     </mat-form-field>
 
                     <mat-form-field class="w-full">
                         <mat-label>Vendedora</mat-label>
-                        <input matInput readonly [formControlName]="'vendedor'" [(ngModel)]="publicacion.vendedor.usuario.persona.primer_nombre"/>
+                        <input matInput readonly [formControlName]="'vendedor'"/>
                     </mat-form-field>
                 </div>
 
@@ -54,13 +54,15 @@
 
                     <mat-form-field class="w-3/3 pr-2">
                         <mat-label>Categoria</mat-label>
-                        <mat-select [(ngModel)]="publicacion.categoria.nombreCategoria" [formControlName]="'categoria'">
+                        <mat-select [formControlName]="'categoria'" matInput>
+                            <mat-option *ngFor="let categoria of categorias" [value]="categoria.value">{{ categoria.label }}</mat-option>
                         </mat-select>
                     </mat-form-field>
 
                     <mat-form-field class="w-3/3 pr-2">
                         <mat-label>Tipo</mat-label>
-                        <mat-select [(ngModel)]="publicacion.productos.categoriaProducto.nombreCategoria" [formControlName]="'tipo'">
+                        <mat-select [formControlName]="'tipo'" matInput>
+                            <mat-option *ngFor="let tipo of tipos" [value]="tipo.value">{{ tipo.label }}</mat-option>
                         </mat-select>
                     </mat-form-field>
 
@@ -68,7 +70,7 @@
                     <mat-form-field class="w-3/3 pr-2">
                         <mat-label>Precio</mat-label>
                         <span matSuffix>$</span>
-                        <input type="number" matInput [formControlName]="'precio'" [(ngModel)]="publicacion.productos.precioProducto"/>
+                        <input type="number" matInput [formControlName]="'precio'" />
                     </mat-form-field>
                 </div>
 
@@ -76,19 +78,19 @@
                 <div class="flex flex-col w-full lg:w-2/4 sm:pl-8">
                     <mat-form-field class="w-full">
                         <mat-label>Stock</mat-label>
-                        <input type="number" matInput [formControlName]="'cantidad'" [(ngModel)]="publicacion.productos.cantidadDisponible"/>
+                        <input type="number" matInput [formControlName]="'cantidad'" />
                     </mat-form-field>
 
                     <mat-form-field class="w-full">
                         <mat-label>Peso</mat-label>
                         <span matSuffix>ml/lbs/kg</span>
-                        <input type="text" matInput [formControlName]="'peso'" [(ngModel)]="publicacion.productos.pesoProducto" />
+                        <input type="text" matInput [formControlName]="'peso'"  />
                     </mat-form-field>
 
 
                     <mat-form-field class="w-full">
                         <mat-label for="estado">Estado</mat-label>
-                        <mat-select [(ngModel)]="publicacion.estado" [formControlName]="'estado'" name="estado" id="estado">
+                        <mat-select [formControlName]="'estado'" name="estado" id="estado">
                             <mat-option [value]="true">Activo</mat-option>
                             <mat-option [value]="false">Inactivo</mat-option>
                         </mat-select>
