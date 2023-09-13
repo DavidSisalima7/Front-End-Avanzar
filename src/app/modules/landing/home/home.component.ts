@@ -1,21 +1,41 @@
 import { Component, ViewEncapsulation } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
-import { RouterLink } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
+import { FuseCardComponent } from '@fuse/components/card';
+import {CargarScriptService} from './cargar-script.service';
 
 @Component({
-    selector     : 'landing-home',
-    templateUrl  : './home.component.html',
+    selector: 'landing-home',
+    templateUrl: './home.component.html',
     encapsulation: ViewEncapsulation.None,
-    standalone   : true,
-    imports      : [MatButtonModule, RouterLink, MatIconModule],
+    styleUrls    : ['./home.component.scss'],
+    standalone: true,
+    imports: [MatButtonModule, RouterLink, MatIconModule , FuseCardComponent],
 })
-export class LandingHomeComponent
-{
+export class LandingHomeComponent {
     /**
      * Constructor
      */
-    constructor()
-    {
+    constructor(private _router: Router, private _CargarScript:CargarScriptService) {
+        _CargarScript.cargar(["carrusel"]);
+    }
+    
+
+
+    redirectToTienda(): void {
+        this._router.navigate(['/home-tienda']);
+    }
+
+    redirectToNosotros(): void {
+        this._router.navigate(['/nosotros']);
+    }
+
+    redirectToPlanes(): void {
+        this._router.navigate(['/planes']);
+    }
+
+    redirectToHome(): void {
+        this._router.navigate(['/home']);
     }
 }

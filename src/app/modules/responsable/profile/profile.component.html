@@ -1,0 +1,340 @@
+<div class="flex flex-col flex-auto min-w-0">
+
+    <!-- Header -->
+    <div class="flex flex-col shadow bg-card">
+
+        <!-- Cover image -->
+        <div>
+            <img
+                class="h-40 lg:h-80 object-cover"
+                src="assets/images/logo/portada2.png"
+                alt="Cover image">
+        </div>
+
+        <!-- User info -->
+        <div class="flex flex-col flex-0 lg:flex-row items-center max-w-5xl w-full mx-auto px-8 lg:h-18 bg-card">
+
+            <!-- Avatar -->
+            <div class="-mt-26 lg:-mt-22 rounded-full">
+                <img class="w-32 h-32 rounded-full ring-4 ring-bg-card " *ngIf="user.avatar" [src]="user.avatar"
+                    alt="User avatar">
+                <mat-icon class="icon-size-24" *ngIf="!user.avatar"
+                    [svgIcon]="'heroicons_solid:user-circle'"></mat-icon>
+            </div>
+
+            <!-- Details -->
+            <div class="flex flex-col items-center lg:items-start mt-4 lg:mt-0 lg:ml-8">
+                <div class="text-lg font-bold leading-none">{{ userExtraido.name }}</div>
+                <div class="text-secondary">{{userExtraido.persona.direccion}}</div>
+            </div>
+
+            <!-- Separator -->
+            <div class="hidden lg:flex h-8 mx-8 border-l-2"></div>
+
+            <!-- Stats -->
+            <div class="flex items-center mt-6 lg:mt-0 space-x-6">
+                <div class="flex flex-col items-center">
+                    <span class="font-bold">200k</span>
+                    <span class="text-sm font-medium text-secondary">FOLLOWERS</span>
+                </div>
+                <div class="flex flex-col items-center">
+                    <span class="font-bold">1.2k</span>
+                    <span class="text-sm font-medium text-secondary">FOLLOWING</span>
+                </div>
+            </div>
+
+            <!-- Menu -->
+            <div class="flex items-center mt-8 mb-4 lg:m-0 lg:ml-auto space-x-6">
+                <a
+                    class="font-medium"
+                    [routerLink]="['./']">
+                    Home
+                </a>
+                <a
+                    class="text-secondary"
+                    [routerLink]="['./']">
+                    About
+                </a>
+                <a
+                    class="text-secondary"
+                    [routerLink]="['./']">
+                    Followers
+                </a>
+                <a
+                    class="text-secondary"
+                    [routerLink]="['./']">
+                    Gallery
+                </a>
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- Main -->
+    <div class="flex flex-auto justify-center w-full max-w-5xl mx-auto p-6 sm:p-8">
+
+        <!-- Column -->
+        <div class="hidden lg:flex flex-col items-start mr-8">
+
+            <!-- About me -->
+            <fuse-card class="flex flex-col max-w-80 w-full p-8">
+                <div class="text-2xl font-semibold leading-tight">Acerca de mi:</div>
+                <div class="mt-4">
+                    {{userExtraido.persona.descripcion}}
+                </div>
+                <hr class="w-full border-t my-6">
+                <div class="flex flex-col">
+                    <div class="flex items-center">
+                        <mat-icon
+                            class="icon-size-5 mr-3"
+                            [svgIcon]="'heroicons_solid:map-pin'"></mat-icon>
+                        <span class="leading-none">{{userExtraido.persona.nacionalidad}}</span>
+                    </div>
+                    <div class="flex items-center mt-4">
+                        <mat-icon
+                            class="icon-size-5 mr-3"
+                            [svgIcon]="'heroicons_solid:briefcase'"></mat-icon>
+                        <span class="leading-none">Fundación Avanzar</span>
+                    </div>
+                    <div class="flex items-center mt-4">
+                        <mat-icon
+                            class="icon-size-5 mr-3"
+                            [svgIcon]="'heroicons_solid:cake'"></mat-icon>
+                        <span class="leading-none">{{ formatDate(userExtraido.persona.fecha_nacimiento) }}</span>
+                    </div>
+                </div>
+                <a
+                    class="px-6 mt-8"
+                    mat-flat-button
+                    [color]="'primary'"
+                    [routerLink]="['./']">
+                    See complete bio
+                </a>
+            </fuse-card>
+
+         
+
+            
+
+            
+
+            <!-- News -->
+            <fuse-card class="flex flex-col max-w-80 w-full mt-8 px-8 pt-6 pb-4">
+                <div class="flex items-center justify-between">
+                    <div class="text-2xl font-semibold leading-tight">News</div>
+                    <div class="-mr-3">
+                        <button
+                            mat-icon-button
+                            [matMenuTriggerFor]="listCard01Menu">
+                            <mat-icon
+                                class="icon-size-5"
+                                [svgIcon]="'heroicons_solid:ellipsis-vertical'"></mat-icon>
+                        </button>
+                        <mat-menu #listCard01Menu="matMenu">
+                            <button mat-menu-item>Mark all as read</button>
+                        </mat-menu>
+                    </div>
+                </div>
+                <div class="flex flex-col mt-5">
+                    <div class="flex">
+                        <mat-icon
+                            class="icon-size-5 mt-0.5 mr-2"
+                            [svgIcon]="'heroicons_solid:bell'"></mat-icon>
+                        <div><b>20% OFF</b> in your favorite hats shop on next Friday.</div>
+                    </div>
+                    <div class="flex mt-5">
+                        <mat-icon
+                            class="icon-size-5 mt-0.5 mr-2"
+                            [svgIcon]="'heroicons_solid:bell'"></mat-icon>
+                        <div>Upcoming meetups within 20 miles.
+                            <a
+                                class="text-secondary whitespace-nowrap hover:underline"
+                                [routerLink]="['./']">See details
+                            </a>
+                        </div>
+                    </div>
+                    <div class="flex mt-5">
+                        <mat-icon
+                            class="icon-size-5 mt-0.5 mr-2"
+                            [svgIcon]="'heroicons_solid:bell'"></mat-icon>
+                        <div>Concerts from your favorite bands available within 100 miles.
+                            <a
+                                class="text-secondary whitespace-nowrap hover:underline"
+                                [routerLink]="['./']">See details
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                <div class="flex items-center mt-4 -mx-3">
+                    <a
+                        class="px-3"
+                        mat-button
+                        [color]="'primary'"
+                        [routerLink]="['./']">
+                        See all news
+                    </a>
+                </div>
+            </fuse-card>
+
+            
+        </div>
+
+        <!-- Column -->
+        <div class="flex flex-col items-start">
+
+            
+
+            
+
+            <!-- Post 2 -->
+            <fuse-card class="flex flex-col max-w-140 w-full mt-8">
+                <div class="flex items-center mx-6 sm:mx-8 mt-6 mb-1">
+                    <img
+                        class="w-10 h-10 rounded-full mr-4"
+                        src="https://i.pinimg.com/564x/29/b4/dd/29b4dd8d89095c2401e34ab184bec087.jpg"
+                        alt="Card cover image">
+                    <div class="flex flex-col">
+                        <span class="font-semibold leading-none">David Naula</span>
+                        <span class="text-sm text-secondary leading-none mt-1">29 minutes ago</span>
+                    </div>
+                    <button
+                        class="ml-auto -mr-4"
+                        mat-icon-button
+                        [matMenuTriggerFor]="postCardMenu08">
+                        <mat-icon
+                            class="icon-size-5"
+                            [svgIcon]="'heroicons_solid:ellipsis-vertical'"></mat-icon>
+                    </button>
+                    <mat-menu #postCardMenu08="matMenu">
+                        <button mat-menu-item>
+                            <span class="flex items-center">
+                                <mat-icon
+                                    class="icon-size-5 mr-3"
+                                    [svgIcon]="'heroicons_solid:arrow-up-tray'"></mat-icon>
+                                <span>Save post</span>
+                            </span>
+                        </button>
+                        <button mat-menu-item>
+                            <span class="flex items-center">
+                                <mat-icon
+                                    class="icon-size-5 mr-3"
+                                    [svgIcon]="'heroicons_solid:eye-slash'"></mat-icon>
+                                <span>Hide post</span>
+                            </span>
+                        </button>
+                        <button mat-menu-item>
+                            <span class="flex items-center">
+                                <mat-icon
+                                    class="icon-size-5 mr-3"
+                                    [svgIcon]="'heroicons_solid:clock'"></mat-icon>
+                                <span>Snooze for 30 days</span>
+                            </span>
+                        </button>
+                        <button mat-menu-item>
+                            <span class="flex items-center">
+                                <mat-icon
+                                    class="icon-size-5 mr-3"
+                                    [svgIcon]="'heroicons_solid:minus-circle'"></mat-icon>
+                                <span>Hide all</span>
+                            </span>
+                        </button>
+                        <mat-divider class="my-2"></mat-divider>
+                        <button mat-menu-item>
+                            <span class="flex items-center">
+                                <mat-icon
+                                    class="icon-size-5 mr-3"
+                                    [svgIcon]="'heroicons_solid:exclamation-triangle'"></mat-icon>
+                                <span>Report post</span>
+                            </span>
+                        </button>
+                        <button mat-menu-item>
+                            <span class="flex items-center">
+                                <mat-icon
+                                    class="icon-size-5 mr-3"
+                                    [svgIcon]="'heroicons_solid:bell'"></mat-icon>
+                                <span>Turn on notifications for this post</span>
+                            </span>
+                        </button>
+                    </mat-menu>
+                </div>
+                <div class="m-6 sm:mx-8">
+                    <p>
+                        Este es mi primer post lo unico que quiero es ir a dormir xd
+                    </p>
+                    <p class="mt-4">
+                        Ahi se queda esta poronga
+                    </p>
+                </div>
+                <div class="flex items-center mx-3 sm:mx-5">
+                    <button
+                        class="px-3 mr-1"
+                        mat-button>
+                        <mat-icon
+                            class="icon-size-5 text-red-500"
+                            [svgIcon]="'heroicons_solid:heart'"></mat-icon>
+                        <span class="ml-2">Unlike</span>
+                    </button>
+                    <button
+                        class="px-3 mr-1"
+                        mat-button>
+                        <mat-icon
+                            class="icon-size-5"
+                            [svgIcon]="'heroicons_solid:chat-bubble-left-ellipsis'"></mat-icon>
+                        <span class="ml-2">Comment</span>
+                    </button>
+                    <button
+                        class="px-3 mr-1"
+                        mat-button>
+                        <mat-icon
+                            class="icon-size-5"
+                            [svgIcon]="'heroicons_solid:share'"></mat-icon>
+                        <span class="ml-2">Share</span>
+                    </button>
+                </div>
+                <hr class="border-b mx-6 sm:mx-8 mt-4 mb-6">
+                <div class="flex flex-col sm:flex-row sm:items-center mx-6 sm:mx-8 mb-4 sm:mb-6">
+                    <div class="flex items-center">
+                        <img
+                            class="w-6 h-6 m-0.5 rounded-full text-card ring-2 ring-white"
+                            src="assets/images/avatars/female-02.jpg"
+                            alt="Card cover image">
+                        <img
+                            class="w-6 h-6 m-0.5 rounded-full -ml-3 text-card ring-2 ring-white"
+                            src="assets/images/avatars/female-04.jpg"
+                            alt="Card cover image">
+                        <img
+                            class="w-6 h-6 m-0.5 rounded-full -ml-3 text-card ring-2 ring-white"
+                            src="assets/images/avatars/male-09.jpg"
+                            alt="Card cover image">
+                        <img
+                            class="w-6 h-6 m-0.5 rounded-full -ml-3 text-card ring-2 ring-white"
+                            src="assets/images/avatars/male-07.jpg"
+                            alt="Card cover image">
+                        <div class="text-md tracking-tight ml-3">You and 24 more liked this</div>
+                    </div>
+                    <div class="hidden sm:flex flex-auto"></div>
+                    <div class="flex items-center mt-4 sm:mt-0">
+                        <button
+                            class="px-3 mr-1 -ml-2 sm:ml-0"
+                            mat-button>
+                            4 shares
+                        </button>
+                        <button
+                            class="px-3 sm:-mr-3"
+                            mat-button>
+                            No comments
+                        </button>
+                    </div>
+                </div>
+            </fuse-card>
+
+            
+
+            
+
+        </div>
+
+    </div>
+
+</div>

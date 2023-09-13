@@ -35,12 +35,13 @@
         "perfect-scrollbar": "1.5.5",
         "quill": "1.3.7",
         "rxjs": "7.8.1",
+        "sweetalert2": "^11.7.27",
         "tslib": "2.5.2",
         "zone.js": "0.13.0"
     },
     "devDependencies": {
-        "@angular-devkit/build-angular": "16.0.3",
-        "@angular/cli": "16.0.3",
+        "@angular-devkit/build-angular": "^16.1.8",
+        "@angular/cli": "^16.1.8",
         "@angular/compiler-cli": "16.0.3",
         "@tailwindcss/typography": "0.5.9",
         "@types/chroma-js": "2.4.0",

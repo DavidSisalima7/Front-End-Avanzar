@@ -12,6 +12,8 @@ import { fuseAnimations } from '@fuse/animations';
 import { FuseAlertComponent, FuseAlertType } from '@fuse/components/alert';
 import { AuthService } from 'app/core/auth/auth.service';
 import { UsuarioRolService } from 'app/services/services/usuarioRol.service';
+import { Subject } from 'rxjs';
+
 
 @Component({
     selector: 'auth-sign-in',
@@ -19,7 +21,8 @@ import { UsuarioRolService } from 'app/services/services/usuarioRol.service';
     encapsulation: ViewEncapsulation.None,
     animations: fuseAnimations,
     standalone: true,
-    imports: [RouterLink, FuseAlertComponent, NgIf, FormsModule, ReactiveFormsModule, MatFormFieldModule, MatInputModule, MatButtonModule, MatIconModule, MatCheckboxModule, MatProgressSpinnerModule],
+    imports: [RouterLink, FuseAlertComponent, NgIf, FormsModule, ReactiveFormsModule, 
+      MatFormFieldModule, MatInputModule, MatButtonModule, MatIconModule, MatCheckboxModule, MatProgressSpinnerModule],
 })
 
 export class SingInComponent implements OnInit {
@@ -27,6 +30,7 @@ export class SingInComponent implements OnInit {
     //Variable para almacenar el nombre del rol del usuario que intenta ingresar al sistema
     rolUsuario:string;
     ROLINGRESADO: string = '';
+    private _unsubscribeAll: Subject<void> = new Subject<void>();
 
     @ViewChild('signInNgForm') signInNgForm: NgForm;
 
@@ -44,7 +48,6 @@ export class SingInComponent implements OnInit {
         private _userRol: UsuarioRolService,
         private _formBuilder: UntypedFormBuilder,
         private _router: Router,
-        private loginService: AuthService,
 
     ) {
 
@@ -102,7 +105,7 @@ export class SingInComponent implements OnInit {
               // Set the alert
               this.alert = {
                   type: 'error',
-                  message: 'Wrong email or password',
+                  message: 'Correo electrónico o contraseña incorrectos',
               };
   
               // Show the alert
@@ -123,34 +126,37 @@ export class SingInComponent implements OnInit {
 
       // Disable the form
       this.signInForm.disable();
+
+
      this._authService.getUsuarioActual().subscribe(
        (user: any) => {
          if (user) {
            // Si se reciben los detalles del usuario correctamente, almacénalos en el servicio
            this._authService.setUser(user);
+
            this._userRol.obtenerRolDeUsuario(user.id).subscribe(
             (userRole: any) => {
-                
+                 localStorage.setItem('idUser', user.id); 
               // Redirigir según el rol del usuario
               localStorage.setItem('Rol', userRole.nombre); // Guarda el valor en el localStorage
     
               switch (userRole.nombre) {
                 case 'ADMIN':
-                  console.log('es admin');
-                  this._router.navigate(['/example']);
+                 
+                  this._router.navigate(['/dash-admin']);
 
                   break;
                 case 'RESPONSABLE_VENTAS':
-                  console.log('es responsable');
-                  this._router.navigate(['/dashboard']);
+                  
+                  this._router.navigate(['/dash-resp']);
                   break;
-                case 'VENDEDOR':
-                  console.log('es vendedor');
-                  // this.router.navigate(['/perfilve']);
+                case 'EMPRENDEDORA':
+                  
+                  this._router.navigate(['/dash-empre']);
                   break;
                 case 'CLIENTE':
-                  console.log('es cliente');
-                  // this.router.navigate(['/perfilcli']);
+                  
+                  this._router.navigate(['/home-cli']);
                   break;
                 default:
                   this._authService.signOut(); // En caso de un rol desconocido o no válido, cerrar sesión
@@ -171,5 +177,10 @@ export class SingInComponent implements OnInit {
       }
     );
    }
+
+
+   redirectToHome() {
+    this._router.navigate(['/home']);
+  }
         
 }

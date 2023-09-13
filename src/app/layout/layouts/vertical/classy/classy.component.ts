@@ -75,7 +75,6 @@ export class ClassyLayoutComponent implements OnInit, OnDestroy
     {
         // Subscribe to navigation data
         const rolIngresado = localStorage.getItem('Rol');
-        console.log("1", rolIngresado);
 
         this.swapNavigationData('mainNavigation'); // Llama al método con el rol
 
@@ -140,8 +139,7 @@ export class ClassyLayoutComponent implements OnInit, OnDestroy
     swapNavigationData(navigationName: string): void {
         // Obtiene el rol almacenado en el localStorage
         const rolIngresado = localStorage.getItem('Rol');
-        console.log("2", rolIngresado);
-    
+
         // Define las opciones de navegación en función del rol
         let newNavigation: FuseNavigationItem[] = [];
 
@@ -162,13 +160,65 @@ export class ClassyLayoutComponent implements OnInit, OnDestroy
                                 type : 'basic',
                                 icon : 'heroicons_outline:chart-pie',
                                 link : '/dash-admin'
+                            }
+                        ],
+
+                    },
+
+                    // ... opciones de navegación para el rol de administrador
+                    {
+                        id      : 'listas',
+                        title   : 'Listados',
+                        subtitle: 'Detalles registros',
+                        type    : 'group',
+                        icon    : 'memory',
+                        children: [
+                            {
+                                id   : 'list-resp',
+                                title: 'Responsables Ventas',
+                                type : 'basic',
+                                icon : 'heroicons_outline:user-group',
+                                link : '/list-responsables'
+                            },
+
+                            {
+                                id   : 'list-empren',
+                                title: 'Emprendedoras',
+                                type : 'basic',
+                                icon : 'heroicons_outline:user-group',
+                                link : '/list-emprend'
                             },
                             {
-                                id   : 'supported-components.full-calendar',
-                                title: 'FullCalendar',
+                                id   : 'list-clie',
+                                title: 'Clientes',
                                 type : 'basic',
-                                icon : 'today',
-                                link : '/supported-components/full-calendar'
+                                icon : 'heroicons_outline:user-group',
+                                link : '/list-clie'
+                            }
+                        ]
+                    },
+
+                    {
+                        id      : 'perfil',
+                        title   : 'Perfil',
+                        subtitle: 'Información personal',
+                        type    : 'group',
+                        icon    : 'memory',
+                        children: [
+                            {
+                                id   : 'profile',
+                                title: 'Perfil',
+                                type : 'basic',
+                                icon : 'heroicons_outline:user-circle',
+                                link : '/profile-admin'
+                            },
+
+                            {
+                                id   : 'settings',
+                                title: 'Configuración',
+                                type : 'basic',
+                                icon : 'heroicons_outline:cog-6-tooth',
+                                link : '/config-admin'
                             }
                         ]
                     }
@@ -177,21 +227,277 @@ export class ClassyLayoutComponent implements OnInit, OnDestroy
     
             case 'RESPONSABLE_VENTAS':
                 newNavigation = [
-                    // ... opciones de navegación para el rol de responsable de ventas
                     {
-                        id      : 'supported-components',
-                        title   : 'Responsable de Ventas',
-                        subtitle: 'Compatible third party components',
+                        id      : 'tablero',
+                        title   : 'Tablero',
+                        subtitle: 'Acciones rápidas',
                         type    : 'group',
                         icon    : 'memory',
                         children: [
-                            // ... opciones de navegación específicas para RESPONSABLE_VENTAS
+                            {
+                                id   : 'dashboard',
+                                title: 'Dashboard',
+                                type : 'basic',
+                                icon : 'heroicons_outline:chart-pie',
+                                link : '/dash-resp'
+                            }
+                        ],
+
+                    },
+
+                    // ... opciones de navegación para el rol de administrador
+                    {
+                        id      : 'listas',
+                        title   : 'Listados',
+                        subtitle: 'Detalles registros',
+                        type    : 'group',
+                        icon    : 'memory',
+                        children: [
+                            {
+                                id   : 'list-emprendedoras',
+                                title: 'Emprendedoras',
+                                type : 'basic',
+                                icon : 'heroicons_outline:user-group',
+                                link : '/list-empre-resp'
+                            },
+
+                            {
+                                id   : 'list-productos',
+                                title: 'Productos',
+                                type : 'basic',
+                                icon : 'heroicons_outline:shopping-cart',
+                                link : '/list-prod-resp'
+                            },
+
+                            {
+                                id   : 'list-servicios',
+                                title: 'Servicios',
+                                type : 'basic',
+                                icon : 'heroicons_outline:shopping-cart',
+                                link : '/list-serv-resp'
+                            }
+                        ]
+                    },
+                    {
+                        id      : 'subscripcion',
+                        title   : 'Subscripción',
+                        subtitle: 'Información de membresia',
+                        type    : 'group',
+                        icon    : 'memory',
+                        children: [
+                            {
+                                id   : 'planes',
+                                title: 'Planes',
+                                type : 'basic',
+                                icon : 'heroicons_outline:check-badge',
+                                link : '/planes-resp'
+                            }
+                        ],
+
+                    },
+
+                    {
+                        id      : 'perfil',
+                        title   : 'Perfil',
+                        subtitle: 'Información personal',
+                        type    : 'group',
+                        icon    : 'memory',
+                        children: [
+                            {
+                                id   : 'profile',
+                                title: 'Perfil',
+                                type : 'basic',
+                                icon : 'heroicons_outline:user-circle',
+                                link : '/profile-resp'
+                            },
+
+                            {
+                                id   : 'settings',
+                                title: 'Configuración',
+                                type : 'basic',
+                                icon : 'heroicons_outline:cog-6-tooth',
+                                link : '/config-resp'
+                            }
                         ]
                     }
                 ];
                 break;
     
-            // Agrega más casos según los roles necesarios
+                case 'EMPRENDEDORA':
+                    newNavigation = [
+                        {
+                            id      : 'tablero',
+                            title   : 'Tablero',
+                            subtitle: 'Acciones rápidas',
+                            type    : 'group',
+                            icon    : 'memory',
+                            children: [
+                                {
+                                    id   : 'dashboard',
+                                    title: 'Dashboard',
+                                    type : 'basic',
+                                    icon : 'heroicons_outline:chart-pie',
+                                    link : '/dash-empre'
+                                }
+                            ],
+    
+                        },
+    
+                        // ... opciones de navegación para el rol de administrador
+                        {
+                            id      : 'listas',
+                            title   : 'Listados',
+                            subtitle: 'Detalles registros',
+                            type    : 'group',
+                            icon    : 'memory',
+                            children: [
+
+                                {                                           
+                                    id   : 'ecommerce',
+                                    title: 'Publicaciones Productos',
+                                    type : 'basic',
+                                    icon : 'heroicons_outline:chat-bubble-left-right',
+                                    link : '/ecommerce'
+                                },
+
+                                {
+                                    id   : 'ecommerce-servicios',
+                                    title: 'Publicaciones Servicios',
+                                    type : 'basic',
+                                    icon : 'heroicons_outline:chat-bubble-left-right',
+                                    link : '/ecommerce-servicios'
+                                }
+                            ]
+                        },
+
+                        {
+                            id      : 'plan',
+                            title   : 'Planes',
+                            subtitle: 'Adquirir o renovar membresia',
+                            type    : 'group',
+                            icon    : 'memory',
+                            children: [
+                                {
+                                    id   : 'subscripcion',
+                                    title: 'Subscripción',
+                                    type : 'basic',
+                                    icon : 'heroicons_outline:check-badge',
+                                    link : '/subscripcion-empre'
+                                }
+                            ],
+    
+                        },
+                       
+    
+                        {
+                            id      : 'perfil',
+                            title   : 'Perfil',
+                            subtitle: 'Información personal',
+                            type    : 'group',
+                            icon    : 'memory',
+                            children: [
+                                {
+                                    id   : 'profile',
+                                    title: 'Perfil',
+                                    type : 'basic',
+                                    icon : 'heroicons_outline:user-circle',
+                                    link : '/profile-empre'
+                                },
+
+                                {
+                                    id   : 'settings',
+                                    title: 'Configuración',
+                                    type : 'basic',
+                                    icon : 'heroicons_outline:cog-6-tooth',
+                                    link : '/config-empre'
+                                }
+                            ]
+                        }
+                    ];
+                    break;
+
+
+                    case 'CLIENTE':
+                    newNavigation = [
+
+                        {
+                            id      : 'productos',
+                            title   : 'Publicaciones',
+                            subtitle: 'publicaciones',
+                            type    : 'group',
+                            icon    : 'heroicons_outline: shopping-bag',
+                            children: [
+                                {
+                                    id   : 'publicaciones',
+                                    title: 'Publicaciones',
+                                    type : 'basic',
+                                    icon : 'heroicons_outline:shopping-cart',
+                                    link : '/home-cli'
+                                },
+
+                                {
+                                    id   : 'productos',
+                                    title: 'Productos',
+                                    type : 'basic',
+                                    icon : 'heroicons_outline:shopping-cart',
+                                    link : '/prod-cli'
+                                },
+                                {
+                                    id   : 'servicios',
+                                    title: 'Servicios',
+                                    type : 'basic',
+                                    icon : 'heroicons_outline:shopping-cart',
+                                    link : '/serv-cli'
+                                }
+                            ],
+    
+                        },
+
+
+                        {
+                            id      : 'destacados',
+                            title   : 'Destacados',
+                            subtitle: 'Publicaciones que te interesaron',
+                            type    : 'group',
+                            icon    : 'memory',
+                            children: [
+                                {
+                                    id   : 'favoritos',
+                                    title: 'Favoritos',
+                                    type : 'basic',
+                                    icon : 'heroicons_outline:chart-pie',
+                                    link : '/fav-cli'
+                                }
+                            ],
+    
+                        },
+    
+                        {
+                            id      : 'perfil',
+                            title   : 'Perfil',
+                            subtitle: 'Información personal',
+                            type    : 'group',
+                            icon    : 'memory',
+                            children: [
+                                {
+                                    id   : 'profile',
+                                    title: 'Perfil',
+                                    type : 'basic',
+                                    icon : 'heroicons_outline:user-circle',
+                                    link : '/profile-cli'
+                                },
+
+                                {
+                                    id   : 'settings',
+                                    title: 'Configuración',
+                                    type : 'basic',
+                                    icon : 'heroicons_outline:cog-6-tooth',
+                                    link : '/config-cli'
+                                }
+                            ]
+                        }
+                    ];
+                    break;
     
             default:
                 newNavigation = [
