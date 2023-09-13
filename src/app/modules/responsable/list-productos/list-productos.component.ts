@@ -18,6 +18,9 @@ import Swal from 'sweetalert2';
 //DIALOGOS
 import { MatDialog } from '@angular/material/dialog';
 import { MailboxComposeComponent } from 'app/modules/responsable/composeProductos/composeProductos.component';
+import { PublicacionesInventory } from 'app/services/services/publicacionesInventory.service';
+import { Publicacion } from 'app/services/models/publicaciones';
+import { PublicacionesService } from 'app/services/services/publicaciones.service';
 
 
 @Component({
@@ -30,13 +33,14 @@ import { MailboxComposeComponent } from 'app/modules/responsable/composeProducto
 })
 export class ListProductosResponsableComponent
 {
-  displayedColumns: string[] = ['nombreProducto', 'precioProducto', 'cantidaDisponible', 'estado','editar','delete'];
-  dataSource: MatTableDataSource<Productos>;
+  displayedColumns: string[] = ['nombreProducto', 'precioProducto', 'cantidaDisponible','vendedor', 'estado','editar','delete'];
+  dataSource: MatTableDataSource<Publicacion>;
 
   pageSizeOptions: number[] = [1, 5, 10, 50]; // Opciones de tamaño de página
   pageSize: number = 10;
 
   products: Productos[] = [];
+  publicacion: Publicacion[] = [];
 
   @ViewChild(MatPaginator, {static: true}) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
@@ -50,11 +54,12 @@ export class ListProductosResponsableComponent
   /**
    * Constructor
    */
-  constructor(private productoService: ProductosService, private _router: Router,private _matDialog: MatDialog
+  constructor(private productoService: ProductosService, private _router: Router,private _matDialog: MatDialog,
+    private publicacionService: PublicacionesService
     ) {
   }
   ngOnInit(): void {
-    this.listarRegistrosProductos();
+    this.listarPublicaciones();
 
   }
 
@@ -69,11 +74,12 @@ export class ListProductosResponsableComponent
     }
   }
 
-  listarRegistrosProductos() {
-    this.productoService.listarProducto().subscribe(
-      (datos: Productos[]) => {
-        this.products = datos; // Asigna los datos a la propiedad users
-        this.dataSource = new MatTableDataSource<Productos>(datos);
+
+  listarPublicaciones() {
+    this.publicacionService.listarPublicaciones().subscribe(
+      (datos: Publicacion[]) => {
+        this.publicacion = datos; // Asigna los datos a la propiedad users
+        this.dataSource = new MatTableDataSource<Publicacion>(datos);
 
         this.dataSource.paginator = this.paginator;
         this.paginator.length = datos.length;
@@ -85,6 +91,8 @@ export class ListProductosResponsableComponent
       }
     );
   }
+
+
   applyFilter(event: Event) {
     const filterValue = (event.target as HTMLInputElement).value;
     this.dataSource.filter = filterValue.trim().toLowerCase();
@@ -111,149 +119,6 @@ export class ListProductosResponsableComponent
                 console.log('Compose dialog was closed!');
             });
     }
-/////////////////////////Filtro de los productos
-productos:any;
- ///cantidad
-   FiltroCantidadAsc(): void {
-     this.productoService.listarProducto().subscribe(
-       (datos: Productos[]) => {
-         // Ordena el array de productos por cantidad asc
-         this.productos = datos.sort((a, b) => a.cantidadDisponible - b.cantidadDisponible);
-         this.dataSource = new MatTableDataSource<Productos>(this.productos);
-       },
-       error => {
-        console.error('Ocurrió un error al obtener la lista de productos:', error);
-       }
-     );
-   }
-   FiltroCantidadDesc(): void {
-     this.productoService.listarProducto().subscribe(
-       (datos: Productos[]) => {
-         // Ordena el array de productos por cantidad en forma descendente
-         this.productos = datos.sort((a, b) => b.cantidadDisponible - a.cantidadDisponible);
-         this.dataSource = new MatTableDataSource<Productos>(this.productos);
-       },
-       error => {
-        console.error('Ocurrió un error al obtener la lista de productos:', error);
-       }
-     );
-   }
- 
-   //Nombre de productos
-   FiltroNombreAsc(): void {
-     this.productoService.listarProducto().subscribe(
-       (datos: Productos[]) => {
-         // Ordena el array de usuarios por el nombre acs
-         this.productos = datos.sort((a, b) => a.nombreProducto.localeCompare(b.nombreProducto));
-         this.dataSource = new MatTableDataSource<Productos>(this.productos);
-       },
-       error => {
-         console.error('Ocurrió un error al obtener la lista de productos:', error);
-       }
-     );
-   }
-   FiltroNombreDesc(): void {
-    this.productoService.listarProducto().subscribe(
-      (datos: Productos[]) => {
-        // Ordena el array de usuarios por el nombre acs
-        this.productos = datos.sort((a, b) => b.nombreProducto.localeCompare(a.nombreProducto));
-        this.dataSource = new MatTableDataSource<Productos>(this.productos);
-      },
-      error => {
-        console.error('Ocurrió un error al obtener la lista de productos:', error);
-      }
-    );
-  }
-
- //precio
- FiltroprecioAsc(): void {
-  this.productoService.listarProducto().subscribe(
-    (datos: Productos[]) => {
-      // Ordena el array de productos por precio asc
-      this.productos = datos.sort((a, b) => a.precioProducto - b.precioProducto);
-      this.dataSource = new MatTableDataSource<Productos>(this.productos);
-    },
-    error => {
-     console.error('Ocurrió un error al obtener la lista de productos:', error);
-    }
-  );
-}
- FiltroprecioDesc(): void {
-  this.productoService.listarProducto().subscribe(
-    (datos: Productos[]) => {
-      // Ordena el array de productos por el precio en forma descendente
-      this.productos = datos.sort((a, b) => b.precioProducto - a.precioProducto);
-      this.dataSource = new MatTableDataSource<Productos>(this.productos);
-    
-    },
-    error => {
-     console.error('Ocurrió un error al obtener la lista de productos:', error);
-    }
-  );
-}
- FiltroEstadoActivo() {
-  // Ordena el array de prodcutos por estado activo
- this.productoService.obtenerListProductoOrdenA().subscribe(
-   (datos: Productos[]) => {
-     this.dataSource = new MatTableDataSource<Productos>(datos);
-   },
-   error => {
-    console.error('Ocurrió un error al obtener la lista de productos:', error);
-   }
- );
-}
-FiltroEstadoInactivo() {
- // Ordena el array de productos por estado inactivo
- this.productoService.obtenerListProductoOrdenI().subscribe(
-   (datos: Productos[]) => {
-     this.dataSource = new MatTableDataSource<Productos>(datos);
-   },
-   error => {
-    console.error('Ocurrió un error al obtener la lista de productos:', error);
-   }
- );
-}
-  
-   ejecutarPrimeraFuncion: boolean = true;
-   cambiarFuncionAEjecutar(): void {
-     this.ejecutarPrimeraFuncion = !this.ejecutarPrimeraFuncion;
-   }
-   //Nombre
-   ejecutarFuncionNombre(): void {
-     if (this.ejecutarPrimeraFuncion) {
-       this.FiltroNombreAsc();
-     } else {
-       this.FiltroNombreDesc();
-     }
-     this.cambiarFuncionAEjecutar();
-   }
-   //cantidada
-   ejecutarFuncionCantidad(): void {
-     if (this.ejecutarPrimeraFuncion) {
-       this.FiltroCantidadAsc();
-     } else {
-       this.FiltroCantidadDesc();
-     }
-     this.cambiarFuncionAEjecutar();
-   }
-   //precio
-   ejecutarFuncionPrecio(): void {
-     if (this.ejecutarPrimeraFuncion) {
-       this.FiltroprecioAsc();
-     } else {
-       this.FiltroprecioDesc();
-     }
-     this.cambiarFuncionAEjecutar();
-   }
-   //Estado
-   ejecutarFuncionEstado(): void {
-     if (this.ejecutarPrimeraFuncion) {
-       this.FiltroEstadoActivo();
-     } else {
-       this.FiltroEstadoInactivo();
-     }
-     this.cambiarFuncionAEjecutar();
-   }
 
 
 ///////////////////////// Fin de filtro
@@ -277,7 +142,7 @@ seleccionarProducto(producto: any) {
     }else{
       this.productoService.eliminadoLogico(this.selectedProducto).subscribe(
         (dataprodencontrada) => {
-          this.listarRegistrosProductos();
+          this.listarPublicaciones();
           Swal.fire(
             'Acción Exitosa',
             'Producto Eliminado.',

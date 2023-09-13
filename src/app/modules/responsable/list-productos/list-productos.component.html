@@ -11,7 +11,7 @@
         </div>
         <div class="flex items-center ml-1 whitespace-nowrap">
           <mat-icon class="icon-size-5 text-secondary" [svgIcon]="'heroicons_mini:chevron-right'"></mat-icon>
-          <a class="ml-1 text-primary-500" (click)="listarRegistrosProductos()">Lista Productos</a>
+          <a class="ml-1 text-primary-500" (click)="listarPublicaciones()">Lista Productos</a>
         </div>
       </div>
       <!-- Title -->
@@ -26,7 +26,7 @@
         <input matInput (keyup)="applyFilter($event)" [autocomplete]="'off'" [placeholder]="'Buscar registros'" #input>
       </mat-form-field>
 
-      <button class="mx-2 mt-15" mat-flat-button (click)="listarRegistrosProductos()">
+      <button class="mx-2 mt-15" mat-flat-button (click)="listarPublicaciones()">
         <mat-icon [svgIcon]="'heroicons_outline:arrow-path'"></mat-icon>
       </button>
     </div>
@@ -38,26 +38,35 @@
       <table mat-table [dataSource]="dataSource" matSort>
 
         <ng-container matColumnDef="nombreProducto">
-          <th mat-header-cell *matHeaderCellDef mat-sort-header (click)="ejecutarFuncionNombre()"> Nombre Producto </th>
-          <td mat-cell *matCellDef="let row"> {{row.nombreProducto}} </td>
+          <th mat-header-cell *matHeaderCellDef mat-sort-header (click)="ejecutarFuncionNombre()"> Titulo Publicación </th>
+          <td mat-cell *matCellDef="let row"> {{row.tituloPublicacion}} </td>
         </ng-container>
 
         <!-- Name Column -->
         <ng-container matColumnDef="precioProducto">
-          <th mat-header-cell *matHeaderCellDef mat-sort-header (click)="ejecutarFuncionPrecio()"> Precio </th>
-          <td mat-cell *matCellDef="let row"> {{row.precioProducto}} </td>
+          <th mat-header-cell *matHeaderCellDef mat-sort-header (click)="ejecutarFuncionPrecio()"> Fecha Publicación </th>
+          <td mat-cell *matCellDef="let row"> {{row.fechaPublicacion}} </td>
         </ng-container>
 
         <!-- Fruit Column -->
         <ng-container matColumnDef="cantidaDisponible">
-          <th mat-header-cell *matHeaderCellDef mat-sort-header (click)="ejecutarFuncionCantidad()"> Cantidad </th>
-          <td mat-cell *matCellDef="let row"> {{row.cantidadDisponible}} </td>
+          <th mat-header-cell *matHeaderCellDef mat-sort-header (click)="ejecutarFuncionCantidad()"> Nombre Producto </th>
+          <td mat-cell *matCellDef="let row">
+            {{ row.productos.nombreProducto }}
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="vendedor">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header> Emprendedora </th>
+          <td mat-cell *matCellDef="let row">
+            {{ row.vendedor.usuario.name }}
+          </td>
         </ng-container>
 
         <ng-container matColumnDef="estado">
           <th mat-header-cell *matHeaderCellDef mat-sort-header (click)="ejecutarFuncionEstado()"> Activo </th>
           <td mat-cell *matCellDef="let row">
-            <ng-container *ngIf="row.visible; else inactivo">
+            <ng-container *ngIf="row.estado; else inactivo">
               <mat-icon class="text-green-400 icon-size-5" [svgIcon]="'heroicons_solid:check'"></mat-icon>
             </ng-container>
             <ng-template #inactivo>

@@ -25,6 +25,5 @@ export class ProductosModels {
 export class CategoriesProd {
     idCategoriaProducto: number;
     nombreCategoria: string;
-    descripcion: string;
-    estado: boolean;
+
 }
