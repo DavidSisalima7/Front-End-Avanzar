@@ -24,4 +24,7 @@ export class PublicacionesService {
     return this.http.get<Publicacion[]>(`${this.baseUrl}/listarProducto`)
   }
 
+  listarPublicacionesServicios(): Observable<Publicacion[]> {
+    return this.http.get<Publicacion[]>(`${this.baseUrl}/listarServicio`)
+  }
 }

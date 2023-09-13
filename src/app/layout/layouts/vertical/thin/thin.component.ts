@@ -427,14 +427,23 @@ export class ThinLayoutComponent implements OnInit, OnDestroy
 
                     case 'CLIENTE':
                     newNavigation = [
+
                         {
                             id      : 'productos',
-                            title   : 'Productos',
-                            subtitle: 'Tipo de productos',
+                            title   : 'Publicaciones',
+                            subtitle: 'publicaciones',
                             type    : 'aside',
-                            tooltip  : 'Productos',
+                            tooltip : 'Publicaciones',
                             icon    : 'heroicons_outline:shopping-bag',
                             children: [
+                                {
+                                    id   : 'publicaciones',
+                                    title: 'Publicaciones',
+                                    type : 'basic',
+                                    icon : 'heroicons_outline:shopping-cart',
+                                    link : '/home-cli'
+                                },
+
                                 {
                                     id   : 'productos',
                                     title: 'Productos',
@@ -453,13 +462,32 @@ export class ThinLayoutComponent implements OnInit, OnDestroy
     
                         },
 
+
+                        {
+                            id      : 'destacados',
+                            title   : 'Destacados',
+                            subtitle: 'Publicaciones que te interesaron',
+                            type    : 'aside',
+                            tooltip : 'Destacados',
+                            icon    : 'heroicons_outline:star',
+                            children: [
+                                {
+                                    id   : 'favoritos',
+                                    title: 'Favoritos',
+                                    type : 'basic',
+                                    icon : 'heroicons_outline:chart-pie',
+                                    link : '/fav-cli'
+                                }
+                            ],
+    
+                        },
     
                         {
                             id      : 'perfil',
                             title   : 'Perfil',
                             subtitle: 'Información personal',
                             type    : 'aside',
-                            tooltip  : 'Perfil',
+                            tooltip : 'Perfil',
                             icon    : 'heroicons_outline:user',
                             children: [
                                 {

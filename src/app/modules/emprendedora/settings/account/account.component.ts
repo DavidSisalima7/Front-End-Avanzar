@@ -65,8 +65,21 @@ export class SettingsAccountComponent implements OnInit
     }
   
     paises = [
-    { value: 'Ecuador', label: 'Ecuador' },
-    { value: 'colombia', label: 'Colombia' }
+      { value: 'Ecuador', label: 'Ecuador' },
+      { value: 'Perú', label: 'Perú' },
+      { value: 'Colombia', label: 'Colombia' },
+      { value: 'Venezuela', label: 'Venezuela' },
+      { value: 'Chile', label: 'Chile' },
+      { value: 'Argentina', label: 'Argentina' },
+      { value: 'Brasil', label: 'Brasil' },
+      { value: 'Uruguay', label: 'Uruguay' },
+      { value: 'Paraguay', label: 'Paraguay' },
+      { value: 'Bolivia', label: 'Bolivia' },
+      { value: 'México', label: 'México' },
+      { value: 'Estados Unidos', label: 'Estados Unidos' },
+      { value: 'Canadá', label: 'Canadá' },
+      { value: 'España', label: 'España' },
+      { value: 'Otro', label: 'Otro ...' },
     ];
 
 

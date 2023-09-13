@@ -21,14 +21,13 @@ import { UserComponent } from 'app/layout/common/user/user.component';
 import { Subject, takeUntil } from 'rxjs';
 
 @Component({
-    selector     : 'modern-layout',
-    templateUrl  : './modern.component.html',
+    selector: 'modern-layout',
+    templateUrl: './modern.component.html',
     encapsulation: ViewEncapsulation.None,
-    standalone   : true,
-    imports      : [FuseLoadingBarComponent, NgIf, FuseVerticalNavigationComponent, FuseHorizontalNavigationComponent, MatButtonModule, MatIconModule, LanguagesComponent, FuseFullscreenComponent, SearchComponent, ShortcutsComponent, MessagesComponent, NotificationsComponent, UserComponent, RouterOutlet, QuickChatComponent],
+    standalone: true,
+    imports: [FuseLoadingBarComponent, NgIf, FuseVerticalNavigationComponent, FuseHorizontalNavigationComponent, MatButtonModule, MatIconModule, LanguagesComponent, FuseFullscreenComponent, SearchComponent, ShortcutsComponent, MessagesComponent, NotificationsComponent, UserComponent, RouterOutlet, QuickChatComponent],
 })
-export class ModernLayoutComponent implements OnInit, OnDestroy
-{
+export class ModernLayoutComponent implements OnInit, OnDestroy {
     isScreenSmall: boolean;
     navigation: Navigation;
     user: User;
@@ -45,8 +44,7 @@ export class ModernLayoutComponent implements OnInit, OnDestroy
         private _userService: UserService,
         private _fuseMediaWatcherService: FuseMediaWatcherService,
         private _fuseNavigationService: FuseNavigationService,
-    )
-    {
+    ) {
     }
 
     // -----------------------------------------------------------------------------------------------------
@@ -56,8 +54,7 @@ export class ModernLayoutComponent implements OnInit, OnDestroy
     /**
      * Getter for current year
      */
-    get currentYear(): number
-    {
+    get currentYear(): number {
         return new Date().getFullYear();
     }
 
@@ -68,8 +65,7 @@ export class ModernLayoutComponent implements OnInit, OnDestroy
     /**
      * On init
      */
-    ngOnInit(): void
-    {
+    ngOnInit(): void {
         // Subscribe to navigation data
 
         const rolIngresado = localStorage.getItem('Rol');
@@ -78,24 +74,21 @@ export class ModernLayoutComponent implements OnInit, OnDestroy
 
         this._navigationService.navigation$
             .pipe(takeUntil(this._unsubscribeAll))
-            .subscribe((navigation: Navigation) =>
-            {
+            .subscribe((navigation: Navigation) => {
                 this.navigation = navigation;
             });
 
-            // Subscribe to the user service
+        // Subscribe to the user service
         this._userService.user$
-        .pipe((takeUntil(this._unsubscribeAll)))
-        .subscribe((user: User) =>
-        {
-            this.user = user;
-        });
+            .pipe((takeUntil(this._unsubscribeAll)))
+            .subscribe((user: User) => {
+                this.user = user;
+            });
 
         // Subscribe to media changes
         this._fuseMediaWatcherService.onMediaChange$
             .pipe(takeUntil(this._unsubscribeAll))
-            .subscribe(({matchingAliases}) =>
-            {
+            .subscribe(({ matchingAliases }) => {
                 // Check if the screen is small
                 this.isScreenSmall = !matchingAliases.includes('md');
             });
@@ -104,8 +97,7 @@ export class ModernLayoutComponent implements OnInit, OnDestroy
     /**
      * On destroy
      */
-    ngOnDestroy(): void
-    {
+    ngOnDestroy(): void {
         // Unsubscribe from all subscriptions
         this._unsubscribeAll.next(null);
         this._unsubscribeAll.complete();
@@ -120,13 +112,11 @@ export class ModernLayoutComponent implements OnInit, OnDestroy
      *
      * @param name
      */
-    toggleNavigation(name: string): void
-    {
+    toggleNavigation(name: string): void {
         // Get the navigation
         const navigation = this._fuseNavigationService.getComponent<FuseVerticalNavigationComponent>(name);
 
-        if ( navigation )
-        {
+        if (navigation) {
             // Toggle the opened status
             navigation.toggle();
         }
@@ -144,18 +134,18 @@ export class ModernLayoutComponent implements OnInit, OnDestroy
                 newNavigation = [
                     // ... opciones de navegación para el rol de administrador
                     {
-                        id      : 'tablero',
-                        title   : 'Tablero',
+                        id: 'tablero',
+                        title: 'Tablero',
                         subtitle: 'Acciones rápidas',
-                        type    : 'aside',
-                        icon    : 'heroicons_outline:home',
+                        type: 'aside',
+                        icon: 'heroicons_outline:home',
                         children: [
                             {
-                                id   : 'dashboard',
+                                id: 'dashboard',
                                 title: 'Dashboard',
-                                type : 'basic',
-                                icon : 'heroicons_outline:chart-pie',
-                                link : '/dash-admin'
+                                type: 'basic',
+                                icon: 'heroicons_outline:chart-pie',
+                                link: '/dash-admin'
                             }
                         ],
 
@@ -163,79 +153,79 @@ export class ModernLayoutComponent implements OnInit, OnDestroy
 
                     // ... opciones de navegación para el rol de administrador
                     {
-                        id      : 'listas',
-                        title   : 'Listados',
+                        id: 'listas',
+                        title: 'Listados',
                         subtitle: 'Detalles registros',
-                        type    : 'aside',
-                        icon    : 'heroicons_outline:clipboard-document-list',
+                        type: 'aside',
+                        icon: 'heroicons_outline:clipboard-document-list',
                         children: [
                             {
-                                id   : 'list-resp',
+                                id: 'list-resp',
                                 title: 'Responsables Ventas',
-                                type : 'basic',
-                                icon : 'heroicons_outline:user-group',
-                                link : '/list-responsables'
+                                type: 'basic',
+                                icon: 'heroicons_outline:user-group',
+                                link: '/list-responsables'
                             },
 
                             {
-                                id   : 'list-empren',
+                                id: 'list-empren',
                                 title: 'Emprendedoras',
-                                type : 'basic',
-                                icon : 'heroicons_outline:user-group',
-                                link : '/list-emprend'
+                                type: 'basic',
+                                icon: 'heroicons_outline:user-group',
+                                link: '/list-emprend'
                             },
                             {
-                                id   : 'list-clie',
+                                id: 'list-clie',
                                 title: 'Clientes',
-                                type : 'basic',
-                                icon : 'heroicons_outline:user-group',
-                                link : '/list-clie'
+                                type: 'basic',
+                                icon: 'heroicons_outline:user-group',
+                                link: '/list-clie'
                             }
                         ]
                     },
 
                     {
-                        id      : 'perfil',
-                        title   : 'Perfil',
+                        id: 'perfil',
+                        title: 'Perfil',
                         subtitle: 'Información personal',
-                        type    : 'aside',
-                        icon    : 'heroicons_outline:user',
+                        type: 'aside',
+                        icon: 'heroicons_outline:user',
                         children: [
                             {
-                                id   : 'profile',
+                                id: 'profile',
                                 title: 'Perfil',
-                                type : 'basic',
-                                icon : 'heroicons_outline:user-circle',
-                                link : '/profile-admin'
+                                type: 'basic',
+                                icon: 'heroicons_outline:user-circle',
+                                link: '/profile-admin'
                             },
 
                             {
-                                id   : 'settings',
+                                id: 'settings',
                                 title: 'Configuración',
-                                type : 'basic',
-                                icon : 'heroicons_outline:cog-6-tooth',
-                                link : '/config-admin'
+                                type: 'basic',
+                                icon: 'heroicons_outline:cog-6-tooth',
+                                link: '/config-admin'
                             }
                         ]
                     }
                 ];
                 break;
-    
+
             case 'RESPONSABLE_VENTAS':
                 newNavigation = [
                     {
-                        id      : 'tablero',
-                        title   : 'Tablero',
+                        id: 'tablero',
+                        title: 'Tablero',
                         subtitle: 'Acciones rápidas',
-                        type    : 'aside',
-                        icon    : 'heroicons_outline:home',
+                        type: 'aside',
+                        icon: 'heroicons_outline:home',
                         children: [
                             {
-                                id   : 'dashboard',
+                                id: 'dashboard',
                                 title: 'Dashboard',
-                                type : 'basic',
-                                icon : 'heroicons_outline:chart-pie',
-                                link : '/dash-resp'
+                                type: 'basic',
+                                icon: 'heroicons_outline:chart-pie',
+                                link: '/dash-resp'
                             }
                         ],
 
@@ -243,76 +233,76 @@ export class ModernLayoutComponent implements OnInit, OnDestroy
 
                     // ... opciones de navegación para el rol de administrador
                     {
-                        id      : 'listas',
-                        title   : 'Listados',
+                        id: 'listas',
+                        title: 'Listados',
                         subtitle: 'Detalles registros',
-                        type    : 'aside',
-                        icon    : 'heroicons_outline:clipboard-document-list',
+                        type: 'aside',
+                        icon: 'heroicons_outline:clipboard-document-list',
                         children: [
                             {
-                                id   : 'list-emprendedoras',
+                                id: 'list-emprendedoras',
                                 title: 'Emprendedoras',
-                                type : 'basic',
-                                icon : 'heroicons_outline:user-group',
-                                link : '/list-empre-resp'
+                                type: 'basic',
+                                icon: 'heroicons_outline:user-group',
+                                link: '/list-empre-resp'
                             },
 
                             {
-                                id   : 'list-productos',
+                                id: 'list-productos',
                                 title: 'Productos',
-                                type : 'basic',
-                                icon : 'heroicons_outline:shopping-cart',
-                                link : '/list-prod-resp'
+                                type: 'basic',
+                                icon: 'heroicons_outline:shopping-cart',
+                                link: '/list-prod-resp'
                             },
 
                             {
-                                id   : 'list-servicios',
+                                id: 'list-servicios',
                                 title: 'Servicios',
-                                type : 'basic',
-                                icon : 'heroicons_outline:shopping-cart',
-                                link : '/list-serv-resp'
+                                type: 'basic',
+                                icon: 'heroicons_outline:shopping-cart',
+                                link: '/list-serv-resp'
                             }
                         ]
                     },
                     {
-                        id      : 'subscripcion',
-                        title   : 'Subscripción',
+                        id: 'subscripcion',
+                        title: 'Subscripción',
                         subtitle: 'Información de membresia',
-                        type    : 'aside',
-                        icon    : 'heroicons_outline:ticket',
+                        type: 'aside',
+                        icon: 'heroicons_outline:ticket',
                         children: [
                             {
-                                id   : 'planes',
+                                id: 'planes',
                                 title: 'Planes',
-                                type : 'basic',
-                                icon : 'heroicons_outline:check-badge',
-                                link : '/planes-resp'
+                                type: 'basic',
+                                icon: 'heroicons_outline:check-badge',
+                                link: '/planes-resp'
                             }
                         ],
 
                     },
 
                     {
-                        id      : 'perfil',
-                        title   : 'Perfil',
+                        id: 'perfil',
+                        title: 'Perfil',
                         subtitle: 'Información personal',
-                        type    : 'aside',
-                        icon    : 'heroicons_outline:user',
+                        type: 'aside',
+                        icon: 'heroicons_outline:user',
                         children: [
                             {
-                                id   : 'profile',
+                                id: 'profile',
                                 title: 'Perfil',
-                                type : 'basic',
-                                icon : 'heroicons_outline:user-circle',
-                                link : '/profile-resp'
+                                type: 'basic',
+                                icon: 'heroicons_outline:user-circle',
+                                link: '/profile-resp'
                             },
 
                             {
-                                id   : 'settings',
+                                id: 'settings',
                                 title: 'Configuración',
-                                type : 'basic',
-                                icon : 'heroicons_outline:cog-6-tooth',
-                                link : '/config-resp'
+                                type: 'basic',
+                                icon: 'heroicons_outline:cog-6-tooth',
+                                link: '/config-resp'
                             }
                         ]
                     }
@@ -348,135 +338,206 @@ export class ModernLayoutComponent implements OnInit, OnDestroy
                             icon    : 'heroicons_outline:clipboard-document-list',
                             children: [
 
-                                {                                           
-                                    id   : 'ecommerce',
-                                    title: 'Publicaciones Productos',
-                                    type : 'basic',
-                                    icon : 'heroicons_outline:chat-bubble-left-right',
-                                    link : '/ecommerce'
-                                },
+            case 'EMPRENDEDORA':
+                newNavigation = [
+                    {
+                        id: 'tablero',
+                        title: 'Tablero',
+                        subtitle: 'Acciones rápidas',
+                        type: 'aside',
+                        icon: 'heroicons_outline:home',
+                        children: [
+                            {
+                                id: 'dashboard',
+                                title: 'Dashboard',
+                                type: 'basic',
+                                icon: 'heroicons_outline:chart-pie',
+                                link: '/dash-empre'
+                            }
+                        ],
 
-                                {
-                                    id   : 'ecommerce-servicios',
-                                    title: 'Publicaciones Servicios',
-                                    type : 'basic',
-                                    icon : 'heroicons_outline:chat-bubble-left-right',
-                                    link : '/ecommerce-servicios'
-                                }
-                            ]
-                        },
+                    },
 
-                        {
-                            id      : 'plan',
-                            title   : 'Planes',
-                            subtitle: 'Adquirir o renovar membresia',
-                            type    : 'aside',
-                            icon    : 'heroicons_outline:ticket',
-                            children: [
-                                {
-                                    id   : 'subscripcion',
-                                    title: 'Subscripción',
-                                    type : 'basic',
-                                    icon : 'heroicons_outline:check-badge',
-                                    link : '/subscripcion-empre'
-                                }
-                            ],
-    
-                        },
-                       
-    
-                        {
-                            id      : 'perfil',
-                            title   : 'Perfil',
-                            subtitle: 'Información personal',
-                            type    : 'aside',
-                            icon    : 'heroicons_outline:user',
-                            children: [
-                                {
-                                    id   : 'profile',
-                                    title: 'Perfil',
-                                    type : 'basic',
-                                    icon : 'heroicons_outline:user-circle',
-                                    link : '/profile-empre'
-                                },
+                    // ... opciones de navegación para el rol de administrador
+                    {
+                        id: 'listas',
+                        title: 'Listados',
+                        subtitle: 'Detalles registros',
+                        type: 'aside',
+                        icon: 'heroicons_outline:clipboard-document-list',
+                        children: [
+                            {
+                                id: 'list-prod',
+                                title: 'Productos',
+                                type: 'basic',
+                                icon: 'heroicons_outline:shopping-cart',
+                                link: '/list-empre-prod'
+                            },
 
-                                {
-                                    id   : 'settings',
-                                    title: 'Configuración',
-                                    type : 'basic',
-                                    icon : 'heroicons_outline:cog-6-tooth',
-                                    link : '/config-empre'
-                                }
-                            ]
-                        }
-                    ];
-                    break;
+                            {
+                                id: 'list-serv',
+                                title: 'Servicios',
+                                type: 'basic',
+                                icon: 'heroicons_outline:shopping-cart',
+                                link: '/list-empre-serv'
+                            },
+
+                            {
+                                id: 'ecommerce',
+                                title: 'Publicaciones Productos',
+                                type: 'basic',
+                                icon: 'heroicons_outline:chat-bubble-left-right',
+                                link: '/ecommerce'
+                            },
+
+                            {
+                                id: 'ecommerce-servicios',
+                                title: 'Publicaciones Servicios',
+                                type: 'basic',
+                                icon: 'heroicons_outline:chat-bubble-left-right',
+                                link: '/ecommerce-servicios'
+                            }
+                        ]
+                    },
+
+                    {
+                        id: 'plan',
+                        title: 'Planes',
+                        subtitle: 'Adquirir o renovar membresia',
+                        type: 'aside',
+                        icon: 'heroicons_outline:ticket',
+                        children: [
+                            {
+                                id: 'subscripcion',
+                                title: 'Subscripción',
+                                type: 'basic',
+                                icon: 'heroicons_outline:check-badge',
+                                link: '/subscripcion-empre'
+                            }
+                        ],
+
+                    },
 
 
-                    case 'CLIENTE':
-                    newNavigation = [
-                        {
-                            id      : 'productos',
-                            title   : 'Productos',
-                            subtitle: 'Tipo de productos',
-                            type    : 'aside',
-                            icon    : 'heroicons_outline:shopping-bag',
-                            children: [
-                                {
-                                    id   : 'productos',
-                                    title: 'Productos',
-                                    type : 'basic',
-                                    icon : 'heroicons_outline:shopping-cart',
-                                    link : '/prod-cli'
-                                },
-                                {
-                                    id   : 'servicios',
-                                    title: 'Servicios',
-                                    type : 'basic',
-                                    icon : 'heroicons_outline:shopping-cart',
-                                    link : '/serv-cli'
-                                }
-                            ],
-    
-                        },
+                    {
+                        id: 'perfil',
+                        title: 'Perfil',
+                        subtitle: 'Información personal',
+                        type: 'aside',
+                        icon: 'heroicons_outline:user',
+                        children: [
+                            {
+                                id: 'profile',
+                                title: 'Perfil',
+                                type: 'basic',
+                                icon: 'heroicons_outline:user-circle',
+                                link: '/profile-empre'
+                            },
 
-    
-                        {
-                            id      : 'perfil',
-                            title   : 'Perfil',
-                            subtitle: 'Información personal',
-                            type    : 'aside',
-                            icon    : 'heroicons_outline:user',
-                            children: [
-                                {
-                                    id   : 'profile',
-                                    title: 'Perfil',
-                                    type : 'basic',
-                                    icon : 'heroicons_outline:user-circle',
-                                    link : '/profile-cli'
-                                },
+                            {
+                                id: 'settings',
+                                title: 'Configuración',
+                                type: 'basic',
+                                icon: 'heroicons_outline:cog-6-tooth',
+                                link: '/config-empre'
+                            }
+                        ]
+                    }
+                ];
+                break;
 
-                                {
-                                    id   : 'settings',
-                                    title: 'Configuración',
-                                    type : 'basic',
-                                    icon : 'heroicons_outline:cog-6-tooth',
-                                    link : '/config-cli'
-                                }
-                            ]
-                        }
-                    ];
-                    break;
-    
+
+            case 'CLIENTE':
+                newNavigation = [
+
+                    {
+                        id: 'productos',
+                        title: 'Publicaciones',
+                        subtitle: 'publicaciones',
+                        type: 'aside',
+                        icon: 'heroicons_outline:shopping-bag',
+                        children: [
+                            {
+                                id: 'publicaciones',
+                                title: 'Publicaciones',
+                                type: 'basic',
+                                icon: 'heroicons_outline:shopping-cart',
+                                link: '/home-cli'
+                            },
+
+                            {
+                                id: 'productos',
+                                title: 'Productos',
+                                type: 'basic',
+                                icon: 'heroicons_outline:shopping-cart',
+                                link: '/prod-cli'
+                            },
+                            {
+                                id: 'servicios',
+                                title: 'Servicios',
+                                type: 'basic',
+                                icon: 'heroicons_outline:shopping-cart',
+                                link: '/serv-cli'
+                            }
+                        ],
+
+                    },
+
+
+                    {
+                        id: 'destacados',
+                        title: 'Destacados',
+                        subtitle: 'Publicaciones que te interesaron',
+                        type: 'aside',
+                        icon: 'heroicons_outline:star',
+                        children: [
+                            {
+                                id: 'favoritos',
+                                title: 'Favoritos',
+                                type: 'basic',
+                                icon: 'heroicons_outline:chart-pie',
+                                link: '/fav-cli'
+                            }
+                        ],
+
+                    },
+
+                    {
+                        id: 'perfil',
+                        title: 'Perfil',
+                        subtitle: 'Información personal',
+                        type: 'aside',
+                        icon: 'heroicons_outline:user',
+                        children: [
+                            {
+                                id: 'profile',
+                                title: 'Perfil',
+                                type: 'basic',
+                                icon: 'heroicons_outline:user-circle',
+                                link: '/profile-cli'
+                            },
+
+                            {
+                                id: 'settings',
+                                title: 'Configuración',
+                                type: 'basic',
+                                icon: 'heroicons_outline:cog-6-tooth',
+                                link: '/config-cli'
+                            }
+                        ]
+                    }
+                ];
+                break;
+
             default:
                 newNavigation = [
                     // Opciones de navegación predeterminadas para roles desconocidos o no válidos
                 ];
         }
-    
+
         // Obtén el componente de navegación
         const navComponent = this._fuseNavigationService.getComponent<FuseVerticalNavigationComponent>(navigationName);
-    
+
         // Actualiza las opciones de navegación y refresca el componente
         if (navComponent) {
             navComponent.navigation = newNavigation;

@@ -16,8 +16,9 @@ import Swal from 'sweetalert2';
 //DIALOGOS
 import { MatDialog } from '@angular/material/dialog';
 import { MailboxComposeComponent } from 'app/modules/responsable/composeServicios/composeServicios.component';
+import { Publicacion } from 'app/services/models/publicaciones';
+import { PublicacionesService } from 'app/services/services/publicaciones.service';
 import { ServiciosService } from 'app/services/services/servicios.service';
-import { Servicios } from 'app/services/models/servicios';
 
 
 @Component({
@@ -31,16 +32,16 @@ import { Servicios } from 'app/services/models/servicios';
 export class ListRespServiciosComponent
 
 {
-    displayedColumns: string[] = ['nombre', 'precio', 'descripcion', 'estado','editar','delete'];
-  dataSource: MatTableDataSource<Servicios>;
+  displayedColumns: string[] = ['nombreProducto', 'precioProducto', 'cantidaDisponible','vendedor', 'estado','editar','delete'];
+  dataSource: MatTableDataSource<Publicacion>;
 
 
   pageSizeOptions: number[] = [1, 5, 10, 50]; // Opciones de tamaño de página
   pageSize: number = 10;
-  static idUsuarioSeleccionado: number;
 
 
-  services: Servicios[] = [];
+
+  publicacion: Publicacion[] = [];
 
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
@@ -48,8 +49,8 @@ export class ListRespServiciosComponent
   searchInputControl: UntypedFormControl = new UntypedFormControl();
   private _unsubscribeAll: Subject<any> = new Subject<any>();
   isLoading: boolean = false;
-  constructor(private serviciosService: ServiciosService, private _router: Router,private _matDialog: MatDialog
-    ) {
+  constructor(private publicacionService: PublicacionesService, private _router: Router,private _matDialog: MatDialog
+   ,private serviciosService: ServiciosService ) {
   }
   ngOnInit(): void {
     this.listarRegistrosServicios();
@@ -57,9 +58,9 @@ export class ListRespServiciosComponent
   }
 
   cambioTamanioPagina(event) {
-    this.paginator.pageIndex = 0; // Reinicia la página actual al cambiar el tamaño de página
+    this.paginator.pageIndex = event.pageIndex;
+    // También puedes agregar un console.log() aquí para depurar
   }
-
   nextPage() {
     if (this.paginator.hasNextPage()) {
       this.paginator.nextPage();
@@ -67,10 +68,10 @@ export class ListRespServiciosComponent
   }
 
   listarRegistrosServicios() {
-    this.serviciosService.listarServicio().subscribe(
-      (datos: Servicios[]) => {
-        this.services = datos;
-        this.dataSource = new MatTableDataSource<Servicios>(datos);
+    this.publicacionService.listarPublicacionesServicios().subscribe(
+      (datos: Publicacion[]) => {
+        this.publicacion = datos;
+        this.dataSource = new MatTableDataSource<Publicacion>(datos);
         this.dataSource.paginator = this.paginator;
         this.paginator.length = datos.length;
         // Llama a nextPage() después de configurar el paginador
@@ -102,7 +103,7 @@ export class ListRespServiciosComponent
             });
     }
 /////////////////////////Filtro de los Servicios
-servicios:any;
+/*servicios:any;
  ///descripcion
    FiltroDescripcionAsc(): void {
      this.serviciosService.listarServicio().subscribe(
@@ -244,7 +245,7 @@ FiltroEstadoInactivo() {
      }
      this.cambiarFuncionAEjecutar();
    }
-
+*/
 
 ///////////////////////// Fin de filtro
 
