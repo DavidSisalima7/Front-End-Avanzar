@@ -17,24 +17,23 @@ import { Usuario } from 'app/services/models/usuario';
 import { UserService } from 'app/core/user/user.service';
 import { InventarioPublicaciones } from 'app/modules/emprendedora/ecommerce/inventory/inventory.types';
 import { PublicacionesInventory } from 'app/services/services/publicacionesInventory.service';
-import { HomeTiendaClientComponent } from '../home-tienda.component';
 import { FuseCardComponent } from '@fuse/components/card';
 import { MatMenuModule } from '@angular/material/menu';
 import { RouterLink } from '@angular/router';
-import { ServiciosVentClientComponent } from '../../servicios-vent/servicios-vent.component';
-import { ProductosVentClientComponent } from '../../productos-vent/productos-vent.component';
+import { ProductosVentClientComponent } from '../productos-vent.component';
+import { PublicacionesInventoryProductos } from 'app/services/services/PublicacionesInventory-Productos.service';
 
 
 
 @Component({
     selector: 'mailbox-compose',
-    templateUrl: './modal-publicacion.component.html',
-    styleUrls: ['./modal-publicacion.component.scss'],
+    templateUrl: './modal-publicacion-productos.component.html',
+    styleUrls: ['./modal-publicacion-productos.component.scss'],
     standalone: true,
     imports: [MatSlideToggleModule, MatSelectModule,FuseCardComponent,MatMenuModule,RouterLink, MatOptionModule, MatDatepickerModule, NgFor, MatButtonModule, MatIconModule, FormsModule, ReactiveFormsModule, MatFormFieldModule, MatInputModule, NgIf, QuillEditorComponent]
 
 })
-export class ModalPublicacionComponent implements OnInit {
+export class ModalPublicacionProductosComponent implements OnInit {
     selectedPublicacionForm: UntypedFormGroup; 
     user: Usuario;
     selectedPublicacion: InventarioPublicaciones | null = null;
@@ -44,25 +43,25 @@ export class ModalPublicacionComponent implements OnInit {
     // ... otras propiedades ...
 
     constructor(
-        public matDialogRef: MatDialogRef<ModalPublicacionComponent>,
-        private _formBuilder: FormBuilder, // Cambiado a FormBuilder
-        private _inventoryService: PublicacionesInventory,
+        public matDialogRef: MatDialogRef<ModalPublicacionProductosComponent>,
+        private _formBuilder: FormBuilder,
+        private _inventoryService: PublicacionesInventoryProductos,
         private _changeDetectorRef: ChangeDetectorRef,
-        private _userService: UserService,
     ) {
     }
 
 
     ngOnInit(): void {
         
-            this._inventoryService.getPublicacionById(HomeTiendaClientComponent.publicacionSeleccionada)
+            this._inventoryService.getPublicacionById(ProductosVentClientComponent.publicacionSeleccionada)
             .subscribe((product) => {
                 this.selectedPublicacion = product;
+                console.log(product)
 
                 // Actualiza el FormGroup con los datos de la publicación
                 this.selectedPublicacionForm=this._formBuilder.group({
                     idPublicacion: [this.selectedPublicacion.idPublicacion],
-                    nombreProducto: this.selectedPublicacion.productos ? this.selectedPublicacion.productos.nombreProducto : this.selectedPublicacion.servicios.nombreServicio,
+                    nombreProducto: [this.selectedPublicacion.productos.nombreProducto],
                     tituloPublicacion:  [this.selectedPublicacion.tituloPublicacion],
                     descripcionPublicacion:  [this.selectedPublicacion.descripcionPublicacion],
                     descripcionUsuario:  [this.selectedPublicacion.vendedor.usuario.persona.descripcion],

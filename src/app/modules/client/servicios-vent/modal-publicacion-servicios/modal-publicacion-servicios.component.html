@@ -1,0 +1,123 @@
+<div class="flex flex-col max-w-240 md:min-w-160 max-h-screen -m-6">
+    <!-- Header -->
+    <div
+        class="flex flex-0 items-center justify-between h-16 pr-3 sm:pr-5 pl-6 sm:pl-8 bg-primary text-on-primary"
+    >
+        <div class="text-lg font-medium ">Detalles</div>
+        <button mat-icon-button (click)="saveAndClose()" [tabIndex]="-1">
+            <mat-icon
+                class="text-current"
+                [svgIcon]="'heroicons_outline:x-mark'"
+            ></mat-icon>
+        </button>
+    </div>
+
+    <!-- Compose form -->
+    <form
+        class="flex flex-col flex-auto p-1 sm:p-8 overflow-y-auto"
+        [formGroup]="selectedPublicacionForm"
+        
+    >
+        <div class="flex flex-col sm:flex-row p-8">
+           
+            <!-- Product images and status -->
+            <div class="flex flex-col items-center">
+                <div class="w-80 h-100 border rounded overflow-hidden">
+                     <ng-container *ngIf="selectedPublicacionForm.get('imagenes').value.length; else noImage">
+                        <img
+                            class="w-full h-full object-cover"
+                            [src]="selectedPublicacionForm.get('imagenes').value[selectedPublicacionForm.get('currentImageIndex').value]">
+                    </ng-container>
+                    <ng-template #noImage>
+                        <span class="flex items-center min-h-20 text-lg font-semibold">NO IMAGEN</span>
+                    </ng-template> 
+                </div>
+                <div
+                    class="flex items-center mt-2 whitespace-nowrap"
+                    *ngIf="selectedPublicacionForm.get('imagenes').value.length">
+                    <button
+                        mat-icon-button
+                        (click)="cycleImages(false)">
+                        <mat-icon
+                            class="icon-size-5"
+                            [svgIcon]="'heroicons_mini:arrow-long-left'"></mat-icon>
+                    </button>
+                    <span class="font-sm mx-2">
+                        {{selectedPublicacionForm.get('currentImageIndex').value + 1}} of {{selectedPublicacionForm.get('imagenes').value.length}}
+                    </span>
+                    <button
+                        mat-icon-button
+                        (click)="cycleImages(true)">
+                        <mat-icon
+                            class="icon-size-5"
+                            [svgIcon]="'heroicons_mini:arrow-long-right'"></mat-icon>
+                    </button>
+                </div>
+            </div>
+
+            <div class="flex flex-auto flex-wrap">
+                <!-- Name, SKU & etc. -->
+                
+                <div class="flex w-full lg:w-4/4 sm:pl-8 center-text">
+                    <mat-label><b>DETALLES DE VENDEDOR</b></mat-label>
+                  </div>
+                  
+                
+                <fuse-card class="flex flex-col items-center max-w-90 w-full p-8 pb-6 filter-info vendedor-card">
+                    <img
+                        class="w-32 h-32 rounded-full"
+                        [src]="selectedPublicacionForm.get('avatar').value"
+                        alt="Card cover image">
+                    <div class="text-2xl font-semibold leading-tight text-center mt-8" [textContent]="selectedPublicacionForm.get('vendedor').value">
+                    </div>
+                    <div class="text-secondary leading-tight text-center mt-1"[textContent]="selectedPublicacionForm.get('pais').value"></div>                 
+                    <hr class="w-full border-t mt-8 mb-0">
+                    <div class="w-full flex items-center justify-between my-4 px-2">
+
+
+                        <div class="flex flex-col items-center">
+                            
+                            <mat-icon
+                            class="icon-size-5 transition-transform ease-in-out duration-150 rotate-0"
+
+                            [svgIcon]="
+                                'mat_solid:email'
+                            "
+                        ></mat-icon>
+                            <span class="text-sm font-medium text-secondary" [textContent]="selectedPublicacionForm.get('email').value"></span>
+                        </div>
+
+                        <div class="flex flex-col items-center">
+                            <mat-icon
+                            class="icon-size-5 transition-transform ease-in-out duration-150 rotate-0"
+
+                            [svgIcon]="
+                                'mat_solid:supervised_user_circle'
+                            "
+                        ></mat-icon>
+                        <span class="text-sm font-medium text-secondary" [textContent]="selectedPublicacionForm.get('genero').value"></span>
+                        </div>
+
+
+                        <div class="flex flex-col items-center">
+                            <mat-icon
+                            class="icon-size-5 transition-transform ease-in-out duration-150 rotate-0"
+
+                            [svgIcon]="
+                                'mat_solid:contact_phone'
+                            "
+                        ></mat-icon>
+                        <span class="text-sm font-medium text-secondary" [textContent]="selectedPublicacionForm.get('contacto').value"></span>
+                        </div>
+
+                    </div>
+                    <hr class="w-full border-t mt-0 mb-8">
+                    <div class="text-center text-secondary">
+                        <div class="text-sm font-medium text-secondary" [textContent]="selectedPublicacionForm.get('descripcionUsuario').value"></div>
+                      </div>
+                      
+                </fuse-card>
+        </div>
+        </div>
+    </form>
+</div>

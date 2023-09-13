@@ -5,7 +5,7 @@ import {  InventarioPublicaciones } from 'app/modules/emprendedora/ecommerce/inv
 import { Usuario } from 'app/services/models/usuario';
 
 @Injectable({providedIn: 'root'})
-export class PublicacionesInventory
+export class PublicacionesInventoryServicios
 {
     // Private
     private _publicacion: BehaviorSubject<InventarioPublicaciones | null> = new BehaviorSubject(null);
@@ -48,18 +48,19 @@ export class PublicacionesInventory
     // -----------------------------------------------------------------------------------------------------
 
     listarServicio(): void {
-        this._httpClient.get<InventarioPublicaciones[]>("http://localhost:8080/api/publicaciones/listar")
+        this._httpClient.get<InventarioPublicaciones[]>("http://localhost:8080/api/publicaciones/listarServicio")
           .subscribe((data) => {
             this._publicaciones.next(data); // Actualiza el BehaviorSubject con los datos obtenidos
           });
       }
      
-      obtenerListaPublicaciones(): Observable<InventarioPublicaciones[]> {
-        return this._httpClient.get<InventarioPublicaciones[]>("http://localhost:8080/api/publicaciones/listar")
+      obtenerListaPublicacionesXServicio(): Observable<InventarioPublicaciones[]> {
+        return this._httpClient.get<InventarioPublicaciones[]>("http://localhost:8080/api/publicaciones/listarServicio")
           .pipe(
             catchError(this.handleError)
           );
       }
+
 
       getPublicacionById(id: number): Observable<InventarioPublicaciones>
       {
