@@ -336,21 +336,6 @@ export class CompactLayoutComponent implements OnInit, OnDestroy {
                             type    : 'aside',
                             icon    : 'heroicons_outline:clipboard-document-list',
                             children: [
-                                {
-                                    id   : 'list-prod',
-                                    title: 'Productos',
-                                    type : 'basic',
-                                    icon : 'heroicons_outline:shopping-cart',
-                                    link : '/list-empre-prod'
-                                },
-    
-                                {
-                                    id   : 'list-serv',
-                                    title: 'Servicios',
-                                    type : 'basic',
-                                    icon : 'heroicons_outline:shopping-cart',
-                                    link : '/list-empre-serv'
-                                },
 
                                 {                                           
                                     id   : 'ecommerce',

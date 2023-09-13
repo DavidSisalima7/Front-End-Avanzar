@@ -121,8 +121,6 @@ export const appRoutes: Route[] = [
             },
             children: [
                 {path: 'dash-empre', loadChildren: () => import('app/modules/emprendedora/dashboard/dashboard.routes')},
-                {path: 'list-empre-prod', loadChildren: () => import('app/modules/emprendedora/list-productos/list-productos.routes')},
-                {path: 'list-empre-serv', loadChildren: () => import('app/modules/emprendedora/list-servicios/list-servicios.routes')},
                 {path: 'list-empre-publi', loadChildren: () => import('app/modules/emprendedora/list-publicaciones/list-publicacion.routes')},
                 {path: 'reg-empre-prod', loadChildren: () => import('app/modules/emprendedora/register-producto/register-producto.routes')},
                 {path: 'ecommerce', loadChildren: () => import('app/modules/emprendedora/ecommerce/ecommerce.routes')},

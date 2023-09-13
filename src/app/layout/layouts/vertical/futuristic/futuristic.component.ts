@@ -347,21 +347,7 @@ export class FuturisticLayoutComponent implements OnInit, OnDestroy
                             type    : 'group',
                             icon    : 'memory',
                             children: [
-                                {
-                                    id   : 'list-prod',
-                                    title: 'Productos',
-                                    type : 'basic',
-                                    icon : 'heroicons_outline:shopping-cart',
-                                    link : '/list-empre-prod'
-                                },
-    
-                                {
-                                    id   : 'list-serv',
-                                    title: 'Servicios',
-                                    type : 'basic',
-                                    icon : 'heroicons_outline:shopping-cart',
-                                    link : '/list-empre-serv'
-                                },
+
 
                                 {                                           
                                     id   : 'ecommerce',
