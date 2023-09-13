@@ -2,8 +2,14 @@
 
     <div *ngIf="formCode" class="flex min-h-full w-120 flex-col justify-center px-6 py-12 lg:px-8">
         <div class="sm:mx-auto sm:w-full sm:max-w-sm">
-            <img class="mx-auto h-20 w-auto" src="assets/images/logo/avanzar.png" alt="Your Company">
-            <h2 class="mt-10 text-center text-2xl font-bold leading-9 tracking-tight">Código de verificación</h2>
+            <!-- Logo -->
+            <div class="w-28">
+                <img src="assets/images/logo/avanzar.png" />
+            </div>
+            
+            <div class="mt-8 text-4xl font-extrabold tracking-tight leading-tight">
+                Código de verificación
+            </div>
         </div>
 
         <div class="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
@@ -11,9 +17,12 @@
                 <div>
                     <label for="email" class="block text-1xl font-medium leading-6 ">Correo Electrónico</label>
                     <div class="mt-2">
-                        <label
-                            class="block w-full bg-slate-400 rounded-md py-1.5 shadow-sm  ring-inset focus:ring-2 focus:ring-inset sm:text-lg sm:leading-6">{{persona.correo}}</label>
-                    </div>
+                        
+                            <label class="block w-full rounded-md py-1.5 shadow-sm ring-inset focus:ring-2 focus:ring-inset sm:text-lg sm:leading-6">
+                                {{persona.correo}}
+                              </label>
+                              
+                        </div>
                 </div>
 
                 <div>
@@ -22,17 +31,20 @@
 
                     </div>
 
+                    
+                    
+                    <div class="mt-2">
+                        <input  style="margin-block-end: 20px;" id="codigo" name="codigo" type="text" placeholder="   Ingrese su codigo aqui   "
+                            class="block w-full rounded-md border-0 py-1.5  shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-500 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-lg sm:leading-6"
+                            [(ngModel)]="codeInt" #inputCodeHmtl>
+                    </div>
+
+
                     <!-- Alert -->
                     <fuse-alert *ngIf="showCode" [appearance]="'outline'" [showIcon]="true"
                         [type]="alertCod.type" [@shake]="alertCod.type === 'error'">
                         {{ alertCod.message }}
                     </fuse-alert>
-                    
-                    <div class="mt-2">
-                        <input id="codigo" name="codigo" type="text" placeholder="1283"
-                            class="block w-full rounded-md border-0 py-1.5  shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-500 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-lg sm:leading-6"
-                            [(ngModel)]="codeInt" #inputCodeHmtl>
-                    </div>
                 </div>
 
                 <div>
@@ -268,7 +280,7 @@
             </form>
         </div>
     </div>
-    <div class="relative hidden md:flex flex-auto items-center justify-center w-1/2 h-full p-16 lg:px-28 overflow-hidden dark:border-l" style="background-image: url('https://www.compartamos.com.mx/wcm/connect/37e6353d-b00c-456d-92bd-e0e3b055f0cf/6_claves_para_tener_un_emprendimiento_exitoso.jpg?MOD=AJPERES'); background-size: cover; position: relative;">
+    <div class="relative hidden md:flex flex-auto items-center justify-center w-1/2 h-full p-16 lg:px-28 overflow-hidden dark:border-l" style="background-image: url('https://images.unsplash.com/photo-1607748862156-7c548e7e98f4?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1587&q=80'); background-size: cover; position: relative;">
         <!-- Capa de fondo semitransparente -->
         <div class="absolute inset-0 bg-black opacity-50"></div>
     
@@ -283,18 +295,7 @@
             </div>
             <div class="flex items-center mt-8">
                 <div class="flex flex-0 items-center -space-x-1.5">
-                    <!-- <img
-                        class="flex-0 w-10 h-10 rounded-full ring-4 ring-offset-1 ring-gray-800 ring-offset-gray-800 object-cover"
-                        src="assets/images/avatars/female-18.jpg">
-                    <img
-                        class="flex-0 w-10 h-10 rounded-full ring-4 ring-offset-1 ring-gray-800 ring-offset-gray-800 object-cover"
-                        src="assets/images/avatars/female-11.jpg">
-                    <img
-                        class="flex-0 w-10 h-10 rounded-full ring-4 ring-offset-1 ring-gray-800 ring-offset-gray-800 object-cover"
-                        src="assets/images/avatars/male-09.jpg">
-                    <img
-                        class="flex-0 w-10 h-10 rounded-full ring-4 ring-offset-1 ring-gray-800 ring-offset-gray-800 object-cover"
-                        src="assets/images/avatars/male-16.jpg"> -->
+
                 </div>
             </div>
         </div>
