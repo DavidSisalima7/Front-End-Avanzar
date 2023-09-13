@@ -3,7 +3,7 @@
     <div
         class="flex flex-0 items-center justify-between h-16 pr-3 sm:pr-5 pl-6 sm:pl-8 bg-primary text-on-primary"
     >
-        <div class="text-lg font-medium">Detalles</div>
+        <div class="text-lg font-medium ">Detalles</div>
         <button mat-icon-button (click)="saveAndClose()" [tabIndex]="-1">
             <mat-icon
                 class="text-current"
@@ -56,88 +56,68 @@
             </div>
 
             <div class="flex flex-auto flex-wrap">
-
-                
                 <!-- Name, SKU & etc. -->
-                <div class="flex flex-col w-full lg:w-4/4 sm:pl-8">
-                    <mat-form-field class="w-full">
-                        <mat-label>Publicación</mat-label>
-                        <input
-                            readonly
-                            matInput
-                            formControlName="tituloPublicacion"
-                        />
-                        
-                    </mat-form-field>
-
-                    <mat-form-field class="w-full h-full">
-                        <mat-label>Descripción</mat-label>
-                        <input
-                            readonly
-                            matInput
-                            formControlName="descripcionPublicacion"
-                        />
-                    </mat-form-field>
-
-                    <!-- Name -->
-                    <mat-form-field class="w-full">
-                        <mat-label>Producto/Servicio</mat-label>
-                        <input readonly matInput formControlName="nombreProducto" />
-                        
-                    </mat-form-field>
-                    
-                </div>
-                <div  class="flex flex-col w-full lg:w-4/4 sm:pl-8">
-                <mat-label><b>DETALLES DE VENDEDOR</b></mat-label>
-                <br>
-                </div>
                 
-                <div class="flex flex-col w-full lg:w-2/4 sm:pl-8">
-                    
-                    <mat-form-field class="w-full">
-                        <mat-label>Vendedora</mat-label>
-                        <input
-                            matInput
-                            readonly
-                            formControlName="vendedor"
-                        />
-                    </mat-form-field>
-                </div>
-                <div class="flex flex-col w-full lg:w-2/4 sm:pl-8">
-                     <mat-form-field class="w-full">
-                        <mat-label>Pais</mat-label>
-                        <input
-                            matInput
-                            readonly
-                            formControlName="pais"
-                        />
-                    </mat-form-field>
-                </div>
-
-                <div class="flex flex-col w-full lg:w-2/4 sm:pl-8">
-                    <mat-form-field class="w-full">
-                        <mat-label>E-mail</mat-label>
-                        <input
-                            matInput
-                            readonly
-                            formControlName="email"
-                        />
-                    </mat-form-field>
-                </div>
-
-                    <div class="flex flex-col w-full lg:w-2/4 sm:pl-8">
-                    <mat-form-field class="w-full">
-                        <mat-label>Contacto</mat-label>
-                        <input
-                            matInput
-                            readonly
-                            formControlName="contacto"
-                        />
-                    </mat-form-field>
+                <div class="flex w-full lg:w-4/4 sm:pl-8 center-text">
+                    <mat-label><b>DETALLES DE VENDEDOR</b></mat-label>
+                  </div>
+                  
+                
+                <fuse-card class="flex flex-col items-center max-w-90 w-full p-8 pb-6 filter-info vendedor-card">
+                    <img
+                        class="w-32 h-32 rounded-full"
+                        [src]="selectedPublicacionForm.get('avatar').value"
+                        alt="Card cover image">
+                    <div class="text-2xl font-semibold leading-tight text-center mt-8" [textContent]="selectedPublicacionForm.get('vendedor').value">
                     </div>
-                    
-                
-            </div>
+                    <div class="text-secondary leading-tight text-center mt-1"[textContent]="selectedPublicacionForm.get('pais').value"></div>                 
+                    <hr class="w-full border-t mt-8 mb-0">
+                    <div class="w-full flex items-center justify-between my-4 px-2">
+
+
+                        <div class="flex flex-col items-center">
+                            
+                            <mat-icon
+                            class="icon-size-5 transition-transform ease-in-out duration-150 rotate-0"
+
+                            [svgIcon]="
+                                'mat_solid:email'
+                            "
+                        ></mat-icon>
+                            <span class="text-sm font-medium text-secondary" [textContent]="selectedPublicacionForm.get('email').value"></span>
+                        </div>
+
+                        <div class="flex flex-col items-center">
+                            <mat-icon
+                            class="icon-size-5 transition-transform ease-in-out duration-150 rotate-0"
+
+                            [svgIcon]="
+                                'mat_solid:supervised_user_circle'
+                            "
+                        ></mat-icon>
+                        <span class="text-sm font-medium text-secondary" [textContent]="selectedPublicacionForm.get('genero').value"></span>
+                        </div>
+
+
+                        <div class="flex flex-col items-center">
+                            <mat-icon
+                            class="icon-size-5 transition-transform ease-in-out duration-150 rotate-0"
+
+                            [svgIcon]="
+                                'mat_solid:contact_phone'
+                            "
+                        ></mat-icon>
+                        <span class="text-sm font-medium text-secondary" [textContent]="selectedPublicacionForm.get('contacto').value"></span>
+                        </div>
+
+                    </div>
+                    <hr class="w-full border-t mt-0 mb-8">
+                    <div class="text-center text-secondary">
+                        <div class="text-sm font-medium text-secondary" [textContent]="selectedPublicacionForm.get('descripcionUsuario').value"></div>
+                      </div>
+                      
+                </fuse-card>
+        </div>
         </div>
     </form>
 </div>

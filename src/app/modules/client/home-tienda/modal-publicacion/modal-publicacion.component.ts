@@ -18,6 +18,10 @@ import { UserService } from 'app/core/user/user.service';
 import { InventarioPublicaciones } from 'app/modules/emprendedora/ecommerce/inventory/inventory.types';
 import { PublicacionesInventory } from 'app/services/services/publicacionesInventory.service';
 import { HomeTiendaClientComponent } from '../home-tienda.component';
+import { FuseCardComponent } from '@fuse/components/card';
+import { MatMenuModule } from '@angular/material/menu';
+import { RouterLink } from '@angular/router';
+
 
 
 @Component({
@@ -25,7 +29,7 @@ import { HomeTiendaClientComponent } from '../home-tienda.component';
     templateUrl: './modal-publicacion.component.html',
     styleUrls: ['./modal-publicacion.component.scss'],
     standalone: true,
-    imports: [MatSlideToggleModule, MatSelectModule, MatOptionModule, MatDatepickerModule, NgFor, MatButtonModule, MatIconModule, FormsModule, ReactiveFormsModule, MatFormFieldModule, MatInputModule, NgIf, QuillEditorComponent],
+    imports: [MatSlideToggleModule, MatSelectModule,FuseCardComponent,MatMenuModule,RouterLink, MatOptionModule, MatDatepickerModule, NgFor, MatButtonModule, MatIconModule, FormsModule, ReactiveFormsModule, MatFormFieldModule, MatInputModule, NgIf, QuillEditorComponent]
 
 })
 export class ModalPublicacionComponent implements OnInit {
@@ -59,12 +63,15 @@ export class ModalPublicacionComponent implements OnInit {
                     nombreProducto: this.selectedPublicacion.productos ? this.selectedPublicacion.productos.nombreProducto : this.selectedPublicacion.servicios.nombreServicio,
                     tituloPublicacion:  [this.selectedPublicacion.tituloPublicacion],
                     descripcionPublicacion:  [this.selectedPublicacion.descripcionPublicacion],
+                    descripcionUsuario:  [this.selectedPublicacion.vendedor.usuario.persona.descripcion],
                     vendedor: [this.selectedPublicacion.vendedor.usuario.name],
                     cantidadDisponible:  [this.selectedPublicacion.idPublicacion],
+                    avatar: [this.selectedPublicacion.vendedor.usuario.avatar],
                     precioProducto: [this.selectedPublicacion.idPublicacion],
                     pais: [this.selectedPublicacion.vendedor.usuario.persona.nacionalidad],
                     email: [this.selectedPublicacion.vendedor.usuario.persona.correo],
                     contacto: [this.selectedPublicacion.vendedor.usuario.persona.celular],
+                    genero: [this.selectedPublicacion.vendedor.usuario.persona.genero],
                     imagenes: [this.selectedPublicacion.imagenes],
                     currentImageIndex: 0,
                     estado: true,

@@ -11,13 +11,8 @@
                 >
                     <!-- Cambio de la estructura para crear dos columnas -->
                     <div class="flex flex-wrap -mx-4">
-                        <ng-container
-                            *ngFor="
-                                let publicacion of publicaciones;
-                                trackBy: trackByFn
-                            "
-                        >
-                            <div class="w-full md:w-1/2 px-4 mb-8">
+                        <ng-container *ngFor="let publicacion of publicaciones; trackBy: trackByFn">
+                            <div class="flex w-full md:w-1/2 px-4 mb-8" [ngClass]="{'solo-una-tarjeta': publicaciones.length === 1}">
                                 <fuse-card
                                     class="flex flex-col md:flex-row max-w-40 md:max-w-140 w-full filter-shopping"
                                 >
