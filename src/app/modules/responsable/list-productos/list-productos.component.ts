@@ -38,6 +38,7 @@ export class ListProductosResponsableComponent
 
   pageSizeOptions: number[] = [1, 5, 10, 50]; // Opciones de tamaño de página
   pageSize: number = 10;
+  static idPublicacionSeleccionado: number;
 
   products: Productos[] = [];
   publicacion: Publicacion[] = [];
@@ -48,6 +49,7 @@ export class ListProductosResponsableComponent
   searchInputControl: UntypedFormControl = new UntypedFormControl();
   private _unsubscribeAll: Subject<any> = new Subject<any>();
   isLoading: boolean = false;
+  
 
 
 
@@ -108,17 +110,26 @@ export class ListProductosResponsableComponent
 
 
   //ABRIR EL MODAL
-  openComposeDialog(): void
-    {
-        // Open the dialog
-        const dialogRef = this._matDialog.open(MailboxComposeComponent);
+  openComposeDialog(idPublicacion: number): void {
+    // Abre el diálogo y pasa el idUsuario como dato
 
-        dialogRef.afterClosed()
-            .subscribe((result) =>
-            {
-                console.log('Compose dialog was closed!');
-            });
-    }
+    ListProductosResponsableComponent.idPublicacionSeleccionado = idPublicacion;
+    console.log('idUsuarioSeleccionado', ListProductosResponsableComponent.idPublicacionSeleccionado);
+
+    const dialogRef = this._matDialog.open(MailboxComposeComponent);
+
+    dialogRef.componentInstance.confirmacionCerrada.subscribe((confirmado: boolean) => {
+      if (confirmado) {
+        dialogRef.close(); // Cierra el diálogo
+        // Realiza otras acciones aquí si es necesario
+        this.listarPublicaciones();
+      }
+    });
+
+    dialogRef.afterClosed().subscribe((result) => {
+      console.log('Compose dialog was closed!');
+    });
+  }
 
 
 ///////////////////////// Fin de filtro
@@ -155,11 +166,11 @@ seleccionarProducto(producto: any) {
   });
 }
 //////////////////////////////llevar datos al compose
-  selectProducto:any;
+  /*selectProducto:any;
   seleccionarProductoEdit(publicacion: any) {
     console.log('Se seleccionó el producto:', publicacion);
     this.openComposeDialog();
     this.selectProducto = publicacion.idPrublicacion;
     localStorage.setItem("idProductoSelected", String(publicacion.idPublicacion));
-  }
+  }*/
 }
