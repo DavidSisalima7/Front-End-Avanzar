@@ -1,6 +1,6 @@
-import { CommonModule, NgIf } from '@angular/common';
-import { Component, EventEmitter, OnInit, Output, ViewEncapsulation } from '@angular/core';
-import { FormsModule, ReactiveFormsModule, UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
+import { CommonModule, DatePipe, NgIf } from '@angular/common';
+import { ChangeDetectorRef, Component, EventEmitter, OnInit, Output, ViewChild, ViewEncapsulation } from '@angular/core';
+import { AbstractControl, FormBuilder, FormsModule, ReactiveFormsModule, UntypedFormBuilder, UntypedFormGroup, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatDialogRef } from '@angular/material/dialog';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -11,12 +11,20 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule, MatOptionModule } from '@angular/material/core';
 import { MatSelectModule } from '@angular/material/select';
 import { ProductosService } from 'app/services/services/producto.service';
-import { Productos, ProductosModels } from 'app/services/models/productos';
+import { CategoriesProd, Productos, ProductosModels } from 'app/services/models/productos';
 import Swal from 'sweetalert2';
-import { Publicacion } from 'app/services/models/publicaciones';
+import { CategoriaPublicacion, Publicacion, PublicacionA } from 'app/services/models/publicaciones';
 import { PublicacionesService } from 'app/services/services/publicaciones.service';
 import { Vendedor } from 'app/services/models/vendedora';
 import { ListProductosResponsableComponent } from '../list-productos/list-productos.component';
+import { CategoriaProducto } from 'app/modules/emprendedora/ecommerce/inventory/inventory.types';
+import { User } from 'app/core/user/user.types';
+import { FuseConfirmationService } from '@fuse/services/confirmation';
+import { InventoryService } from 'app/modules/emprendedora/ecommerce/inventory/inventory.service';
+import { VendedorService } from 'app/services/services/vendedora.service';
+import { Usuario } from 'app/services/models/usuario';
+import { forkJoin } from 'rxjs';
+import { CategoriaProductoService } from 'app/services/services/categoriaProducto.service';
 @Component({
     selector: 'mailbox-compose',
     templateUrl: './composeProductos.component.html',
@@ -42,10 +50,10 @@ export class MailboxComposeComponent implements OnInit {
     };
 
     categorias = [
-        { value: 'Gastronomia', label: 'Gastronomia' },
-        { value: 'Vestimenta', label: 'Vestimenta' },
-        { value: 'Hogar', label: 'Hogar' },
-        { value: 'Manualidades', label: 'Manualidades' },
+        { id: 1, value: 'Gastronomia', label: 'Gastronomia' },
+        {  id: 2,value: 'Vestimenta', label: 'Vestimenta' },
+        {  id: 3,value: 'Hogar', label: 'Hogar' },
+        {  id: 4,value: 'Manualidades', label: 'Manualidades' },
     ];
 
     tipos = [
@@ -53,15 +61,29 @@ export class MailboxComposeComponent implements OnInit {
         { value: 'Servicios', label: 'Servicios' },
     ];
 
+    estados = [
+        { value: true, label: 'Activo' },
+        { value: false, label: 'Inactivo' },
+    ];
+
+    publicacion: Publicacion;
+    user: Usuario;
+    producto: ProductosModels;
+    idPublicacion: any;
+    idVendedor: any;
+    categoriaExtraida: any;
+
     @Output() confirmacionCerrada: EventEmitter<boolean> = new EventEmitter<boolean>();
     /**
      * Constructor
      */
     constructor(
         public matDialogRef: MatDialogRef<MailboxComposeComponent>,
-        private _formBuilder: UntypedFormBuilder,
+        private _formBuilder: FormBuilder,
         private productoService: ProductosService,
+        private _confirmationService: FuseConfirmationService,
         private publicacionService: PublicacionesService,
+ 
     ) {
     }
 
@@ -74,19 +96,24 @@ export class MailboxComposeComponent implements OnInit {
      */
     ngOnInit(): void {
 
+
         this.publicacionService.buscarPublicacionId(ListProductosResponsableComponent.idPublicacionSeleccionado).subscribe((data) => {
             this.publicacion = data;
+
+            this.idVendedor = this.publicacion.vendedor.idVendedor;
+            console.log(this.idVendedor)
+
             // Create the form
             this.composeForm = this._formBuilder.group({
-                titulopubli: [this.publicacion.tituloPublicacion, Validators.required],
-                descripcionpubli: [this.publicacion.descripcionPublicacion, Validators.required],
+                tituloPublicacion: [this.publicacion.tituloPublicacion, Validators.required],
+                descripcionPublicacion: [this.publicacion.descripcionPublicacion, Validators.required],
                 nombreProducto: [this.publicacion.productos.nombreProducto, Validators.required],
-                vendedor: [this.publicacion.vendedor.usuario.persona.primer_nombre, Validators.required],
-                categoria: [this.publicacion.productos.categoriaProducto.nombreCategoria, Validators.required],
-                tipo: [this.publicacion.categoria.nombreCategoria, Validators.required],
-                precio: [this.publicacion.productos.precioProducto, Validators.required],
-                cantidad: [this.publicacion.productos.cantidadDisponible, Validators.required],
-                peso: [this.publicacion.productos.pesoProducto, Validators.required],
+                vendedor: [this.publicacion.vendedor.usuario.name],
+                nombreCategoria: [this.publicacion.productos.categoriaProducto.idCategoriaProducto, Validators.required],
+                tipo: [this.publicacion.categoria.nombreCategoria],
+                precioProducto: [this.publicacion.productos.precioProducto, Validators.required],
+                cantidadDisponible: [this.publicacion.productos.cantidadDisponible, Validators.required],
+                pesoProducto: [this.publicacion.productos.pesoProducto, Validators.required],
                 estado: [this.publicacion.estado, Validators.required],
             });
         });
@@ -143,28 +170,83 @@ export class MailboxComposeComponent implements OnInit {
         this.ActualizarProducto();
     }*/
 
-    variableProd: any;
-    data: any;
-    publicacion: Publicacion = new Publicacion();
-    cargar_datos() {
-        this.variableProd = localStorage.getItem("idProductoSelected");
-        this.publicacionService.buscarPublicacionId(this.variableProd).subscribe((dataproducto) => {
-            this.data = dataproducto;
-            console.log(dataproducto);
-            this.publicacion.tituloPublicacion = this.data.tituloPublicacion;
-            this.publicacion.descripcionPublicacion = this.data.descripcionPublicacion
-            this.publicacion.productos.nombreProducto = this.data.productos.nombreProducto;
-            this.publicacion.vendedor.usuario.persona.primer_nombre = this.data.nombrevendedor;
-            this.publicacion.categoria.nombreCategoria = this.data.categoria;
-            this.publicacion.productos.categoriaProducto.nombreCategoria = this.data.tipo;
-            this.publicacion.productos.precioProducto = this.data.precio;
-            this.publicacion.productos.cantidadDisponible = this.data.cantidad;
-            this.publicacion.productos.pesoProducto = this.data.peso;
-            this.publicacion.estado = this.data.estado ? true : false;
-        })
+    isFormInvalid(): boolean {
+        return this.composeForm.invalid || Object.values(this.composeForm.value).some((val) => val === '');
     }
 
+    updateUser(): void {
 
+        const selectedCategoryId = this.composeForm.value.nombreCategoria; // Obtiene la ID de la categoría seleccionada
+
+        // Encuentra el nombre de la categoría correspondiente a la ID seleccionada
+        const selectedCategory = this.categorias.find(categoria => categoria.id === selectedCategoryId);
+
+        const producto: Productos = {
+
+            nombreProducto: this.composeForm.value.nombreProducto,
+            precioProducto: this.composeForm.value.precioProducto,
+            cantidadDisponible: this.composeForm.value.cantidadDisponible,
+            pesoProducto: this.composeForm.value.pesoProducto,
+            categoriaProducto: {
+                idCategoriaProducto: selectedCategoryId, // Asigna la ID de la categoría seleccionada
+                nombreCategoria: selectedCategory ? selectedCategory.label : '', // Asigna el nombre de la categoría
+            },
+        };
+
+        const publicacion: PublicacionA = {
+
+            idPublicacion: this.publicacion.idPublicacion,
+            tituloPublicacion: this.composeForm.value.tituloPublicacion,
+            descripcionPublicacion: this.composeForm.value.descripcionPublicacion,
+            estado: this.composeForm.value.estado,
+            vendedor: {
+                idVendedor: this.idVendedor, // Agrega el ID del vendedor al objeto producto
+            },
+        };
+
+
+
+        const confirmationDialog = this._confirmationService.open({
+            title: 'Confirmación',
+            message: '¿Está seguro de modificar la publicación del producto?',
+            icon: {
+                show: true,
+                name: 'heroicons_outline:information-circle',
+                color: 'info',
+            },
+            actions: {
+                confirm: {
+                    show: true,
+                    label: 'Si, estoy seguro',
+                    color: 'primary'
+                },
+                cancel: {
+                    show: true,
+                    label: 'Cancelar'
+                }
+            }
+        });
+
+        confirmationDialog.afterClosed().subscribe(result => {
+            if (result === 'confirmed') {
+
+                this.productoService.actualizarProducto2(this.publicacion.productos.idProducto, producto).subscribe((data) => {
+
+                    this.publicacionService.updatePublicacionById(this.publicacion.idPublicacion, publicacion).subscribe((data) => {
+
+                        console.log("Update OK");
+                        this.matDialogRef.close();
+                        this.confirmacionCerrada.emit(true);
+
+                    });
+                });
+
+
+            } else {
+
+            }
+        });
+    }
     /*ActualizarProducto(){
      this.productoService.actualizarProducto2(this.variableProd, this.publicacion).subscribe((data)=>{
      Swal.fire(

@@ -15,7 +15,9 @@ import { ServiciosService } from 'app/services/services/servicios.service';
 import Swal from 'sweetalert2';
 import { ListRespServiciosComponent } from '../list-servicios/list-servicios.component';
 import { PublicacionesService } from 'app/services/services/publicaciones.service';
-import { Publicacion } from 'app/services/models/publicaciones';
+import { Publicacion, PublicacionA } from 'app/services/models/publicaciones';
+import { Usuario } from 'app/services/models/usuario';
+import { FuseConfirmationService } from '@fuse/services/confirmation';
 @Component({
     selector     : 'mailbox-compose',
     templateUrl  : './composeServicios.component.html',
@@ -42,9 +44,9 @@ export class MailboxComposeComponent implements OnInit
     };
 
     categorias = [
-        { value: 'Belleza', label: 'Belleza' },
-        { value: 'Costura', label: 'Costura' },
-        { value: 'Hogar', label: 'Hogar' },
+        { id:1, value: 'Belleza', label: 'Belleza' },
+        { id:2, value: 'Costura', label: 'Costura' },
+        { id:3, value: 'Hogar', label: 'Hogar' },
     ];
 
     tipos = [
@@ -52,9 +54,19 @@ export class MailboxComposeComponent implements OnInit
         { value: 'Servicios', label: 'Servicios' },
     ];
 
+    estados = [
+        { value: true, label: 'Activo' },
+        { value: false, label: 'Inactivo' },
+    ];
+
     @Output() confirmacionCerrada: EventEmitter<boolean> = new EventEmitter<boolean>();
 
     publicacion : Publicacion;
+    user: Usuario;
+    servicio: ServicioModels;
+    idPublicacion: any;
+    idVendedor: any;
+    categoriaExtraida: any;
     /**
      * Constructor
      */
@@ -63,6 +75,7 @@ export class MailboxComposeComponent implements OnInit
         private _formBuilder: UntypedFormBuilder,
         private servicioService: ServiciosService,
         private publicacionService: PublicacionesService,
+        private _confirmationService: FuseConfirmationService,
     )
     {
     }
@@ -79,14 +92,18 @@ export class MailboxComposeComponent implements OnInit
 
         this.publicacionService.buscarPublicacionId(ListRespServiciosComponent.idPublicacionSeleccionado).subscribe((data) => {
             this.publicacion = data;
+
+            this.idVendedor = this.publicacion.vendedor.idVendedor;
+            console.log(this.idVendedor)
+
             // Create the form
             this.composeForm = this._formBuilder.group({
                 titulopubli: [this.publicacion.tituloPublicacion, Validators.required],
                 descripcionpubli: [this.publicacion.descripcionPublicacion, Validators.required],
                 nombreServicio: [this.publicacion.servicios.nombreServicio, Validators.required],
-                vendedor: [this.publicacion.vendedor.usuario.persona.primer_nombre, Validators.required],
-                categoria: [this.publicacion.servicios.categoriaServicio.nombreCategoria, Validators.required],
-                tipo: [this.publicacion.categoria.nombreCategoria, Validators.required],
+                vendedor: [this.publicacion.vendedor.usuario.name],
+                categoria: [this.publicacion.servicios.categoriaServicio.idCategoriaServicio, Validators.required],
+                tipo: [this.publicacion.categoria.nombreCategoria],
                 precio: [this.publicacion.servicios.precioServicio, Validators.required],
                 cantidad: [this.publicacion.servicios.cantidadDisponible, Validators.required],
                 tiempoServicio: [this.publicacion.servicios.tiempoServicio, Validators.required],
@@ -153,18 +170,82 @@ export class MailboxComposeComponent implements OnInit
         this.ActualizarServicio();
     }*/
 
-    variableSer:any;
-    data:any;
-    servicio: ServicioModels = new ServicioModels();
-    cargar_datos(){
-      this.variableSer = localStorage.getItem("idServiceSelected");
-      this.servicioService.buscarServicio(this.variableSer).subscribe((dataservicio) =>{
-      this.data=dataservicio;
-      this.servicio.nombreServicio = this.data.nombreServicio;
-      this.servicio.precioServicio = this.data.precioServicio;
-      this.servicio.descripcionServicio = this.data.descripcionServicio;
-      this.servicio.estado = this.data.estado ? true : false;
-      })
+    isFormInvalid(): boolean {
+        return this.composeForm.invalid || Object.values(this.composeForm.value).some((val) => val === '');
+    }
+
+    updateUser(): void {
+
+        const selectedCategoryId = this.composeForm.value.nombreCategoria; // Obtiene la ID de la categoría seleccionada
+
+        // Encuentra el nombre de la categoría correspondiente a la ID seleccionada
+        const selectedCategory = this.categorias.find(categoria => categoria.id === selectedCategoryId);
+
+        const servicio: Servicios = {
+
+            nombreServicio: this.composeForm.value.nombreServicio,
+            precioServicio: this.composeForm.value.precio,
+            cantidadDisponible: this.composeForm.value.cantidad,
+            tiempoServicio: this.composeForm.value.tiempoServicio,
+            categoriaServicio: {
+                idCategoriaServicio: selectedCategoryId, // Asigna la ID de la categoría seleccionada
+                nombreCategoria: selectedCategory ? selectedCategory.label : '', // Asigna el nombre de la categoría
+            },
+        };
+
+        const publicacion: PublicacionA = {
+
+            idPublicacion: this.publicacion.idPublicacion,
+            tituloPublicacion: this.composeForm.value.titulopubli,
+            descripcionPublicacion: this.composeForm.value.descripcionpubli,
+            estado: this.composeForm.value.estado,
+            vendedor: {
+                idVendedor: this.idVendedor, // Agrega el ID del vendedor al objeto producto
+            },
+        };
+
+
+
+        const confirmationDialog = this._confirmationService.open({
+            title: 'Confirmación',
+            message: '¿Está seguro de modificarla publicación del servicio?',
+            icon: {
+                show: true,
+                name: 'heroicons_outline:information-circle',
+                color: 'info',
+            },
+            actions: {
+                confirm: {
+                    show: true,
+                    label: 'Si, estoy seguro',
+                    color: 'primary'
+                },
+                cancel: {
+                    show: true,
+                    label: 'Cancelar'
+                }
+            }
+        });
+
+        confirmationDialog.afterClosed().subscribe(result => {
+            if (result === 'confirmed') {
+
+                this.servicioService.actualizarServicio(this.publicacion.servicios.idServicio, servicio).subscribe((data) => {
+
+                    this.publicacionService.updatePublicacionById(this.publicacion.idPublicacion, publicacion).subscribe((data) => {
+
+                        console.log("Update OK");
+                        this.matDialogRef.close();
+                        this.confirmacionCerrada.emit(true);
+
+                    });
+                });
+
+
+            } else {
+
+            }
+        });
     }
 
    /* ActualizarServicio(){

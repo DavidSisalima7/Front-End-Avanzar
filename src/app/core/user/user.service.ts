@@ -1,6 +1,6 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { User } from 'app/core/user/user.types';
+import { User, UserA } from 'app/core/user/user.types';
 import { Usuario } from 'app/services/models/usuario';
 import { catchError, map, Observable, ReplaySubject, tap, throwError } from 'rxjs';
 
@@ -198,6 +198,10 @@ export class UserService {
   }
 
   updateUserById(id: number, usuario: User): Observable<object> {
+    return this._httpClient.put(`${this.url}/actualizar/${id}`, usuario);
+  }
+
+  updateUserById2(id: number, usuario: UserA): Observable<object> {
     return this._httpClient.put(`${this.url}/actualizar/${id}`, usuario);
   }
 
