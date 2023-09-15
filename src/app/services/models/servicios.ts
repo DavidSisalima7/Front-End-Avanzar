@@ -1,10 +1,12 @@
 export class Servicios {
-    idServicio: number;
-    nombreServicio: string='';
-    descripcionServicio: string='';
+    idServicio?: number;
+    nombreServicio: string;
     precioServicio:number;
-    estado: boolean;
-    
+    descripcionServicio?: string;
+    tiempoServicio:string;
+    cantidadDisponible: number;
+    estado?: boolean;
+    categoriaServicio:CategoriaServicio;
 }
 
 export class ServicioModels {

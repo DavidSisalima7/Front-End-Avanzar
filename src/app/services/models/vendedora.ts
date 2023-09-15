@@ -3,7 +3,7 @@ import { DetalleSubscripcion } from "./detalleSubscripcion";
 
 
 export class Vendedor {
-    idVendedor: number;
-    nombreEmprendimiento:string;
+    idVendedor?: number;
+    nombreEmprendimiento?:string;
     usuario ?: User;
 }
