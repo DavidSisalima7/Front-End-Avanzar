@@ -1,9 +1,9 @@
 import { TextFieldModule } from '@angular/cdk/text-field';
 import { NgClass, NgFor, TitleCasePipe } from '@angular/common';
-import { Component, EventEmitter, Output, ViewChild, ViewEncapsulation } from '@angular/core';
+import { Component, AfterViewInit, ChangeDetectionStrategy, ElementRef, QueryList, Renderer2, ViewChildren, ViewEncapsulation , ViewChild } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
-import { MatButtonToggleModule } from '@angular/material/button-toggle';
+import { MatButtonToggleChange, MatButtonToggleModule } from '@angular/material/button-toggle';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -40,6 +40,10 @@ import { MatPaginator } from '@angular/material/paginator';
   imports: [AsyncPipe, NgIf, MatButtonToggleModule, FormsModule, NgFor, FuseCardComponent, MatButtonModule, MatIconModule, RouterLink, NgClass, MatMenuModule, MatCheckboxModule, MatProgressBarModule, MatFormFieldModule, MatInputModule, TextFieldModule, MatDividerModule, MatTooltipModule, TitleCasePipe],
 })
 export class HomeTiendaClientComponent {
+
+  @ViewChildren(FuseCardComponent, {read: ElementRef}) private _fuseCards: QueryList<ElementRef>;
+
+  public comentariosVisible: boolean = false;
   user: User;
   publicaciones$: Observable<InventarioPublicaciones[]>;
   currentImageIndex: [0];
@@ -48,6 +52,9 @@ export class HomeTiendaClientComponent {
   dataSource: MatTableDataSource<InventarioPublicaciones>;
   @ViewChild(MatPaginator, {static: true}) paginator: MatPaginator;
   
+  filters: string[] = ['all', 'article', 'listing', 'list', 'info', 'shopping', 'pricing', 'testimonial', 'post', 'interactive'];
+  numberOfCards: any = {};
+  selectedFilter: string = 'all';
 
 
 
@@ -56,7 +63,8 @@ export class HomeTiendaClientComponent {
    */
   constructor(
     private _inventoryService: PublicacionesInventory,
-    private _matDialog: MatDialog
+    private _matDialog: MatDialog,
+    private renderer: Renderer2
   ) {
   }
 
@@ -111,6 +119,17 @@ export class HomeTiendaClientComponent {
       console.log('Compose dialog was closed!');
     });
   }
+
+ 
+
+  
+  toggleComentarios(publicacion: any) {
+    publicacion.mostrarComentarios = !publicacion.mostrarComentarios;
+  }
+  
+
+
+
 
   
 }
