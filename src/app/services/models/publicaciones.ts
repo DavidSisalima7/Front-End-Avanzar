@@ -18,7 +18,13 @@ export class Publicacion{
 
 }
 
-
+export class PublicacionA{
+    idPublicacion?: number;
+    tituloPublicacion: string;
+    descripcionPublicacion: string;
+    estado: boolean;
+    vendedor?: Vendedor ;
+}
 export class CategoriaPublicacion {
 
     idCategoria: number;

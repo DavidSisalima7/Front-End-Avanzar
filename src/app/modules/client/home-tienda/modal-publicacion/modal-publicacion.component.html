@@ -82,7 +82,7 @@
                     </div>
                     <div class="text-secondary leading-tight text-center mt-1"[textContent]="selectedPublicacionForm.get('pais').value"></div>                 
                     <hr class="w-full border-t mt-8 mb-0">
-                    <div class="w-full flex items-center justify-between my-4 px-2">
+                    <div class="w-full flex items-center justify-between my-4 px-2 grid grid-cols-2 gap-3">
 
 
                         <div class="flex flex-col items-center">
@@ -118,6 +118,17 @@
                             "
                         ></mat-icon>
                         <span class="text-sm font-medium text-secondary" [textContent]="selectedPublicacionForm.get('contacto').value"></span>
+                        </div>
+
+                        <div class="flex flex-col items-center">
+                            <mat-icon
+                            class="icon-size-5 transition-transform ease-in-out duration-150 rotate-0"
+
+                            [svgIcon]="
+                                'mat_solid:account_box'
+                            "
+                        ></mat-icon>
+                        <span class="text-sm font-medium text-secondary" [textContent]="selectedPublicacionForm.get('pais').value"></span>
                         </div>
 
                     </div>

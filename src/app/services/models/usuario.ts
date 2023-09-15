@@ -1,11 +1,11 @@
 import { Persona } from "./persona";
 
 export class Usuario {
-    id: number;
+    id?: number;
     username: string='';
     name: string='';
     password: string='';
-    estado ?: boolean;
+    enabled ?: boolean;
     visible: boolean;
     persona?:Persona;
 }

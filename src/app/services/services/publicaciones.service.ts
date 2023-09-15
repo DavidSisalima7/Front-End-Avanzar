@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable, catchError, throwError } from 'rxjs';
-import { Publicacion } from '../models/publicaciones';
+import { Publicacion, PublicacionA } from '../models/publicaciones';
 
 @Injectable({
   providedIn: 'root'
@@ -18,6 +18,10 @@ export class PublicacionesService {
 
   buscarPublicacionId(idPublicacion: any): Observable<Publicacion> {
     return this.http.get<Publicacion>(`${this.baseUrl}/buscar/${idPublicacion}`)
+  }
+
+  updatePublicacionById(idPublicacion: number, publicacion: PublicacionA): Observable<object> {
+    return this.http.put(`${this.baseUrl}/actualizar/${idPublicacion}`, publicacion);
   }
 
   listarPublicaciones(): Observable<Publicacion[]> {

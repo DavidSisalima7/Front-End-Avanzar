@@ -1,5 +1,5 @@
 
-<div class="flex flex-col max-w-240 md:min-w-160 max-h-screen -m-6">
+<div class="flex flex-col max-w-240 md:min-w-160 max-h-screen -m-6" *ngIf="publicacion">
     <!-- Header -->
     <div class="flex flex-0 items-center justify-between h-16 pr-3 sm:pr-5 pl-6 sm:pl-8 bg-primary text-on-primary">
         <div class="text-lg font-medium">Editar Publicaciones-Servicios</div>
@@ -26,25 +26,25 @@
 
                     <mat-form-field class="w-full">
                         <mat-label>Titulo de publicación</mat-label>
-                        <input matInput [formControlName]="'titulopubli'" />
+                        <input matInput formControlName="titulopubli" />
 
                     </mat-form-field>
 
                     <mat-form-field class="w-full">
                         <mat-label>Descripción</mat-label>
-                        <input matInput [formControlName]="'descripcionpubli'"/>
+                        <input matInput formControlName="descripcionpubli"/>
                     </mat-form-field>
 
                     <!-- Name -->
                     <mat-form-field class="w-full">
                         <mat-label>Nombre del Servicio</mat-label>
-                        <input matInput [formControlName]="'nombreServicio'"/>
+                        <input matInput formControlName="nombreServicio"/>
 
                     </mat-form-field>
 
                     <mat-form-field class="w-full">
                         <mat-label>Vendedora</mat-label>
-                        <input matInput readonly [formControlName]="'vendedor'"/>
+                        <input matInput readonly formControlName="vendedor"/>
                     </mat-form-field>
                 </div>
 
@@ -54,23 +54,23 @@
 
                     <mat-form-field class="w-3/3 pr-2">
                         <mat-label>Categoria</mat-label>
-                        <mat-select [formControlName]="'categoria'" matInput>
-                            <mat-option *ngFor="let categoria of categorias" [value]="categoria.value">{{ categoria.label }}</mat-option>
+                        <mat-select formControlName="categoria" matInput>
+                            <mat-option *ngFor="let categoria of categorias" [value]="categoria.id">
+                                {{ categoria.label }}
+                            </mat-option>
                         </mat-select>
                     </mat-form-field>
 
                     <mat-form-field class="w-3/3 pr-2">
                         <mat-label>Tipo</mat-label>
-                        <mat-select [formControlName]="'tipo'" matInput>
-                            <mat-option *ngFor="let tipo of tipos" [value]="tipo.value">{{ tipo.label }}</mat-option>
-                        </mat-select>
+                        <input formControlName="tipo" matInput readonly>
                     </mat-form-field>
 
 
                     <mat-form-field class="w-3/3 pr-2">
                         <mat-label>Precio</mat-label>
                         <span matSuffix>$</span>
-                        <input type="number" matInput [formControlName]="'precio'" />
+                        <input type="number" matInput formControlName="precio" />
                     </mat-form-field>
                 </div>
 
@@ -78,7 +78,7 @@
                 <div class="flex flex-col w-full lg:w-2/4 sm:pl-8">
                     <mat-form-field class="w-full">
                         <mat-label>Stock</mat-label>
-                        <input type="number" matInput [formControlName]="'cantidad'" />
+                        <input type="number" matInput formControlName="cantidad" />
                     </mat-form-field>
 
                     <mat-form-field class="w-full">
@@ -87,17 +87,16 @@
                         <input
                             type="text"
                             matInput
-                            [formControlName]="'tiempoServicio'"
+                            formControlName="tiempoServicio"
                         />
                     </mat-form-field>
 
 
                     <mat-form-field class="w-full">
                         <mat-label for="estado">Estado</mat-label>
-                        <mat-select [formControlName]="'estado'" name="estado" id="estado">
-                            <mat-option [value]="true">Activo</mat-option>
-                            <mat-option [value]="false">Inactivo</mat-option>
-                        </mat-select>
+                        <mat-select formControlName="estado" matInput>
+                            <mat-option *ngFor="let estado of estados" [value]="estado.value">{{ estado.label }}</mat-option>
+                          </mat-select>
                     </mat-form-field>
 
 
@@ -123,8 +122,8 @@
 
                 <div class="flex items-center">
                     <!-- Send -->
-                    <button class="order-first sm:order-last" mat-flat-button [color]="'primary'">
-                        Guardar
+                    <button class="order-first sm:order-last" mat-flat-button [color]="'primary'" (click)="updateUser()">
+                        Editar
                     </button>
                 </div>
             </div>
