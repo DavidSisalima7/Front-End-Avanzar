@@ -87,6 +87,10 @@ export class InventoryListComponent implements OnInit, AfterViewInit, OnDestroy 
     producto = new ProductosModels();
     categoriaExtraida: any;
     banLimitPost = false;
+
+
+    titleAlert="";
+    bodyAlert="";
     /**
      * Constructor
      */
@@ -326,6 +330,37 @@ export class InventoryListComponent implements OnInit, AfterViewInit, OnDestroy 
     /**
      * Update the selected product using the form data
      */
+    checkLimitPubliActi(): void {
+       
+        if (this.selectedPublicacionForm.get('estado').value) {
+            this._detalleSubscripcionService.limitEstatusPost()
+                .subscribe({
+
+                    next: (reponse) => {
+                        if (reponse.banderaBol) {
+
+                            this.updateselectedPublicacion();
+                        } else {
+                            this.titleAlert = reponse.title;
+                            this.bodyAlert = reponse.body;
+                            this.banLimitPost = true;
+                            this.cd.detectChanges();
+                            setTimeout(() => {
+
+                                this.banLimitPost = false; // Después de 6 segundos, restablece a false
+                                this.cd.detectChanges();
+                            }, 6000);
+                        }
+                    },
+                    error: (error) => {
+
+                    }
+                });
+        } else {
+            this.updateselectedPublicacion();
+        }
+    }
+
     updateselectedPublicacion(): void {
         // Get the form values
         const post = this.selectedPublicacionForm.getRawValue();
@@ -437,23 +472,24 @@ export class InventoryListComponent implements OnInit, AfterViewInit, OnDestroy 
         return item.id || index;
     }
 
-
     verifyLimtiPost(): void {
         this._detalleSubscripcionService.limitPost()
             .subscribe({
 
                 next: (reponse) => {
-                    if (reponse) {
-                        
+                    if (reponse.banderaBol) {
+
                         this.openComposeDialog();
                     } else {
+                        this.titleAlert=reponse.title;
+                        this.bodyAlert=reponse.body;
                         this.banLimitPost = true;
                         this.cd.detectChanges();
                         setTimeout(() => {
                             
                             this.banLimitPost = false; // Después de 3 segundos, restablece a false
                             this.cd.detectChanges();
-                        }, 2500);
+                        }, 6000);
                     }
                 },
                 error: (error) => {
@@ -461,6 +497,7 @@ export class InventoryListComponent implements OnInit, AfterViewInit, OnDestroy 
                 }
             });
     }
+
     //ABRIR EL MODAL
     openComposeDialog(): void {
 

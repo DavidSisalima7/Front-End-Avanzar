@@ -23,6 +23,7 @@ import { ProductosModels } from 'app/services/models/productos';
 import { ProductosService } from 'app/services/services/producto.service';
 import { PublicacionesService } from 'app/services/services/publicaciones.service';
 import { CategoriaPublicacionService } from 'app/services/services/categoria.service';
+import { DetalleSubscripcionService } from 'app/services/services/detalleSubscripcion.service';
 @Component({
     selector: 'mailbox-compose',
     templateUrl: './modal-producto.component.html',
@@ -47,7 +48,7 @@ export class ModalProductoComponent implements OnInit {
     };
     @ViewChild('modalProductoNgForm') modalProductoNgForm: NgForm;
 
-    
+
     //Extraer las categorias de los productos
     categoriesProducto: CategoriaProducto[];
     categoriesPublicacion: CategoriaPublicacion[];
@@ -62,6 +63,9 @@ export class ModalProductoComponent implements OnInit {
     uploadedPhotos: File[] = [];
     imagePreviews: string[] = [];
 
+    banLimitPost = false;
+    titleAlert = "";
+    bodyAlert = "";
     onFileSelected(event: any) {
         const files: FileList = event.target.files;
         for (let i = 0; i < files.length; i++) {
@@ -96,7 +100,9 @@ export class ModalProductoComponent implements OnInit {
         private _productoService: ProductosService,
         private _categoriaService: CategoriaPublicacionService,
         private el: ElementRef,
-        private renderer: Renderer2
+        private renderer: Renderer2,
+        private _detalleSubscripcionService: DetalleSubscripcionService,
+       
 
     ) {
     }
@@ -142,21 +148,21 @@ export class ModalProductoComponent implements OnInit {
         // Create the form
         this.selectedPublicacionForm = this._formBuilder.group({
             idPublicacion: [''],
-            categoria: ['',Validators.required],
+            categoria: ['', Validators.required],
             nombreProducto: ['', [Validators.required]],
             tituloPublicacion: ['', [Validators.required]],
             descripcionPublicacion: [''],
-            tipos: ['',Validators.required],
+            tipos: ['', Validators.required],
             vendedor: [this.user.name],
             cantidadDisponible: [''],
-            precioProducto: ['',Validators.required],
+            precioProducto: ['', Validators.required],
             pesoProducto: [''],
             miniaturaProducto: [''],
             imagenes: [[]],
             currentImageIndex: [0], // Índice de la imagen que se está visualizando
-            estado: [true],
+            estado: [false],
         });
-
+        this.selectedPublicacionForm.get('estado').disable();
         // Get the categoriesProduct
         this._inventoryService.categoriesProducto$
             .pipe(takeUntil(this._unsubscribeAll))
@@ -237,8 +243,8 @@ export class ModalProductoComponent implements OnInit {
      * Discard the message
      */
     discard(): void {
-         // Close the dialog
-         this.matDialogRef.close();
+        // Close the dialog
+        this.matDialogRef.close();
     }
 
     /**
@@ -246,7 +252,36 @@ export class ModalProductoComponent implements OnInit {
      */
     saveAsDraft(): void {
     }
+    verifyLimtiPost(): void {
 
+        if (this.selectedPublicacionForm.invalid) {
+            return;
+        }
+
+        this._detalleSubscripcionService.limitPost()
+            .subscribe({
+
+                next: (reponse) => {
+                    if (reponse.banderaBol) {
+
+                        this.send();
+                    } else {
+                        this.titleAlert = reponse.title;
+                        this.bodyAlert = reponse.body;
+                        this.banLimitPost = true;
+
+                        setTimeout(() => {
+
+                            this.banLimitPost = false; // Después de 3 segundos, restablece a false
+
+                        }, 6000);
+                    }
+                },
+                error: (error) => {
+
+                }
+            });
+    }
     /**
      * Send the message
      */
@@ -254,10 +289,7 @@ export class ModalProductoComponent implements OnInit {
 
     send(): void {
 
-        if ( this.selectedPublicacionForm.invalid )
-        {
-            return;
-        }
+
 
         this.selectedPublicacionForm.disable();
 
@@ -309,6 +341,7 @@ export class ModalProductoComponent implements OnInit {
                     //this.publication = newPublicacion;
                     this.showFlashMessage('success');
                     this.selectedPublicacionForm.enable();
+                    this.selectedPublicacionForm.get('estado').disable();
                 });
             });
 
