@@ -114,6 +114,7 @@ export class RegisterEmpreRespComponent implements OnInit {
                 password: ['', [Validators.required, validarcontra()]],
                 avatar: [''],
                 descripcion: [''],
+                nombreEmprendimiento:['',[Validators.required]]
             }),
             step3: this._formBuilder.group({
                 rolUser: ['Responsable', Validators.required],
@@ -310,11 +311,11 @@ export class RegisterEmpreRespComponent implements OnInit {
         const descripcion = this.horizontalStepperForm.get('step2.descripcion')?.value;
 
         // DATOS USUARIO
-
         const name = this.horizontalStepperForm.get('step2.usuario')?.value;
         const username = this.horizontalStepperForm.get('step2.email')?.value;
         const password = this.horizontalStepperForm.get('step2.password')?.value;
         const avatar = this.horizontalStepperForm.get('step2.avatar')?.value;
+        const emprendimiento=this.horizontalStepperForm.get('step2.nombreEmprendimiento')?.value;
 
         // ... otros campos ...
 
@@ -343,8 +344,7 @@ export class RegisterEmpreRespComponent implements OnInit {
         this.user.visible = true;
 
         //DATOS DE VENDEDOR
-
-        this.vendedor.nombreEmprendimiento = "VAMOOOS";
+        this.vendedor.nombreEmprendimiento = emprendimiento;
 
         // ... otros campos ...
 

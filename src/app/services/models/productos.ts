@@ -14,7 +14,9 @@ export class Productos {
 export class ProductosModels {
     idProducto: number;
     nombreProducto: string;
-    precioProducto: number;
+    precioInicialProducto:number;
+    precioFinalProducto:number;
+    precioFijoProducto: number;
     cantidadDisponible: number;
     estadoProducto: boolean;
     descripcionProducto: string;

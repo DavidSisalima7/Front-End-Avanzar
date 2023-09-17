@@ -149,7 +149,9 @@ export class ModalServicioComponent implements OnInit
             tipos: ['',Validators.required],
             vendedor: [this.user.name],
             cantidadDisponible: [''],
-            precioServicio: ['',Validators.required],
+            precioInicialServicio: [''],
+            precioFinalServicio: [''],
+            precioFijoServicio: ['',Validators.required],
             tiempoServicio: [''],
             miniaturaServicio: [''],
             imagenes: [[]],
@@ -290,7 +292,9 @@ export class ModalServicioComponent implements OnInit
             // Atributos de servicio
             this.servicio.cantidadDisponible = post.cantidadDisponible;
             this.servicio.tiempoServicio = post.tiempoServicio;
-            this.servicio.precioServicio = post.precioServicio;
+            this.servicio.precioInicialServicio = post.precioInicialServicio;
+            this.servicio.precioFinalServicio = post.precioFinalServicio;
+            this.servicio.precioFijoServicio = post.precioFijoServicio;
             this.servicio.nombreServicio = post.nombreServicio;
             this.servicio.categoriaServicio = categoriaServicio;
             this.servicio.descripcionServicio = post.descripcionPublicacion;

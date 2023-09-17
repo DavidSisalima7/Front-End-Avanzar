@@ -88,6 +88,7 @@
                     <mat-form-field class="w-full">
                         <mat-label>Descripción</mat-label>
                         <input
+                            placeholder="Ingrese una descripción de su producto"
                             matInput
                             [formControlName]="'descripcionPublicacion'"
                         />
@@ -147,25 +148,10 @@
                             Este campo es requerido*
                         </mat-error>
                     </mat-form-field>
-                    
-
-                    <mat-form-field class="w-3/3 pr-2">
-                        <mat-label>Precio</mat-label>
-                        <span matSuffix>$</span>
-                        <input
-                            type="number"
-                            matInput
-                            [formControlName]="'precioProducto'"
-                        />
-                        <mat-error *ngIf="selectedPublicacionForm.get('precioProducto').hasError('required')">
-                            Este campo es requerido*
-                        </mat-error>
-                    </mat-form-field>
-                </div>
-
-                <!-- Weight & Tags -->
-                <div class="flex flex-col w-full lg:w-2/4 sm:pl-8">
-                    <mat-form-field class="w-full">
+                   
+                    <div class="flex">
+                 
+                    <mat-form-field class="w-2/3 pr-2">
                         <mat-label>Stock</mat-label>
                         <input
                             type="number"
@@ -174,7 +160,7 @@
                         />
                     </mat-form-field>
 
-                    <mat-form-field class="w-full">
+                    <mat-form-field class="w-2/3 pr-2">
                         <mat-label>Peso</mat-label>
                         <span matSuffix>ml/lbs/kg</span>
                         <input
@@ -183,6 +169,54 @@
                             [formControlName]="'pesoProducto'"
                         />
                     </mat-form-field>
+       
+                </div>
+
+                </div>
+
+                <!-- Weight & Tags -->
+                <div class="flex flex-col w-full lg:w-2/4 sm:pl-8">
+
+
+                     
+                    <div class="flex">
+                        <mat-form-field class="w-2/3 pr-2">
+                            <mat-label>Precio desde:</mat-label>
+                            <input
+                                placeholder="Opcional"
+                                type="number"
+                                matInput
+                                [formControlName]="'precioInicialProducto'">
+                        </mat-form-field>
+                        <mat-form-field class="w-2/3 pl-2">
+                            <mat-label>Precio hasta:</mat-label>
+                            <input
+                                placeholder="Opcional"
+                                type="number"
+                                matInput
+                                [formControlName]="'precioFinalProducto'">
+                        </mat-form-field>
+
+                        
+</div>
+
+
+        <mat-form-field class="w-3/3 pr-2">
+            <mat-label>Precio</mat-label>
+            <span matSuffix>$</span>
+            <input
+            placeholder="Ingrese precio fijo"
+            type="number"
+            matInput
+            [formControlName]="'precioFijoProducto'"
+            />
+        <mat-error *ngIf="selectedPublicacionForm.get('precioFijoProducto').hasError('required')">
+        Este campo es requerido*
+        </mat-error>
+        </mat-form-field>
+
+
+                   
 
                    
                         <span class="font-semibold mb-2">Estado del producto</span>

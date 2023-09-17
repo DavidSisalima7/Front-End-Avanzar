@@ -128,7 +128,9 @@ export class InventoryListComponent implements OnInit, AfterViewInit, OnDestroy 
             tipos: [''],
             vendedor: [''],
             cantidadDisponible: [''],
-            precioProducto: [''],
+            precioInicialProducto:[''],
+            precioFinalProducto:[''],
+            precioFijoProducto: [''],
             pesoProducto: [''],
             miniaturaProducto: [''],
             imagenes: [[]],
@@ -276,7 +278,9 @@ export class InventoryListComponent implements OnInit, AfterViewInit, OnDestroy 
 
                 this.selectedPublicacionForm.patchValue(product);
                 this.selectedPublicacionForm.get('nombreProducto').setValue(product.productos.nombreProducto);
-                this.selectedPublicacionForm.get('precioProducto').setValue(product.productos.precioProducto);
+                this.selectedPublicacionForm.get('precioInicialProducto').setValue(product.productos.precioInicialProducto);
+                this.selectedPublicacionForm.get('precioFinalProducto').setValue(product.productos.precioFinalProducto);
+                this.selectedPublicacionForm.get('precioFijoProducto').setValue(product.productos.precioFijoProducto);
                 this.selectedPublicacionForm.get('cantidadDisponible').setValue(product.productos.cantidadDisponible);
                 this.selectedPublicacionForm.get('pesoProducto').setValue(product.productos.pesoProducto);
                 this.selectedPublicacionForm.get('vendedor').setValue(product.vendedor.usuario.name);
@@ -351,7 +355,9 @@ export class InventoryListComponent implements OnInit, AfterViewInit, OnDestroy 
                 // Assign the remaining properties of this.producto
                 this.producto.cantidadDisponible = post.cantidadDisponible;
                 this.producto.pesoProducto = post.pesoProducto;
-                this.producto.precioProducto = post.precioProducto;
+                this.producto.precioInicialProducto = post.precioInicialProducto;
+                this.producto.precioFinalProducto = post.precioFinalProducto;
+                this.producto.precioFijoProducto = post.precioFijoProducto;
                 this.producto.nombreProducto = post.nombreProducto;
                 this.producto.categoriaProducto = this.categoriaExtraida;
                 this.producto.descripcionProducto = post.descripcionPublicacion;

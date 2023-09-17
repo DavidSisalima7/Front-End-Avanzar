@@ -248,7 +248,7 @@
                 #horizontalStepperStep2>
                 <ng-template matStepLabel>Generar Credenciales</ng-template>
                 <p class="my-6 font-medium">
-                    Información de usuario
+                    Información de Emprendedora
                 </p>
 
                 <div class="relative w-24 h-24">
@@ -270,10 +270,12 @@
 
                 <div class="flex flex-col gt-xs:flex-row">
                     <mat-form-field class="flex-auto gt-xs:pr-3">
+                        <mat-label>Usuario</mat-label>
                         <input matInput [formControlName]="'usuario'" [placeholder]="'Usuario'" readonly>
                         <mat-icon class="icon-size-5" matPrefix [svgIcon]="'heroicons_solid:user-circle'"></mat-icon>
                     </mat-form-field>
                     <mat-form-field class="flex-auto gt-xs:pl-3">
+                        <mat-label>Correo electrónico</mat-label>
                         <input matInput [formControlName]="'email'" [placeholder]="'Correo Electrónico'" readonly>
                         <mat-icon class="icon-size-5" matPrefix [svgIcon]="'heroicons_solid:envelope'"></mat-icon>
                     </mat-form-field>
@@ -303,10 +305,22 @@
                 </div>
                 <div class="flex">
                     <mat-form-field class="flex-auto">
+                        <mat-label>Descripción de usuario</mat-label>
                         <textarea matInput [formControlName]="'descripcion'" [placeholder]="'Descripcion'"
                             [rows]="3"></textarea>
                         <mat-icon class="icon-size-5" matPrefix
                             [svgIcon]="'heroicons_solid:bars-3-bottom-left'"></mat-icon>
+                    </mat-form-field>
+                </div>
+
+                <div class="flex">
+                    <mat-form-field class="flex-auto gt-xs:pr-3">
+                        <mat-label>Nombre de emprendimiento</mat-label>
+                        <input matInput [formControlName]="'nombreEmprendimiento'" [placeholder]="'Nombre de emprendimiento'">
+                        <mat-icon class="icon-size-5" matPrefix [svgIcon]="'mat_outline:add_business'"></mat-icon>
+                         <mat-error *ngIf="horizontalStepperForm.get('step2.nombreEmprendimiento').hasError('required')">
+                                Este campo es requerido.
+                            </mat-error>
                     </mat-form-field>
                 </div>
 

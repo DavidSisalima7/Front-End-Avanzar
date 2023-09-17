@@ -124,7 +124,9 @@ export class InventoryListComponentService implements OnInit, AfterViewInit, OnD
             tipos: [''],
             vendedor: [''],
             cantidadDisponible: [''],
-            precioServicio: [''],
+            precioInicialServicio:[''],
+            precioFinalServicio:[''],
+            precioFijoServicio: [''],
             tiempoServicio: [''],
             miniaturaServicio: [''],
             imagenes: [[]],
@@ -274,7 +276,9 @@ export class InventoryListComponentService implements OnInit, AfterViewInit, OnD
 
                 this.selectedPublicacionForm.patchValue(servicio);
                 this.selectedPublicacionForm.get('nombreServicio').setValue(servicio.servicios.nombreServicio);
-                this.selectedPublicacionForm.get('precioServicio').setValue(servicio.servicios.precioServicio);
+                this.selectedPublicacionForm.get('precioInicialServicio').setValue(servicio.servicios.precioInicialServicio);
+                this.selectedPublicacionForm.get('precioFinalServicio').setValue(servicio.servicios.precioFinalServicio);
+                this.selectedPublicacionForm.get('precioFijoServicio').setValue(servicio.servicios.precioFijoServicio);
                 this.selectedPublicacionForm.get('cantidadDisponible').setValue(servicio.servicios.cantidadDisponible);
                 this.selectedPublicacionForm.get('tiempoServicio').setValue(servicio.servicios.tiempoServicio);
                 this.selectedPublicacionForm.get('vendedor').setValue(servicio.vendedor.usuario.name);
@@ -348,8 +352,11 @@ export class InventoryListComponentService implements OnInit, AfterViewInit, OnD
         
         this.servicio.cantidadDisponible = post.cantidadDisponible;
         this.servicio.tiempoServicio = post.tiempoServicio;
-        this.servicio.precioServicio = post.precioServicio;
+        this.servicio.precioInicialServicio = post.precioInicialServicio;
+        this.servicio.precioFinalServicio = post.precioFinalServicio;
+        this.servicio.precioFijoServicio = post.precioFijoServicio;
         this.servicio.nombreServicio = post.nombreServicio;
+        this.servicio.descripcionServicio = post.descripcionPublicacion;
         this.servicio.categoriaServicio = this.categoriaExtraida;
 
         this._servicioService.actualizarServicioPublicaciones(this.publication.servicios.idServicio, this.servicio).subscribe(() => {

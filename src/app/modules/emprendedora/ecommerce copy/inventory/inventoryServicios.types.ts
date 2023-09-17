@@ -3,7 +3,9 @@ import { Vendedor } from "app/services/models/vendedora";
 export interface InventarioProductos {
     idProducto: number;
     nombreProducto: string;
-    precioProducto: number;
+    precioInicialProducto:number;
+    precioFinalProducto:number;
+    precioFijoProducto: number;
     cantidadDisponible: number;
     estadoProducto: boolean;
     descripcionProducto: string;
@@ -16,7 +18,9 @@ export interface InventarioServicios {
     idServicio: number;
     nombreServicio: string;
     descripcionServicio:string;
-    precioServicio:string;
+    precioInicialServicio:number;
+    precioFinalServicio:number;
+    precioFijoServicio: number;
     estado:boolean;
     tiempoServicio:string;
     cantidadDisponible: number;

@@ -111,7 +111,7 @@ export class MailboxComposeComponent implements OnInit {
                 vendedor: [this.publicacion.vendedor.usuario.name],
                 nombreCategoria: [this.publicacion.productos.categoriaProducto.idCategoriaProducto, Validators.required],
                 tipo: [this.publicacion.categoria.nombreCategoria],
-                precioProducto: [this.publicacion.productos.precioProducto, Validators.required],
+                precioProducto: [this.publicacion.productos.precioFijoProducto, Validators.required],
                 cantidadDisponible: [this.publicacion.productos.cantidadDisponible, Validators.required],
                 pesoProducto: [this.publicacion.productos.pesoProducto, Validators.required],
                 estado: [this.publicacion.estado, Validators.required],

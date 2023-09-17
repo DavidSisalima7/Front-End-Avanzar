@@ -13,7 +13,7 @@
                     <!-- <mat-icon class="ml-2 icon-size-5" [svgIcon]="'heroicons_mini:arrow-long-right'"></mat-icon> -->
                 </a>
                 <a class="mt-8" mat-flat-button [color]="'primary'" [routerLink]="'/sign-up'">
-                    <span>Registrase</span>
+                    <span>Registrarse</span>
                 </a>
 
                 
@@ -37,10 +37,6 @@
         </div>
 
     </div>
-
-
-
-
 
     <!-- Datos sobre la fundacion -->
     <div class="container-fundation">
@@ -138,8 +134,197 @@
 
                     </div>
 
+                   <br>
 
+                    <div class="flex-1 min-w-0">
+                        <!-- Breadcrumbs -->
+                        <div class="flex flex-wrap items-center font-medium">
+                            <div>
+                                <a class="whitespace-nowrap text-primary-500"
+                                    >Productos y servicios disponibles al público</a
+                                >
+                            </div>
+                        </div>
+                        <!-- Title -->
+                        <div class="mt-2 flex items-center">
+                            <img
+                                class="w-10 h-10 object-cover rounded-full"
+                                src="assets/images/logo/avanzar.png"
+                                alt="Logo de Avanzar"
+                            />
+                            <h2
+                                class="ml-2 text-3xl md:text-4xl font-extrabold tracking-tight leading-7 sm:leading-10 truncate"
+                            >
+                                Publicaciones
+                            </h2>
+                        </div>
+                    </div>
 
+                    <div class="flex-auto p-6 sm:p-10">
+                    <ng-container *ngIf="publicaciones$ | async as publicaciones">
+                        <ng-container
+                            *ngIf="publicaciones.length > 0; else noPublicaciones"
+                        >
+                        <div class="grid grid-cols-1 sm:grid-cols-3 gap-6">
+                            <ng-container *ngFor="let publicacion of publicaciones.slice(0, 12); let i = index; trackBy: trackByFn">
+
+                    <fuse-card class="flex flex-col max-w-80 w-full filter-listing">
+                        <ng-container
+                        *ngIf="
+                            publicacion.productos;
+                            else servicioMiniatura
+                        "
+                    >
+                        <img
+                            class="w-full h-36 object-cover"
+                            *ngIf="
+                                publicacion.productos
+                                    .miniaturaProducto
+                            "
+                            [src]="
+                                
+                                publicacion.productos
+                                    .miniaturaProducto
+                            "
+                            alt="Card cover image"
+                        />
+                    </ng-container>
+                    <ng-template #servicioMiniatura>
+                        <img
+                            class="w-full h-36 object-cover"
+                            *ngIf="
+                                publicacion.servicios
+                                    .miniaturaServicio
+                            "
+                            [src]="
+                                publicacion.servicios
+                                    .miniaturaServicio
+                            "
+                            alt="Card cover image"
+                        />
+                    </ng-template>
+                        <div class="m-8 mb-4">
+                            <div class="flex justify-between">
+                                <div class="flex flex-col">
+                                    <div class="text-secondary text-md"> {{ publicacion.tituloPublicacion }}</div>
+                                    <div class="text-2xl font-semibold leading-tight mt-1">
+                                        <div class="flex items-baseline">
+                                            <div class="text-2xl font-semibold mt-2">
+                                                <ng-container *ngIf="publicacion.productos || publicacion.servicios; else precioNoDisponible">
+                                                    <ng-container *ngIf="publicacion.productos">
+                                                        <ng-container *ngIf="publicacion.productos.precioInicialProducto && publicacion.productos.precioFinalProducto">
+                                                            <div class="text-2xl font-semibold leading-tight mt-1">
+                                                                Desde USD ${{ publicacion.productos.precioInicialProducto }}
+                                                            </div>
+                                                            <hr class="price-divider">
+                                                            <div class="text-2xl font-semibold leading-tight mt-1">
+                                                                Hasta USD ${{ publicacion.productos.precioFinalProducto }}
+                                                            </div>
+                                                        </ng-container>
+                                                        <ng-container *ngIf="!publicacion.productos.precioInicialProducto && !publicacion.productos.precioFinalProducto">
+                                                            <div class="text-2xl font-semibold leading-tight mt-1">
+                                                                USD ${{ publicacion.productos.precioFijoProducto }}
+                                                            </div>
+                                                        </ng-container>
+                                                    </ng-container>
+                                                    <ng-container *ngIf="publicacion.servicios">
+                                                        <ng-container *ngIf="publicacion.servicios.precioInicialServicio && publicacion.servicios.precioFinalServicio">
+                                                            <div class="text-2xl font-semibold leading-tight mt-1">
+                                                                Desde USD ${{ publicacion.servicios.precioInicialServicio }}
+                                                            </div>
+                                                            <hr class="price-divider">
+                                                            <div class="text-2xl font-semibold leading-tight mt-1">
+                                                                Hasta USD ${{ publicacion.servicios.precioFinalServicio }}
+                                                            </div>
+                                                        </ng-container>
+                                                        <ng-container *ngIf="!publicacion.servicios.precioInicialServicio && !publicacion.servicios.precioFinalServicio">
+                                                            <div class="text-2xl font-semibold leading-tight mt-1">
+                                                                USD ${{ publicacion.servicios.precioFijoServicio || "Precio no disponible" }}
+                                                            </div>
+                                                        </ng-container>
+                                                    </ng-container>
+                                                </ng-container>
+                                                <ng-template #precioNoDisponible>
+                                                    Precio no disponible
+                                                </ng-template>
+                                            </div>
+                                        </div>
+                                    </div>                                    
+                                </div>
+                                
+                                <button
+                                    class="-mt-2 -mr-2"
+                                    mat-icon-button>
+                                    <mat-icon
+                                        class="text-red-500 icon-size-5"
+                                        [svgIcon]="'heroicons_solid:heart'"></mat-icon>
+                                </button>
+                            </div>
+                            <div class="text-secondary text-md mt-1">
+                              
+                                    <ng-container
+                                        *ngIf="
+                                            publicacion.productos;
+                                            else servicioDescripcion
+                                        "
+                                    >
+                                        {{
+                                            publicacion.productos
+                                                .descripcionProducto
+                                        }}
+                                    </ng-container>
+                                    <ng-template #servicioDescripcion>
+                                        {{
+                                            publicacion.servicios
+                                                .descripcionServicio ||
+                                                "Descripción no disponible"
+                                        }}
+                                    </ng-template>
+                                </div>
+                            <div class="mt-3 -mx-3">
+                               
+                                
+                                    <button
+                                        class="px-3"
+                                        mat-button
+                                        [color]="'primary'"
+                                        (click)="openComposeDialog()"
+                                    >
+                                        <span class="mr-1">Detalles</span>
+                                        <mat-icon
+                                            class="icon-size-5 transition-transform ease-in-out duration-150 rotate-0"
+                                            [svgIcon]="
+                                                'heroicons_mini:chevron-down'
+                                            "
+                                        ></mat-icon>
+                                    </button>
+                                
+                            </div>
+                        </div>
+                    </fuse-card>
+                </ng-container>
+                </div>
+              
+            </ng-container>
+        </ng-container>
+
+        <ng-template #noPublicaciones>
+            <div class="p-8 sm:p-16 border-t text-4xl font-semibold tracking-tight text-center">No hay publicaciones
+                disponibles!</div>
+        </ng-template>
+        
+        <div class="text-center">
+            <p class="text-gray-500 mt-2">Ver más recomendaciones de productos y servicios personalizados</p>
+            <a class="mt-2" mat-flat-button [color]="'primary'" [routerLink]="'/sign-in'" style="margin-right:5px;">
+                <span>Identifícate</span>
+                <!-- <mat-icon class="ml-2 icon-size-5" [svgIcon]="'heroicons_mini:arrow-long-right'"></mat-icon> -->
+            </a>
+
+            <p class="text-gray-500 mt-2">¿Eres un cliente nuevo? <a [routerLink]="'/sign-up'" class="text-primary">Empieza aqui</a></p>
+
+        </div>
+        </div>
+            
 
 
 
@@ -500,13 +685,6 @@
 
                                             </div>
 
-
-
-
-
-
-
-
                                         </div>
 
                                     </div>
@@ -517,24 +695,11 @@
 
                         </div>
 
-
-
-
-
-
-
-
-
                     </div>
                 </div>
             </div>
 
-
-
-
-
-
-
+            
 
             <footer
                 class="absolute bottom-0 left-0 z-20 w-full p-4 bg-black border-t border-black shadow md:flex md:items-center md:justify-between md:p-6 dark:bg-gray-800 dark:border-gray-600">

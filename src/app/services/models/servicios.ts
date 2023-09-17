@@ -13,7 +13,9 @@ export class ServicioModels {
     idServicio: number;
     nombreServicio: string;
     descripcionServicio:string;
-    precioServicio:string;
+    precioInicialServicio:number;
+    precioFinalServicio:number;
+    precioFijoServicio: number;
     estado:boolean;
     tiempoServicio:string;
     cantidadDisponible: number;

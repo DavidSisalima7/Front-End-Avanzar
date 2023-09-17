@@ -149,7 +149,9 @@ export class ModalProductoComponent implements OnInit {
             tipos: ['',Validators.required],
             vendedor: [this.user.name],
             cantidadDisponible: [''],
-            precioProducto: ['',Validators.required],
+            precioInicialProducto: [''],
+            precioFinalProducto: [''],
+            precioFijoProducto: ['',Validators.required],
             pesoProducto: [''],
             miniaturaProducto: [''],
             imagenes: [[]],
@@ -281,7 +283,6 @@ export class ModalProductoComponent implements OnInit {
         }
 
         forkJoin([vendedor$, categoriaProducto$, categoria$]).subscribe(([vendedor, categoriaProducto, categoria]) => {
-            console.log(vendedor);
             this.publication.vendedor = vendedor;
             this.publication.categoria = categoria;
             this.publication.tituloPublicacion = post.tituloPublicacion;
@@ -293,7 +294,9 @@ export class ModalProductoComponent implements OnInit {
             // Atributos de producto
             this.producto.cantidadDisponible = post.cantidadDisponible;
             this.producto.pesoProducto = post.pesoProducto;
-            this.producto.precioProducto = post.precioProducto;
+            this.producto.precioInicialProducto=post.precioInicialProducto;
+            this.producto.precioFinalProducto=post.precioFinalProducto;
+            this.producto.precioFijoProducto = post.precioFijoProducto;
             this.producto.nombreProducto = post.nombreProducto;
             this.producto.categoriaProducto = categoriaProducto;
             this.producto.descripcionProducto = post.descripcionPublicacion;

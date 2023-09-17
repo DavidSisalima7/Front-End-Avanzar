@@ -67,7 +67,7 @@
                             <div [mat-sort-header]="'tituloPublicacion'">Publicación</div>
                             <div
                                 class="hidden sm:block"
-                                [mat-sort-header]="'precioServicio'">
+                                [mat-sort-header]="'precioFijoServicio'">
                                 Precio
                             </div>
                             <div
@@ -115,7 +115,7 @@
 
                                     <!-- Price -->
                                     <div class="hidden sm:block">
-                                        {{publicacion.servicios.precioServicio | currency:'USD':'symbol':'1.2-2'}}
+                                        {{publicacion.servicios.precioFijoServicio | currency:'USD':'symbol':'1.2-2'}}
                                     </div>
 
                                     <!-- Stock -->
@@ -312,15 +312,13 @@
                                         </mat-select>
                                     </mat-form-field>
                                 
-                      
-                                        <mat-form-field class="w-3/3 pr-2">
-                                            <mat-label>Precio</mat-label>
-                                            <span matSuffix>$</span>
-                                            <input
-                                            type="number"
-                                                matInput
-                                                [formControlName]="'precioServicio'">
-                                        </mat-form-field>
+                                    <mat-form-field class="w-full">
+                                        <mat-label>Tiempo Servicio</mat-label>
+                                        <input
+                                            type="text"
+                                            matInput
+                                            [formControlName]="'tiempoServicio'">
+                                    </mat-form-field>
 
                                         <mat-form-field class="w-3/3 pr-2">
                                             <mat-label>Stock</mat-label>
@@ -334,14 +332,28 @@
 
                                     <!-- Weight & Tags -->
                                     <div class="flex flex-col w-full lg:w-1/4 sm:pl-8">
-                                        <mat-form-field class="w-full">
-                                            <mat-label>Tiempo Servicio</mat-label>
-                                            
-                                            <input
-                                                type="text"
-                                                matInput
-                                                [formControlName]="'tiempoServicio'">
+
+                                        <mat-form-field class="w-3/3 pr-2">
+                                            <mat-label>Precio Inicial</mat-label>
+                                            <span matSuffix>$</span>
+                                            <input type="number" matInput [formControlName]="'precioInicialServicio'">
                                         </mat-form-field>
+
+                                        <mat-form-field class="w-3/3 pr-2">
+                                            <mat-label>Precio Final</mat-label>
+                                            <span matSuffix>$</span>
+                                            <input type="number" matInput [formControlName]="'precioFinalServicio'">
+                                        </mat-form-field>
+
+                                        <mat-form-field class="w-3/3 pr-2">
+                                            <mat-label>Precio Fijo </mat-label>
+                                            <span matSuffix>$</span>
+                                            <input
+                                            type="number"
+                                                matInput
+                                                [formControlName]="'precioFijoServicio'">
+                                        </mat-form-field>
+
 
                                     </div>
 

@@ -51,7 +51,7 @@
                                 Producto
                             </div>
                             <div [mat-sort-header]="'tituloPublicacion'">Publicación</div>
-                            <div class="hidden sm:block" [mat-sort-header]="'precioProducto'">
+                            <div class="hidden sm:block" [mat-sort-header]="'precioFijoProducto'">
                                 Precio
                             </div>
                             <div class="hidden lg:block" [mat-sort-header]="'cantidadDisponible'">
@@ -90,10 +90,10 @@
                                     <div class="truncate">
                                         {{publicacion.tituloPublicacion}}
                                     </div>
-
+                                    
                                     <!-- Price -->
                                     <div class="hidden sm:block">
-                                        {{publicacion.productos.precioProducto | currency:'USD':'symbol':'1.2-2'}}
+                                        {{publicacion.productos.precioFijoProducto | currency:'USD':'symbol':'1.2-2'}}
                                     </div>
 
                                     <!-- Stock -->
@@ -264,13 +264,14 @@
                                                 </ng-container>
                                             </mat-select>
                                         </mat-form-field>
+                                        
+                                        <mat-form-field class="w-full">
+                                            <mat-label>Peso</mat-label>
 
-
-                                        <mat-form-field class="w-3/3 pr-2">
-                                            <mat-label>Precio</mat-label>
-                                            <span matSuffix>$</span>
-                                            <input type="number" matInput [formControlName]="'precioProducto'">
+                                            <input type="text" matInput [formControlName]="'pesoProducto'">
                                         </mat-form-field>
+
+                                        
 
                                         <mat-form-field class="w-3/3 pr-2">
                                             <mat-label>Stock</mat-label>
@@ -281,10 +282,22 @@
 
                                     <!-- Weight & Tags -->
                                     <div class="flex flex-col w-full lg:w-1/4 sm:pl-8">
-                                        <mat-form-field class="w-full">
-                                            <mat-label>Peso</mat-label>
+                                        <mat-form-field class="w-3/3 pr-2">
+                                            <mat-label>Precio Inicial</mat-label>
+                                            <span matSuffix>$</span>
+                                            <input type="number" matInput [formControlName]="'precioInicialProducto'">
+                                        </mat-form-field>
 
-                                            <input type="text" matInput [formControlName]="'pesoProducto'">
+                                        <mat-form-field class="w-3/3 pr-2">
+                                            <mat-label>Precio Final</mat-label>
+                                            <span matSuffix>$</span>
+                                            <input type="number" matInput [formControlName]="'precioFinalProducto'">
+                                        </mat-form-field>
+
+                                        <mat-form-field class="w-3/3 pr-2">
+                                            <mat-label>Precio Fijo</mat-label>
+                                            <span matSuffix>$</span>
+                                            <input type="number" matInput [formControlName]="'precioFijoProducto'">
                                         </mat-form-field>
 
                                     </div>
