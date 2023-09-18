@@ -1,5 +1,6 @@
 import { InventarioProductos } from "app/modules/emprendedora/ecommerce/inventory/inventory.types";
 import { Vendedor } from "./vendedora";
+import { Comentarios } from "./comentarios";
 import { InventarioServicios } from "app/modules/emprendedora/ecommerce copy/inventory/inventoryServicios.types";
 
 export class Publicacion{
@@ -15,6 +16,7 @@ export class Publicacion{
     categoria?: CategoriaPublicacion ;
     productos?: InventarioProductos;
     servicios?: InventarioServicios;
+    listacomentarios?: Comentarios;
 
 }
 

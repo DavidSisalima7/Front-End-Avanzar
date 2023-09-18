@@ -6,7 +6,9 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { FormsModule} from '@angular/forms';
 
 
+
 import { HttpClient } from '@angular/common/http';
+import { Usuario } from 'app/services/models/usuario';
 
 @Component({
   selector: 'app-comentarios-modal',
@@ -16,8 +18,30 @@ import { HttpClient } from '@angular/common/http';
   imports: [NgFor, MatIconModule, FormsModule, MatFormFieldModule, NgIf],
 })
 export class ComentariosModalComponent {
+  comentarios: Comentario[] = []; // Lista de comentarios
+
+  constructor(
+    public dialogRef: MatDialogRef<ComentariosModalComponent>,
+    @Inject(MAT_DIALOG_DATA) public data: any
+  ) {
+    this.comentarios = data.comentarios || []; // Inicializa la lista de comentarios con los datos proporcionados o un array vacío
+  }
+
+  cerrarModal() {
+    this.dialogRef.close(); // Cierra el modal de comentarios
+  }
+}
+
+interface Comentario {
+  texto: string;
+  fecha: Date;
+}
+
+/*
+export class ComentariosModalComponent {
   comentarios: string[] = []; // Lista de comentarios
   nuevoComentario: string = ''; // Nuevo comentario a agregar
+  usuarioId: number = 0; // ID del usuario actual, puedes inicializarlo con el valor correcto
 
   constructor(
     public dialogRef: MatDialogRef<ComentariosModalComponent>,
@@ -28,9 +52,14 @@ export class ComentariosModalComponent {
   }
 
   agregarComentario() {
-    if (this.nuevoComentario) {
+    if (this.usuarioId === 2) {
+      console.error('No tienes permiso para agregar comentarios.');
+      return; // Sale de la función si el usuario tiene ID igual a 2
+    }
+
+    if (this.nuevoComentario || this.usuarioId === 3) {
       // Realiza una solicitud HTTP POST para agregar el nuevo comentario en el backend
-      this.http.post('/api/comentarios', { comentario: this.nuevoComentario })
+      this.http.post('/api/comentarios/registrar', { comentario: this.nuevoComentario })
         .subscribe(
           (resultado: any) => {
             // Verifica si el resultado contiene la propiedad "comentario"
@@ -46,10 +75,12 @@ export class ComentariosModalComponent {
             console.error('Error al realizar la solicitud HTTP POST:', error);
           }
         );
+    } else {
+      console.error('No tienes permiso para agregar comentarios.');
     }
   }
 
   cerrarModal() {
     this.dialogRef.close(); // Cierra el modal de comentarios
   }
-}
+}*/

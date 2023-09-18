@@ -75,7 +75,14 @@
           </td>
         </ng-container>
 
-
+        <ng-container matColumnDef="comentarios">
+          <th mat-header-cell *matHeaderCellDef>Comentarios</th>
+          <td mat-cell *matCellDef="let row">
+            <button class="mx-6" (click)="abrirModalComentarios(row)">
+              <mat-icon class="text-blue-400 icon-size-5" [svgIcon]="'heroicons_solid:comment'"></mat-icon>
+            </button>
+          </td>
+        </ng-container>
 
 
         <ng-container matColumnDef="editar">
@@ -88,14 +95,7 @@
         </ng-container>
         
         
-        <ng-container matColumnDef="comentarios">
-          <th mat-header-cell *matHeaderCellDef>Comentarios</th>
-          <td mat-cell *matCellDef="let row">
-            <button class="mx-6" (click)="abrirModalComentarios(row)">
-              <mat-icon class="text-blue-400 icon-size-5" [svgIcon]="'heroicons_solid:comment'"></mat-icon>
-            </button>
-          </td>
-        </ng-container>
+        
 
 
         <ng-container matColumnDef="delete">

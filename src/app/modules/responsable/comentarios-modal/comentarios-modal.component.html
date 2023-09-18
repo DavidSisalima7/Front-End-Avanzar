@@ -7,21 +7,13 @@
         </button>
     </div>
 
-    <!-- Compose form -->
-    <form class="flex flex-col flex-auto p-8 overflow-y-auto">
-        <!-- Lista de comentarios -->
-        <div *ngFor="let comentario of comentarios" class="p-4 border border-gray-300 rounded-lg mb-4">
-            {{ comentario.texto }}
-            <div class="text-sm text-gray-500">Usuario: {{ comentario.usuario.nombre }}</div>
-        </div>
-
-        <!-- Formulario para agregar un nuevo comentario -->
-        <div class="flex flex-col w-full mt-4">
-            <mat-form-field class="w-full">
-                <mat-label>Escribe un comentario</mat-label>
-                <textarea matInput [(ngModel)]="nuevoComentario"></textarea>
-            </mat-form-field>
-            <button mat-button color="primary" (click)="agregarComentario()">Agregar Comentario</button>
-        </div>
-    </form>
+    <!-- Lista de comentarios -->
+    <div class="flex flex-col flex-auto p-8 overflow-y-auto">
+        <ng-container *ngFor="let comentario of comentarios">
+            <div class="p-4 border border-gray-300 rounded-lg mb-4">
+                <div class="text-sm text-gray-500">Fecha: {{ comentario.fecha | date:'medium' }}</div>
+                <div>{{ comentario.texto }}</div>
+            </div>
+        </ng-container>
+    </div>
 </div>

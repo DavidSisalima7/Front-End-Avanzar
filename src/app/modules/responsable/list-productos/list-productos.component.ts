@@ -24,6 +24,7 @@ import { PublicacionesService } from 'app/services/services/publicaciones.servic
 
 import { ComentariosModalComponent } from 'app/modules/responsable/comentarios-modal/comentarios-modal.component';
 import { Comentarios } from 'app/services/models/comentarios';
+import { ComentariosService } from 'app/services/services/comentarios.service';
 
 
 @Component({
@@ -41,6 +42,7 @@ export class ListProductosResponsableComponent
 
   pageSizeOptions: number[] = [1, 5, 10, 50]; // Opciones de tamaño de página
   pageSize: number = 10;
+
   static idPublicacionSeleccionado: number;
 
   products: Productos[] = [];
@@ -61,7 +63,7 @@ export class ListProductosResponsableComponent
    * Constructor
    */
   constructor(private productoService: ProductosService, private _router: Router,private _matDialog: MatDialog,
-    private publicacionService: PublicacionesService
+    private publicacionService: PublicacionesService,private comentariosService: ComentariosService
     ) {
   }
   ngOnInit(): void {
@@ -137,14 +139,16 @@ export class ListProductosResponsableComponent
 
 //Abrir modal de comentarios
 
-abrirModalComentarios() {
-  const dialogRef = this._matDialog.open(ComentariosModalComponent, {
-    width: '600px', 
-    data: { comentarios: this.comentarios }
-  });
+abrirModalComentarios(publicacion: Publicacion): void {
+  this.comentariosService.obtenerComentarios(publicacion.idPublicacion).subscribe((comentarios: Comentarios[]) => {
+    const dialogRef = this._matDialog.open(ComentariosModalComponent, {
+      width: '600px', 
+      data: { comentarios }
+    });
 
-  dialogRef.afterClosed().subscribe(() => {
-    console.log('Modal de comentarios cerrado');
+    dialogRef.afterClosed().subscribe(() => {
+      console.log('Modal de comentarios cerrado');
+    });
   });
 }
 
