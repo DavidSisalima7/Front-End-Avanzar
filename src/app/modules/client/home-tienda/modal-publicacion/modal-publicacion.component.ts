@@ -1,6 +1,6 @@
 import { Component, OnInit, ChangeDetectorRef, ViewChild, EventEmitter, Output, Inject } from '@angular/core';
 import { NgForm, FormBuilder, FormGroup, Validators, ReactiveFormsModule, FormsModule, UntypedFormGroup } from '@angular/forms';
-import { MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { MAT_DIALOG_DATA, MatDialog } from '@angular/material/dialog';
 import { AsyncPipe, CurrencyPipe, NgClass, NgFor, NgIf, NgTemplateOutlet } from '@angular/common';
 import { MatButtonModule } from '@angular/material/button';
 import { MatDialogRef } from '@angular/material/dialog';
@@ -23,6 +23,7 @@ import { MatMenuModule } from '@angular/material/menu';
 import { RouterLink } from '@angular/router';
 import { ServiciosVentClientComponent } from '../../servicios-vent/servicios-vent.component';
 import { ProductosVentClientComponent } from '../../productos-vent/productos-vent.component';
+import { ComentariosModalComponent } from '../comentarios-modal/comentarios-modal.component';
 
 
 
@@ -49,6 +50,7 @@ export class ModalPublicacionComponent implements OnInit {
         private _inventoryService: PublicacionesInventory,
         private _changeDetectorRef: ChangeDetectorRef,
         private _userService: UserService,
+        private _matDialog: MatDialog,
     ) {
     }
 
@@ -115,4 +117,28 @@ export class ModalPublicacionComponent implements OnInit {
             this.selectedPublicacionForm.get('currentImageIndex').setValue(prevIndex);
         }
     }
+
+    openComposeDialog(idPublicacion: number): void {
+        // Abre el diálogo y pasa el idUsuario como dato
+      
+        HomeTiendaClientComponent.publicacionSeleccionada = idPublicacion;
+        console.log('idPublicacionSeleccionado', HomeTiendaClientComponent.publicacionSeleccionada);
+      
+        const dialogRef = this._matDialog.open(ComentariosModalComponent,{
+          data: { idPublicacion: idPublicacion },
+        });
+      
+        dialogRef.componentInstance.confirmacionCerrada.subscribe((confirmado: boolean) => {
+          if (confirmado) {
+            dialogRef.close(); // Cierra el diálogo
+            // Realiza otras acciones aquí si es necesario
+            
+          }
+        });
+      
+        dialogRef.afterClosed().subscribe((result) => {
+          console.log('Compose dialog was closed!');
+        });
+      }
+    
 }

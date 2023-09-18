@@ -45,21 +45,40 @@
                     <span class="font-sm mx-2">
                         {{selectedPublicacionForm.get('currentImageIndex').value + 1}} of {{selectedPublicacionForm.get('imagenes').value.length}}
                     </span>
-                    <button
-                        mat-icon-button
-                        (click)="cycleImages(true)">
-                        <mat-icon
-                            class="icon-size-5"
-                            [svgIcon]="'heroicons_mini:arrow-long-right'"></mat-icon>
-                    </button>
-                </div>
+                   
+                    
+
             </div>
+            <!-- DISEÑO DE COMENTARIOS -->
+            <button>
+                <div>
+                    <mat-icon
+                        class="icon-size-24"
+                        [svgIcon]="'heroicons_outline:chat-bubble-oval-left-ellipsis'"></mat-icon>
+                    <div class="mt-4 text-2xl font-semibold tracking-tight text-secondary">Comentarios</div>
+                </div>
+                <ng-template #commentModal let-dialogRef>
+                    <div class="modal-content">
+                        <!-- Contenido del modal -->
+                        <h2>Escribe tu comentario</h2>
+                        <textarea [(ngModel)]="newComment" rows="4"></textarea>
+                        <button (click)="saveComment()">Guardar</button>
+                        <h2>Comentarios existentes</h2>
+                        <ul>
+                            <li *ngFor="let comment of comments">{{ comment }}</li>
+                        </ul>
+                        <button (click)="closeCommentModal()">Cerrar</button>
+                    </div>
+                </ng-template>
+            </button>
+            </div>
+           
 
             <div class="flex flex-auto flex-wrap">
                 <!-- Name, SKU & etc. -->
                 
                 <div class="flex w-full lg:w-4/4 sm:pl-8 center-text">
-                    <mat-label><b>DETALLES DE VENDEDOR</b></mat-label>
+                    <mat-label><b>DETALLES DE VENDEDOR1</b></mat-label>
                   </div>
                   
                 
