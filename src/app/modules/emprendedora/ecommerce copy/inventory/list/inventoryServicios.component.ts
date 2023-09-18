@@ -16,7 +16,7 @@ import { MatSort, MatSortModule } from '@angular/material/sort';
 import { fuseAnimations } from '@fuse/animations';
 import { FuseConfirmationService } from '@fuse/services/confirmation';
 import { InventarioServicios, CategoriaServicio, InventarioPublicaciones, CategoriaPublicacion, InventoryPagination } from '../inventoryServicios.types';
-import {forkJoin, debounceTime, map, merge, Observable, Subject, switchMap, takeUntil } from 'rxjs';
+import { forkJoin, debounceTime, map, merge, Observable, Subject, switchMap, takeUntil } from 'rxjs';
 import { Usuario } from 'app/services/models/usuario';
 import { Publicacion } from 'app/services/models/publicaciones';
 import { InventoryServiceServicios } from '../inventoryServicios.service';
@@ -36,9 +36,9 @@ import { DetalleSubscripcionService } from 'app/services/services/detalleSubscri
 
 
 @Component({
-    selector       : 'inventory-list',
-    templateUrl    : './inventoryServicios.component.html',
-    styles         : [
+    selector: 'inventory-list',
+    templateUrl: './inventoryServicios.component.html',
+    styles: [
         /* language=SCSS */
         `
             .inventory-grid {
@@ -58,14 +58,13 @@ import { DetalleSubscripcionService } from 'app/services/services/detalleSubscri
             }
         `,
     ],
-    encapsulation  : ViewEncapsulation.None,
+    encapsulation: ViewEncapsulation.None,
     changeDetection: ChangeDetectionStrategy.OnPush,
-    animations     : fuseAnimations,
-    standalone     : true,
-    imports        : [NgIf, MatProgressBarModule, MatFormFieldModule, MatIconModule, MatInputModule, FormsModule, ReactiveFormsModule, MatButtonModule, MatSortModule, NgFor, NgTemplateOutlet, MatPaginatorModule, NgClass, MatSlideToggleModule, MatSelectModule, MatOptionModule, MatCheckboxModule, MatRippleModule, AsyncPipe, CurrencyPipe],
+    animations: fuseAnimations,
+    standalone: true,
+    imports: [NgIf, MatProgressBarModule, MatFormFieldModule, MatIconModule, MatInputModule, FormsModule, ReactiveFormsModule, MatButtonModule, MatSortModule, NgFor, NgTemplateOutlet, MatPaginatorModule, NgClass, MatSlideToggleModule, MatSelectModule, MatOptionModule, MatCheckboxModule, MatRippleModule, AsyncPipe, CurrencyPipe],
 })
-export class InventoryListComponentService implements OnInit, AfterViewInit, OnDestroy
-{
+export class InventoryListComponentService implements OnInit, AfterViewInit, OnDestroy {
     @ViewChild(MatPaginator) private _paginator: MatPaginator;
     @ViewChild(MatSort) private _sort: MatSort;
 
@@ -85,6 +84,9 @@ export class InventoryListComponentService implements OnInit, AfterViewInit, OnD
     servicio = new ServicioModels();
     categoriaExtraida: any;
     banLimitPost = false;
+
+    titleAlert = "";
+    bodyAlert = "";
     /**
      * Constructor
      */
@@ -134,7 +136,7 @@ export class InventoryListComponentService implements OnInit, AfterViewInit, OnD
             estado: [false],
         });
 
-        
+
 
         // Get the categoriesProduct
         this._inventoryService.categoriesProducto$
@@ -147,7 +149,7 @@ export class InventoryListComponentService implements OnInit, AfterViewInit, OnD
                 this._changeDetectorRef.markForCheck();
             });
 
-            this._inventoryService.categoriesPublicacion$
+        this._inventoryService.categoriesPublicacion$
             .pipe(takeUntil(this._unsubscribeAll))
             .subscribe((categoriesPublicacion: CategoriaPublicacion[]) => {
                 // Update the categories
@@ -168,13 +170,12 @@ export class InventoryListComponentService implements OnInit, AfterViewInit, OnD
                 this._changeDetectorRef.markForCheck();
             });
 
-            this._userService.user$
+        this._userService.user$
             .pipe((takeUntil(this._unsubscribeAll)))
-            .subscribe((user: User) =>
-            {
+            .subscribe((user: User) => {
                 this.user = user;
             });
-        
+
 
         // Get the products
 
@@ -236,7 +237,7 @@ export class InventoryListComponentService implements OnInit, AfterViewInit, OnD
                 map(() => {
                     this.isLoading = false;
                 }),
-            ).subscribe(); 
+            ).subscribe();
         }
     }
 
@@ -262,7 +263,7 @@ export class InventoryListComponentService implements OnInit, AfterViewInit, OnD
         // If the product is already selected...
         if (this.selectedPublicacion && this.selectedPublicacion.idPublicacion === publicacionId) {
             // Close the details
-            
+
             this.closeDetails();
             return;
         }
@@ -271,7 +272,7 @@ export class InventoryListComponentService implements OnInit, AfterViewInit, OnD
         this._inventoryService.getPublicacionById(publicacionId)
             .subscribe((servicio) => {
                 // Set the selected product
-                
+
                 this.selectedPublicacion = servicio;
 
                 this.selectedPublicacionForm.patchValue(servicio);
@@ -285,7 +286,7 @@ export class InventoryListComponentService implements OnInit, AfterViewInit, OnD
                 const selectedCategoryId = servicio.categoria.idCategoria; // Assuming you have an 'id' property in the category object
                 this.selectedPublicacionForm.get('tipos').setValue(selectedCategoryId);
 
-                const selectedCategoryIdProducto = servicio.servicios.categoriaServicio.idCategoriaServicio; 
+                const selectedCategoryIdProducto = servicio.servicios.categoriaServicio.idCategoriaServicio;
                 this.selectedPublicacionForm.get('categoria').setValue(selectedCategoryIdProducto);
 
                 // Mark for check
@@ -322,55 +323,89 @@ export class InventoryListComponentService implements OnInit, AfterViewInit, OnD
         }
     }
 
-    
+
     /**
      * Update the selected product using the form data
      */
+    checkLimitPubliActi(): void {
+        //solo si cambia el estado a activo
+        if (this.selectedPublicacionForm.get('estado').value) {
+            this._detalleSubscripcionService.limitEstatusPost()
+                .subscribe({
+
+                    next: (reponse) => {
+                        if (reponse.banderaBol) {
+
+                            this.updateselectedPublicacion();
+                        } else {
+                            this.titleAlert = reponse.title;
+                            this.bodyAlert = reponse.body;
+                            this.banLimitPost = true;
+                            this.cd.detectChanges();
+                            setTimeout(() => {
+
+                                this.banLimitPost = false; // Después de 6 segundos, restablece a false
+                                this.cd.detectChanges();
+                            }, 6000);
+                        }
+                    },
+                    error: (error) => {
+
+                    }
+                });
+        } else {
+            this.updateselectedPublicacion();
+        }
+    }
+
     updateselectedPublicacion(): void {
-    // Get the product object
-    const post = this.selectedPublicacionForm.getRawValue();
-    const vendedor$ = this._vendedoraService.buscarVendedoraId(this.user.id);
-    const publicacion$ = this._publicacionService.buscarPublicacionId(post.idPublicacion);
 
-    forkJoin([vendedor$,publicacion$]).subscribe(([vendedor, publicacion]) => {
-    this.publication.vendedor = vendedor;
-    this.publication.servicios = publicacion.servicios;
-    this.publication.servicios.miniaturaServicio = " ";
-    this.publication.tituloPublicacion=post.tituloPublicacion;
-    this.publication.descripcionPublicacion=post.descripcionPublicacion;
-    this.publication.estado=post.estado;
-    
-    console.log("datos",this.publication);
-    console.log("Categoria", post.categoria);
-    // Ahora que todos los datos están disponibles, puedes actualizar la publicación completa
-    this._inventoryService.updatePublicacion(post.idPublicacion, this.publication).subscribe(() => {
-        // Show a success message
+        // Get the product object
+        const post = this.selectedPublicacionForm.getRawValue();
+        const vendedor$ = this._vendedoraService.buscarVendedoraId(this.user.id);
+        const publicacion$ = this._publicacionService.buscarPublicacionId(post.idPublicacion);
 
-        this._categoriaService.getCategoriaServicio(post.categoria).subscribe((categoria) => {
-        this.categoriaExtraida = categoria;
-        console.log("Cat Seleccionada", this.categoriaExtraida);
-        
-        this.servicio.cantidadDisponible = post.cantidadDisponible;
-        this.servicio.tiempoServicio = post.tiempoServicio;
-        this.servicio.precioInicialServicio = post.precioInicialServicio;
-        this.servicio.precioFinalServicio = post.precioFinalServicio;
-        this.servicio.precioFijoServicio = post.precioFijoServicio;
-        this.servicio.nombreServicio = post.nombreServicio;
-        this.servicio.descripcionServicio = post.descripcionPublicacion;
-        this.servicio.categoriaServicio = this.categoriaExtraida;
+        forkJoin([vendedor$, publicacion$]).subscribe(([vendedor, publicacion]) => {
+            this.publication.vendedor = vendedor;
+            this.publication.servicios = publicacion.servicios;
+            this.publication.servicios.miniaturaServicio = " ";
+            this.publication.tituloPublicacion = post.tituloPublicacion;
+            this.publication.descripcionPublicacion = post.descripcionPublicacion;
+            this.publication.estado = post.estado;
 
-        this._servicioService.actualizarServicioPublicaciones(this.publication.servicios.idServicio, this.servicio).subscribe(() => {
-            // Show a success message
-            this.showFlashMessage('success');
-        });  
+            console.log("datos", this.publication);
+            console.log("Categoria", post.categoria);
+            // Ahora que todos los datos están disponibles, puedes actualizar la publicación completa
+            this._inventoryService.updatePublicacion(post.idPublicacion, this.publication).subscribe(() => {
+                // Show a success message
 
-    });
 
-    });
-});
+                this._categoriaService.getCategoriaServicio(post.categoria).subscribe((categoria) => {
+                    this.categoriaExtraida = categoria;
+                    console.log("Cat Seleccionada", this.categoriaExtraida);
+                    
+                    this.servicio.cantidadDisponible = post.cantidadDisponible;
+                    this.servicio.tiempoServicio = post.tiempoServicio;
+                    this.servicio.precioInicialServicio = post.precioInicialServicio;
+                    this.servicio.precioFinalServicio = post.precioFinalServicio;
+                    this.servicio.precioFijoServicio = post.precioFijoServicio;
+                    this.servicio.nombreServicio = post.nombreServicio;
+                    this.servicio.descripcionServicio = post.descripcionPublicacion;
+                    this.servicio.categoriaServicio = this.categoriaExtraida;
 
-    
-}
+
+                    this._servicioService.actualizarServicioPublicaciones(this.publication.servicios.idServicio, this.servicio).subscribe(() => {
+                        // Show a success message
+                        this.showFlashMessage('success');
+                    });
+
+                });
+
+            });
+        });
+
+
+    }
 
     /**
      * Delete the selected post using the form data
@@ -396,7 +431,7 @@ export class InventoryListComponentService implements OnInit, AfterViewInit, OnD
 
                 // Delete the post on the server
                 this._inventoryService.deletePublicacion(publicacion.idPublicacion).subscribe(() => {
-                   
+
                     // Close the details
                     this.closeDetails();
                 });
@@ -438,17 +473,19 @@ export class InventoryListComponentService implements OnInit, AfterViewInit, OnD
             .subscribe({
 
                 next: (reponse) => {
-                    if (reponse) {
+                    if (reponse.banderaBol) {
 
                         this.openComposeDialog();
                     } else {
+                        this.titleAlert = reponse.title;
+                        this.bodyAlert = reponse.body;
                         this.banLimitPost = true;
                         this.cd.detectChanges();
                         setTimeout(() => {
-                            
+
                             this.banLimitPost = false; // Después de 3 segundos, restablece a false
                             this.cd.detectChanges();
-                        }, 2500);
+                        }, 6000);
                     }
                 },
                 error: (error) => {
@@ -458,14 +495,12 @@ export class InventoryListComponentService implements OnInit, AfterViewInit, OnD
     }
 
     //ABRIR EL MODAL
-  openComposeDialog(): void
-    {
+    openComposeDialog(): void {
         // Open the dialog
         const dialogRef = this._matDialog.open(ModalServicioComponent);
 
         dialogRef.afterClosed()
-            .subscribe((result) =>
-            {
+            .subscribe((result) => {
                 console.log('Compose dialog was closed!');
             });
     }

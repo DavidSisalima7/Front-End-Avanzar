@@ -23,6 +23,7 @@ import { Publicacion } from 'app/services/models/publicaciones';
 import { ServicioModels } from 'app/services/models/servicios';
 import { CategoriaServicioService } from 'app/services/services/categoriaServicio.service';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
+import { DetalleSubscripcionService } from 'app/services/services/detalleSubscripcion.service';
 @Component({
     selector     : 'mailbox-compose',
     templateUrl  : './modal-servicio.component.html',
@@ -59,6 +60,9 @@ export class ModalServicioComponent implements OnInit
     uploadedPhotos: File[] = [];
     imagePreviews: string[] = [];
 
+    banLimitPost = false;
+    titleAlert="";
+    bodyAlert="";
     onFileSelected(event: any) {
         const files: FileList = event.target.files;
         for (let i = 0; i < files.length; i++) {
@@ -93,6 +97,7 @@ export class ModalServicioComponent implements OnInit
         private _servicioService:ServiciosService,
         private _categoriaService: CategoriaPublicacionService,
         private _changeDetectorRef: ChangeDetectorRef,
+        private _detalleSubscripcionService: DetalleSubscripcionService,
        
 
     )
@@ -156,9 +161,9 @@ export class ModalServicioComponent implements OnInit
             miniaturaServicio: [''],
             imagenes: [[]],
             currentImageIndex: [0], // Índice de la imagen que se está visualizando
-            estado: [true],
+            estado: [false],
         });
-
+        this.selectedPublicacionServicioForm.get('estado').disable();
           // Get the categoriesProduct
         this._inventoryService.categoriesProducto$
         .pipe(takeUntil(this._unsubscribeAll))
@@ -249,15 +254,44 @@ export class ModalServicioComponent implements OnInit
     {
     }
 
-    /**
-     * Send the message
-     */
-    send(): void {
+    verifyLimtiPost(): void {
 
         if ( this.selectedPublicacionServicioForm.invalid )
         {
             return;
         }
+
+        this._detalleSubscripcionService.limitPost()
+            .subscribe({
+
+                next: (reponse) => {
+                    if (reponse.banderaBol) {
+
+                        this.send();
+                    } else {
+                        this.titleAlert=reponse.title;
+                        this.bodyAlert=reponse.body;
+                        this.banLimitPost = true;
+                        
+                        setTimeout(() => {
+                            
+                            this.banLimitPost = false; // Después de 3 segundos, restablece a false
+                    
+                        }, 6000);
+                    }
+                },
+                error: (error) => {
+
+                }
+            });
+    }
+
+    /**
+     * Send the message
+     */
+    send(): void {
+
+     
 
         this.selectedPublicacionServicioForm.disable();
 
@@ -310,6 +344,7 @@ export class ModalServicioComponent implements OnInit
                     //this.publication = newPublicacion;
                     this.showFlashMessage('success');
                     this.selectedPublicacionServicioForm.enable();
+                    this.selectedPublicacionServicioForm.get('estado').disable();
                 });
             });
 

@@ -2,6 +2,7 @@ import { DetalleSubscripcion } from './../models/detalleSubscripcion';
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable, catchError, throwError } from 'rxjs';
+import { mensajeAlertasDto } from '../models/mensajeAlertasDto';
 
 @Injectable({
   providedIn: 'root'
@@ -17,7 +18,11 @@ export class DetalleSubscripcionService {
     return this.http.put(`${this.baseUrl}/actualizar/${id}`, detalle);
   }
 
-  limitPost():Observable<Boolean>{
-    return this.http.get<Boolean>(`${this.baseUrl}/comprobarLimite`);
+  limitPost():Observable<mensajeAlertasDto>{
+    return this.http.get<mensajeAlertasDto>(`${this.baseUrl}/comprobarLimite`);
+  }
+
+  limitEstatusPost():Observable<mensajeAlertasDto>{
+    return this.http.get<mensajeAlertasDto>(`${this.baseUrl}/comprobarPubAct`);
   }
 }
