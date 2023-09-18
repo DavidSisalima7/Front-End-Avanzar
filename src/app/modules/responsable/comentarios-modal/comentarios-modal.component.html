@@ -1,0 +1,27 @@
+<div class="flex flex-col max-w-240 max-h-screen -m-6">
+    <!-- Header -->
+    <div class="flex flex-0 items-center justify-between h-16 pr-3 sm:pr-5 pl-6 sm:pl-8 bg-primary text-on-primary">
+        <div class="text-lg font-medium">Comentarios</div>
+        <button mat-icon-button (click)="cerrarModal()" [tabIndex]="-1">
+            <mat-icon class="text-current" [svgIcon]="'heroicons_outline:x-mark'"></mat-icon>
+        </button>
+    </div>
+
+    <!-- Compose form -->
+    <form class="flex flex-col flex-auto p-8 overflow-y-auto">
+        <!-- Lista de comentarios -->
+        <div *ngFor="let comentario of comentarios" class="p-4 border border-gray-300 rounded-lg mb-4">
+            {{ comentario.texto }}
+            <div class="text-sm text-gray-500">Usuario: {{ comentario.usuario.nombre }}</div>
+        </div>
+
+        <!-- Formulario para agregar un nuevo comentario -->
+        <div class="flex flex-col w-full mt-4">
+            <mat-form-field class="w-full">
+                <mat-label>Escribe un comentario</mat-label>
+                <textarea matInput [(ngModel)]="nuevoComentario"></textarea>
+            </mat-form-field>
+            <button mat-button color="primary" (click)="agregarComentario()">Agregar Comentario</button>
+        </div>
+    </form>
+</div>

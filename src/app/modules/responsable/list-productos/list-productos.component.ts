@@ -22,6 +22,9 @@ import { PublicacionesInventory } from 'app/services/services/publicacionesInven
 import { Publicacion } from 'app/services/models/publicaciones';
 import { PublicacionesService } from 'app/services/services/publicaciones.service';
 
+import { ComentariosModalComponent } from 'app/modules/responsable/comentarios-modal/comentarios-modal.component';
+import { Comentarios } from 'app/services/models/comentarios';
+
 
 @Component({
     selector     : 'list-emprendedoras',
@@ -33,7 +36,7 @@ import { PublicacionesService } from 'app/services/services/publicaciones.servic
 })
 export class ListProductosResponsableComponent
 {
-  displayedColumns: string[] = ['nombreProducto', 'precioProducto', 'cantidaDisponible','vendedor', 'estado','editar','delete'];
+  displayedColumns: string[] = ['nombreProducto', 'precioProducto', 'cantidaDisponible','vendedor', 'estado','editar','comentarios','delete'];
   dataSource: MatTableDataSource<Publicacion>;
 
   pageSizeOptions: number[] = [1, 5, 10, 50]; // Opciones de tamaño de página
@@ -42,6 +45,7 @@ export class ListProductosResponsableComponent
 
   products: Productos[] = [];
   publicacion: Publicacion[] = [];
+  comentarios: Comentarios[] = [];
 
   @ViewChild(MatPaginator, {static: true}) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
@@ -131,6 +135,18 @@ export class ListProductosResponsableComponent
     });
   }
 
+//Abrir modal de comentarios
+
+abrirModalComentarios() {
+  const dialogRef = this._matDialog.open(ComentariosModalComponent, {
+    width: '600px', 
+    data: { comentarios: this.comentarios }
+  });
+
+  dialogRef.afterClosed().subscribe(() => {
+    console.log('Modal de comentarios cerrado');
+  });
+}
 
 ///////////////////////// Fin de filtro
 
