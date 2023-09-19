@@ -23,6 +23,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { ModalPublicacionComponent } from './modal-publicacion/modal-publicacion.component';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatPaginator } from '@angular/material/paginator';
+import { ModalComentariosComponent } from './modal-comentarios/modal-comentarios.component';
 ;
 @Component({
   selector: 'home-tienda',
@@ -120,7 +121,13 @@ export class HomeTiendaClientComponent {
     });
   }
 
- 
+  openComposecomments(idPublicacion: number){
+    const dialogRef = this._matDialog.open(ModalComentariosComponent,{
+      data: { idPubli: idPublicacion },
+    });
+    
+
+  }
 
   
   toggleComentarios(publicacion: any) {
