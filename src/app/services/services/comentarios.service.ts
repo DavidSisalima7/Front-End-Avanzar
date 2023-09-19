@@ -15,11 +15,12 @@ export class ComentariosService {
   constructor(private http: HttpClient) { }
 
   obtenerComentarios(idPublicacion: number): Observable<Comentario[]> {
-    return this.http.get<Comentario[]>(`${this.baseUrl}/listar/${idPublicacion}`);
+    return this.http.get<Comentario[]>(`${this.baseUrl}/listaid/${idPublicacion}`);
   }
 }
 
 interface Comentario {
   texto: string;
   fecha: Date;
+  usuario?:Usuario;
 }

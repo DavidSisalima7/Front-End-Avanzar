@@ -9,6 +9,7 @@ import { FormsModule} from '@angular/forms';
 
 import { HttpClient } from '@angular/common/http';
 import { Usuario } from 'app/services/models/usuario';
+import { ComentariosService } from 'app/services/services/comentarios.service';
 
 @Component({
   selector: 'app-comentarios-modal',
@@ -22,9 +23,11 @@ export class ComentariosModalComponent {
 
   constructor(
     public dialogRef: MatDialogRef<ComentariosModalComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: any
+    @Inject(MAT_DIALOG_DATA) public data: any,
+    private comentariosService: ComentariosService // Inyecta el servicio de comentarios
   ) {
-    this.comentarios = data.comentarios || []; // Inicializa la lista de comentarios con los datos proporcionados o un array vacío
+    // Inicializa la lista de comentarios con los datos proporcionados o un array vacío
+    this.comentarios = data.comentarios || [];
   }
 
   cerrarModal() {
@@ -35,6 +38,7 @@ export class ComentariosModalComponent {
 interface Comentario {
   texto: string;
   fecha: Date;
+  usuario?: Usuario;
 }
 
 /*
