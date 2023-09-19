@@ -29,6 +29,7 @@ import { ModalPublicacionServiciosComponent } from './modal-publicacion-servicio
   selector: 'servicios-vent',
  
   templateUrl: './servicios-vent.component.html',
+  styleUrls: ['../home-tienda/home-tienda.component.scss'],
   encapsulation: ViewEncapsulation.None,
   standalone: true,
   imports: [AsyncPipe, NgIf, MatButtonToggleModule, FormsModule, NgFor, FuseCardComponent, MatButtonModule, MatIconModule, RouterLink, NgClass, MatMenuModule, MatCheckboxModule, MatProgressBarModule, MatFormFieldModule, MatInputModule, TextFieldModule, MatDividerModule, MatTooltipModule, TitleCasePipe],

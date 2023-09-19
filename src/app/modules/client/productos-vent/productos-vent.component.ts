@@ -27,6 +27,7 @@ import { ModalPublicacionProductosComponent } from './modal-publicacion-producto
   selector: 'productos-vent',
  
   templateUrl: './productos-vent.component.html',
+  styleUrls: ['../home-tienda/home-tienda.component.scss'],
   encapsulation: ViewEncapsulation.None,
   standalone: true,
   imports: [AsyncPipe, NgIf, MatButtonToggleModule, FormsModule, NgFor, FuseCardComponent, MatButtonModule, MatIconModule, RouterLink, NgClass, MatMenuModule, MatCheckboxModule, MatProgressBarModule, MatFormFieldModule, MatInputModule, TextFieldModule, MatDividerModule, MatTooltipModule, TitleCasePipe],
