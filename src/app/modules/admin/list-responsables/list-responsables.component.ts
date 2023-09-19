@@ -24,6 +24,7 @@ import { MailboxComposeComponent } from 'app/modules/admin/compose/compose.compo
 import { FuseAlertService } from '@fuse/components/alert';
 import { FuseConfirmationService } from '@fuse/services/confirmation';
 import { FuseLoadingService } from '@fuse/services/loading';
+import { User, UserA } from 'app/core/user/user.types';
 
 
 @Component({
@@ -44,8 +45,10 @@ export class ListResponsableComponent {
 
 
   users: Usuario[] = [];
+  user: UserA;
+  idUsuario: any;
 
-  @ViewChild(MatPaginator, {static: true}) paginator: MatPaginator;
+  @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
 
   searchInputControl: UntypedFormControl = new UntypedFormControl();
@@ -54,11 +57,12 @@ export class ListResponsableComponent {
   /**
    * Constructor
    */
-  constructor(private usuarioService: UserService, private _router: Router, private _matDialog: MatDialog, 
+  constructor(private usuarioService: UserService, private _router: Router, private _matDialog: MatDialog,
     private confirmationService: FuseConfirmationService
   ) {
   }
   ngOnInit(): void {
+
     this.listarRegistros();
   }
 
@@ -66,7 +70,7 @@ export class ListResponsableComponent {
     this.paginator.pageIndex = event.pageIndex;
     // También puedes agregar un console.log() aquí para depurar
   }
-  
+
   nextPage() {
     if (this.paginator.hasNextPage()) {
       this.paginator.nextPage();
@@ -102,14 +106,16 @@ export class ListResponsableComponent {
   // eliminado lógico
   selectedResponsable: any;
   usernameSelect: any;
-  verficarEstado: any;
+  name: any;
+  verificarEstado: any;
   seleccionarResponsable(usuario: any) {
     this.selectedResponsable = usuario.id;
     this.usernameSelect = usuario.username;
+    this.name = usuario.name;
     this.usuarioService.BuscarUsername(this.usernameSelect).subscribe(
       (usuarioEncontrado) => {
-        this.verficarEstado = usuarioEncontrado;
-        if (this.verficarEstado === null) {
+        this.verificarEstado = usuarioEncontrado;
+        if (this.verificarEstado === null) {
           const confirmationDialog = this.confirmationService.open({
             title: 'Ocurrió un error',
             message: 'Acción no disponible, El usuario ya se encuentra inactivo',
@@ -149,35 +155,55 @@ export class ListResponsableComponent {
 
           confirmationDialog.afterClosed().subscribe(result => {
             if (result === 'confirmed') {
+              // Actualiza el estado en la base de datos
               this.usuarioService.eliminadoLogico(this.selectedResponsable).subscribe(
                 (datapersencontrada) => {
-                  this.listarRegistros();
-                  const confirmationDialog = this.confirmationService.open({
-                    title: 'Éxito',
-                    message: 'El usuario ha sido desactivado',
-                    icon: {
-                      show: true,
-                      name: 'heroicons_outline:check-circle',
-                      color: 'success',
+
+                  const usuario: UserA = {
+                    id: this.selectedResponsable,
+                    enabled: false,
+                    visible: false,
+                    username: this.usernameSelect,
+                    name: this.name,
+                  };
+
+                  // Llama al servicio para guardar los cambios en la base de datos
+                  this.usuarioService.updateUserById2(this.selectedResponsable, usuario).subscribe(
+                    (respuesta) => {
+                      // Realiza alguna acción adicional si es necesario
+                      this.listarRegistros();
+
+                      const confirmationDialog = this.confirmationService.open({
+                        title: 'Éxito',
+                        message: 'El usuario ha sido desactivado',
+                        icon: {
+                          show: true,
+                          name: 'heroicons_outline:check-circle',
+                          color: 'success',
+                        },
+                        actions: {
+                          confirm: {
+                            show: true,
+                            label: 'OK',
+                            color: 'primary'
+                          },
+                          cancel: {
+                            show: false,
+                            label: 'Cancelar'
+                          }
+                        }
+                      });
                     },
-                    actions: {
-                      confirm: {
-                        show: true,
-                        label: 'OK',
-                        color: 'primary'
-                      },
-                      cancel: {
-                        show: false,
-                        label: 'Cancelar'
-                      }
+                    (error) => {
+                      // Maneja el error si la actualización falla
+                      console.error('Error al actualizar el estado en la base de datos', error);
                     }
-                  });
+                  );
                 });
             } else {
-
+              // Maneja el caso si se cancela la desactivación
             }
           });
-          
         }
       });
   }
@@ -364,12 +390,12 @@ export class ListResponsableComponent {
   //ABRIR EL MODAL
   openComposeDialog(idUsuario: number): void {
     // Abre el diálogo y pasa el idUsuario como dato
-  
+
     ListResponsableComponent.idUsuarioSeleccionado = idUsuario;
     console.log('idUsuarioSeleccionado', ListResponsableComponent.idUsuarioSeleccionado);
-  
+
     const dialogRef = this._matDialog.open(MailboxComposeComponent);
-  
+
     dialogRef.componentInstance.confirmacionCerrada.subscribe((confirmado: boolean) => {
       if (confirmado) {
         dialogRef.close(); // Cierra el diálogo
@@ -377,11 +403,11 @@ export class ListResponsableComponent {
         this.listarRegistros();
       }
     });
-  
+
     dialogRef.afterClosed().subscribe((result) => {
       console.log('Compose dialog was closed!');
     });
   }
-  
+
 
 }
