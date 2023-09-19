@@ -17,11 +17,11 @@ export class User
 
 export class UserA{
     id?: number;
-    name:string;
-    username: string;
-    password:string;
+    name?:string;
+    username?: string;
+    password?:string;
     avatar?: string;
-    enabled:boolean;
-    visible:boolean;
+    enabled?:boolean;
+    visible?:boolean;
     persona?:Persona;
 }

@@ -19,6 +19,7 @@ import Swal from 'sweetalert2';
 import { MatDialog } from '@angular/material/dialog';
 import { FuseConfirmationService } from '@fuse/services/confirmation';
 import { MailboxComposeComponent } from 'app/modules/responsable/compose/compose.component';
+import { UserA } from 'app/core/user/user.types';
 
 @Component({
   selector: 'list-emprendedoras',
@@ -118,10 +119,12 @@ export class ListEmprendedorasResponsableComponent {
 
   selectedEmprendedora: any;
   usernameSelect: any;
+  name: any;
   verficarEstado: any;
   seleccionarEmprendedora(usuario: any) {
     this.selectedEmprendedora = usuario.id;
     this.usernameSelect = usuario.username;
+    this.name = usuario.name;
     this.usuarioService.BuscarUsername(this.usernameSelect).subscribe(
       (usuarioEncontrado) => {
         this.verficarEstado = usuarioEncontrado;
@@ -167,27 +170,46 @@ export class ListEmprendedorasResponsableComponent {
             if (result === 'confirmed') {
               this.usuarioService.eliminadoLogico(this.selectedEmprendedora).subscribe(
                 (datapersencontrada) => {
-                  this.listarRegistros();
-                  const confirmationDialog = this.confirmationService.open({
-                    title: 'Éxito',
-                    message: 'El usuario ha sido desactivado',
-                    icon: {
-                      show: true,
-                      name: 'heroicons_outline:check-circle',
-                      color: 'success',
+
+                  const usuario: UserA = {
+                    id: this.selectedEmprendedora,
+                    enabled: false,
+                    visible: false,
+                    username: this.usernameSelect,
+                    name: this.name,
+                  };
+
+                  this.usuarioService.updateUserById2(this.selectedEmprendedora, usuario).subscribe(
+                    (respuesta) => {
+                      // Realiza alguna acción adicional si es necesario
+                      this.listarRegistros();
+
+                      const confirmationDialog = this.confirmationService.open({
+                        title: 'Éxito',
+                        message: 'El usuario ha sido desactivado',
+                        icon: {
+                          show: true,
+                          name: 'heroicons_outline:check-circle',
+                          color: 'success',
+                        },
+                        actions: {
+                          confirm: {
+                            show: true,
+                            label: 'OK',
+                            color: 'primary'
+                          },
+                          cancel: {
+                            show: false,
+                            label: 'Cancelar'
+                          }
+                        }
+                      });
                     },
-                    actions: {
-                      confirm: {
-                        show: true,
-                        label: 'OK',
-                        color: 'primary'
-                      },
-                      cancel: {
-                        show: false,
-                        label: 'Cancelar'
-                      }
+                    (error) => {
+                      // Maneja el error si la actualización falla
+                      console.error('Error al actualizar el estado en la base de datos', error);
                     }
-                  });
+                  );
                 });
             } else {
 
