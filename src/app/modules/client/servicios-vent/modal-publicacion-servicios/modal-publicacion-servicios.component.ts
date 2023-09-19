@@ -65,6 +65,7 @@ export class ModalPublicacionServiciosComponent implements OnInit {
                     descripcionPublicacion:  [this.selectedPublicacion.descripcionPublicacion],
                     descripcionUsuario:  [this.selectedPublicacion.vendedor.usuario.persona.descripcion],
                     vendedor: [this.selectedPublicacion.vendedor.usuario.name],
+                    emprendimiento:[this.selectedPublicacion.vendedor.nombreEmprendimiento],
                     cantidadDisponible:  [this.selectedPublicacion.idPublicacion],
                     avatar: [this.selectedPublicacion.vendedor.usuario.avatar],
                     precioProducto: [this.selectedPublicacion.idPublicacion],
