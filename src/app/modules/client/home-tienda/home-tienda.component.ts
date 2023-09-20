@@ -1,3 +1,4 @@
+import { FavoritosService } from './../../../services/services/favoritos.service';
 import { TextFieldModule } from '@angular/cdk/text-field';
 import { NgClass, NgFor, TitleCasePipe } from '@angular/common';
 import { Component, AfterViewInit, ChangeDetectionStrategy, ElementRef, QueryList, Renderer2, ViewChildren, ViewEncapsulation , ViewChild } from '@angular/core';
@@ -23,6 +24,9 @@ import { MatDialog } from '@angular/material/dialog';
 import { ModalPublicacionComponent } from './modal-publicacion/modal-publicacion.component';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatPaginator } from '@angular/material/paginator';
+import { PublicacionesService } from 'app/services/services/publicaciones.service';
+import { Destacados } from 'app/services/models/destacados';
+import { Publicacion, PublicacionA } from 'app/services/models/publicaciones';
 ;
 @Component({
   selector: 'home-tienda',
@@ -55,7 +59,9 @@ export class HomeTiendaClientComponent {
   filters: string[] = ['all', 'article', 'listing', 'list', 'info', 'shopping', 'pricing', 'testimonial', 'post', 'interactive'];
   numberOfCards: any = {};
   selectedFilter: string = 'all';
-
+  esFavorito: boolean = false;
+  destacados: Destacados;
+  destacadoCreated: any;
 
 
   /**
@@ -64,7 +70,9 @@ export class HomeTiendaClientComponent {
   constructor(
     private _inventoryService: PublicacionesInventory,
     private _matDialog: MatDialog,
-    private renderer: Renderer2
+    private renderer: Renderer2,
+    private _favoritoService: FavoritosService,
+    private _publicacionesService: PublicacionesService
   ) {
   }
 
@@ -78,6 +86,59 @@ export class HomeTiendaClientComponent {
       this.paginator.nextPage();
     }
   }
+
+  toggleFavorito(idPublicacion: number) {
+    if (!this.esFavorito) {
+      // Acción cuando se hace clic por primera vez
+
+      const userJSON = localStorage.getItem('user');
+      const user = JSON.parse(userJSON);
+
+      console.log('idPublicacionSeleccionado', idPublicacion);
+      
+      this._publicacionesService.buscarPublicacionId(idPublicacion).subscribe(
+        (datos: InventarioPublicaciones) => {
+          console.log('datos', datos);
+
+          this.destacados = new Destacados();
+          this.destacados.estadoDestacado = true;
+          this.destacados.fecha = new Date().toISOString();
+          this.destacados.publicaciones = datos;
+          this.destacados.usuario = user;
+
+          console.log('destacados', this.destacados);
+
+          this._favoritoService.saveFavorito(this.destacados).subscribe(
+            (datos: Destacados) => {
+              console.log('datos', datos);
+              this.destacadoCreated = datos;
+
+            },
+            error => {
+              console.error('Ocurrió un error al guardar el favorito:', error);
+            }
+          );
+        },
+        error => {
+          console.error('Ocurrió un error al obtener la lista:', error);
+        }
+      );
+        
+
+      // Realiza la acción que desees aquí
+    } else {
+      // Acción cuando se hace clic después de haber sido clickeado
+      console.log('Botón clickeado después de haber sido clickeado');
+      // Realiza otra acción que desees aquí
+      console.log('ID Des', this.destacadoCreated.idDestacado);
+
+    }
+    
+  
+    this.esFavorito = !this.esFavorito; // Cambia el estado del botón
+  }
+
+
 
   listarPublicaciones() {
     this._inventoryService.obtenerListaPublicaciones().subscribe(

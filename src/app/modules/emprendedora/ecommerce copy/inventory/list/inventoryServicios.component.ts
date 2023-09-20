@@ -84,6 +84,8 @@ export class InventoryListComponentService implements OnInit, AfterViewInit, OnD
     servicio = new ServicioModels();
     categoriaExtraida: any;
     banLimitPost = false;
+    titleAlert="";
+    bodyAlert="";
     /**
      * Constructor
      */
@@ -433,27 +435,33 @@ export class InventoryListComponentService implements OnInit, AfterViewInit, OnD
     }
 
     verifyLimtiPost(): void {
-        this._detalleSubscripcionService.limitPost()
-            .subscribe({
+        if (this.selectedPublicacionForm.get('estado').value) {
+            this._detalleSubscripcionService.limitEstatusPost()
+                .subscribe({
 
-                next: (reponse) => {
-                    if (reponse) {
+                    next: (reponse) => {
+                        if (reponse.banderaBol) {
 
-                        this.openComposeDialog();
-                    } else {
-                        this.banLimitPost = true;
-                        this.cd.detectChanges();
-                        setTimeout(() => {
-                            
-                            this.banLimitPost = false; // Después de 3 segundos, restablece a false
+                            this.updateselectedPublicacion();
+                        } else {
+                            this.titleAlert = reponse.title;
+                            this.bodyAlert = reponse.body;
+                            this.banLimitPost = true;
                             this.cd.detectChanges();
-                        }, 2500);
-                    }
-                },
-                error: (error) => {
+                            setTimeout(() => {
 
-                }
-            });
+                                this.banLimitPost = false; // Después de 6 segundos, restablece a false
+                                this.cd.detectChanges();
+                            }, 6000);
+                        }
+                    },
+                    error: (error) => {
+
+                    }
+                });
+        } else {
+            this.updateselectedPublicacion();
+        }
     }
 
     //ABRIR EL MODAL

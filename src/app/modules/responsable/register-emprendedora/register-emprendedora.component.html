@@ -303,15 +303,6 @@
                             inválida</mat-error>
                     </mat-form-field>
                 </div>
-                <div class="flex">
-                    <mat-form-field class="flex-auto">
-                        <mat-label>Descripción de usuario</mat-label>
-                        <textarea matInput [formControlName]="'descripcion'" [placeholder]="'Descripcion'"
-                            [rows]="3"></textarea>
-                        <mat-icon class="icon-size-5" matPrefix
-                            [svgIcon]="'heroicons_solid:bars-3-bottom-left'"></mat-icon>
-                    </mat-form-field>
-                </div>
 
                 <div class="flex">
                     <mat-form-field class="flex-auto gt-xs:pr-3">
@@ -324,7 +315,16 @@
                     </mat-form-field>
                 </div>
 
-               
+                <div class="flex">
+                    <mat-form-field class="flex-auto">
+                        <mat-label>Descripción de usuario</mat-label>
+                        <textarea matInput [formControlName]="'descripcion'" [placeholder]="'Descripcion'"
+                            [rows]="3"></textarea>
+                        <mat-icon class="icon-size-5" matPrefix
+                            [svgIcon]="'heroicons_solid:bars-3-bottom-left'"></mat-icon>
+                    </mat-form-field>
+                </div>
+
 
                 <div class="flex justify-end">
                     <button class="px-8 mr-2" mat-flat-button [color]="'accent'" type="button" matStepperPrevious>

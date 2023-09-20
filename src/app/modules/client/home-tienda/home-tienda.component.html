@@ -351,10 +351,11 @@
                                         <span class="ml-2">Adquirir</span>
                                     </a>
 
-                                    <button class="ml-auto" mat-icon-button>
+                                    <button class="ml-auto" mat-icon-button (click)="toggleFavorito(publicacion.idPublicacion)">
                                         <mat-icon
-                                            class="icon-size-5 text-hint"
-                                            [svgIcon]="'heroicons_solid:heart'"
+                                            class="icon-size-5"
+                                            [svgIcon]="esFavorito ? 'heroicons_solid:heart' : 'heroicons_solid:heart'"
+                                            [style.color]="esFavorito ? 'red' : 'gray'"
                                         ></mat-icon>
                                     </button>
 
