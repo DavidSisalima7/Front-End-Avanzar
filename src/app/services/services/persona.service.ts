@@ -43,5 +43,7 @@ export class PersonaService {
     return this.http.put<User>(`${this.url}/actualizarP/${id}`, user);
   }
   
-
+  obtenerResumen2(idVendedor: any): Observable<any> {
+    return this.http.get(`${this.url}/data2/${idVendedor}`);
+  }
 }
