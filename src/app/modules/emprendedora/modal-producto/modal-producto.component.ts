@@ -102,7 +102,7 @@ export class ModalProductoComponent implements OnInit {
         private el: ElementRef,
         private renderer: Renderer2,
         private _detalleSubscripcionService: DetalleSubscripcionService,
-       
+
 
     ) {
     }
@@ -154,11 +154,11 @@ export class ModalProductoComponent implements OnInit {
             descripcionPublicacion: [''],
             tipos: ['', Validators.required],
             vendedor: [this.user.name],
-            cantidadDisponible: [''],
-            precioInicialProducto: [''],
-            precioFinalProducto: [''],
-            precioFijoProducto: ['',Validators.required],
-            pesoProducto: [''],
+            cantidadDisponible: ['', [this.positiveIntegerValidator]],
+            precioInicialProducto: ['',[this.positiveNumberValidator]],
+            precioFinalProducto: ['', [this.positiveNumberValidator]],
+            precioFijoProducto: ['', [Validators.required,this.positiveNumberValidator]],
+            pesoProducto: ['', [this.positiveNumberValidator]],
             miniaturaProducto: [''],
             imagenes: [[]],
             currentImageIndex: [0], // Índice de la imagen que se está visualizando
@@ -326,8 +326,8 @@ export class ModalProductoComponent implements OnInit {
             // Atributos de producto
             this.producto.cantidadDisponible = post.cantidadDisponible;
             this.producto.pesoProducto = post.pesoProducto;
-            this.producto.precioInicialProducto=post.precioInicialProducto;
-            this.producto.precioFinalProducto=post.precioFinalProducto;
+            this.producto.precioInicialProducto = post.precioInicialProducto;
+            this.producto.precioFinalProducto = post.precioFinalProducto;
             this.producto.precioFijoProducto = post.precioFijoProducto;
             this.producto.nombreProducto = post.nombreProducto;
             this.producto.categoriaProducto = categoriaProducto;
@@ -352,5 +352,23 @@ export class ModalProductoComponent implements OnInit {
         });
     }
 
+    //Método para validar solo stock numeros enteros
 
+    positiveIntegerValidator(control) {
+        const value = control.value;
+        if (!Number.isInteger(value) || value < 0) {
+            return { positiveInteger: true };
+        }
+        return null;
+    }
+
+    //Método para validar solo peso numeros positivos
+
+    positiveNumberValidator(control) {
+        const value = control.value;
+        if (isNaN(value) || value < 0) {
+            return { positiveNumber: true }; 
+        }
+        return null;
+    }
 }

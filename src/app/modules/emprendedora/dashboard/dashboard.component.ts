@@ -7,7 +7,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatTableModule } from '@angular/material/table';
 import { MatTabsModule } from '@angular/material/tabs';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { TranslocoModule } from '@ngneat/transloco';
 import { dashboardService } from 'app/modules/emprendedora/dashboard/dashboard.service';
 import { ApexOptions, NgApexchartsModule } from 'ng-apexcharts';
@@ -15,6 +15,9 @@ import { Subject, takeUntil } from 'rxjs';
 import { UserService } from 'app/core/user/user.service';
 import { User } from 'app/core/user/user.types';
 import { UserComponent } from 'app/layout/common/user/user.component';
+import { PersonaService } from 'app/services/services/persona.service';
+import { Vendedor } from 'app/services/models/vendedora';
+import { VendedorService } from 'app/services/services/vendedora.service';
 
 @Component({
     selector: 'dashboard-emprendedora',
@@ -35,9 +38,19 @@ export class DashboardEmprendedoraComponentimplements implements OnInit, OnDestr
     chartYearlyExpenses: ApexOptions = {};
     data: any;
     user: User;
-    selectedProject: string = 'ACME Corp. Backend App';
+    selectedProject: string = 'Fundación Avanzar';
     private _unsubscribeAll: Subject<any> = new Subject<any>();
     nombreUsuario: string;
+
+
+
+    totalEmprendedoras: number = 0;
+    emprendedorasActivas: number = 0;
+    publicacionesProductos: number = 0;
+    publicacionesServicios: number = 0;
+    totalPublicaciones: number = 0;
+    idUsuario: any;
+    idVendedor: any;
     /**
      * Constructor
      */
@@ -45,6 +58,9 @@ export class DashboardEmprendedoraComponentimplements implements OnInit, OnDestr
         private _dashboardService: dashboardService,
         private _router: Router,
         private _userService: UserService,
+        private _personaService: PersonaService,
+        private vendedoraService: VendedorService,
+        private route: ActivatedRoute
     ) {
     }
 
@@ -58,6 +74,14 @@ export class DashboardEmprendedoraComponentimplements implements OnInit, OnDestr
     ngOnInit(): void {
         const parsedData = JSON.parse(localStorage.getItem('user'));
         this.nombreUsuario = parsedData.persona.primer_nombre;
+
+        this.idUsuario = parsedData.id;
+
+        this.vendedoraService.buscarVendedoraId(this.idUsuario).subscribe((vendedor: Vendedor) => {
+            this.idVendedor = vendedor.idVendedor;
+            console.log(this.idVendedor);
+            this.obtenerResumen2();
+        });
 
         // Get the data
         this._dashboardService.data$
@@ -103,7 +127,23 @@ export class DashboardEmprendedoraComponentimplements implements OnInit, OnDestr
     // -----------------------------------------------------------------------------------------------------
     // @ Public methods
     // -----------------------------------------------------------------------------------------------------
+    obtenerResumen2(): void {
+        this._personaService.obtenerResumen2(this.idVendedor).subscribe((res) => {
 
+            this.publicacionesProductos = res.publicacionesproductos;
+            console.log(this.publicacionesProductos);
+            this.publicacionesServicios = res.publicacionesservicios;
+            console.log(this.publicacionesServicios);
+            this.totalPublicaciones = res.totalpublicaciones;
+            console.log(this.totalPublicaciones);
+            this.emprendedorasActivas = res.emprendedorasactivas;
+            console.log(this.emprendedorasActivas);
+            this.totalEmprendedoras = res.totalemprendedoras;
+            console.log(this.totalEmprendedoras);
+        
+            console.log(res);
+        });
+    }
     /**
      * Track by function for ngFor loops
      *
@@ -448,5 +488,13 @@ export class DashboardEmprendedoraComponentimplements implements OnInit, OnDestr
                 },
             },
         };
+    }
+
+    redirectToConfiguracion() {
+        this._router.navigate(['/config-empre']);
+    }
+
+    redirectToProfile() {
+        this._router.navigate(['/profile-empre']);
     }
 }
