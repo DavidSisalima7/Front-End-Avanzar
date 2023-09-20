@@ -36,9 +36,9 @@ import { Publicacion, PublicacionA } from 'app/services/models/publicaciones';
   styleUrls: ['./home-tienda.component.scss'],
   styles: [
     `
-           /*  cards fuse-card {
+             cards fuse-card {
                 margin: 16px;
-            } */
+            } 
         `,
   ],
   imports: [AsyncPipe, NgIf, MatButtonToggleModule, FormsModule, NgFor, FuseCardComponent, MatButtonModule, MatIconModule, RouterLink, NgClass, MatMenuModule, MatCheckboxModule, MatProgressBarModule, MatFormFieldModule, MatInputModule, TextFieldModule, MatDividerModule, MatTooltipModule, TitleCasePipe],

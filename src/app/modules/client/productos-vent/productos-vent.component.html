@@ -25,15 +25,12 @@
 </div>
 
 <div class="flex-auto p-6 sm:p-26">
-    <div class="flex flex-wrap items-start w-full max-w-400 -m-4">
-  
+    <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
         <ng-container *ngIf="publicaciones$ | async as publicaciones">
-            <ng-container
-                *ngIf="publicaciones.length > 0; else noPublicaciones"
-            >
-            <ng-container *ngFor="let publicacion of publicaciones; trackBy: trackByFn">
-                 <fuse-card class="flex flex-col md:flex-row max-w-80 md:max-w-140 w-full filter-shopping">
-                            <div class="flex-0 w-80 md:w-60 ">
+            <ng-container *ngIf="publicaciones.length > 0; else noPublicaciones">
+                <ng-container *ngFor="let publicacion of publicaciones; trackBy: trackByFn">
+                    <fuse-card class="flex flex-col max-w-140 w-full filter-shopping">
+                        <div class="flex-0 w-full  h-64 md:w-full">
                                 <ng-container
                                     *ngIf="
                                         publicacion.productos;
