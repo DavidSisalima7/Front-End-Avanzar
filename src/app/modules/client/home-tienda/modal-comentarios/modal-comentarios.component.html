@@ -1,194 +1,63 @@
-
-
 <ng-container fuseCard>
     <hr class="border-b m-0">
     <div class="flex flex-col mx-4 sm:mx-8 mt-6 mb-3">
         <div class="flex items-start">
-            <img
-                class="w-12 h-12 rounded-full mr-5"
-                src="assets/images/avatars/clienteSinFoto.png"
+            <img class="w-12 h-12 rounded-full mr-5" src="assets/images/avatars/clienteSinFoto.png"
                 alt="Card cover image">
-               
-            <mat-form-field
-                class="w-full"
-                [subscriptSizing]="'dynamic'">
-                <textarea
-                    matInput
-                    [placeholder]="'Escribe un comentario'"
-                    [rows]="3"
-                    cdkTextareaAutosize></textarea>
-            </mat-form-field>
+            <form action="" [formGroup]="createCommintForm" class="w-full" #modalCommitNgForm="ngForm">
+                <mat-form-field class="w-full" [subscriptSizing]="'dynamic'">
+                    <textarea matInput [formControlName]="'commit'" [placeholder]="'Escribe un comentario'" [rows]="3"
+                        cdkTextareaAutosize></textarea>
+                    <mat-error class="absolute" *ngIf="createCommintForm.get('commit').hasError('required')">
+                        Este campo es requerido*
+                    </mat-error>
+                    <mat-error class="absolute" *ngIf="createCommintForm.get('commit').hasError('maxlength')">
+                        Comentario demasiado largo
+                    </mat-error>
+                    
+                </mat-form-field>
+
+            </form>
+
         </div>
         
         <div class="flex items-center mt-3 ml-auto -mr-3">
-           
-            <button mat-icon-button>
-                <mat-icon
-                    class="icon-size-5"
-                    svgIcon="heroicons_mini:arrow-down-on-square"></mat-icon>
+
+            <button mat-icon-button (click)="createCommint()" [color]="'primary'">
+                <mat-icon class="icon-size-5" svgIcon="heroicons_mini:arrow-down-on-square"></mat-icon>
             </button>
         </div>
     </div>
     <hr class="border-b mx-4 sm:mx-8 my-0">
-    <div class="max-h-120 overflow-y-auto">
+    <div class="max-h-120 overflow-y-auto min-w-90" *ngIf="listComments.length>0; else noComentarios">
+        <mat-error class="absolute -mt-6" *ngIf="commentLimit<1">
+            Muchos comentarios por ahora!!
+        </mat-error> 
         <div class="relative flex flex-col mx-4 sm:mx-8 my-6">
-            <div class="flex items-start">
-                <img
-                    class="w-8 h-8 rounded-full mr-4"
-                    src="assets/images/avatars/male-05.jpg"
-                    alt="Card cover image">
+
+            <div class="flex items-start" *ngFor="let c of listComments">
+                <img class="w-8 h-8 rounded-full mr-4" [src]="c.avatar ? c.avatar : 'assets/images/avatars/SinFotoComment.jpg'" alt="Card cover image">
                 <div class="flex flex-col mt-0.5">
                     <span>
-                        <b>Rutherford Brannan</b> Oh, I’m in.. Let’s arrange a trip for the next weekend if you want!
+                        <b>{{c.name}}</b> {{c.texto}}
                     </span>
                     <div class="flex items-center text-sm text-secondary mt-2">
-                        <span class="mr-2 cursor-pointer hover:underline">Like</span>
-                        <span class="mr-2 cursor-pointer hover:underline">Reply</span>
-                        <span class="mr-2 cursor-pointer hover:underline">Hide replies</span>
                         <span class="mr-2">&bull;</span>
-                        <span>17 min</span>
+                        <span>{{c.tiempoTranscurrido}}</span>
                     </div>
                 </div>
             </div>
-            <div class="flex items-start mt-8 ml-12">
-                <img
-                    class="w-8 h-8 rounded-full mr-4"
-                    src="assets/images/avatars/female-01.jpg"
-                    alt="Card cover image">
-                <div class="flex flex-col mt-0.5">
-                    <span>
-                        <b>Caroline Lundu</b> Yes!! Let's talk about it on lunch!
-                    </span>
-                    <div class="flex items-center text-sm text-secondary mt-2">
-                        <span class="mr-2 cursor-pointer hover:underline">Like</span>
-                        <span class="mr-2 cursor-pointer hover:underline">Reply</span>
-                        <span class="mr-2">&bull;</span>
-                        <span>15 min</span>
-                    </div>
-                </div>
-            </div>
-            <div class="flex items-start mt-8 ml-12">
-                <img
-                    class="w-8 h-8 rounded-full mr-4"
-                    src="assets/images/avatars/female-08.jpg"
-                    alt="Card cover image">
-                <div class="flex flex-col mt-0.5">
-                    <span>
-                        <b>Barbara Cotilla</b> Count me in !!!
-                    </span>
-                    <div class="flex items-center text-sm text-secondary mt-2">
-                        <span class="mr-2 cursor-pointer hover:underline">Like</span>
-                        <span class="mr-2 cursor-pointer hover:underline">Reply</span>
-                        <span class="mr-2">&bull;</span>
-                        <span>12 min</span>
-                    </div>
-                </div>
-            </div>
-            <div class="flex items-start mt-8">
-                <img
-                    class="w-8 h-8 rounded-full mr-4"
-                    src="assets/images/avatars/male-11.jpg"
-                    alt="Card cover image">
-                <div class="flex flex-col mt-0.5">
-                    <span>
-                        <b>Alan Marti</b> The color of the sky doesn’t look natural at all, do you really think this is natural? I’d say Photoshop!
-                        Your trip isn't going to worth it since you won't be seeing this exact sky.
-                    </span>
-                    <div class="flex items-center text-sm text-secondary mt-2">
-                        <span class="mr-2 cursor-pointer hover:underline">Like</span>
-                        <span class="mr-2 cursor-pointer hover:underline">Reply</span>
-                        <span class="mr-2 cursor-pointer hover:underline">Hide replies</span>
-                        <span class="mr-2">&bull;</span>
-                        <span>24 min</span>
-                    </div>
-                </div>
-            </div>
-            <div class="flex items-start mt-8 ml-12">
-                <img
-                    class="w-8 h-8 rounded-full mr-4"
-                    src="assets/images/avatars/female-01.jpg"
-                    alt="Card cover image">
-                <div class="flex flex-col mt-0.5">
-                    <span>
-                        <b>Caroline Lundu</b> Hey, Alan! You must be fun at parties!
-                    </span>
-                    <div class="flex items-center text-sm text-secondary mt-2">
-                        <span class="mr-2 cursor-pointer hover:underline">Like</span>
-                        <span class="mr-2 cursor-pointer hover:underline">Reply</span>
-                        <span class="mr-2">&bull;</span>
-                        <span>22 min</span>
-                    </div>
-                </div>
-            </div>
-            <div class="flex items-start mt-8 ml-12">
-                <img
-                    class="w-8 h-8 rounded-full mr-4"
-                    src="assets/images/avatars/male-11.jpg"
-                    alt="Card cover image">
-                <div class="flex flex-col mt-0.5">
-                    <span>
-                        <b>Alan Marti</b> Caroline, I'm telling the truth, and if you cannot stand the truth, maybe we shouldn't be friends anymore...
-                    </span>
-                    <div class="flex items-center text-sm text-secondary mt-2">
-                        <span class="mr-2 cursor-pointer hover:underline">Like</span>
-                        <span class="mr-2 cursor-pointer hover:underline">Reply</span>
-                        <span class="mr-2">&bull;</span>
-                        <span>20 min</span>
-                    </div>
-                </div>
-            </div>
-            <div class="flex items-start mt-8 ml-12">
-                <img
-                    class="w-8 h-8 rounded-full mr-4"
-                    src="assets/images/avatars/female-01.jpg"
-                    alt="Card cover image">
-                <div class="flex flex-col mt-0.5">
-                    <span>
-                        <b>Caroline Lundu</b> Dude! Relax! I'm just messing with you...
-                    </span>
-                    <div class="flex items-center text-sm text-secondary mt-2">
-                        <span class="mr-2 cursor-pointer hover:underline">Like</span>
-                        <span class="mr-2 cursor-pointer hover:underline">Reply</span>
-                        <span class="mr-2">&bull;</span>
-                        <span>18 min</span>
-                    </div>
-                </div>
-            </div>
-            <div class="flex items-start mt-8 ml-12">
-                <img
-                    class="w-8 h-8 rounded-full mr-4"
-                    src="assets/images/avatars/male-11.jpg"
-                    alt="Card cover image">
-                <div class="flex flex-col mt-0.5">
-                    <span>
-                        <b>Alan Marti</b> Sorry! I had a bad morning, let's talk about this in couple hours, I need to relax a bit :(
-                    </span>
-                    <div class="flex items-center text-sm text-secondary mt-2">
-                        <span class="mr-2 cursor-pointer hover:underline">Like</span>
-                        <span class="mr-2 cursor-pointer hover:underline">Reply</span>
-                        <span class="mr-2">&bull;</span>
-                        <span>16 min</span>
-                    </div>
-                </div>
-            </div>
-            <div class="flex items-start mt-8">
-                <img
-                    class="w-8 h-8 rounded-full mr-4"
-                    src="assets/images/avatars/female-05.jpg"
-                    alt="Card cover image">
-                <div class="flex flex-col mt-0.5">
-                    <span>
-                        <b>Marleah Eagleston</b> Count me in, too!
-                    </span>
-                    <div class="flex items-center text-sm text-secondary mt-2">
-                        <span class="mr-2 cursor-pointer hover:underline">Like</span>
-                        <span class="mr-2 cursor-pointer hover:underline">Reply</span>
-                        <span class="mr-2">&bull;</span>
-                        <span>34 min</span>
-                    </div>
-                </div>
-            </div>
+
         </div>
     </div>
+    <ng-template #noComentarios>
+        <div class="p-8 sm:p-16 border-t text-4xl font-semibold tracking-tight text-center">No hay comentarios
+            disponibles!</div>
+    </ng-template>
+    <button mat-button [color]="'primary'" class="min-w-11 " (click)="loadMoreComments()">
+        <mat-icon svgIcon="add_comment"></mat-icon><b class="text-sm">Más comentarios</b>
+    </button>
+    <mat-error class="inline-block" *ngIf="banMoreComments">
+        No hay más comentarios
+    </mat-error>
 </ng-container>
-

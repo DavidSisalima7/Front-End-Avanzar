@@ -8,5 +8,5 @@ export class Comentario{
     texto:string;
     fecha:Date;
     usuario:Usuario
-    Publicaciones:Publicacion;
+    publicaciones:Publicacion;
 }
