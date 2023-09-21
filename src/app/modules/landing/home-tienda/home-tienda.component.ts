@@ -1,10 +1,11 @@
 import { Component, ViewEncapsulation } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
-import { RouterLink } from '@angular/router';
+
 import { MatInputModule } from '@angular/material/input';
 import { BehaviorSubject, combineLatest, Subject, takeUntil } from 'rxjs';
 import { FuseCardComponent } from '@fuse/components/card';
+import { Router, RouterLink } from '@angular/router';
 @Component({
     selector     : 'home-tienda',
     templateUrl  : './home-tienda.component.html',
@@ -32,8 +33,25 @@ export class HomeTiendaInvitadoComponent
     /**
      * Constructor
      */
-    constructor()
+    constructor(private _router: Router)
     {
+    }
+
+
+    redirectToTienda(): void {
+        this._router.navigate(['/contactanos']);
+    }
+
+    redirectToNosotros(): void {
+        this._router.navigate(['/nosotros']);
+    }
+
+    redirectToPlanes(): void {
+        this._router.navigate(['/planes']);
+    }
+
+    redirectToHome(): void {
+        this._router.navigate(['/home']);
     }
 
 

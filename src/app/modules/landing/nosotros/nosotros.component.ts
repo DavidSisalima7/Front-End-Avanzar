@@ -24,10 +24,18 @@ export class NosotrosInvitadoComponent
 
 
     redirectToTienda(): void {
-        this._router.navigate(['/home-tienda']);
+        this._router.navigate(['/contactanos']);
     }
 
     redirectToNosotros(): void {
-        this._router.navigate(['nosotros']);
+        this._router.navigate(['/nosotros']);
+    }
+
+    redirectToPlanes(): void {
+        this._router.navigate(['/planes']);
+    }
+
+    redirectToHome(): void {
+        this._router.navigate(['/home']);
     }
 }

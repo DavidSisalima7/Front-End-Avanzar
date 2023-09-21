@@ -65,7 +65,7 @@ export class LandingHomeComponent {
       }
 
     redirectToTienda(): void {
-        this._router.navigate(['/home-tienda']);
+        this._router.navigate(['/contactanos']);
     }
 
     redirectToNosotros(): void {
