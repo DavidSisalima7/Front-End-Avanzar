@@ -254,7 +254,8 @@
 
                 <div class="relative w-24 h-24">
                     <mat-label>Foto</mat-label> <br>
-                    <img class="w-full h-full rounded-full" *ngIf="selectedImageSrc" [src]="selectedImageSrc" alt="User avatar">
+                    <img class="w-full h-full rounded-full" *ngIf="selectedImageSrc" [ngSrc]="selectedImageSrc" alt="User avatar"  width="300" 
+                    height="200">
                     <mat-icon class="icon-size-24" *ngIf="!selectedImageSrc" [svgIcon]="'heroicons_solid:user-circle'"></mat-icon>
                   </div>
                   

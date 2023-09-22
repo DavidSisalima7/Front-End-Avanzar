@@ -12,11 +12,14 @@ import { MatMenuModule } from '@angular/material/menu';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { RouterLink } from '@angular/router';
 import { FuseCardComponent } from '@fuse/components/card';
+import { UserService } from 'app/core/user/user.service';
+import { User } from 'app/core/user/user.types';
 import { Comentario } from 'app/services/models/comentario';
 import { ComentariosDto } from 'app/services/models/comentariosDto';
 import { Publicacion } from 'app/services/models/publicaciones';
 import { Usuario } from 'app/services/models/usuario';
 import { ComentarioService } from 'app/services/services/comentarios.service';
+import { Subject, takeUntil } from 'rxjs';
 
 
 @Component({
@@ -29,6 +32,7 @@ import { ComentarioService } from 'app/services/services/comentarios.service';
 })
 export class ModalComentariosComponent {
 
+  user: User;
   page: number = 0;
   idUser: number = 0;
   commentLimit:number =3;
@@ -38,18 +42,30 @@ export class ModalComentariosComponent {
   publicacion = new Publicacion();
   usuario = new Usuario();
   listComments: ComentariosDto[] = [];
+  listCommentarios: Comentario[] = [];
   banMoreComments = false;
   @ViewChild('modalCommitNgForm') modalCommitNgForm: NgForm;
+  private _unsubscribeAll: Subject<any> = new Subject<any>();
 
 
 
   constructor(@Inject(MAT_DIALOG_DATA) public data: any,
     private _commitService: ComentarioService,
     private _formBuilder: UntypedFormBuilder,
+    private _userService: UserService,
   ) { }
 
 
-  ngOnInit(): void {
+  ngOnInit(): void {  
+
+    // Subscribe to the user service
+    this._userService.user$
+    .pipe((takeUntil(this._unsubscribeAll)))
+    .subscribe((user: User) =>
+    {
+        this.user = user;
+    });
+
 
     this.idUser = parseInt(localStorage.getItem("idUser") ?? '0');
 

@@ -2,8 +2,12 @@
     <hr class="border-b m-0">
     <div class="flex flex-col mx-4 sm:mx-8 mt-6 mb-3">
         <div class="flex items-start">
-            <img class="w-12 h-12 rounded-full mr-5" src="assets/images/avatars/clienteSinFoto.png"
-                alt="Card cover image">
+            <img class="w-16 h-12 rounded-full mr-4" *ngIf="user.avatar" [src]="user.avatar" alt="User avatar">
+                <mat-icon class="icon-size-12" *ngIf="!user.avatar"
+                    [svgIcon]="'heroicons_solid:user-circle'"></mat-icon>
+                <mat-icon>
+                    <p></p>
+                </mat-icon>
             <form action="" [formGroup]="createCommintForm" class="w-full" #modalCommitNgForm="ngForm">
                 <mat-form-field class="w-full" [subscriptSizing]="'dynamic'">
                     <textarea matInput [formControlName]="'commit'" [placeholder]="'Escribe un comentario'" [rows]="3"
@@ -28,11 +32,13 @@
             </button>
         </div>
     </div>
+    <p class="text-sm text-secondary mx-4 sm:mx-8 my-0">Comentarios: {{ listComments.length }}</p>
     <hr class="border-b mx-4 sm:mx-8 my-0">
     <div class="max-h-120 overflow-y-auto min-w-90" *ngIf="listComments.length>0; else noComentarios">
         <mat-error class="absolute -mt-6" *ngIf="commentLimit<1">
             Muchos comentarios por ahora!!
-        </mat-error> 
+        </mat-error>
+         
         <div class="relative flex flex-col mx-4 sm:mx-8 my-6">
 
             <div class="flex items-start" *ngFor="let c of listComments">

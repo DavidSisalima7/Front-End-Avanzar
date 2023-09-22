@@ -26,7 +26,8 @@
                      <ng-container *ngIf="selectedPublicacionForm.get('imagenes').value.length; else noImage">
                         <img
                             class="w-full h-full object-cover"
-                            [src]="selectedPublicacionForm.get('imagenes').value[selectedPublicacionForm.get('currentImageIndex').value]">
+                            [src]="selectedPublicacionForm.get('imagenes').value[selectedPublicacionForm.get('currentImageIndex').value]"
+                           >
                     </ng-container>
                     <ng-template #noImage>
                         <span class="flex items-center min-h-20 text-lg font-semibold">NO IMAGEN</span>
@@ -66,8 +67,9 @@
                 <fuse-card class="flex flex-col items-center max-w-90 w-full p-8 pb-6 filter-info vendedor-card">
                     <img
                         class="w-32 h-32 rounded-full"
-                        [src]="selectedPublicacionForm.get('avatar').value"
-                        alt="Card cover image">
+                        [ngSrc]="selectedPublicacionForm.get('avatar').value"
+                        alt="Card cover image"  width="300" 
+                        height="200">
                     <div class="text-2xl font-semibold leading-tight text-center mt-8" [textContent]="selectedPublicacionForm.get('vendedor').value">
                     </div>
                     <div class="text-secondary leading-tight text-center mt-1"[textContent]="selectedPublicacionForm.get('pais').value"></div>                 

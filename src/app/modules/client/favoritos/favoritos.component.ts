@@ -9,7 +9,7 @@ import { HomeTiendaClientComponent } from '../home-tienda/home-tienda.component'
 import { ModalPublicacionComponent } from '../home-tienda/modal-publicacion/modal-publicacion.component';
 import { PublicacionInventoryDestacadosService } from 'app/services/services/publicacion-inventory-destacados.service';
 import { TextFieldModule } from '@angular/cdk/text-field';
-import { AsyncPipe, NgIf, NgFor, NgClass, TitleCasePipe } from '@angular/common';
+import { AsyncPipe, NgIf, NgFor, NgClass, TitleCasePipe, NgOptimizedImage } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
@@ -30,7 +30,7 @@ import { ModalDestacadosComponent } from './modal-destacados/modal-destacados.co
     standalone   : true,
     templateUrl  : './favoritos.component.html',
     encapsulation: ViewEncapsulation.None,
-    imports: [AsyncPipe, NgIf, MatButtonToggleModule, FormsModule, NgFor, FuseCardComponent, MatButtonModule, MatIconModule, RouterLink, NgClass, MatMenuModule, MatCheckboxModule, MatProgressBarModule, MatFormFieldModule, MatInputModule, TextFieldModule, MatDividerModule, MatTooltipModule, TitleCasePipe],
+    imports: [NgOptimizedImage,AsyncPipe, NgIf, MatButtonToggleModule, FormsModule, NgFor, FuseCardComponent, MatButtonModule, MatIconModule, RouterLink, NgClass, MatMenuModule, MatCheckboxModule, MatProgressBarModule, MatFormFieldModule, MatInputModule, TextFieldModule, MatDividerModule, MatTooltipModule, TitleCasePipe],
 })
 export class FavoritosClientComponent
 {

@@ -19,4 +19,8 @@ export class ComentarioService {
    listCommentsPubli(idPubli:number, page: number):Observable<ComentariosDto[]>{
     return this.http.get<ComentariosDto[]>(`${this.baseUrl}/listCommentP/${idPubli}/${page}`);
    }
+
+   listarComentarios(): Observable<Comentario[]> {
+    return this.http.get<Comentario[]>(`${this.baseUrl}/listar`);
+  }
 }

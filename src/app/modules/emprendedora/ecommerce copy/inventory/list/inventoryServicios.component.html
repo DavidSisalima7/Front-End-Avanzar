@@ -94,7 +94,9 @@
                                                 class="w-8"
                                                 *ngIf="publicacion.servicios.miniaturaServicio"
                                                 [alt]="'Publicacion thumbnail image'"
-                                                [src]="publicacion.servicios.miniaturaServicio">
+                                                [ngSrc]="publicacion.servicios.miniaturaServicio"
+                                                 width="300" 
+                                                 height="200">
                                             <div
                                                 class="flex items-center justify-center w-full h-full text-xs font-semibold leading-none text-center uppercase"
                                                 *ngIf="!publicacion.servicios.miniaturaServicio">

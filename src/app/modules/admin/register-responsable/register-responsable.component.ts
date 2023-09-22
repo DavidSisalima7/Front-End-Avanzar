@@ -17,7 +17,7 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
 import { PersonaService } from 'app/services/services/persona.service';
 import { UserService } from 'app/core/user/user.service';
 import { Persona } from 'app/services/models/persona';
-import { DatePipe, NgIf } from '@angular/common';
+import { DatePipe, NgIf, NgOptimizedImage } from '@angular/common';
 import { FuseAlertComponent } from '@fuse/components/alert';
 import { fuseAnimations } from '@fuse/animations';
 import { User } from 'app/core/user/user.types';
@@ -30,7 +30,7 @@ import { Router } from '@angular/router';
     encapsulation: ViewEncapsulation.None,
     animations: fuseAnimations,
     standalone: true,
-    imports: [MatIconModule, FormsModule, ReactiveFormsModule, MatStepperModule, MatFormFieldModule, MatInputModule, MatSelectModule, MatOptionModule,
+    imports: [NgOptimizedImage,MatIconModule, FormsModule, ReactiveFormsModule, MatStepperModule, MatFormFieldModule, MatInputModule, MatSelectModule, MatOptionModule,
         MatButtonModule, MatCheckboxModule, MatRadioModule, MatTableModule, MatTabsModule, MatDatepickerModule,
         NgIf, FuseAlertComponent],
 })

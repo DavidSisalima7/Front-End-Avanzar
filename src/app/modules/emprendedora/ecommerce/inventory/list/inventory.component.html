@@ -73,7 +73,9 @@
                                             class="relative flex flex-0 items-center justify-center w-12 h-12 mr-6 rounded overflow-hidden border">
                                             <img class="w-12 h-12" *ngIf="publicacion.productos.miniaturaProducto"
                                                 [alt]="'Publicacion image'"
-                                                [src]="publicacion.productos.miniaturaProducto">
+                                                [ngSrc]="publicacion.productos.miniaturaProducto"
+                                                width="300" 
+                                                height="200">
                                             <div class="flex items-center justify-center w-full h-full text-xs font-semibold leading-none text-center uppercase"
                                                 *ngIf="!publicacion.productos.miniaturaProducto">
                                                 NO IMG

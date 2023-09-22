@@ -15,8 +15,9 @@
 
             <!-- Avatar -->
             <div class="-mt-26 lg:-mt-22 rounded-full">
-                <img class="w-32 h-32 rounded-full ring-4 ring-bg-card " *ngIf="user.avatar" [src]="user.avatar"
-                    alt="User avatar">
+                <img class="w-32 h-32 rounded-full ring-4 ring-bg-card " *ngIf="user.avatar" [ngSrc]="user.avatar"
+                    alt="User avatar"  width="300" 
+                    height="200">
                 <mat-icon class="icon-size-24" *ngIf="!user.avatar"
                     [svgIcon]="'heroicons_solid:user-circle'"></mat-icon>
             </div>

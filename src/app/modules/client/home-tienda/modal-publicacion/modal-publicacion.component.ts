@@ -1,7 +1,7 @@
 import { Component, OnInit, ChangeDetectorRef, ViewChild, EventEmitter, Output, Inject } from '@angular/core';
 import { NgForm, FormBuilder, FormGroup, Validators, ReactiveFormsModule, FormsModule, UntypedFormGroup } from '@angular/forms';
 import { MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { AsyncPipe, CurrencyPipe, NgClass, NgFor, NgIf, NgTemplateOutlet } from '@angular/common';
+import { AsyncPipe, CurrencyPipe, NgClass, NgFor, NgIf, NgOptimizedImage, NgTemplateOutlet } from '@angular/common';
 import { MatButtonModule } from '@angular/material/button';
 import { MatDialogRef } from '@angular/material/dialog';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -31,7 +31,7 @@ import { ProductosVentClientComponent } from '../../productos-vent/productos-ven
     templateUrl: './modal-publicacion.component.html',
     styleUrls: ['./modal-publicacion.component.scss'],
     standalone: true,
-    imports: [MatSlideToggleModule, MatSelectModule,FuseCardComponent,MatMenuModule,RouterLink, MatOptionModule, MatDatepickerModule, NgFor, MatButtonModule, MatIconModule, FormsModule, ReactiveFormsModule, MatFormFieldModule, MatInputModule, NgIf, QuillEditorComponent]
+    imports: [NgOptimizedImage,MatSlideToggleModule, MatSelectModule,FuseCardComponent,MatMenuModule,RouterLink, MatOptionModule, MatDatepickerModule, NgFor, MatButtonModule, MatIconModule, FormsModule, ReactiveFormsModule, MatFormFieldModule, MatInputModule, NgIf, QuillEditorComponent]
 
 })
 export class ModalPublicacionComponent implements OnInit {
@@ -63,6 +63,7 @@ export class ModalPublicacionComponent implements OnInit {
                 this.selectedPublicacionForm=this._formBuilder.group({
                     idPublicacion: [this.selectedPublicacion.idPublicacion],
                     nombreProducto: this.selectedPublicacion.productos ? this.selectedPublicacion.productos.nombreProducto : this.selectedPublicacion.servicios.nombreServicio,
+                    nombreCategoria:[this.selectedPublicacion.categoria.nombreCategoria],
                     tituloPublicacion:  [this.selectedPublicacion.tituloPublicacion],
                     descripcionPublicacion:  [this.selectedPublicacion.descripcionPublicacion],
                     descripcionUsuario:  [this.selectedPublicacion.vendedor.usuario.persona.descripcion],

@@ -1,6 +1,6 @@
 import { FavoritosService } from './../../../services/services/favoritos.service';
 import { TextFieldModule } from '@angular/cdk/text-field';
-import { NgClass, NgFor, TitleCasePipe } from '@angular/common';
+import { NgClass, NgFor, NgOptimizedImage, TitleCasePipe } from '@angular/common';
 import { Component, AfterViewInit, ChangeDetectionStrategy, ElementRef, QueryList, Renderer2, ViewChildren, ViewEncapsulation , ViewChild } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
@@ -26,9 +26,9 @@ import { MatTableDataSource } from '@angular/material/table';
 import { MatPaginator } from '@angular/material/paginator';
 import { PublicacionesService } from 'app/services/services/publicaciones.service';
 import { Destacados } from 'app/services/models/destacados';
-import { Publicacion, PublicacionA } from 'app/services/models/publicaciones';
 import { ModalComentariosComponent } from './modal-comentarios/modal-comentarios.component';
-;
+import { ComentarioService } from 'app/services/services/comentarios.service';
+
 @Component({
   selector: 'home-tienda',
   standalone: true,
@@ -42,7 +42,7 @@ import { ModalComentariosComponent } from './modal-comentarios/modal-comentarios
             } 
         `,
   ],
-  imports: [AsyncPipe, NgIf, MatButtonToggleModule, FormsModule, NgFor, FuseCardComponent, MatButtonModule, MatIconModule, RouterLink, NgClass, MatMenuModule, MatCheckboxModule, MatProgressBarModule, MatFormFieldModule, MatInputModule, TextFieldModule, MatDividerModule, MatTooltipModule, TitleCasePipe],
+  imports: [NgOptimizedImage,AsyncPipe, NgIf, MatButtonToggleModule, FormsModule, NgFor, FuseCardComponent, MatButtonModule, MatIconModule, RouterLink, NgClass, MatMenuModule, MatCheckboxModule, MatProgressBarModule, MatFormFieldModule, MatInputModule, TextFieldModule, MatDividerModule, MatTooltipModule, TitleCasePipe],
 })
 export class HomeTiendaClientComponent {
 
@@ -71,15 +71,17 @@ export class HomeTiendaClientComponent {
   constructor(
     private _inventoryService: PublicacionesInventory,
     private _matDialog: MatDialog,
-    private renderer: Renderer2,
     private _favoritoService: FavoritosService,
-    private _publicacionesService: PublicacionesService
+    private _publicacionesService: PublicacionesService,
+    private _commitService: ComentarioService,
   ) {
   }
 
 
   ngOnInit(): void {
     this.publicaciones$ = this._inventoryService.publicaciones$;
+   
+    
   }
 
   nextPage() {
