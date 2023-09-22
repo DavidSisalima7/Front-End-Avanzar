@@ -71,7 +71,7 @@
                     <mat-form-field class="w-full">
                         <mat-label>Descripción</mat-label>
                         <input placeholder="Ingrese una descripción de su producto" matInput
-                            [formControlName]="'descripcionPublicacion'" pattern="^\S(.*\S)?$" />
+                            [formControlName]="'descripcionPublicacion'"/>
                         <mat-error *ngIf="selectedPublicacionForm.get('descripcionPublicacion').hasError('pattern')">
                             Descripción inválida
                         </mat-error>

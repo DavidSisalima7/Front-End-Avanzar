@@ -1,18 +1,40 @@
 <div class="flex flex-col flex-auto min-w-0">
-    <!-- Main -->
-    <div class="flex flex-auto justify-center w-full max-w-7xl mx-auto p-6 sm:p-8">
-        <!-- Column -->
-        <div class="flex flex-col items-start">
+    <!-- Header -->
+    <div
+        class="flex flex-col sm:flex-row flex-0 sm:items-center sm:justify-between p-6 sm:py-8 sm:px-10 border-b bg-card dark:bg-transparent"
+    >
+        <div class="flex-1 min-w-0">
+            <!-- Breadcrumbs -->
+            <div class="flex flex-wrap items-center font-medium">
+                <div>
+                    <a class="whitespace-nowrap text-primary-500"
+                        >Productos y servicios que te interesaron</a
+                    >
+                </div>
+            </div>
+            <!-- Title -->
+            <div class="mt-2 flex items-center">
+                <img
+                    class="w-10 h-10 object-cover rounded-full"
+                    src="assets/images/logo/avanzar.png"
+                    alt="Logo de Avanzar"
+                />
+                <h2
+                    class="ml-2 text-3xl md:text-4xl font-extrabold tracking-tight leading-7 sm:leading-10 truncate"
+                >
+                    Favoritos
+                </h2>
+            </div>
+        </div>
+    </div>
+
+    <div class="flex-auto p-6 sm:p-26">
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
             <ng-container *ngIf="publicaciones$ | async as publicaciones">
                 <ng-container *ngIf="publicaciones.length > 0; else noPublicaciones">
-                    <!-- Cambio de la estructura para crear dos columnas -->
-                    <div class="flex flex-wrap -mx-4">
-                        <ng-container *ngFor="let publicacion of publicaciones; trackBy: trackByFn">
-                            <div class="flex w-full md:w-1/2 px-4 mb-8"
-                                [ngClass]="{'solo-una-tarjeta': publicaciones.length === 1}">
-                                <fuse-card
-                                    class="flex flex-col md:flex-row max-w-40 md:max-w-140 w-full filter-shopping">
-                                    <div class="flex-0 w-80 md:w-40">
+                    <ng-container *ngFor="let publicacion of publicaciones; trackBy: trackByFn">
+                        <fuse-card class="flex flex-col max-w-140 w-full filter-shopping">
+                            <div class="flex-0 w-full  h-64 md:w-full">
                                         <ng-container *ngIf="
                                                 publicacion.productos;
                                                 else servicioMiniatura
@@ -251,11 +273,13 @@
                                         </div>
                                     </div>
                                 </fuse-card>
-                            </div>
+                            </ng-container>
                         </ng-container>
-                    </div>
-                </ng-container>
-            </ng-container>
+                    </ng-container>
+                    <ng-template #noPublicaciones>
+                        <div class="p-8 sm:p-16 border-t text-4xl font-semibold tracking-tight text-center">No hay publicaciones
+                            disponibles!</div>
+                    </ng-template>
+                </div>
+            </div>
         </div>
-    </div>
-</div>

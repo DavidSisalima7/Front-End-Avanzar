@@ -340,9 +340,7 @@ export class InventoryListComponentService implements OnInit, AfterViewInit, OnD
     this.publication.tituloPublicacion=post.tituloPublicacion;
     this.publication.descripcionPublicacion=post.descripcionPublicacion;
     this.publication.estado=post.estado;
-    
-    console.log("datos",this.publication);
-    console.log("Categoria", post.categoria);
+  
     // Ahora que todos los datos están disponibles, puedes actualizar la publicación completa
     this._inventoryService.updatePublicacion(post.idPublicacion, this.publication).subscribe(() => {
         // Show a success message

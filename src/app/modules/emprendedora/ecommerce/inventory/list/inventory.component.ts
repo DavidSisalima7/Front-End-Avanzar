@@ -377,7 +377,7 @@ export class InventoryListComponent implements OnInit, AfterViewInit, OnDestroy 
             // Assign the fetched data to this.publication
             this.publication.vendedor = vendedor;
             this.publication.productos = publicacion.productos;
-            this.publication.productos.miniaturaProducto = " "; // ¿Estás seguro de que esto debería ser una cadena?
+            this.publication.productos.miniaturaProducto = " ";
 
             this.publication.tituloPublicacion = post.tituloPublicacion;
             this.publication.descripcionPublicacion = post.descripcionPublicacion;

@@ -78,8 +78,7 @@
                   ></mat-icon>
                   
                     <div class="text-2xl font-semibold leading-tight text-center mt-8" [textContent]="selectedPublicacionForm.get('vendedor').value">
-                    </div>
-                    <div class="text-secondary leading-tight text-center mt-1"[textContent]="selectedPublicacionForm.get('pais').value"></div>                 
+                    </div>              
                     <hr class="w-full border-t mt-8 mb-0">
 
                      <!-- Nombre de negocio -->
@@ -133,18 +132,6 @@
                         ></mat-icon>
                         <span class="text-sm font-medium text-secondary" [textContent]="selectedPublicacionForm.get('contacto').value"></span>
                         </div>
-
-                        <div class="flex flex-col items-center">
-                            <mat-icon
-                            class="icon-size-5 transition-transform ease-in-out duration-150 rotate-0"
-
-                            [svgIcon]="
-                                'mat_solid:account_box'
-                            "
-                        ></mat-icon>
-                        <span class="text-sm font-medium text-secondary" [textContent]="selectedPublicacionForm.get('pais').value"></span>
-                        </div>
-
                     </div>
                     <hr class="w-full border-t mt-0 mb-8">
                     <div class="text-center text-secondary">
