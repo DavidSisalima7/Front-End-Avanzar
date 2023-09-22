@@ -18,6 +18,7 @@ import { UserComponent } from 'app/layout/common/user/user.component';
 import { PersonaService } from 'app/services/services/persona.service';
 import { Vendedor } from 'app/services/models/vendedora';
 import { VendedorService } from 'app/services/services/vendedora.service';
+import { DetalleSubscripcionService } from 'app/services/services/detalleSubscripcion.service';
 
 @Component({
     selector: 'dashboard-emprendedora',
@@ -38,6 +39,7 @@ export class DashboardEmprendedoraComponentimplements implements OnInit, OnDestr
     chartYearlyExpenses: ApexOptions = {};
     data: any;
     user: User;
+    static detalleSubscripcion: any;
     selectedProject: string = 'Fundación Avanzar';
     private _unsubscribeAll: Subject<any> = new Subject<any>();
     nombreUsuario: string;
@@ -51,6 +53,7 @@ export class DashboardEmprendedoraComponentimplements implements OnInit, OnDestr
     totalPublicaciones: number = 0;
     idUsuario: any;
     idVendedor: any;
+    vendedorLogueado: Vendedor;
     /**
      * Constructor
      */
@@ -60,7 +63,8 @@ export class DashboardEmprendedoraComponentimplements implements OnInit, OnDestr
         private _userService: UserService,
         private _personaService: PersonaService,
         private vendedoraService: VendedorService,
-        private route: ActivatedRoute
+        private route: ActivatedRoute,
+        private _detalleSubscripcionService : DetalleSubscripcionService
     ) {
     }
 
@@ -81,6 +85,17 @@ export class DashboardEmprendedoraComponentimplements implements OnInit, OnDestr
             this.idVendedor = vendedor.idVendedor;
             console.log(this.idVendedor);
             this.obtenerResumen2();
+
+            this._detalleSubscripcionService.obtenerDetallePorVendedorId(vendedor.idVendedor)
+            .subscribe(data => {
+              // Almacenar en el localStorage
+              localStorage.setItem('extraerMembresia', JSON.stringify(data));
+              console.log(data);
+            }, error => {
+              // Manejo de errores
+              console.error(error);
+            });
+
         });
 
         // Get the data
@@ -113,6 +128,7 @@ export class DashboardEmprendedoraComponentimplements implements OnInit, OnDestr
                 },
             },
         };
+
     }
 
     /**

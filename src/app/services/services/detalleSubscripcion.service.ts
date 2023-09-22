@@ -40,4 +40,9 @@ export class DetalleSubscripcionService {
   limitEstatusPost():Observable<mensajeAlertasDto>{
     return this.http.get<mensajeAlertasDto>(`${this.baseUrl}/comprobarPubAct`);
   }
+
+  obtenerDetallePorVendedorId(vendedorId: number): Observable<DetalleSubscripcion> {
+    return this.http.get<DetalleSubscripcion>(`${this.baseUrl}/extraerMembresia/${vendedorId}`)
+  }
+
 }
