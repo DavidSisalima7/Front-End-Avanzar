@@ -31,7 +31,7 @@ import { DetalleSubscripcionService } from 'app/services/services/detalleSubscri
     standalone: true,
     styleUrls: ['./modal-producto.component.scss'],
 
-    imports: [MatSlideToggleModule, MatSelectModule, MatOptionModule, MatDatepickerModule, NgFor, MatButtonModule, MatIconModule, FormsModule, ReactiveFormsModule, MatFormFieldModule, MatInputModule, NgIf, QuillEditorComponent],
+    imports: [MatSlideToggleModule, MatSelectModule,NgFor, MatOptionModule, MatDatepickerModule, NgFor, MatButtonModule, MatIconModule, FormsModule, ReactiveFormsModule, MatFormFieldModule, MatInputModule, NgIf, QuillEditorComponent],
 })
 export class ModalProductoComponent implements OnInit {
     selectedPublicacionForm: UntypedFormGroup;
