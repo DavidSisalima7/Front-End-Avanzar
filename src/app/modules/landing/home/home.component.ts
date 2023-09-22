@@ -25,7 +25,6 @@ import { ModalClienteComponent } from 'app/modules/admin/modal-cliente/modal-cli
 import { InventarioPublicaciones } from 'app/modules/emprendedora/ecommerce/inventory/inventory.types';
 import { PublicacionesInventory } from 'app/services/services/publicacionesInventory.service';
 import { ModalPublicacionProductosComponent } from './modal-cliente-publicaciones/modal-cliente-publicacionescomponent';
-;
 
 @Component({
     selector: 'landing-home',

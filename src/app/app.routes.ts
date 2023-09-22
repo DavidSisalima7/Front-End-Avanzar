@@ -57,10 +57,11 @@ export const appRoutes: Route[] = [
             layout: 'empty'
         },
         children: [
-            {path: 'home', loadChildren: () => import('app/modules/landing/home/home.routes')},
-            {path: 'contactanos', loadChildren: () => import('app/modules/landing/home-tienda/home-tienda.routes')},
+            {path: 'avanzar-shop', loadChildren: () => import('app/modules/landing/home/home.routes')},
+            {path: 'home', loadChildren: () => import('app/modules/landing/home-tienda/home-tienda.routes')},
             {path: 'nosotros', loadChildren: () => import('app/modules/landing/nosotros/nosotros.routes')},
             {path: 'planes', loadChildren: () => import('app/modules/landing/planes/planes.routes')},
+            {path: 'contactanos', loadChildren: () => import('app/modules/landing/contactanos/contactanos.routes')},
         ]
     },
 
