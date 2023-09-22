@@ -13,6 +13,21 @@ export class DetalleSubscripcionService {
 
   constructor(private http: HttpClient) { }
 
+  obtenerLista(): Observable<DetalleSubscripcion[]> {
+    const url = `${this.baseUrl}/listar`;
+    return this.http.get<DetalleSubscripcion[]>(url);
+  }
+
+
+  putDetalleSubscripcion(idDetalleSubscripcion: number, idNuevaSubscripcion: number): Observable<object> {
+    // Realizar una solicitud PUT al endpoint del backend
+    return this.http.put(`${this.baseUrl}/actualizarDetalleSubscripcion/${idDetalleSubscripcion}/${idNuevaSubscripcion}`, null);
+  }
+  
+
+  DetalleSubcripciónById(idDetalle: any): Observable<DetalleSubscripcion> {
+    return this.http.get<DetalleSubscripcion>(`${this.baseUrl}/buscar/${idDetalle}`)
+  }
 
   updateDetalleSubscripcion(id: number, detalle: DetalleSubscripcion): Observable<object> {
     return this.http.put(`${this.baseUrl}/actualizar/${id}`, detalle);

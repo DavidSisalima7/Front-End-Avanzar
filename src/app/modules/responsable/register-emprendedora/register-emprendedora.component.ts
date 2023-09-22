@@ -358,12 +358,7 @@ export class RegisterEmpreRespComponent implements OnInit {
                     (response) => {
                         this.vendedor.usuario = response;
                         this.vendedorService.registrarVendedor(this.vendedor, this.clickedButtonValue).subscribe(dataVendedora => {
-                            console.log(dataVendedora);
-
                             this.detalleMembresia.vendedor = dataVendedora;
-                            console.log(dataVendedora)
-                            
-
                             const confirmationDialog = this.confirmationService.open({
                                 title: 'Éxito',
                                 message: 'Registro de emprendedora exitosa',
