@@ -327,11 +327,45 @@ export class InventoryListComponentService implements OnInit, AfterViewInit, OnD
     /**
      * Update the selected product using the form data
      */
+
+    checkLimitPubliActi(): void {
+       
+        if (this.selectedPublicacionForm.get('estado').value) {
+            this._detalleSubscripcionService.limitEstatusPost()
+                .subscribe({
+
+                    next: (reponse) => {
+                        if (reponse.banderaBol) {
+
+                            this.updateselectedPublicacion();
+                        } else {
+                            this.titleAlert = reponse.title;
+                            this.bodyAlert = reponse.body;
+                            this.banLimitPost = true;
+                            this.cd.detectChanges();
+                            setTimeout(() => {
+
+                                this.banLimitPost = false; // Después de 6 segundos, restablece a false
+                                this.cd.detectChanges();
+                            }, 6000);
+                        }
+                    },
+                    error: (error) => {
+
+                    }
+                });
+        } else {
+            this.updateselectedPublicacion();
+        }
+    }
+
     updateselectedPublicacion(): void {
     // Get the product object
     const post = this.selectedPublicacionForm.getRawValue();
     const vendedor$ = this._vendedoraService.buscarVendedoraId(this.user.id);
     const publicacion$ = this._publicacionService.buscarPublicacionId(post.idPublicacion);
+
+    console.log("Publicacion", post);
 
     forkJoin([vendedor$,publicacion$]).subscribe(([vendedor, publicacion]) => {
     this.publication.vendedor = vendedor;
@@ -433,33 +467,29 @@ export class InventoryListComponentService implements OnInit, AfterViewInit, OnD
     }
 
     verifyLimtiPost(): void {
-        if (this.selectedPublicacionForm.get('estado').value) {
-            this._detalleSubscripcionService.limitEstatusPost()
-                .subscribe({
+        this._detalleSubscripcionService.limitPost()
+            .subscribe({
 
-                    next: (reponse) => {
-                        if (reponse.banderaBol) {
+                next: (reponse) => {
+                    if (reponse.banderaBol) {
 
-                            this.updateselectedPublicacion();
-                        } else {
-                            this.titleAlert = reponse.title;
-                            this.bodyAlert = reponse.body;
-                            this.banLimitPost = true;
+                        this.openComposeDialog();
+                    } else {
+                        this.titleAlert=reponse.title;
+                        this.bodyAlert=reponse.body;
+                        this.banLimitPost = true;
+                        this.cd.detectChanges();
+                        setTimeout(() => {
+                            
+                            this.banLimitPost = false; // Después de 3 segundos, restablece a false
                             this.cd.detectChanges();
-                            setTimeout(() => {
-
-                                this.banLimitPost = false; // Después de 6 segundos, restablece a false
-                                this.cd.detectChanges();
-                            }, 6000);
-                        }
-                    },
-                    error: (error) => {
-
+                        }, 6000);
                     }
-                });
-        } else {
-            this.updateselectedPublicacion();
-        }
+                },
+                error: (error) => {
+
+                }
+            });
     }
 
     //ABRIR EL MODAL
