@@ -29,6 +29,7 @@ import { Destacados } from 'app/services/models/destacados';
 import { ModalComentariosComponent } from './modal-comentarios/modal-comentarios.component';
 import { ComentarioService } from 'app/services/services/comentarios.service';
 import { InventoryService } from 'app/modules/emprendedora/ecommerce/inventory/inventory.service';
+import { SharedFavoritoService } from 'app/services/services/sharedFavoritoService.service';
 
 @Component({
   selector: 'home-tienda',
@@ -72,8 +73,7 @@ export class HomeTiendaClientComponent {
   constructor(
     private _inventoryService: PublicacionesInventory,
     private _matDialog: MatDialog,
-    private _favoritoService: FavoritosService,
-    private _publicacionesService: PublicacionesService,
+    private sharedFavoritoService: SharedFavoritoService
   ) {
   }
 
@@ -91,6 +91,10 @@ export class HomeTiendaClientComponent {
   }
 
   toggleFavorito(publicacion: InventarioPublicaciones) {
+    this.sharedFavoritoService.toggleFavorito(publicacion);
+  }
+
+   /* toggleFavorito(publicacion: InventarioPublicaciones) {
     if (!publicacion.visible) {
         // Acción cuando se hace clic por primera vez
         const userJSON = localStorage.getItem('user');
@@ -129,10 +133,7 @@ export class HomeTiendaClientComponent {
         // Cambia el estado de visible en la publicacion actual
         publicacion.visible = false;
     }
-}
-
-
-
+} */
 
   listarPublicaciones() {
     this._inventoryService.obtenerListaPublicaciones().subscribe(

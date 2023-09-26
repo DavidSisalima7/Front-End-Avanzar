@@ -24,6 +24,7 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { PublicacionesInventoryProductos } from 'app/services/services/PublicacionesInventory-Productos.service';
 import { ModalPublicacionProductosComponent } from './modal-publicacion-productos/modal-publicacion-productos.component';
 import { ModalComentariosComponent } from '../home-tienda/modal-comentarios/modal-comentarios.component';
+import { SharedFavoritoService } from 'app/services/services/sharedFavoritoService.service';
 @Component({
   selector: 'productos-vent',
  
@@ -51,7 +52,8 @@ export class ProductosVentClientComponent implements OnInit {
    */
   constructor(
     private _inventoryService: PublicacionesInventoryProductos,
-    private _matDialog: MatDialog
+    private _matDialog: MatDialog,
+    private sharedFavoritoService: SharedFavoritoService
   ) {
   }
 
@@ -112,6 +114,11 @@ export class ProductosVentClientComponent implements OnInit {
     const dialogRef = this._matDialog.open(ModalComentariosComponent,{
       data: { idPubli: idPublicacion },
     });
+  }
+
+  //Metodo para destacados 
+  toggleFavorito(publicacion: InventarioPublicaciones) {
+    this.sharedFavoritoService.toggleFavorito(publicacion);
   }
 
   

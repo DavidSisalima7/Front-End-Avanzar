@@ -25,11 +25,13 @@ import { RouterLink } from '@angular/router';
 import { FuseCardComponent } from '@fuse/components/card';
 import { ModalDestacadosComponent } from './modal-destacados/modal-destacados.component';
 import { ModalComentariosComponent } from '../home-tienda/modal-comentarios/modal-comentarios.component';
+import { SharedFavoritoService } from 'app/services/services/sharedFavoritoService.service';
 
 @Component({
     selector     : 'favoritos',
     standalone   : true,
     templateUrl  : './favoritos.component.html',
+    styleUrls: ['../home-tienda/home-tienda.component.scss'],
     encapsulation: ViewEncapsulation.None,
     imports: [NgOptimizedImage,AsyncPipe, NgIf, MatButtonToggleModule, FormsModule, NgFor, FuseCardComponent, MatButtonModule, MatIconModule, RouterLink, NgClass, MatMenuModule, MatCheckboxModule, MatProgressBarModule, MatFormFieldModule, MatInputModule, TextFieldModule, MatDividerModule, MatTooltipModule, TitleCasePipe],
 })
@@ -51,7 +53,8 @@ export class FavoritosClientComponent
      */
     constructor(
       private _destacadoService: PublicacionInventoryDestacadosService,
-      private _matDialog: MatDialog
+      private _matDialog: MatDialog,
+      private sharedFavoritoService: SharedFavoritoService
     ) {
     }
   
@@ -114,5 +117,10 @@ export class FavoritosClientComponent
     });
     
 
+  }
+
+  //Metodo para destacados 
+  toggleFavorito(publicacion: InventarioPublicaciones) {
+    this.sharedFavoritoService.toggleFavorito(publicacion);
   }
 }

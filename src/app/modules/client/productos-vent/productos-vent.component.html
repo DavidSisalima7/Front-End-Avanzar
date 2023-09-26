@@ -355,17 +355,13 @@
                                 <span class="ml-2">Adquirir</span>
                               </a>
                               
-                                    <button
-                                        class="ml-auto"
-                                        mat-icon-button
-                                    >
-                                        <mat-icon
-                                            class="icon-size-5 text-hint"
-                                            [svgIcon]="
-                                                'heroicons_solid:heart'
-                                            "
-                                        ></mat-icon>
-                                    </button>
+                              <button class="ml-auto" mat-icon-button (click)="toggleFavorito(publicacion)">
+                                <mat-icon
+                                    class="icon-size-5"
+                                    [svgIcon]="publicacion.visible ? 'heroicons_solid:heart' : 'heroicons_solid:heart'"
+                                    [style.color]="publicacion.visible ? 'red' : 'gray'"
+                                ></mat-icon>
+                            </button>
 
                                     <button
                                     class="ml-auto comment-button"
