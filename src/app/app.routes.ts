@@ -130,6 +130,7 @@ export const appRoutes: Route[] = [
                 {path: 'profile-empre', loadChildren: () => import('app/modules/emprendedora/profile/profile.routes')},
                 {path: 'config-empre', loadChildren: () => import('app/modules/emprendedora/settings/settings.routes')},
                 {path: 'subscripcion-empre', loadChildren: () => import('app/modules/emprendedora/subscripcion/subscripcion.routes')},
+                {path: 'comments', loadChildren: () => import('app/modules/emprendedora/comments/comments.routes')},
             ]
         },
 
