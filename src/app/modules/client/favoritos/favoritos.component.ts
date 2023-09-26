@@ -24,6 +24,7 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { RouterLink } from '@angular/router';
 import { FuseCardComponent } from '@fuse/components/card';
 import { ModalDestacadosComponent } from './modal-destacados/modal-destacados.component';
+import { ModalComentariosComponent } from '../home-tienda/modal-comentarios/modal-comentarios.component';
 
 @Component({
     selector     : 'favoritos',
@@ -82,7 +83,7 @@ export class FavoritosClientComponent
         );
       }
   
-    //ABRIR EL MODAL
+    //ABRIR EL MODAL de detalles 
     openComposeDialog(idPublicacion: number): void {
       // Abre el diálogo y pasa el idUsuario como dato
     
@@ -105,4 +106,13 @@ export class FavoritosClientComponent
         console.log('Compose dialog was closed!');
       });
     }
+
+    //Abrir modal de comentarios 
+  openComposecomments(idPublicacion: number){
+    const dialogRef = this._matDialog.open(ModalComentariosComponent,{
+      data: { idPubli: idPublicacion },
+    });
+    
+
+  }
 }

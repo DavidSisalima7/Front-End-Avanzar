@@ -353,14 +353,21 @@
                                         ></mat-icon>
                                     </button>
 
-                                    <button mat-icon-button>
-                                        <mat-icon
-                                            class="icon-size-5 text-hint"
-                                            [svgIcon]="
-                                                'heroicons_solid:arrows-right-left'
-                                            "
-                                        ></mat-icon>
-                                    </button>
+                                    <button
+                                    class="ml-auto comment-button"
+                                    mat-icon-button
+                                    [color]="'primary'"
+                                    (click)="openComposecomments(publicacion.idPublicacion)"
+                                >
+                                    <mat-icon
+                                        class="icon-size-5 transition-transform ease-in-out duration-150 rotate-0"
+                                        [svgIcon]="
+                                            'heroicons_solid:chat-bubble-left-ellipsis'
+                                        "
+                                    ></mat-icon>
+
+                                </button>
+                                
                                     <div class="flex items-center">
                                         <button
                                             class="px-3"
@@ -391,7 +398,7 @@
                 <div
                     class="p-8 sm:p-16 border-t text-4xl font-semibold tracking-tight text-center"
                 >
-                    No hay publicaciones disponibles!
+                    No tienes publicaciones favoritas por ahora!
                 </div>
             </ng-template>
         </div>

@@ -23,6 +23,7 @@ import { MatDividerModule } from '@angular/material/divider';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { PublicacionesInventoryServicios } from 'app/services/services/PublicacionesInventory-Servicios.service';
 import { ModalPublicacionServiciosComponent } from './modal-publicacion-servicios/modal-publicacion-servicios.component';
+import { ModalComentariosComponent } from '../home-tienda/modal-comentarios/modal-comentarios.component';
 
 
 @Component({
@@ -84,7 +85,7 @@ export class ServiciosVentClientComponent implements OnInit {
     );
   }
 
-  //ABRIR EL MODAL
+  //ABRIR EL MODAL de detalles
   openComposeDialog(idPublicacion: number): void {
     // Abre el diálogo y pasa el idUsuario como dato
   
@@ -106,5 +107,14 @@ export class ServiciosVentClientComponent implements OnInit {
     dialogRef.afterClosed().subscribe((result) => {
       console.log('Compose dialog was closed!');
     });
+  }
+
+  //Abrir dialogo de comentarios 
+  openComposecomments(idPublicacion: number){
+    const dialogRef = this._matDialog.open(ModalComentariosComponent,{
+      data: { idPubli: idPublicacion },
+    });
+    
+
   }
   }
