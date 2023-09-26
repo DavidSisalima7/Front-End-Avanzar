@@ -1,4 +1,65 @@
 <div class="flex flex-col items-center justify-center w-full h-full">
+
+
+    <nav class="sticky  w-full z-20 top-0 left-0 bg-white">
+        <div class="max-w-screen-xl flex flex-wrap  justify-between mx-auto p-4">
+            <a href="#" class="flex items-center">
+                <img src="../../../../assets/images/logo/avanzar.png" class="h-8 mr-3 mt-4" alt="Flowbite Logo">
+                <span class="self-center text-2xl font-semibold whitespace-nowrap text-black mt-4">Fundación
+                    Avanzar</span>
+            </a>
+
+            <a href="#" class="flex items-center mt-4 ">
+                <span class="self-center text-1xl  whitespace-nowrap text-black">Producto</span>
+            </a>
+
+            <a href="#" class="flex items-center mt-4">
+                <span class="self-center text-1xl  whitespace-nowrap text-black">Servicio</span>
+            </a>
+
+            <!-- <div class="flex-auto">
+                <mat-form-field
+                    class="fuse-mat-dense fuse-mat-rounded w-70 min-w-50 mt-8 mr-30 ml-30"
+                    subscriptSizing="dynamic">
+                    <mat-icon
+                        class="icon-size-5"
+                        matPrefix
+                        [svgIcon]="'heroicons_solid:magnifying-glass'"></mat-icon>
+                    <input
+                        matInput
+                        
+                        [autocomplete]="'off'"
+                        [placeholder]="'Search contacts'">
+                </mat-form-field>
+            </div> -->
+
+            
+            <div class="flex md:order-2  items-center ">
+                <mat-form-field
+                    class="fuse-mat-dense fuse-mat-rounded w-100 min-w-50 mt-4 mr-10 ml-30"
+                    subscriptSizing="dynamic">
+                    <mat-icon
+                        class="icon-size-5"
+                        matPrefix
+                        [svgIcon]="'heroicons_solid:magnifying-glass'"></mat-icon>
+                    <input
+                        matInput
+                        
+                        [autocomplete]="'off'"
+                        [placeholder]="'Buscar...'">
+                </mat-form-field>
+                <a class="mt-4" mat-flat-button [color]="'primary'" [routerLink]="'/sign-in'" style="margin-right:5px;">
+                    <span>Iniciar Sesión</span>
+                    <!-- <mat-icon class="ml-2 icon-size-5" [svgIcon]="'heroicons_mini:arrow-long-right'"></mat-icon> -->
+                </a>
+                <a class="mt-4" mat-flat-button [color]="'primary'" [routerLink]="'/sign-up'">
+                    <span>Registrarse</span>
+                </a>
+            </div>
+        </div>
+    </nav>
+
+
     <!-- Datos sobre la fundacion -->
  <div class="container-fundation">
         <div class="container-conten">
