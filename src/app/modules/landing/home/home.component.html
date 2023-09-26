@@ -31,15 +31,20 @@
                         <ng-container *ngIf="publicaciones$ | async as publicaciones">
                             <ng-container *ngIf="publicaciones.length > 0; else noPublicaciones">
                                 <div class="grid grid-cols-1 sm:grid-cols-3 gap-6">
+                                  
+                                    
+
+
                                     <ng-container
-                                        *ngFor="let publicacion of publicaciones.slice(0, 12); let i = index; trackBy: trackByFn">
+                                    *ngFor="let publicacion of publicaciones | paginate: { itemsPerPage: 3, currentPage: page }, let i = index; trackBy: trackByFn"                                        
+                                        >
 
                                         <fuse-card class="flex flex-col max-w-80 w-full filter-listing">
                                             <ng-container *ngIf="
                             publicacion.productos;
                             else servicioMiniatura
                         ">
-                                                <img class="w-full h-36 object-cover" *ngIf="
+                                                <img class="w-full h-60 object-cover" *ngIf="
                                 publicacion.productos
                                     .miniaturaProducto
                             " [src]="
@@ -172,6 +177,12 @@
                                         </fuse-card>
                                     </ng-container>
                                 </div>
+
+                               
+                                    <pagination-controls (pageChange)="page = $event"  previousLabel="Anterior" nextLabel="Despues"
+    class="mt-4"
+
+                                    ></pagination-controls>
 
                             </ng-container>
                         </ng-container>

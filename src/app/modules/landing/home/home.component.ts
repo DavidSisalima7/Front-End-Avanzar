@@ -25,6 +25,7 @@ import { ModalClienteComponent } from 'app/modules/admin/modal-cliente/modal-cli
 import { InventarioPublicaciones } from 'app/modules/emprendedora/ecommerce/inventory/inventory.types';
 import { PublicacionesInventory } from 'app/services/services/publicacionesInventory.service';
 import { ModalPublicacionProductosComponent } from './modal-cliente-publicaciones/modal-cliente-publicacionescomponent';
+import {NgxPaginationModule} from 'ngx-pagination'; // <-- import the module
 
 @Component({
     selector: 'landing-home',
@@ -32,7 +33,8 @@ import { ModalPublicacionProductosComponent } from './modal-cliente-publicacione
     encapsulation: ViewEncapsulation.None,
     styleUrls    : ['./home.component.scss'],
     standalone: true,
-    imports: [AsyncPipe, NgIf, MatButtonToggleModule, FormsModule, NgFor, FuseCardComponent, MatButtonModule, MatIconModule, RouterLink, NgClass, MatMenuModule, MatCheckboxModule, MatProgressBarModule, MatFormFieldModule, MatInputModule, TextFieldModule, MatDividerModule, MatTooltipModule, TitleCasePipe],
+    imports: [AsyncPipe, NgIf, MatButtonToggleModule, FormsModule, NgFor, FuseCardComponent, MatButtonModule, MatIconModule, RouterLink, NgClass, MatMenuModule, 
+      MatCheckboxModule, MatProgressBarModule, MatFormFieldModule, MatInputModule, TextFieldModule, MatDividerModule, MatTooltipModule, TitleCasePipe, NgxPaginationModule],
 
 })
 export class LandingHomeComponent {
@@ -48,7 +50,7 @@ export class LandingHomeComponent {
     dataSource: MatTableDataSource<InventarioPublicaciones>;
     @ViewChild(MatPaginator, {static: true}) paginator: MatPaginator;
     
-    
+   public page!:number;
     /**
      * Constructor
      */
