@@ -29,7 +29,8 @@ import { Destacados } from 'app/services/models/destacados';
 import { ModalComentariosComponent } from './modal-comentarios/modal-comentarios.component';
 import { ComentarioService } from 'app/services/services/comentarios.service';
 import {NgxPaginationModule} from 'ngx-pagination'; // <-- import the module
-
+import { InventoryService } from 'app/modules/emprendedora/ecommerce/inventory/inventory.service';
+import { SharedFavoritoService } from 'app/services/services/sharedFavoritoService.service';
 
 @Component({
   selector: 'home-tienda',
@@ -75,9 +76,7 @@ export class HomeTiendaClientComponent {
   constructor(
     private _inventoryService: PublicacionesInventory,
     private _matDialog: MatDialog,
-    private _favoritoService: FavoritosService,
-    private _publicacionesService: PublicacionesService,
-    private _commitService: ComentarioService,
+    private sharedFavoritoService: SharedFavoritoService
   ) {
   }
 
@@ -175,58 +174,9 @@ export class HomeTiendaClientComponent {
     }
   }
 
-  toggleFavorito(idPublicacion: number) {
-    if (!this.esFavorito) {
-      // Acción cuando se hace clic por primera vez
-
-      const userJSON = localStorage.getItem('user');
-      const user = JSON.parse(userJSON);
-
-      console.log('idPublicacionSeleccionado', idPublicacion);
-      
-      this._publicacionesService.buscarPublicacionId(idPublicacion).subscribe(
-        (datos: InventarioPublicaciones) => {
-          console.log('datos', datos);
-
-          this.destacados = new Destacados();
-          this.destacados.estadoDestacado = true;
-          this.destacados.fecha = new Date().toISOString();
-          this.destacados.publicaciones = datos;
-          this.destacados.usuario = user;
-
-          console.log('destacados', this.destacados);
-
-          this._favoritoService.saveFavorito(this.destacados).subscribe(
-            (datos: Destacados) => {
-              console.log('datos', datos);
-              this.destacadoCreated = datos;
-
-            },
-            error => {
-              console.error('Ocurrió un error al guardar el favorito:', error);
-            }
-          );
-        },
-        error => {
-          console.error('Ocurrió un error al obtener la lista:', error);
-        }
-      );
-        
-
-      // Realiza la acción que desees aquí
-    } else {
-      // Acción cuando se hace clic después de haber sido clickeado
-      console.log('Botón clickeado después de haber sido clickeado');
-      // Realiza otra acción que desees aquí
-      console.log('ID Des', this.destacadoCreated.idDestacado);
-
-    }
-    
-  
-    this.esFavorito = !this.esFavorito; // Cambia el estado del botón
+  toggleFavorito(publicacion: InventarioPublicaciones) {
+    this.sharedFavoritoService.toggleFavorito(publicacion);
   }
-
-
 
   listarPublicaciones() {
     this._inventoryService.obtenerListaPublicaciones().subscribe(

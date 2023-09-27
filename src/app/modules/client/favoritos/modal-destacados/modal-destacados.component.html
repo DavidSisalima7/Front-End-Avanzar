@@ -64,30 +64,54 @@
                   </div>
                   
                 
-                <fuse-card class="flex flex-col items-center max-w-90 w-full p-8 pb-6 filter-info vendedor-card">
+                  <fuse-card class="flex flex-col items-center max-w-90 w-full p-8 pb-6 filter-info vendedor-card">
+                    <!-- Imagen del avatar o icono por defecto -->
                     <img
-                        class="w-32 h-32 rounded-full"
-                        [ngSrc]="selectedPublicacionForm.get('avatar').value"
-                        alt="Card cover image"  width="300" 
-                        height="200">
+                    class="w-32 h-32 rounded-full"
+                    [src]="selectedPublicacionForm.get('avatar').value"
+                    alt="Card cover image"
+                    *ngIf="selectedPublicacionForm.get('avatar').value"
+                     width="300" 
+                     height="200"
+                  />
+                  <mat-icon
+                    class="w-32 h-32 rounded-full "
+                    *ngIf="!selectedPublicacionForm.get('avatar').value"
+                    [svgIcon]="'heroicons_solid:user-circle'"
+                  ></mat-icon>
+                  
                     <div class="text-2xl font-semibold leading-tight text-center mt-8" [textContent]="selectedPublicacionForm.get('vendedor').value">
-                    </div>
-                    <div class="text-secondary leading-tight text-center mt-1"[textContent]="selectedPublicacionForm.get('pais').value"></div>                 
+                    </div>              
                     <hr class="w-full border-t mt-8 mb-0">
-                    <div class="w-full flex items-center justify-between my-4 px-2">
 
+                     <!-- Nombre de negocio -->
 
-                        <div class="flex flex-col items-center">
+                     <div class="flex flex-col items-center">
                             
-                            <mat-icon
-                            class="icon-size-5 transition-transform ease-in-out duration-150 rotate-0"
+                        <mat-icon
+                        class="icon-size-5 transition-transform ease-in-out duration-150 rotate-0"
 
-                            [svgIcon]="
-                                'mat_solid:email'
-                            "
-                        ></mat-icon>
-                            <span class="text-sm font-medium text-secondary" [textContent]="selectedPublicacionForm.get('email').value"></span>
-                        </div>
+                        [svgIcon]="
+                            'mat_solid:add_business'
+                        "
+                    ></mat-icon>
+                        <span class="text-sm font-medium text-secondary" [textContent]="selectedPublicacionForm.get('emprendimiento').value"></span>
+                    </div>
+                    <br>
+                    <!-- Email -->
+                    <div class="flex flex-col items-center">
+                            
+                        <mat-icon
+                        class="icon-size-5 transition-transform ease-in-out duration-150 rotate-0"
+
+                        [svgIcon]="
+                            'mat_solid:email'
+                        "
+                    ></mat-icon>
+                        <span class="text-sm font-medium text-secondary" [textContent]="selectedPublicacionForm.get('email').value"></span>
+                    </div>
+                    
+                    <div class="w-full flex items-center justify-between my-4 px-2 grid grid-cols-2 gap-5">
 
                         <div class="flex flex-col items-center">
                             <mat-icon
@@ -111,13 +135,35 @@
                         ></mat-icon>
                         <span class="text-sm font-medium text-secondary" [textContent]="selectedPublicacionForm.get('contacto').value"></span>
                         </div>
-
                     </div>
                     <hr class="w-full border-t mt-0 mb-8">
                     <div class="text-center text-secondary">
                         <div class="text-sm font-medium text-secondary" [textContent]="selectedPublicacionForm.get('descripcionUsuario').value"></div>
                       </div>
-                      
+                      <br>
+                      <div class="flex flex-col items-center">
+                        
+                        <a
+                                        [href]="
+                                            'https://api.whatsapp.com/send?phone=593' +
+                                            selectedPublicacionForm.get('contacto').value +
+                                            '&text=Hola, ' +
+                                            selectedPublicacionForm.get('vendedor').value +
+                                            '%20quisiera%20adquirir%20el%20' +
+                                            selectedPublicacionForm.get('nombreCategoria').value+
+                                            '%20de%20la%20publicacion%20' +
+                                            selectedPublicacionForm.get('tituloPublicacion').value
+                                        "
+                                        target="_blank"
+                                        class="px-3 mr-1"
+                                        mat-button
+                                        [color]="'primary'"
+                                    >
+                            <mat-icon class="icon-size-5" [svgIcon]="'heroicons_solid:phone-arrow-up-right'"></mat-icon>
+                            <span class="ml-2">Contactar</span>
+                        </a>
+
+                    </div>
                 </fuse-card>
         </div>
         </div>

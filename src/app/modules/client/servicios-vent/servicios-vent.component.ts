@@ -24,6 +24,9 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { PublicacionesInventoryServicios } from 'app/services/services/PublicacionesInventory-Servicios.service';
 import { ModalPublicacionServiciosComponent } from './modal-publicacion-servicios/modal-publicacion-servicios.component';
 import {NgxPaginationModule} from 'ngx-pagination'; // <-- import the module
+import { ModalComentariosComponent } from '../home-tienda/modal-comentarios/modal-comentarios.component';
+import { SharedFavoritoService } from 'app/services/services/sharedFavoritoService.service';
+
 
 @Component({
   selector: 'servicios-vent',
@@ -53,7 +56,8 @@ export class ServiciosVentClientComponent implements OnInit {
    */
   constructor(
     private _inventoryService: PublicacionesInventoryServicios,
-    private _matDialog: MatDialog
+    private _matDialog: MatDialog,
+    private sharedFavoritoService: SharedFavoritoService
   ) {
   }
 
@@ -105,7 +109,7 @@ export class ServiciosVentClientComponent implements OnInit {
     );
   }
 
-  //ABRIR EL MODAL
+  //ABRIR EL MODAL de detalles
   openComposeDialog(idPublicacion: number): void {
     // Abre el diálogo y pasa el idUsuario como dato
   
@@ -128,4 +132,17 @@ export class ServiciosVentClientComponent implements OnInit {
       console.log('Compose dialog was closed!');
     });
   }
+
+  //Abrir dialogo de comentarios 
+  openComposecomments(idPublicacion: number){
+    const dialogRef = this._matDialog.open(ModalComentariosComponent,{
+      data: { idPubli: idPublicacion },
+    });
+  }
+
+  //Metodo para los destacados
+  toggleFavorito(publicacion: InventarioPublicaciones) {
+    this.sharedFavoritoService.toggleFavorito(publicacion);
+  }
+  
   }

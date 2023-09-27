@@ -83,14 +83,13 @@ export class DashboardEmprendedoraComponentimplements implements OnInit, OnDestr
 
         this.vendedoraService.buscarVendedoraId(this.idUsuario).subscribe((vendedor: Vendedor) => {
             this.idVendedor = vendedor.idVendedor;
-            console.log(this.idVendedor);
             this.obtenerResumen2();
 
             this._detalleSubscripcionService.obtenerDetallePorVendedorId(vendedor.idVendedor)
             .subscribe(data => {
               // Almacenar en el localStorage
               localStorage.setItem('extraerMembresia', JSON.stringify(data));
-              console.log(data);
+  
             }, error => {
               // Manejo de errores
               console.error(error);
@@ -147,18 +146,16 @@ export class DashboardEmprendedoraComponentimplements implements OnInit, OnDestr
         this._personaService.obtenerResumen2(this.idVendedor).subscribe((res) => {
 
             this.publicacionesProductos = res.publicacionesproductos;
-            console.log(this.publicacionesProductos);
+    
             this.publicacionesServicios = res.publicacionesservicios;
-            console.log(this.publicacionesServicios);
+      
             this.totalPublicaciones = res.totalpublicaciones;
-            console.log(this.totalPublicaciones);
+    
             this.emprendedorasActivas = res.emprendedorasactivas;
-            console.log(this.emprendedorasActivas);
+       
             this.totalEmprendedoras = res.totalemprendedoras;
-            console.log(this.totalEmprendedoras);
-        
-            console.log(res);
-        });
+       
+                });
     }
     /**
      * Track by function for ngFor loops

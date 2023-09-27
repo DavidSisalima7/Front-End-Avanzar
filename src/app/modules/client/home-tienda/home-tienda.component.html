@@ -1,33 +1,6 @@
 <div class="flex flex-col flex-auto min-w-0">
     <div class="flex flex-col items-center px-1 py-3 sm:px-9 sm:pt-9 sm:pb-10 bg-white dark:bg-gray-800"  (mouseleave)="cerrarHistorial()">
-       <!-- Header -->
-    <div
-    class="flex flex-col sm:flex-row flex-0 sm:items-center sm:justify-between p-6 sm:py-8 sm:px-10 border-b bg-card dark:bg-transparent">   
-    <div class="flex-1 min-w-0 items-center" >
-        <!-- Breadcrumbs -->
-        <div class="flex flex-wrap items-center font-medium">
-            <div>
-                <a class="whitespace-nowrap text-primary-500"
-                    >Productos y servicios disponibles para clientes</a
-                >
-            </div>
-        </div>
-        <!-- Title -->
-        <div class="mt-2 flex items-center">
-            <img
-                class="w-10 h-10 object-cover rounded-full"
-                src="assets/images/logo/avanzar.png"
-                alt="Logo de Avanzar"
-            />
-            <h2
-                class="ml-2 text-3xl md:text-4xl font-extrabold tracking-tight leading-7 sm:leading-10 truncate"
-            >
-                Publicaciones
-            </h2>
-        </div>
-    </div>
-</div>
-        <!-- Search -->
+             <!-- Search -->
               <div> 
                 <mat-form-field class="fuse-mat-dense fuse-mat-rounded min-w-64 mt-15">
                 <mat-icon class="icon-size-5" matPrefix [svgIcon]="'heroicons_solid:magnifying-glass'"></mat-icon>
@@ -63,7 +36,33 @@
                 </div>
                 </div>
     
-  
+    <!-- Header -->
+    <div
+        class="flex flex-col sm:flex-row flex-0 sm:items-center sm:justify-between p-6 sm:py-8 sm:px-10 border-b bg-card dark:bg-transparent">   
+        <div class="flex-1 min-w-0 items-center" >
+            <!-- Breadcrumbs -->
+            <div class="flex flex-wrap items-center font-medium">
+                <div>
+                    <a class="whitespace-nowrap text-primary-500"
+                        >Productos y servicios disponibles para clientes</a
+                    >
+                </div>
+            </div>
+            <!-- Title -->
+            <div class="mt-2 flex items-center">
+                <img
+                    class="w-10 h-10 object-cover rounded-full"
+                    src="assets/images/logo/avanzar.png"
+                    alt="Logo de Avanzar"
+                />
+                <h2
+                    class="ml-2 text-3xl md:text-4xl font-extrabold tracking-tight leading-7 sm:leading-10 truncate"
+                >
+                    Publicaciones
+                </h2>
+            </div>
+        </div>
+    </div>
 
     <div class="flex-auto p-6 sm:p-26">
         <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
@@ -391,13 +390,13 @@
                                                     <span class="ml-2">Adquirir</span>
                                                 </a>
             
-                                                <button class="ml-auto" mat-icon-button (click)="toggleFavorito(publicacion.idPublicacion)">
+                                                <button class="ml-auto" mat-icon-button (click)="toggleFavorito(publicacion)">
                                                     <mat-icon
                                                         class="icon-size-5"
-                                                        [svgIcon]="esFavorito ? 'heroicons_solid:heart' : 'heroicons_solid:heart'"
-                                                        [style.color]="esFavorito ? 'red' : 'gray'"
+                                                        [svgIcon]="publicacion.visible ? 'heroicons_solid:heart' : 'heroicons_solid:heart'"
+                                                        [style.color]="publicacion.visible ? 'red' : 'gray'"
                                                     ></mat-icon>
-                                                </button>
+                                                </button>
             
                                                 <button
                                                     class="ml-auto comment-button"
@@ -448,4 +447,4 @@
                 <pagination-controls (pageChange)="page = $event"  previousLabel="Anterior" nextLabel="Despues" ></pagination-controls>
             
                 </div>
-            </div>
+            </div>
