@@ -1,9 +1,45 @@
 <div class="flex flex-col flex-auto min-w-0">
+    <div class="flex flex-col items-center px-1 py-3 sm:px-9 sm:pt-9 sm:pb-10 bg-white dark:bg-gray-800"  (mouseleave)="cerrarHistorial()">
+             <!-- Search -->
+              <div> 
+                <mat-form-field class="fuse-mat-dense fuse-mat-rounded min-w-64 mt-15">
+                <mat-icon class="icon-size-5" matPrefix [svgIcon]="'heroicons_solid:magnifying-glass'"></mat-icon>
+                <input matInput [autocomplete]="'off'" [placeholder]="'Buscar Publicación'" [(ngModel)]="textoBusqueda"
+                    (click)="mostrarHistorial = true" (keyup.enter)="buscarPublicaciones(textoBusqueda)" (keyup.enter)="historialBusqueda()">
+                <!-- <button class="btn" (click)="historialBusqueda()" (click)="buscarPublicaciones(textoBusqueda)"  (click)="mostrarHistorial = false">Buscar</button> -->
+                </mat-form-field>
+
+                <div *ngIf="mostrarHistorial && historial.length > 0" class="historial">
+                <h4 style="width: 100%; text-align: center;">Historial de búsqueda:</h4>
+                <ul>
+                    <li *ngFor="let item of historial">
+                    <button mat-button class="custombtn" (click)="buscarPublicaciones(item)" (click)="seleccionarTermino(item)">{{ item }} </button>  
+                    <button style="margin-right: 10px;" mat-button (click)="eliminarTermino(item)">X</button>
+                    </li>
+                </ul>
+                </div>
+              </div>
+                
+                <div class="button-row">
+                    <button class="btn mx-2 mt-15" mat-raised-button (click)="buscartodo()">
+                        All (Publications)
+                    </button>
+                    <button class="btn mx-2 mt-15" mat-raised-button (click)="buscarGastronomia()">
+                        Gastronomía
+                    </button>
+                    <button class="btn mx-2 mt-15" mat-raised-button (click)="buscarProductos()">
+                        Productos
+                    </button>
+                    <button class="btn mx-2 mt-15" mat-raised-button (click)="buscarServicios()">
+                        Servicios
+                    </button>
+                </div>
+                </div>
+    
     <!-- Header -->
     <div
-        class="flex flex-col sm:flex-row flex-0 sm:items-center sm:justify-between p-6 sm:py-8 sm:px-10 border-b bg-card dark:bg-transparent"
-    >
-        <div class="flex-1 min-w-0">
+        class="flex flex-col sm:flex-row flex-0 sm:items-center sm:justify-between p-6 sm:py-8 sm:px-10 border-b bg-card dark:bg-transparent">   
+        <div class="flex-1 min-w-0 items-center" >
             <!-- Breadcrumbs -->
             <div class="flex flex-wrap items-center font-medium">
                 <div>
@@ -32,7 +68,7 @@
         <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
             <ng-container *ngIf="publicaciones$ | async as publicaciones">
                 <ng-container *ngIf="publicaciones.length > 0; else noPublicaciones">
-                    <ng-container *ngFor="let publicacion of publicaciones; trackBy: trackByFn">
+                    <ng-container *ngFor="let publicacion of publicacionesFiltradas; trackBy: trackByFn">
                         <fuse-card class="flex flex-col max-w-140 w-full filter-shopping">
                             <div class="flex-0 w-full  h-64 md:w-full">
                                 <ng-container

@@ -26,6 +26,11 @@
                 </h2>
             </div>
         </div>
+        <!-- Search -->
+        <mat-form-field class="fuse-mat-dense fuse-mat-rounded min-w-64 mt-15" [subscriptSizing]="'dynamic'">
+            <mat-icon class="icon-size-5" matPrefix [svgIcon]="'heroicons_solid:magnifying-glass'"></mat-icon>
+            <input matInput [autocomplete]="'off'" [placeholder]="'Buscar Publicación'" #input (input)="buscarPublicaciones(input.value)">
+          </mat-form-field>
     </div>
 
     <div class="flex-auto p-6 sm:p-26">
@@ -36,7 +41,7 @@
                 >
                     <ng-container
                         *ngFor="
-                            let publicacion of publicaciones;
+                            let publicacion of publicacionesFiltradas;
                             trackBy: trackByFn
                         "
                     >

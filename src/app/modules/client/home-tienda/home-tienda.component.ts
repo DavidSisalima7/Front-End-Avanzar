@@ -29,6 +29,8 @@ import { Destacados } from 'app/services/models/destacados';
 import { ModalComentariosComponent } from './modal-comentarios/modal-comentarios.component';
 import { ComentarioService } from 'app/services/services/comentarios.service';
 
+
+
 @Component({
   selector: 'home-tienda',
   standalone: true,
@@ -63,8 +65,9 @@ export class HomeTiendaClientComponent {
   esFavorito: boolean = false;
   destacados: Destacados;
   destacadoCreated: any;
-
-
+  publicacionesOriginales: any[] = [];
+  publicacionesFiltradas: any[] = [];
+  mostrarHistorial = false;
   /**
    * Constructor
    */
@@ -80,8 +83,89 @@ export class HomeTiendaClientComponent {
 
   ngOnInit(): void {
     this.publicaciones$ = this._inventoryService.publicaciones$;
-   
+    this.publicaciones$.subscribe((publicaciones) => {
+      this.publicacionesOriginales = publicaciones;
+      this.publicacionesFiltradas = publicaciones;
+    });
     
+  }
+
+  buscarPublicaciones(textoBusqueda: string) {
+    const busqueda = textoBusqueda.trim().toLowerCase();
+  
+    if (busqueda === '') {
+      this.publicacionesFiltradas = this.publicacionesOriginales;
+    } else {
+      this.publicacionesFiltradas = this.publicacionesOriginales.filter((publicacion) => {
+        return (
+          publicacion.tituloPublicacion.toLowerCase().includes(busqueda) ||
+          publicacion.descripcionPublicacion.toLowerCase().includes(busqueda)||
+          publicacion.productos?.nombreProducto.toLowerCase().includes(busqueda)||
+          publicacion.productos?.descripcionProducto.toLowerCase().includes(busqueda)||
+          publicacion.servicios?.nombreServicio.toLowerCase().includes(busqueda)||
+          publicacion.servicios?.descripcionServicio.toLowerCase().includes(busqueda)
+        );
+      } );
+      this.mostrarHistorial = false;
+    }
+  }
+  
+  buscarProductos() {
+    const busquedaP = "productos";
+      this.publicacionesFiltradas = this.publicacionesOriginales.filter((publicacion) => {
+        return (
+          publicacion.categoria?.nombreCategoria.toLowerCase().includes(busquedaP)
+        );
+      });
+  }
+  buscartodo() {
+    this.publicacionesFiltradas = this.publicacionesOriginales;
+  }
+  buscarServicios(){
+    const busquedaS = "servicios";
+    this.publicacionesFiltradas = this.publicacionesOriginales.filter((publicacion) => {
+      return (
+        publicacion.categoria?.nombreCategoria.toLowerCase().includes(busquedaS)
+      );
+    });
+  }
+  buscarGastronomia(){
+    const busquedaG = "gastronomia";
+    this.publicacionesFiltradas = this.publicacionesOriginales.filter((publicacion) => {
+      return (
+        publicacion.categoria?.nombreCategoria.toLowerCase().includes(busquedaG)
+      );
+    });
+  }
+
+  public historial: string[] = [];
+  public textoBusqueda: string = '';
+
+  historialBusqueda() {
+    const busqueda = this.textoBusqueda.trim().toLowerCase();
+    if (busqueda !== '' && !this.historial.includes(busqueda)) {
+        this.historial.push(busqueda);
+        this.mostrarHistorial = true;
+        setTimeout(() => {
+          this.mostrarHistorial = false;
+          this.textoBusqueda="";
+        }, 5000);
+      
+    }
+  }
+  cerrarHistorial(){
+    this.mostrarHistorial = false;
+    setTimeout(() => {
+      this.textoBusqueda="";
+    }, 5000);
+  }
+
+  seleccionarTermino(termino: string) {
+    this.textoBusqueda = termino;
+    this.historialBusqueda();
+  }
+  eliminarTermino(termino: string) {
+    this.historial = this.historial.filter(item => item !== termino);
   }
 
   nextPage() {

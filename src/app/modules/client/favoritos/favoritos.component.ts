@@ -41,9 +41,9 @@ export class FavoritosClientComponent
     publications:InventarioPublicaciones[]=[];
     dataSource: MatTableDataSource<InventarioPublicaciones>;
     @ViewChild(MatPaginator, {static: true}) paginator: MatPaginator;
-    
-  
-  
+
+    publicacionesOriginales: any[] = [];
+    publicacionesFiltradas: any[] = [];
   
     /**
      * Constructor
@@ -57,6 +57,28 @@ export class FavoritosClientComponent
   
     ngOnInit(): void {
       this.publicaciones$ = this._destacadoService.publicaciones$;
+      this.publicaciones$.subscribe((publicaciones) => {
+        this.publicacionesOriginales = publicaciones;
+        this.publicacionesFiltradas = publicaciones;
+      });
+    }
+    buscarPublicaciones(textoBusqueda: string) {
+      const busqueda = textoBusqueda.trim().toLowerCase();
+    
+      if (busqueda === '') {
+        this.publicacionesFiltradas = this.publicacionesOriginales;
+      } else {
+        this.publicacionesFiltradas = this.publicacionesOriginales.filter((publicacion) => {
+          return (
+            publicacion.tituloPublicacion.toLowerCase().includes(busqueda) ||
+            publicacion.descripcionPublicacion.toLowerCase().includes(busqueda)||
+            publicacion.productos?.nombreProducto.toLowerCase().includes(busqueda)||
+            publicacion.productos?.descripcionProducto.toLowerCase().includes(busqueda)||
+            publicacion.servicios?.nombreServicio.toLowerCase().includes(busqueda)||
+            publicacion.servicios?.descripcionServicio.toLowerCase().includes(busqueda)
+          );
+        });
+      }
     }
   
     nextPage() {
