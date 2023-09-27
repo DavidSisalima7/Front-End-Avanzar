@@ -7,7 +7,7 @@ export class Publicacion{
     tituloPublicacion: string;
     descripcionPublicacion: string;
     estado: boolean;
-    visible?:boolean;
+    visible:boolean;
     fechaPublicacion: Date;
     tiempoTranscurrido:string;
     imagenes: string[];

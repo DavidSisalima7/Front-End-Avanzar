@@ -69,8 +69,6 @@ export class DashboardAdminComponent implements OnInit, OnDestroy {
             this.totalPublicaciones = res.totalpublicaciones;
             this.usuariosActivos = res.usuariosactivos;
             this.emprendedoras = res.emprendedoras;
-
-            console.log(res);
             
         });
 

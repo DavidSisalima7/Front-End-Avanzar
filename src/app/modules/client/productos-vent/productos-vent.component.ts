@@ -23,6 +23,9 @@ import { MatDividerModule } from '@angular/material/divider';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { PublicacionesInventoryProductos } from 'app/services/services/PublicacionesInventory-Productos.service';
 import { ModalPublicacionProductosComponent } from './modal-publicacion-productos/modal-publicacion-productos.component';
+import {NgxPaginationModule} from 'ngx-pagination'; // <-- import the module
+import { ModalComentariosComponent } from '../home-tienda/modal-comentarios/modal-comentarios.component';
+import { SharedFavoritoService } from 'app/services/services/sharedFavoritoService.service';
 @Component({
   selector: 'productos-vent',
  
@@ -30,7 +33,7 @@ import { ModalPublicacionProductosComponent } from './modal-publicacion-producto
   styleUrls: ['../home-tienda/home-tienda.component.scss'],
   encapsulation: ViewEncapsulation.None,
   standalone: true,
-  imports: [NgOptimizedImage,AsyncPipe, NgIf, MatButtonToggleModule, FormsModule, NgFor, FuseCardComponent, MatButtonModule, MatIconModule, RouterLink, NgClass, MatMenuModule, MatCheckboxModule, MatProgressBarModule, MatFormFieldModule, MatInputModule, TextFieldModule, MatDividerModule, MatTooltipModule, TitleCasePipe],
+  imports: [NgOptimizedImage,AsyncPipe,NgxPaginationModule, NgIf, MatButtonToggleModule, FormsModule, NgFor, FuseCardComponent, MatButtonModule, MatIconModule, RouterLink, NgClass, MatMenuModule, MatCheckboxModule, MatProgressBarModule, MatFormFieldModule, MatInputModule, TextFieldModule, MatDividerModule, MatTooltipModule, TitleCasePipe],
  
 })
 export class ProductosVentClientComponent implements OnInit {
@@ -41,8 +44,9 @@ export class ProductosVentClientComponent implements OnInit {
   publications:InventarioPublicaciones[]=[];
   dataSource: MatTableDataSource<InventarioPublicaciones>;
   @ViewChild(MatPaginator, {static: true}) paginator: MatPaginator;
-  
-
+  publicacionesOriginales: any[] = [];
+  publicacionesFiltradas: any[] = [];
+  public page!:number;
 
 
   /**
@@ -50,13 +54,36 @@ export class ProductosVentClientComponent implements OnInit {
    */
   constructor(
     private _inventoryService: PublicacionesInventoryProductos,
-    private _matDialog: MatDialog
+    private _matDialog: MatDialog,
+    private sharedFavoritoService: SharedFavoritoService
   ) {
   }
 
 
   ngOnInit(): void {
     this.publicaciones$ = this._inventoryService.publicaciones$;
+    this.publicaciones$.subscribe((publicaciones) => {
+      this.publicacionesOriginales = publicaciones;
+      this.publicacionesFiltradas = publicaciones;
+    });
+  }
+
+
+  buscarPublicaciones(textoBusqueda: string) {
+    const busqueda = textoBusqueda.trim().toLowerCase();
+  
+    if (busqueda === '') {
+      this.publicacionesFiltradas = this.publicacionesOriginales;
+    } else {
+      this.publicacionesFiltradas = this.publicacionesOriginales.filter((publicacion) => {
+        return (
+          publicacion.tituloPublicacion.toLowerCase().includes(busqueda) ||
+          publicacion.descripcionPublicacion.toLowerCase().includes(busqueda)||
+          publicacion.productos?.nombreProducto.toLowerCase().includes(busqueda)||
+          publicacion.productos?.descripcionProducto.toLowerCase().includes(busqueda)
+        );
+      });
+    }
   }
 
   nextPage() {
@@ -82,7 +109,7 @@ export class ProductosVentClientComponent implements OnInit {
     );
   }
 
-  //ABRIR EL MODAL
+  //ABRIR EL MODAL de detalles
   openComposeDialog(idPublicacion: number): void {
     // Abre el diálogo y pasa el idUsuario como dato
   
@@ -105,4 +132,18 @@ export class ProductosVentClientComponent implements OnInit {
       console.log('Compose dialog was closed!');
     });
   }
+
+  //Abrir dialogo de comentarios 
+  openComposecomments(idPublicacion: number){
+    const dialogRef = this._matDialog.open(ModalComentariosComponent,{
+      data: { idPubli: idPublicacion },
+    });
+  }
+
+  //Metodo para destacados 
+  toggleFavorito(publicacion: InventarioPublicaciones) {
+    this.sharedFavoritoService.toggleFavorito(publicacion);
+  }
+
+  
   }

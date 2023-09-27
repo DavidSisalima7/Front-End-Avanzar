@@ -28,6 +28,9 @@ import { PublicacionesService } from 'app/services/services/publicaciones.servic
 import { Destacados } from 'app/services/models/destacados';
 import { ModalComentariosComponent } from './modal-comentarios/modal-comentarios.component';
 import { ComentarioService } from 'app/services/services/comentarios.service';
+import {NgxPaginationModule} from 'ngx-pagination'; // <-- import the module
+import { InventoryService } from 'app/modules/emprendedora/ecommerce/inventory/inventory.service';
+import { SharedFavoritoService } from 'app/services/services/sharedFavoritoService.service';
 
 @Component({
   selector: 'home-tienda',
@@ -42,7 +45,7 @@ import { ComentarioService } from 'app/services/services/comentarios.service';
             } 
         `,
   ],
-  imports: [NgOptimizedImage,AsyncPipe, NgIf, MatButtonToggleModule, FormsModule, NgFor, FuseCardComponent, MatButtonModule, MatIconModule, RouterLink, NgClass, MatMenuModule, MatCheckboxModule, MatProgressBarModule, MatFormFieldModule, MatInputModule, TextFieldModule, MatDividerModule, MatTooltipModule, TitleCasePipe],
+  imports: [NgOptimizedImage,AsyncPipe,NgxPaginationModule, NgIf, MatButtonToggleModule, FormsModule, NgFor, FuseCardComponent, MatButtonModule, MatIconModule, RouterLink, NgClass, MatMenuModule, MatCheckboxModule, MatProgressBarModule, MatFormFieldModule, MatInputModule, TextFieldModule, MatDividerModule, MatTooltipModule, TitleCasePipe],
 })
 export class HomeTiendaClientComponent {
 
@@ -63,25 +66,106 @@ export class HomeTiendaClientComponent {
   esFavorito: boolean = false;
   destacados: Destacados;
   destacadoCreated: any;
-
-
+  publicacionesOriginales: any[] = [];
+  publicacionesFiltradas: any[] = [];
+  mostrarHistorial = false;
+  public page!:number;
   /**
    * Constructor
    */
   constructor(
     private _inventoryService: PublicacionesInventory,
     private _matDialog: MatDialog,
-    private _favoritoService: FavoritosService,
-    private _publicacionesService: PublicacionesService,
-    private _commitService: ComentarioService,
+    private sharedFavoritoService: SharedFavoritoService
   ) {
   }
 
 
   ngOnInit(): void {
     this.publicaciones$ = this._inventoryService.publicaciones$;
-   
+    this.publicaciones$.subscribe((publicaciones) => {
+      this.publicacionesOriginales = publicaciones;
+      this.publicacionesFiltradas = publicaciones;
+    });
     
+  }
+
+  buscarPublicaciones(textoBusqueda: string) {
+    const busqueda = textoBusqueda.trim().toLowerCase();
+  
+    if (busqueda === '') {
+      this.publicacionesFiltradas = this.publicacionesOriginales;
+    } else {
+      this.publicacionesFiltradas = this.publicacionesOriginales.filter((publicacion) => {
+        return (
+          publicacion.tituloPublicacion.toLowerCase().includes(busqueda) ||
+          publicacion.descripcionPublicacion.toLowerCase().includes(busqueda)||
+          publicacion.productos?.nombreProducto.toLowerCase().includes(busqueda)||
+          publicacion.productos?.descripcionProducto.toLowerCase().includes(busqueda)||
+          publicacion.servicios?.nombreServicio.toLowerCase().includes(busqueda)||
+          publicacion.servicios?.descripcionServicio.toLowerCase().includes(busqueda)
+        );
+      } );
+      this.mostrarHistorial = false;
+    }
+  }
+  
+  buscarProductos() {
+    const busquedaP = "productos";
+      this.publicacionesFiltradas = this.publicacionesOriginales.filter((publicacion) => {
+        return (
+          publicacion.categoria?.nombreCategoria.toLowerCase().includes(busquedaP)
+        );
+      });
+  }
+  buscartodo() {
+    this.publicacionesFiltradas = this.publicacionesOriginales;
+  }
+  buscarServicios(){
+    const busquedaS = "servicios";
+    this.publicacionesFiltradas = this.publicacionesOriginales.filter((publicacion) => {
+      return (
+        publicacion.categoria?.nombreCategoria.toLowerCase().includes(busquedaS)
+      );
+    });
+  }
+  buscarGastronomia(){
+    const busquedaG = "gastronomia";
+    this.publicacionesFiltradas = this.publicacionesOriginales.filter((publicacion) => {
+      return (
+        publicacion.categoria?.nombreCategoria.toLowerCase().includes(busquedaG)
+      );
+    });
+  }
+
+  public historial: string[] = [];
+  public textoBusqueda: string = '';
+
+  historialBusqueda() {
+    const busqueda = this.textoBusqueda.trim().toLowerCase();
+    if (busqueda !== '' && !this.historial.includes(busqueda)) {
+        this.historial.push(busqueda);
+        this.mostrarHistorial = true;
+        setTimeout(() => {
+          this.mostrarHistorial = false;
+          this.textoBusqueda="";
+        }, 5000);
+      
+    }
+  }
+  cerrarHistorial(){
+    this.mostrarHistorial = false;
+    setTimeout(() => {
+      this.textoBusqueda="";
+    }, 5000);
+  }
+
+  seleccionarTermino(termino: string) {
+    this.textoBusqueda = termino;
+    this.historialBusqueda();
+  }
+  eliminarTermino(termino: string) {
+    this.historial = this.historial.filter(item => item !== termino);
   }
 
   nextPage() {
@@ -90,58 +174,9 @@ export class HomeTiendaClientComponent {
     }
   }
 
-  toggleFavorito(idPublicacion: number) {
-    if (!this.esFavorito) {
-      // Acción cuando se hace clic por primera vez
-
-      const userJSON = localStorage.getItem('user');
-      const user = JSON.parse(userJSON);
-
-      console.log('idPublicacionSeleccionado', idPublicacion);
-      
-      this._publicacionesService.buscarPublicacionId(idPublicacion).subscribe(
-        (datos: InventarioPublicaciones) => {
-          console.log('datos', datos);
-
-          this.destacados = new Destacados();
-          this.destacados.estadoDestacado = true;
-          this.destacados.fecha = new Date().toISOString();
-          this.destacados.publicaciones = datos;
-          this.destacados.usuario = user;
-
-          console.log('destacados', this.destacados);
-
-          this._favoritoService.saveFavorito(this.destacados).subscribe(
-            (datos: Destacados) => {
-              console.log('datos', datos);
-              this.destacadoCreated = datos;
-
-            },
-            error => {
-              console.error('Ocurrió un error al guardar el favorito:', error);
-            }
-          );
-        },
-        error => {
-          console.error('Ocurrió un error al obtener la lista:', error);
-        }
-      );
-        
-
-      // Realiza la acción que desees aquí
-    } else {
-      // Acción cuando se hace clic después de haber sido clickeado
-      console.log('Botón clickeado después de haber sido clickeado');
-      // Realiza otra acción que desees aquí
-      console.log('ID Des', this.destacadoCreated.idDestacado);
-
-    }
-    
-  
-    this.esFavorito = !this.esFavorito; // Cambia el estado del botón
+  toggleFavorito(publicacion: InventarioPublicaciones) {
+    this.sharedFavoritoService.toggleFavorito(publicacion);
   }
-
-
 
   listarPublicaciones() {
     this._inventoryService.obtenerListaPublicaciones().subscribe(
