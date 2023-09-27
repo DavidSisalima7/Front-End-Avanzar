@@ -26,6 +26,9 @@ import { ModalPublicacionServiciosComponent } from './modal-publicacion-servicio
 import {NgxPaginationModule} from 'ngx-pagination'; // <-- import the module
 import { ModalComentariosComponent } from '../home-tienda/modal-comentarios/modal-comentarios.component';
 import { SharedFavoritoService } from 'app/services/services/sharedFavoritoService.service';
+import { Destacados } from 'app/services/models/destacados';
+import { PublicacionesService } from 'app/services/services/publicaciones.service';
+import { FavoritosService } from 'app/services/services/favoritos.service';
 
 
 @Component({
@@ -50,6 +53,9 @@ export class ServiciosVentClientComponent implements OnInit {
   publicacionesOriginales: any[] = [];
   publicacionesFiltradas: any[] = [];
   public page!:number;
+  destacados: Destacados;
+  esFavorito: boolean = false;
+  destacadoCreated: any;
 
   /**
    * Constructor
@@ -57,7 +63,8 @@ export class ServiciosVentClientComponent implements OnInit {
   constructor(
     private _inventoryService: PublicacionesInventoryServicios,
     private _matDialog: MatDialog,
-    private sharedFavoritoService: SharedFavoritoService
+    private _publicacionesService: PublicacionesService,
+    private _favoritoService: FavoritosService
   ) {
   }
 
@@ -141,8 +148,46 @@ export class ServiciosVentClientComponent implements OnInit {
   }
 
   //Metodo para los destacados
-  toggleFavorito(publicacion: InventarioPublicaciones) {
-    this.sharedFavoritoService.toggleFavorito(publicacion);
+  toggleFavorito(idPublicacion: number) {
+    if (!this.esFavorito) {
+      // Acción cuando se hace clic por primera vez
+
+      const userJSON = localStorage.getItem('user');
+      const user = JSON.parse(userJSON);
+
+      this._publicacionesService.buscarPublicacionId(idPublicacion).subscribe(
+        (datos: InventarioPublicaciones) => {
+      
+          this.destacados = new Destacados();
+          this.destacados.estadoDestacado = true;
+          this.destacados.fecha = new Date().toISOString();
+          this.destacados.publicaciones = datos;
+          this.destacados.usuario = user;
+
+         
+
+          this._favoritoService.saveFavorito(this.destacados).subscribe(
+            (datos: Destacados) => {
+              this.destacadoCreated = datos;
+
+            },
+            error => {
+              console.error('Ocurrió un error al guardar el favorito:', error);
+            }
+          );
+        },
+        error => {
+          console.error('Ocurrió un error al obtener la lista:', error);
+        }
+      );
+        
+
+      // Realiza la acción que desees aquí
+    } else {
+      // Acción cuando se hace clic después de haber sido clickeado
+      console.log('Botón clickeado después de haber sido clickeado');
+    }
+    this.esFavorito = !this.esFavorito; // Cambia el estado del botón
   }
   
   }

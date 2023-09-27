@@ -18,6 +18,7 @@ export class SharedFavoritoService {
 
   destacados: Destacados;
   destacadoCreated: any;
+  
 
 
   toggleFavorito(publicacion: InventarioPublicaciones) {

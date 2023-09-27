@@ -355,13 +355,28 @@
                                 <span class="ml-2">Adquirir</span>
                               </a>
                               
-                              <button class="ml-auto" mat-icon-button (click)="toggleFavorito(publicacion)">
-                                <mat-icon
-                                    class="icon-size-5"
-                                    [svgIcon]="publicacion.visible ? 'heroicons_solid:heart' : 'heroicons_solid:heart'"
-                                    [style.color]="publicacion.visible ? 'red' : 'gray'"
-                                ></mat-icon>
-                            </button>
+                              <button
+                              class="ml-auto"
+                              mat-button
+                              [color]="'primary'"
+                              [matMenuTriggerFor]="postCardMenu01">
+                              <mat-icon
+                                  class="icon-size-5"
+                                  [svgIcon]="'heroicons_solid:ellipsis-horizontal'"></mat-icon>
+                          </button>
+      
+                          
+                          <mat-menu #postCardMenu01="matMenu">
+                              <button mat-menu-item (click)="toggleFavorito(publicacion.idPublicacion)">
+                                  <span class="flex items-center">
+                                  <mat-icon
+                                      class="icon-size-5 mr-3"
+                                      [svgIcon]="'heroicons_solid:heart'"
+                                  ></mat-icon>
+                                  <span>Añadir Favorito</span>
+                                  </span>
+                              </button>
+                          </mat-menu>
 
                                     <button
                                     class="ml-auto comment-button"
