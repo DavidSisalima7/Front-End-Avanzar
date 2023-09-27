@@ -28,7 +28,7 @@ import { PublicacionesService } from 'app/services/services/publicaciones.servic
 import { Destacados } from 'app/services/models/destacados';
 import { ModalComentariosComponent } from './modal-comentarios/modal-comentarios.component';
 import { ComentarioService } from 'app/services/services/comentarios.service';
-
+import {NgxPaginationModule} from 'ngx-pagination'; // <-- import the module
 
 
 @Component({
@@ -44,7 +44,7 @@ import { ComentarioService } from 'app/services/services/comentarios.service';
             } 
         `,
   ],
-  imports: [NgOptimizedImage,AsyncPipe, NgIf, MatButtonToggleModule, FormsModule, NgFor, FuseCardComponent, MatButtonModule, MatIconModule, RouterLink, NgClass, MatMenuModule, MatCheckboxModule, MatProgressBarModule, MatFormFieldModule, MatInputModule, TextFieldModule, MatDividerModule, MatTooltipModule, TitleCasePipe],
+  imports: [NgOptimizedImage,AsyncPipe,NgxPaginationModule, NgIf, MatButtonToggleModule, FormsModule, NgFor, FuseCardComponent, MatButtonModule, MatIconModule, RouterLink, NgClass, MatMenuModule, MatCheckboxModule, MatProgressBarModule, MatFormFieldModule, MatInputModule, TextFieldModule, MatDividerModule, MatTooltipModule, TitleCasePipe],
 })
 export class HomeTiendaClientComponent {
 
@@ -68,6 +68,7 @@ export class HomeTiendaClientComponent {
   publicacionesOriginales: any[] = [];
   publicacionesFiltradas: any[] = [];
   mostrarHistorial = false;
+  public page!:number;
   /**
    * Constructor
    */

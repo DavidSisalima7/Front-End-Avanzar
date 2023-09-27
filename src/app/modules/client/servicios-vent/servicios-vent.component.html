@@ -31,7 +31,7 @@
     <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
         <ng-container *ngIf="publicaciones$ | async as publicaciones">
             <ng-container *ngIf="publicaciones.length > 0; else noPublicaciones">
-                <ng-container *ngFor="let publicacion of publicacionesFiltradas; trackBy: trackByFn">
+                <ng-container *ngFor="let publicacion of publicacionesFiltradas | paginate: { itemsPerPage: 8, currentPage: page }, trackBy: trackByFn">
                     <fuse-card class="flex flex-col max-w-140 w-full filter-shopping">
                         <div class="flex-0 w-full  h-64 md:w-full">
                                 <ng-container
@@ -406,5 +406,6 @@
                 disponibles!</div>
         </ng-template>
     </div>
+    <pagination-controls (pageChange)="page = $event"  previousLabel="Anterior" nextLabel="Despues" ></pagination-controls>
     </div>
 </div>

@@ -29,6 +29,7 @@ import { OnInit } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { debounceTime, distinctUntilChanged, switchMap, startWith, map } from 'rxjs/operators';
 import { of } from 'rxjs'; // <-- import the module
+import {NgxPaginationModule} from 'ngx-pagination'; // <-- import the module
 
 @Component({
     selector: 'landing-home',
@@ -36,7 +37,7 @@ import { of } from 'rxjs'; // <-- import the module
     encapsulation: ViewEncapsulation.None,
     styleUrls    : ['./home.component.scss'],
     standalone: true,
-    imports: [AsyncPipe, NgIf, MatButtonToggleModule, FormsModule, NgFor, FuseCardComponent, MatButtonModule, MatIconModule, RouterLink, NgClass, MatMenuModule, MatCheckboxModule, MatProgressBarModule, MatFormFieldModule, MatInputModule, TextFieldModule, MatDividerModule, MatTooltipModule, TitleCasePipe],
+    imports: [AsyncPipe, NgxPaginationModule, NgIf, MatButtonToggleModule, FormsModule, NgFor, FuseCardComponent, MatButtonModule, MatIconModule, RouterLink, NgClass, MatMenuModule, MatCheckboxModule, MatProgressBarModule, MatFormFieldModule, MatInputModule, TextFieldModule, MatDividerModule, MatTooltipModule, TitleCasePipe],
 
 })
 export class LandingHomeComponent {
@@ -184,5 +185,8 @@ eliminarTermino(termino: string) {
       console.log('Compose dialog was closed!');
     });
   }
+
+  public page!:number;
+  
 
 }

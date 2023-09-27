@@ -67,7 +67,7 @@
                 <ng-container *ngIf="publicaciones.length > 0; else noPublicaciones">
                     <div class="grid grid-cols-1 sm:grid-cols-3 gap-6">
                         <ng-container
-                            *ngFor="let publicacion of publicacionesFiltradas.slice(0, 12); let i = index; trackBy: trackByFn">
+                            *ngFor="let publicacion of publicacionesFiltradas.slice(0, 12) | paginate: { itemsPerPage: 12, currentPage: page }; let i = index; trackBy: trackByFn">
 
                             <fuse-card class="flex flex-col max-w-80 w-full filter-listing">
                                 <ng-container *ngIf="
@@ -207,7 +207,7 @@
                             </fuse-card>
                         </ng-container>
                     </div>
-
+                    <pagination-controls (pageChange)="page = $event"  previousLabel="Anterior" nextLabel="Despues" ></pagination-controls>
                 </ng-container>
             </ng-container>
 
