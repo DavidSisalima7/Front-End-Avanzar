@@ -362,6 +362,14 @@ export class EnterpriseLayoutComponent implements OnInit, OnDestroy
                                     type : 'basic',
                                     icon : 'heroicons_outline:chat-bubble-left-right',
                                     link : '/ecommerce-servicios'
+                                },
+                                
+                                {
+                                    id   : 'comments-publicaciones',
+                                    title: 'Comentarios Publicaciones',
+                                    type : 'basic',
+                                    icon : 'heroicons_outline:chat-bubble-left-right',
+                                    link : '/comments'
                                 }
                             ]
                         },
