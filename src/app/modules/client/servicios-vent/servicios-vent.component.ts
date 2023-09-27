@@ -23,6 +23,7 @@ import { MatDividerModule } from '@angular/material/divider';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { PublicacionesInventoryServicios } from 'app/services/services/PublicacionesInventory-Servicios.service';
 import { ModalPublicacionServiciosComponent } from './modal-publicacion-servicios/modal-publicacion-servicios.component';
+import {NgxPaginationModule} from 'ngx-pagination'; // <-- import the module
 
 
 @Component({
@@ -32,7 +33,9 @@ import { ModalPublicacionServiciosComponent } from './modal-publicacion-servicio
   styleUrls: ['../home-tienda/home-tienda.component.scss'],
   encapsulation: ViewEncapsulation.None,
   standalone: true,
-  imports: [NgOptimizedImage,AsyncPipe, NgIf, MatButtonToggleModule, FormsModule, NgFor, FuseCardComponent, MatButtonModule, MatIconModule, RouterLink, NgClass, MatMenuModule, MatCheckboxModule, MatProgressBarModule, MatFormFieldModule, MatInputModule, TextFieldModule, MatDividerModule, MatTooltipModule, TitleCasePipe],
+  imports: [NgOptimizedImage,AsyncPipe, NgIf, MatButtonToggleModule, FormsModule, NgFor, FuseCardComponent, MatButtonModule, 
+    MatIconModule, RouterLink, NgClass, MatMenuModule, MatCheckboxModule, MatProgressBarModule, MatFormFieldModule, MatInputModule, 
+    TextFieldModule, MatDividerModule, MatTooltipModule, TitleCasePipe, NgxPaginationModule],
  
 })
 export class ServiciosVentClientComponent implements OnInit {
@@ -66,6 +69,9 @@ export class ServiciosVentClientComponent implements OnInit {
       this.paginator.nextPage();
     }
   }
+
+  public page!:number;
+
 
   listarPublicaciones() {
     this._inventoryService.obtenerListaPublicacionesXServicio().subscribe(

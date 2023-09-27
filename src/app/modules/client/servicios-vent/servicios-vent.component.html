@@ -28,7 +28,7 @@
     <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
         <ng-container *ngIf="publicaciones$ | async as publicaciones">
             <ng-container *ngIf="publicaciones.length > 0; else noPublicaciones">
-                <ng-container *ngFor="let publicacion of publicaciones; trackBy: trackByFn">
+                <ng-container *ngFor="let publicacion of publicaciones | paginate: { itemsPerPage: 12, currentPage: page }, trackBy: trackByFn">
                     <fuse-card class="flex flex-col max-w-140 w-full filter-shopping">
                         <div class="flex-0 w-full  h-64 md:w-full">
                                 <ng-container
@@ -398,10 +398,14 @@
                     </ng-container>
             </ng-container>
         </ng-container>
+
         <ng-template #noPublicaciones>
             <div class="p-8 sm:p-16 border-t text-4xl font-semibold tracking-tight text-center">No hay publicaciones
                 disponibles!</div>
         </ng-template>
     </div>
+    <pagination-controls  (pageChange)="page = $event"  previousLabel="Anterior" nextLabel="Despues"  style="padding-bottom: 5px;"></pagination-controls>
+
     </div>
+
 </div>

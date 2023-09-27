@@ -36,9 +36,7 @@
 
 
                                     <ng-container
-                                    *ngFor="let publicacion of publicaciones | paginate: { itemsPerPage: 3, currentPage: page }, let i = index; trackBy: trackByFn"                                        
-                                        >
-
+                                    *ngFor="let publicacion of publicaciones.slice(0, 12) | paginate: { itemsPerPage: 3, currentPage: page }; let i = index; trackBy: trackByFn">
                                         <fuse-card class="flex flex-col max-w-80 w-full filter-listing">
                                             <ng-container *ngIf="
                             publicacion.productos;
@@ -179,10 +177,7 @@
                                 </div>
 
                                
-                                    <pagination-controls (pageChange)="page = $event"  previousLabel="Anterior" nextLabel="Despues"
-    class="mt-4"
-
-                                    ></pagination-controls>
+                                    <pagination-controls (pageChange)="page = $event"  previousLabel="Anterior" nextLabel="Despues" ></pagination-controls>
 
                             </ng-container>
                         </ng-container>
