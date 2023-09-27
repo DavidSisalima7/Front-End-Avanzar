@@ -1,24 +1,26 @@
-<button class="btn mx-2 mt-15" mat-raised-button (click)="redirectToHome()">
+<!-- <button class="btn mx-2 mt-15" mat-raised-button (click)="redirectToHome()">
     <mat-icon [svgIcon]="'heroicons_outline:home'"></mat-icon>
-</button>
+</button> -->
 <div class="flex flex-col items-center justify-center w-full h-full">
 
 
-    <nav class="sticky  w-full z-20 top-0 left-0 bg-white">
+    <nav class="w-full z-20 top-0 left-0">
         <div class="max-w-screen-xl flex flex-wrap  justify-between mx-auto p-4">
-            <a href="#" class="flex items-center">
-                <img src="../../../../assets/images/logo/avanzar.png" class="h-8 mr-3 mt-4" alt="Flowbite Logo">
-                <span class="self-center text-2xl font-semibold whitespace-nowrap text-black mt-4">Fundación
+            <a href="/home" class="flex items-center">
+                <img src="../../../../assets/images/logo/avanzar.png" class="h-8 mr-3 " alt="Flowbite Logo">
+                <span class="self-center text-2xl font-semibold whitespace-nowrap text-black ">Fundación
                     Avanzar</span>
             </a>
 
-            <a href="#" class="flex items-center mt-4 ">
+            <!-- <a href="#" class="flex items-center mt-4 ">
                 <span class="self-center text-1xl  whitespace-nowrap text-black">Producto</span>
             </a>
 
             <a href="#" class="flex items-center mt-4">
                 <span class="self-center text-1xl  whitespace-nowrap text-black">Servicio</span>
-            </a>
+            </a> -->
+
+            
 
             <!-- <div class="flex-auto">
                 <mat-form-field
@@ -38,44 +40,70 @@
 
             
             <div class="flex md:order-2  items-center ">
-                <mat-form-field
-                    class="fuse-mat-dense fuse-mat-rounded w-100 min-w-50 mt-4 mr-10 ml-30"
-                    subscriptSizing="dynamic">
-                    <mat-icon
-                        class="icon-size-5"
-                        matPrefix
-                        [svgIcon]="'heroicons_solid:magnifying-glass'"></mat-icon>
-                    <input
-                        matInput
-                        
-                        [autocomplete]="'off'"
-                        [placeholder]="'Buscar...'">
-                </mat-form-field>
-                <a class="mt-4" mat-flat-button [color]="'primary'" [routerLink]="'/sign-in'" style="margin-right:5px;">
+                <mat-form-field class="fuse-mat-dense fuse-mat-rounded min-w-100 mt-4 mr-10">
+                    <mat-icon class="icon-size-5" matPrefix [svgIcon]="'heroicons_solid:magnifying-glass'"></mat-icon>
+                    <input matInput [autocomplete]="'off'" [placeholder]="'Buscar Publicación...'" [(ngModel)]="textoBusqueda"
+                        (click)="mostrarHistorial = true" (keyup.enter)="buscarPublicaciones(textoBusqueda)" (keyup.enter)="historialBusqueda()">
+                    <!-- <button class="btn" (click)="historialBusqueda()" (click)="buscarPublicaciones(textoBusqueda)"  (click)="mostrarHistorial = false">Buscar</button> -->
+                    </mat-form-field>
+                <a mat-flat-button [color]="'primary'" [routerLink]="'/sign-in'" style="margin-right:5px;">
                     <span>Iniciar Sesión</span>
                     <!-- <mat-icon class="ml-2 icon-size-5" [svgIcon]="'heroicons_mini:arrow-long-right'"></mat-icon> -->
                 </a>
-                <a class="mt-4" mat-flat-button [color]="'primary'" [routerLink]="'/sign-up'">
+                <a  mat-flat-button [color]="'primary'" [routerLink]="'/sign-up'">
                     <span>Registrarse</span>
                 </a>
             </div>
         </div>
     </nav>
 
+ 
+    <div class="relative flex-0 py-8 px-4 sm:p-16 overflow-hidden bg-gray-900 dark w-full h-100" style="background-image: url('../../../../assets/images/logo/tienda3.png'); background-size: cover; position: relative;">
 
+
+            <!-- @formatter:on -->
+            <div class="z-10 relative flex flex-col items-center">
+                <h2 class="text-xl font-semibold">Fundacion Avanzar</h2>
+                <div class="mt-1 text-2xl sm:text-7xl font-extrabold tracking-tight leading-tight text-center">
+                    Productos y Servicios .
+                </div>
+                <div class="max-w-2xl mt-6 sm:text-2xl text-center tracking-tight text-white">
+                    Cada elección que hagas aquí ayuda a respaldar la importante labor de la Fundación Avanzar en su búsqueda de un mundo mejor.
+                </div>
+            </div>
+            <div class="button-row ">
+                <button class="btn mx-2 mt-4 " [color]="'primary'" mat-raised-button (click)="buscartodo()">
+                    Todos
+                </button>
+                <button class="btn mx-2 mt-4 "  [color]="'primary'" mat-raised-button (click)="buscarGastronomia()">
+                    Gastronomía
+                </button>
+                <button class="btn mx-2 mt-4  "  [color]="'primary'" mat-raised-button (click)="buscarProductos()">
+                    Productos
+                </button> 
+                <button class="btn mx-2 mt-4 "  [color]="'primary'" mat-raised-button (click)="buscarServicios()">
+                    Servicios
+                </button>
+            </div>
+            
+        </div>
+
+        
+      
     <!-- Datos sobre la fundacion -->
+    
+    
  <div class="container-fundation">
+    
         <div class="container-conten">
             <div class="container-fundation-info">
-                <div class="flex flex-col items-center px-6 py-10 sm:px-16 sm:pt-18 sm:pb-20 bg-white dark:bg-gray-800" (mouseleave)="cerrarHistorial()">
-             <!-- Search -->
+                <!-- <div class="flex flex-col items-center px-6 py-10 sm:px-16 sm:pt-18 sm:pb-20 bg-white dark:bg-gray-800" (mouseleave)="cerrarHistorial()"> -->
              <div> 
-                <mat-form-field class="fuse-mat-dense fuse-mat-rounded min-w-64 mt-15">
-                <mat-icon class="icon-size-5" matPrefix [svgIcon]="'heroicons_solid:magnifying-glass'"></mat-icon>
-                <input matInput [autocomplete]="'off'" [placeholder]="'Buscar Publicación'" [(ngModel)]="textoBusqueda"
-                    (click)="mostrarHistorial = true" (keyup.enter)="buscarPublicaciones(textoBusqueda)" (keyup.enter)="historialBusqueda()">
-                <!-- <button class="btn" (click)="historialBusqueda()" (click)="buscarPublicaciones(textoBusqueda)"  (click)="mostrarHistorial = false">Buscar</button> -->
-                </mat-form-field>
+
+
+                
+                
+                
 
                 <div *ngIf="mostrarHistorial && historial.length > 0" class="historial">
                 <h4 style="width: 100%; text-align: center;">Historial de búsqueda:</h4>
@@ -88,7 +116,7 @@
                 </div>
               </div>
                 
-                <div class="button-row">
+                <!-- <div class="button-row">
                     <button class="btn mx-2 mt-15" mat-raised-button (click)="buscartodo()">
                         All (Publications)
                     </button>
@@ -101,29 +129,13 @@
                     <button class="btn mx-2 mt-15" mat-raised-button (click)="buscarServicios()">
                         Servicios
                     </button>
-                </div>
+                </div> -->
                 </div>
 
         <br>
-        <div class="flex-1 min-w-0">
-         
-            <div class="flex flex-wrap items-center font-medium">
-                <div>
-                    <a class="whitespace-nowrap text-primary-500">Productos y servicios disponibles al
-                        público</a>
-                </div>
-            </div>
-            <div class="mt-2 flex items-center">
-                <img class="w-10 h-10 object-cover rounded-full" src="assets/images/logo/avanzar.png"
-                    alt="Logo de Avanzar" />
-                <h2
-                    class="ml-2 text-3xl md:text-4xl font-extrabold tracking-tight leading-7 sm:leading-10 truncate">
-                    Publicaciones
-                </h2>
-            </div>
-        </div>
+        
 
-        <div class="flex-auto p-6 sm:p-10">
+        <div class="flex-auto p-6 sm:p-10 mat-20">
             <ng-container *ngIf="publicaciones$ | async as publicaciones">
                 <ng-container *ngIf="publicaciones.length > 0; else noPublicaciones">
                     <div class="grid grid-cols-1 sm:grid-cols-3 gap-6">
@@ -268,7 +280,10 @@
                             </fuse-card>
                         </ng-container>
                     </div>
-                    <pagination-controls (pageChange)="page = $event"  previousLabel="Anterior" nextLabel="Despues" ></pagination-controls>
+                    <div class="text-2xl  tracking-tight leading-tight text-center mt-20" >
+                        <pagination-controls (pageChange)="page = $event"  previousLabel="Anterior" nextLabel="Despues" ></pagination-controls>
+
+                    </div>
                 </ng-container>
             </ng-container>
 
@@ -277,7 +292,7 @@
                     publicaciones
                     disponibles!</div>
             </ng-template>
-                        <div class="text-center">
+                        <div class="text-center mt-32">
                             <mat-icon class="icon-size-5 transition-transform ease-in-out duration-150 rotate-0"
                                 [color]="'primary'" [svgIcon]="
                                                 'heroicons_mini:chevron-double-down'
@@ -296,25 +311,3 @@
                     </div>
                 </div>
             </div> 
-            <!-- <footer
-                class="absolute bottom-0 left-0 z-20 w-full p-4 bg-black border-t border-black shadow md:flex md:items-center md:justify-between md:p-6 dark:bg-gray-800 dark:border-gray-600">
-                <span class="text-sm text-gray-500 sm:text-center dark:text-gray-400">© 2023 <a
-                        href="https://www.fundacion-avanzar.com/" class="hover:underline">Fundación Avanzar™</a>. All
-                    Rights Reserved.
-                </span>
-                <ul
-                    class="flex flex-wrap items-center mt-3 text-sm font-medium text-gray-500 dark:text-gray-400 sm:mt-0">
-                    <li>
-                        <a href="#" class="mr-4 hover:underline md:mr-6">About</a>
-                    </li>
-                    <li>
-                        <a href="#" class="mr-4 hover:underline md:mr-6">Privacy Policy</a>
-                    </li>
-                    <li>
-                        <a href="#" class="mr-4 hover:underline md:mr-6">Licensing</a>
-                    </li>
-                    <li>
-                        <a href="#" class="hover:underline">Contact</a>
-                    </li>
-                </ul>
-            </footer> -->
