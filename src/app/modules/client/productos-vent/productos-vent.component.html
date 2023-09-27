@@ -16,24 +16,33 @@
                 alt="Logo de Avanzar"
             />
             <h2 class="ml-2 text-3xl md:text-4xl font-extrabold tracking-tight leading-7 sm:leading-10 truncate">
-                Publicaciónes
+                Publicaciones
             </h2>
         </div>
     </div>
           <!-- Search -->
           <mat-form-field class="fuse-mat-dense fuse-mat-rounded min-w-64 mt-15" [subscriptSizing]="'dynamic'">
             <mat-icon class="icon-size-5" matPrefix [svgIcon]="'heroicons_solid:magnifying-glass'"></mat-icon>
-            <input matInput [autocomplete]="'off'" [placeholder]="'Buscar Publicación'" #input (input)="buscarPublicaciones(input.value)">
+            <input matInput [autocomplete]="'off'" [placeholder]="'Buscar'" #input (input)="buscarPublicaciones(input.value)">
           </mat-form-field>
 </div>
 
-<div class="flex-auto p-6 sm:p-26">
-    <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+<div class="flex-auto p-6 sm:p-8">
+    <div class="grid grid-cols-1 sm:grid-cols-3 gap-5">
         <ng-container *ngIf="publicaciones$ | async as publicaciones">
-            <ng-container *ngIf="publicaciones.length > 0; else noPublicaciones">
-                <ng-container *ngFor="let publicacion of publicacionesFiltradas | paginate: { itemsPerPage: 8, currentPage: page }, trackBy: trackByFn">
-                    <fuse-card class="flex flex-col max-w-140 w-full filter-shopping">
-                        <div class="flex-0 w-full  h-64 md:w-full">
+            <ng-container
+                *ngIf="publicaciones.length > 0; else noPublicaciones"
+            >
+                <ng-container
+                    *ngFor="
+                        let publicacion of publicacionesFiltradas
+                            | paginate
+                                : { itemsPerPage: 8, currentPage: page };
+                        trackBy: trackByFn
+                    "
+                >
+                    <fuse-card class="flex flex-col max-w-md w-full filter-shopping">
+                        <div class="flex-0 w-full h-60 md:w-full">
                                 <ng-container
                                     *ngIf="
                                         publicacion.productos;
@@ -79,7 +88,7 @@
                                 <div
                                     class="flex flex-col md:flex-row items-baseline justify-between"
                                 >
-                                    <div class="flex flex-col">
+                                  <!--   <div class="flex flex-col">
                                         <img
                                         class="w-16 h-16 rounded-full mr-4"
                                             *ngIf="
@@ -115,9 +124,11 @@
                                                     .usuario.name
                                             }}</span
                                         >
-                                    </div>
+                                    </div> -->
+
+
                                     <div
-                                        class="text-3xl font-semibold mt-4 md:mt-0 md:ml-6"
+                                        class="text-md text-secondary "
                                     >
                                         <span
                                             class="text-sm text-secondary leading-none mt-1"
@@ -126,24 +137,17 @@
                                             }}</span
                                         >
                                     </div>
-                                    
                                 </div>
 
-                                
-                                <div
-                                    class="text-md text-secondary mt-6"
-                                >
+                                <div class="text-md text-secondary mt-4">
                                     <div
-                                        class="text-3xl font-semibold leading-none"
+                                        class="text-2xl font-semibold leading-none"
                                     >
-                                        {{
-                                            publicacion.tituloPublicacion
-                                        }}
+                                        {{ publicacion.tituloPublicacion }}
                                     </div>
                                 </div>
 
-
-                                <div
+                                <!-- Descripción de producto -->                                <!-- <div
                                     class="text-md text-secondary mt-6"
                                 >
                                     <ng-container
@@ -164,41 +168,41 @@
                                                 "Descripción no disponible"
                                         }}
                                     </ng-template>
-                                </div>
+                                </div> -->
 
                                 
-                                <div class="text-2xl font-semibold leading-tight mt-1">
+                                <div class="text-1xl font-semibold leading-tight mt-1">
                                     <div class="flex items-baseline">
-                                        <div class="text-2xl font-semibold mt-2">
+                                        <div class="text-1xl font-semibold mt-2">
                                             <ng-container *ngIf="publicacion.productos || publicacion.servicios; else precioNoDisponible">
                                                 <ng-container *ngIf="publicacion.productos">
                                                     <ng-container *ngIf="publicacion.productos.precioInicialProducto && publicacion.productos.precioFinalProducto">
-                                                        <div class="text-2xl font-semibold leading-tight mt-1">
+                                                        <div class="text-1xl font-semibold leading-tight mt-1">
                                                             Desde USD ${{ publicacion.productos.precioInicialProducto }}
                                                         </div>
                                                         <hr class="price-divider">
-                                                        <div class="text-2xl font-semibold leading-tight mt-1">
+                                                        <div class="text-1xl font-semibold leading-tight mt-1">
                                                             Hasta USD ${{ publicacion.productos.precioFinalProducto }}
                                                         </div>
                                                     </ng-container>
                                                     <ng-container *ngIf="!publicacion.productos.precioInicialProducto && !publicacion.productos.precioFinalProducto">
-                                                        <div class="text-2xl font-semibold leading-tight mt-1">
+                                                        <div class="text-1xl font-semibold leading-tight mt-1">
                                                             USD ${{ publicacion.productos.precioFijoProducto }}
                                                         </div>
                                                     </ng-container>
                                                 </ng-container>
                                                 <ng-container *ngIf="publicacion.servicios">
                                                     <ng-container *ngIf="publicacion.servicios.precioInicialServicio && publicacion.servicios.precioFinalServicio">
-                                                        <div class="text-2xl font-semibold leading-tight mt-1">
+                                                        <div class="text-1xl font-semibold leading-tight mt-1">
                                                             Desde USD ${{ publicacion.servicios.precioInicialServicio }}
                                                         </div>
                                                         <hr class="price-divider">
-                                                        <div class="text-2xl font-semibold leading-tight mt-1">
+                                                        <div class="text-1xl font-semibold leading-tight mt-1">
                                                             Hasta USD ${{ publicacion.servicios.precioFinalServicio }}
                                                         </div>
                                                     </ng-container>
                                                     <ng-container *ngIf="!publicacion.servicios.precioInicialServicio && !publicacion.servicios.precioFinalServicio">
-                                                        <div class="text-2xl font-semibold leading-tight mt-1">
+                                                        <div class="text-1xl font-semibold leading-tight mt-1">
                                                             USD ${{ publicacion.servicios.precioFijoServicio || "Precio no disponible" }}
                                                         </div>
                                                     </ng-container>
@@ -427,6 +431,13 @@
                 disponibles!</div>
         </ng-template>
     </div>
-    <pagination-controls (pageChange)="page = $event"  previousLabel="Anterior" nextLabel="Despues" ></pagination-controls>
+    <div class="flex justify-center">
+        <pagination-controls
+            (pageChange)="page = $event"
+            previousLabel="Anterior"
+            nextLabel="Después"
+            class="mt-8"
+        ></pagination-controls>
+    </div>
     </div>
 </div>
