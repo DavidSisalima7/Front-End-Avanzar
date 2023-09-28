@@ -12,18 +12,19 @@ import { FuseCardComponent } from '@fuse/components/card';
 import { UserService } from 'app/core/user/user.service';
 import { User } from 'app/core/user/user.types';
 import { UserComponent } from 'app/layout/common/user/user.component';
-import { NgIf } from '@angular/common';
+import { NgIf , NgFor} from '@angular/common';
 import { Subject, takeUntil } from 'rxjs';
 import { Router, RouterLink } from '@angular/router';
 import { ComentarioService } from 'app/services/services/comentarios.service';
-
+import { DatePipe } from '@angular/common';
+import { Comentario } from 'app/services/models/comentario';
 
 @Component({
     selector     : 'profile-client',
     standalone   : true,
     templateUrl  : './profile.component.html',
     encapsulation: ViewEncapsulation.None,
-    imports: [RouterLink, FuseCardComponent, MatIconModule, MatButtonModule, MatMenuModule, MatFormFieldModule, MatInputModule, TextFieldModule, MatDividerModule, MatTooltipModule, NgClass, UserComponent, NgIf],
+    imports: [RouterLink,DatePipe,NgFor, FuseCardComponent, MatIconModule, MatButtonModule, MatMenuModule, MatFormFieldModule, MatInputModule, TextFieldModule, MatDividerModule, MatTooltipModule, NgClass, UserComponent, NgIf],
 
 })
 export class ProfileClientComponent
@@ -36,7 +37,7 @@ export class ProfileClientComponent
     comentarioenco:any;
     codigo:any
     comentariodeus:any
-
+    comentariosF:Comentario[]=[];
     private _unsubscribeAll: Subject<any> = new Subject<any>();
     constructor(private _userService: UserService,private _router: Router, private comentarioservice: ComentarioService  ) {
     }
@@ -81,7 +82,7 @@ this.listarRegistros();
     listarRegistros() {
         this.codigo = localStorage.getItem('idUser');
         this.comentarioservice.listCommentsUs(this.codigo).subscribe( (comentarios) => {
-        this.comentarioenco= comentarios;
+        this.comentariosF= comentarios;
     
     });
       }

@@ -15,6 +15,7 @@ import { UserComponent } from 'app/layout/common/user/user.component';
 import { NgIf } from '@angular/common';
 import { Subject, takeUntil } from 'rxjs';
 import { Router, RouterLink } from '@angular/router';
+import { ProductosService } from 'app/services/services/producto.service';
 
 @Component({
     selector     : 'profile-responsable',
@@ -33,7 +34,7 @@ export class ProfileResponsableComponent
     userExtraido: any;
 
     private _unsubscribeAll: Subject<any> = new Subject<any>();
-    constructor(private _userService: UserService, private _router: Router) {
+    constructor(private _userService: UserService, private _router: Router, private productoservice: ProductosService) {
     }
 
     ngOnInit(): void {
@@ -74,6 +75,8 @@ export class ProfileResponsableComponent
     redirectToConfiguration(): void {
         this._router.navigate(['/config-resp']);
     }
+
+
 
 }
 

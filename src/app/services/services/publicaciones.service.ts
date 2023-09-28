@@ -31,4 +31,8 @@ export class PublicacionesService {
   listarPublicacionesServicios(): Observable<Publicacion[]> {
     return this.http.get<Publicacion[]>(`${this.baseUrl}/listarServicio`)
   }
+
+  listPublicacionesUs(idVendedor:number):Observable<Publicacion[]>{
+    return this.http.get<Publicacion[]>(`${this.baseUrl}/PublicacionxVendedor/${idVendedor}`);
+   }
 }
