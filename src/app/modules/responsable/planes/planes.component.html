@@ -28,30 +28,37 @@
                 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-y-6 lg:gap-y-0 md:gap-x-6 lg:gap-x-0">
                     <!-- Card 1 -->
                     <fuse-card class="flex-col items-center max-w-sm md:max-w-none lg:my-16 p-8 sm:py-12 sm:px-10 lg:rounded-none lg:rounded-l-2xl text-center">
-                        <div class="text-4xl font-bold tracking-tight leading-tight">FREE</div>
+                        <div class="text-4xl font-bold tracking-tight leading-tight">GRATIS</div>
                         <!-- Price -->
                         <div class="flex items-baseline mt-8 whitespace-nowrap">
                             <div class="text-6xl font-semibold leading-tight tracking-tight">
-                                <ng-container *ngIf="yearlyBilling">$6</ng-container>
+                                <ng-container *ngIf="yearlyBilling">$0.00</ng-container>
                                 
                             </div>
                             <div class="ml-2 text-2xl text-secondary">/ month</div>
                         </div>
-                        <!-- Price details -->
+                        <!-- Price details 
                         <div class="flex flex-col mt-2 text-secondary">
                             <ng-container *ngIf="yearlyBilling">
                                 <div>billed yearly</div>
                                 <div><b>$9.00</b> billed monthly</div>
                             </ng-container>
                             
-                        </div>
+                        </div>-->
                         <!-- Features -->
                         <div class="mt-8 space-y-2">
-                            <div><b>10</b> projects</div>
-                            <div><b>5GB</b> storage</div>
-                            <div>Analytics</div>
-                            <div>Free mobile app</div>
-                            <div>Access to forums</div>
+                            <div class="flex">
+                                <mat-icon
+                                    class="icon-size-5 text-green-600"
+                                    [svgIcon]="'heroicons_solid:check'"></mat-icon>
+                                <div class="ml-2 leading-5"><b>3</b> publicaciones</div>
+                            </div>
+                            <div class="flex">
+                                <mat-icon
+                                    class="icon-size-5 text-red-600"
+                                    [svgIcon]="'heroicons_solid:x-mark'"></mat-icon>
+                                <div class="ml-2 leading-5">No incluye cursos</div>
+                            </div>
                         </div>
                         <!-- CTA -->
                         <button
@@ -69,26 +76,34 @@
                         <!-- Price -->
                         <div class="flex items-baseline mt-8 whitespace-nowrap">
                             <div class="text-6xl font-semibold leading-tight tracking-tight">
-                                <ng-container *ngIf="yearlyBilling">$12</ng-container>
+                                <ng-container *ngIf="yearlyBilling">$5.00</ng-container>
                                 
                             </div>
                             <div class="ml-2 text-2xl text-secondary">/ month</div>
                         </div>
-                        <!-- Price details -->
+                        <!-- Price details
                         <div class="flex flex-col mt-2 text-secondary">
                             <ng-container *ngIf="yearlyBilling">
                                 <div>billed yearly</div>
                                 <div><b>$15.00</b> billed monthly</div>
                             </ng-container>
                             
-                        </div>
+                        </div> -->
                         <!-- Features -->
                         <div class="mt-8 space-y-2">
-                            <div><b>Unlimited</b> projects</div>
-                            <div><b>Unlimited</b> storage</div>
-                            <div>Custom domains</div>
-                            <div>Bulk editing</div>
-                            <div>12 / 5 support</div>
+                            <div class="flex">
+                                <mat-icon
+                                    class="icon-size-5 text-green-600"
+                                    [svgIcon]="'heroicons_solid:check'"></mat-icon>
+                                <div class="ml-2 leading-5"><b>7</b> publicaciones</div>
+                            </div>
+    
+                            <div class="flex">
+                                <mat-icon
+                                    class="icon-size-5 text-green-600"
+                                    [svgIcon]="'heroicons_solid:check'"></mat-icon>
+                                <div class="ml-2 leading-5">Incluye 1 curso gratis</div>
+                            </div>
                         </div>
                         <!-- CTA -->
                         <button
@@ -105,26 +120,34 @@
                         <!-- Price -->
                         <div class="flex items-baseline mt-8 whitespace-nowrap">
                             <div class="text-6xl font-semibold leading-tight tracking-tight">
-                                <ng-container *ngIf="yearlyBilling">$49</ng-container>
+                                <ng-container *ngIf="yearlyBilling">$10.00</ng-container>
                                 
                             </div>
                             <div class="ml-2 text-2xl text-secondary">/ month</div>
                         </div>
-                        <!-- Price details -->
+                        <!-- Price details 
                         <div class="flex flex-col mt-2 text-secondary">
                             <ng-container *ngIf="yearlyBilling">
                                 <div>billed yearly</div>
                                 <div><b>$69.00</b> billed monthly</div>
                             </ng-container>
                             
-                        </div>
+                        </div>-->
                         <!-- Features -->
                         <div class="mt-8 space-y-2">
-                            <div><b>Dedicated</b> hardware</div>
-                            <div><b>%99.9</b> uptime</div>
-                            <div>Advanced analytics</div>
-                            <div>3rd party integrations</div>
-                            <div>24 / 7 support</div>
+                            <div class="flex">
+                                <mat-icon
+                                    class="icon-size-5 text-green-600"
+                                    [svgIcon]="'heroicons_solid:check'"></mat-icon>
+                                <div class="ml-2 leading-5"><b>12</b> publicaciones</div>
+                            </div>
+                            
+                            <div class="flex">
+                                <mat-icon
+                                    class="icon-size-5 text-green-600"
+                                    [svgIcon]="'heroicons_solid:check'"></mat-icon>
+                                <div class="ml-2 leading-5">Incluye 2 cursos gratis</div>
+                            </div>
                         </div>
                         <!-- CTA -->
                         <button

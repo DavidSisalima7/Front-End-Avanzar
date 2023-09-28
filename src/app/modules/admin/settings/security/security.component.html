@@ -118,11 +118,11 @@
         <!-- Actions -->
         <div class="flex items-center justify-end">
             <button mat-stroked-button type="button">
-                Cancel
+                Cancelar
             </button>
             <button class="ml-4" mat-flat-button type="button" [disabled]="!isFormValid()"
                 (click)="changePass(securityForm.get('currentPassword').value, securityForm.get('newPassword').value, securityForm.get('repPassword').value)"
-                [color]="'primary'">Save
+                [color]="'primary'">Guardar
             </button>
         </div>
     </form>

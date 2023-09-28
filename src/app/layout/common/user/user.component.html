@@ -26,7 +26,7 @@
     #userActions="matMenu">
     <button mat-menu-item>
         <span class="flex flex-col leading-none">
-            <span>Signed in as</span>
+            <span>Registrado como</span>
             <span class="mt-1.5 text-md font-medium">{{user.username}}</span>
         </span>
     </button>
@@ -35,24 +35,18 @@
     (click)="redirectToProfileAdmin()">
     
         <mat-icon [svgIcon]="'heroicons_outline:user-circle'"></mat-icon>
-        <span>Profile</span>
+        <span>Perfil</span>
     </button>
-    <button mat-menu-item>
+    <button mat-menu-item (click)="redirectToConfigAdmin()">
         <mat-icon [svgIcon]="'heroicons_outline:cog-8-tooth'"></mat-icon>
-        <span>Settings</span>
-    </button>
-    <button
-        mat-menu-item
-        [matMenuTriggerFor]="userStatus">
-        <mat-icon [svgIcon]="'heroicons_outline:ellipsis-horizontal-circle'"></mat-icon>
-        <span>Status</span>
+        <span>Configuración</span>
     </button>
     <mat-divider class="my-2"></mat-divider>
     <button
         mat-menu-item
         (click)="signOut()">
         <mat-icon [svgIcon]="'heroicons_outline:arrow-right-on-rectangle'"></mat-icon>
-        <span>Sign out</span>
+        <span>Cerrar sesión</span>
     </button>
 </mat-menu>
 
