@@ -23,4 +23,8 @@ export class ComentarioService {
    listarComentarios(): Observable<Comentario[]> {
     return this.http.get<Comentario[]>(`${this.baseUrl}/listar`);
   }
+  listCommentsUs(idPubli:number):Observable<Comentario[]>{
+    return this.http.get<Comentario[]>(`${this.baseUrl}/Comentarioxus/${idPubli}`);
+   }
+
 }

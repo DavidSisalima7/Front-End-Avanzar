@@ -8,13 +8,14 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatTooltipModule } from '@angular/material/tooltip';
-import { RouterLink } from '@angular/router';
 import { FuseCardComponent } from '@fuse/components/card';
 import { UserService } from 'app/core/user/user.service';
 import { User } from 'app/core/user/user.types';
 import { UserComponent } from 'app/layout/common/user/user.component';
 import { NgIf } from '@angular/common';
 import { Subject, takeUntil } from 'rxjs';
+import { Router, RouterLink } from '@angular/router';
+import { ComentarioService } from 'app/services/services/comentarios.service';
 
 
 @Component({
@@ -32,16 +33,18 @@ export class ProfileClientComponent
      */
     user: User;
     userExtraido: any;
+    comentarioenco:any;
+    codigo:any
+    comentariodeus:any
 
     private _unsubscribeAll: Subject<any> = new Subject<any>();
-    constructor(private _userService: UserService,) {
+    constructor(private _userService: UserService,private _router: Router, private comentarioservice: ComentarioService  ) {
     }
 
     ngOnInit(): void {
-
+this.listarRegistros();
         const userString = localStorage.getItem('user');
         this.userExtraido = JSON.parse(userString);
-
         this._userService.user$
         .pipe((takeUntil(this._unsubscribeAll)))
         .subscribe((user: User) =>
@@ -64,5 +67,24 @@ export class ProfileClientComponent
 
         return `${day} de ${monthName} de ${year}`;
     }
+
+    redirectToHome(): void {
+        this._router.navigate(['/home-cli']);
+    }
+    redirectToFavorites(): void {
+        this._router.navigate(['/fav-cli']);
+    }
+    redirectToConfiguration(): void {
+        this._router.navigate(['/config-cli']);
+    }
+
+    listarRegistros() {
+        this.codigo = localStorage.getItem('idUser');
+        this.comentarioservice.listCommentsUs(this.codigo).subscribe( (comentarios) => {
+        this.comentarioenco= comentarios;
+    
+    });
+      }
+
 }
 
