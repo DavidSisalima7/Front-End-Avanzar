@@ -14,7 +14,7 @@ import { FuseAlertType } from '@fuse/components/alert';
 import { UserService } from 'app/core/user/user.service';
 import { User } from 'app/core/user/user.types';
 import { Subject, takeUntil } from 'rxjs';
-
+import { FuseConfirmationService } from '@fuse/services/confirmation';
 
 export const MY_FORMATS: MatDateFormats = {
   parse: {
@@ -96,7 +96,8 @@ export class SettingsAccountComponent implements OnInit {
     private _formBuilder: UntypedFormBuilder,
     private _userService: UserService,
     private renderer: Renderer2,
-    private datePipe: DatePipe
+    private datePipe: DatePipe,
+    private confirmationService: FuseConfirmationService
   ) {
   }
 
@@ -184,9 +185,29 @@ export class SettingsAccountComponent implements OnInit {
     this._userService.actualizarUsuario(usuarioId, usuarioActualizado, this.selectedFile).subscribe(
       (response) => {
         this.renderer.setProperty(window, 'location', location);
-        console.log("correcto", response);
-        //falta alerta de correcto.
 
+        const confirmationDialog = this.confirmationService.open({
+          "title": "Éxito",
+          "message": "Información Actualizada",
+          "icon": {
+            "show": true,
+            "name": "heroicons_outline:check-circle",
+            "color": "success"
+          },
+          "actions": {
+            "confirm": {
+              "show": false,
+              "label": "Remove",
+              "color": "warn"
+            },
+            "cancel": {
+              "show": false,
+              "label": "Cancel"
+            }
+          },
+          "dismissible": true
+        });
+         this.renderer.setProperty(window,'location',location);
       },
       (error) => {
 

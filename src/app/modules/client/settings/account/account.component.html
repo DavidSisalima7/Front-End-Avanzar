@@ -101,7 +101,7 @@
                     <textarea matInput [formControlName]="'description'" matInput cdkTextareaAutosize
                         [cdkAutosizeMinRows]="5"></textarea>
                 </mat-form-field>
-                <div class="mt-1 text-md text-hint">Breve descripción de su perfil. Se permite HTML básico y Emoji.
+                <div class="mt-1 text-md text-hint">Breve descripción de su perfil. Se permite texto y Emoji.
                 </div>
             </div>
 
@@ -173,7 +173,7 @@
 
         <!-- Actions -->
         <div class="flex items-center justify-end">
-            <button mat-stroked-button type="button">Cancel</button>
+            <button mat-stroked-button type="button" (click)="redirectToHome()">Cancel</button>
             <button class="ml-4" mat-flat-button type="submit" [color]="'primary'">
                 Save
             </button>

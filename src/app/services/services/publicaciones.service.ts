@@ -35,4 +35,8 @@ export class PublicacionesService {
   informacionPublicacionCommentarios(idUsu):Observable<Publicacion[]>{
     return this.http.get<Publicacion[]>(`${this.baseUrl}/recuperarInfoPubliComent/${idUsu}`)
   }
+  
+  listPublicacionesUs(idVendedor:number):Observable<Publicacion[]>{
+    return this.http.get<Publicacion[]>(`${this.baseUrl}/PublicacionxVendedor/${idVendedor}`);
+   }
 }
