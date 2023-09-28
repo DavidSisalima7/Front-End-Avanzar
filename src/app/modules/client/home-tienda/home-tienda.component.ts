@@ -181,7 +181,6 @@ export class HomeTiendaClientComponent {
   }*/
 
   toggleFavorito(idPublicacion: number) {
-    if (!this.esFavorito) {
       // Acción cuando se hace clic por primera vez
 
       const userJSON = localStorage.getItem('user');
@@ -213,12 +212,6 @@ export class HomeTiendaClientComponent {
         }
       );
         
-
-      // Realiza la acción que desees aquí
-    } else {
-      // Acción cuando se hace clic después de haber sido clickeado
-      console.log('Botón clickeado después de haber sido clickeado');
-    }
     this.esFavorito = !this.esFavorito; // Cambia el estado del botón
   }
 
