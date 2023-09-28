@@ -23,4 +23,9 @@ export class FavoritosService {
     return this.http.delete<any>(`${this.baseUrl}/eliminar/${idFavorito}`);
   }
 
+
+  listarDestacados(id: number): Observable<Destacados[]> {
+    return this.http.get<Destacados[]>(`${this.baseUrl}/listConId/${id}`);
+  }
+
 }
