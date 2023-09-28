@@ -19,7 +19,8 @@ export class FavoritosService {
   }
 
 
-  eliminarFavorito(id: number): Observable<any> {
-    return this.http.delete(`${this.baseUrl}/eliminar/${id}`);
+  eliminarFavorito(idFavorito: number): Observable<any> {
+    return this.http.delete<any>(`${this.baseUrl}/eliminar/${idFavorito}`);
   }
+
 }

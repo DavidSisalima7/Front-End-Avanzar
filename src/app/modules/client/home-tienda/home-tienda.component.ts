@@ -29,6 +29,7 @@ import { Destacados } from 'app/services/models/destacados';
 import { ModalComentariosComponent } from './modal-comentarios/modal-comentarios.component';
 import {NgxPaginationModule} from 'ngx-pagination'; // <-- import the module
 import { SharedFavoritoService } from 'app/services/services/sharedFavoritoService.service';
+import { FuseConfirmationService } from '@fuse/services/confirmation';
 
 
 @Component({
@@ -77,7 +78,8 @@ export class HomeTiendaClientComponent {
     private _matDialog: MatDialog,
     private sharedFavoritoService: SharedFavoritoService,
     private _publicacionesService: PublicacionesService,
-    private _favoritoService: FavoritosService
+    private _favoritoService: FavoritosService,
+    private confirmationService: FuseConfirmationService
   ) {
   }
 
@@ -201,9 +203,61 @@ export class HomeTiendaClientComponent {
             (datos: Destacados) => {
               this.destacadoCreated = datos;
 
+              const confirmationDialog = this.confirmationService.open({
+                title: 'Éxito',
+                message: 'Agregado Correctamente a Tus Favoritos',
+                icon: {
+                    show: true,
+                    name: 'heroicons_outline:check-circle',
+                    color: 'success',
+                },
+                actions: {
+                    confirm: {
+                        show: false,
+                        label: '',
+                        color: 'primary'
+                    },
+                    cancel: {
+                        show: false,
+                        label: ''
+                    }
+                }
+            });
+            
+
+            setTimeout(() => {
+              confirmationDialog.close();
+            }, 1000); // 1000 milisegundos (1 segundo)
+            
             },
             error => {
-              console.error('Ocurrió un error al guardar el favorito:', error);
+
+              const confirmationDialog = this.confirmationService.open({
+                title: 'Advertencia',
+                message: 'Ya se encuentra en tus favoritos',
+                icon: {
+                    show: true,
+                    name: 'heroicons_outline:exclamation-circle',
+                    color: 'warning',
+                },
+                actions: {
+                    confirm: {
+                        show: false,
+                        label: '',
+                        color: 'primary'
+                    },
+                    cancel: {
+                        show: false,
+                        label: ''
+                    }
+                }
+            });
+
+            
+            setTimeout(() => {
+              confirmationDialog.close();
+            }, 1000); // 1000 milisegundos (1 segundo)
+
             }
           );
         },
@@ -212,7 +266,6 @@ export class HomeTiendaClientComponent {
         }
       );
         
-    this.esFavorito = !this.esFavorito; // Cambia el estado del botón
   }
 
 
