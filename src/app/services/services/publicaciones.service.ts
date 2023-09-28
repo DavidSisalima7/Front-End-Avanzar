@@ -31,4 +31,8 @@ export class PublicacionesService {
   listarPublicacionesServicios(): Observable<Publicacion[]> {
     return this.http.get<Publicacion[]>(`${this.baseUrl}/listarServicio`)
   }
+
+  informacionPublicacionCommentarios(idUsu):Observable<Publicacion[]>{
+    return this.http.get<Publicacion[]>(`${this.baseUrl}/recuperarInfoPubliComent/${idUsu}`)
+  }
 }

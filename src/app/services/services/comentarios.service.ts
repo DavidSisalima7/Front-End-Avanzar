@@ -3,6 +3,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable, catchError, throwError } from 'rxjs';
 import { Comentario } from '../models/comentario';
 import { ComentariosDto } from '../models/comentariosDto';
+import { Publicacion } from '../models/publicaciones';
 @Injectable({
     providedIn: 'root'
 })
@@ -23,4 +24,9 @@ export class ComentarioService {
    listarComentarios(): Observable<Comentario[]> {
     return this.http.get<Comentario[]>(`${this.baseUrl}/listar`);
   }
+
+  deleteComment(idComment:number):Observable<any>{
+    return this.http.delete<any>(`${this.baseUrl}/deleteComment/${idComment}`);
+  }
+ 
 }
