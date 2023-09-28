@@ -26,6 +26,7 @@ import { FuseCardComponent } from '@fuse/components/card';
 import { ModalDestacadosComponent } from './modal-destacados/modal-destacados.component';
 import { ModalComentariosComponent } from '../home-tienda/modal-comentarios/modal-comentarios.component';
 import { SharedFavoritoService } from 'app/services/services/sharedFavoritoService.service';
+import { NgxPaginationModule } from 'ngx-pagination';
 
 @Component({
     selector     : 'favoritos',
@@ -33,7 +34,7 @@ import { SharedFavoritoService } from 'app/services/services/sharedFavoritoServi
     templateUrl  : './favoritos.component.html',
     styleUrls: ['../home-tienda/home-tienda.component.scss'],
     encapsulation: ViewEncapsulation.None,
-    imports: [NgOptimizedImage,AsyncPipe, NgIf, MatButtonToggleModule, FormsModule, NgFor, FuseCardComponent, MatButtonModule, MatIconModule, RouterLink, NgClass, MatMenuModule, MatCheckboxModule, MatProgressBarModule, MatFormFieldModule, MatInputModule, TextFieldModule, MatDividerModule, MatTooltipModule, TitleCasePipe],
+    imports: [NgxPaginationModule,NgOptimizedImage,AsyncPipe, NgIf, MatButtonToggleModule, FormsModule, NgFor, FuseCardComponent, MatButtonModule, MatIconModule, RouterLink, NgClass, MatMenuModule, MatCheckboxModule, MatProgressBarModule, MatFormFieldModule, MatInputModule, TextFieldModule, MatDividerModule, MatTooltipModule, TitleCasePipe],
 })
 export class FavoritosClientComponent
 {
@@ -44,6 +45,7 @@ export class FavoritosClientComponent
     publications:InventarioPublicaciones[]=[];
     dataSource: MatTableDataSource<InventarioPublicaciones>;
     @ViewChild(MatPaginator, {static: true}) paginator: MatPaginator;
+    public page!:number;
 
     publicacionesOriginales: any[] = [];
     publicacionesFiltradas: any[] = [];
