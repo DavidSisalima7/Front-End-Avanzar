@@ -7,9 +7,15 @@
             [xaxis]="chartOptions.xaxis" [tooltip]="chartOptions.tooltip"></apx-chart>
 
     </div>
-
+    
     <!-- Main -->
     <div class="flex-auto border-t -mt-px pt-4 sm:pt-6">
+        <div class="mt-3 mb-5 sm:mt-0 sm:ml-2">
+            <button mat-flat-button [color]="'primary'" (click)="recuperarDatos()">
+                <mat-icon
+                    class="icon-size-5" [svgIcon]="'heroicons_solid:arrow-path'"></mat-icon>
+                <span class="ml-2">Recargar</span></button>
+        </div>
         <div class="w-full max-w-screen-xl mx-auto">
 
             <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6 w-full min-w-0">
