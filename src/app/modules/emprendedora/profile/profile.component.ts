@@ -12,19 +12,21 @@ import { FuseCardComponent } from '@fuse/components/card';
 import { UserService } from 'app/core/user/user.service';
 import { User } from 'app/core/user/user.types';
 import { UserComponent } from 'app/layout/common/user/user.component';
-import { NgIf } from '@angular/common';
+import { NgIf, NgFor } from '@angular/common';
 import { Subject, takeUntil } from 'rxjs';
 import { Router, RouterLink } from '@angular/router';
 import { PersonaService } from 'app/services/services/persona.service';
 import { Vendedor } from 'app/services/models/vendedora';
 import { VendedorService } from 'app/services/services/vendedora.service';
 import { PublicacionesService } from 'app/services/services/publicaciones.service';
+import { DatePipe } from '@angular/common';
+import { Publicacion } from 'app/services/models/publicaciones';
 @Component({
     selector     : 'profile-emprendedora',
     standalone   : true,
     templateUrl  : './profile.component.html',
     encapsulation: ViewEncapsulation.None,
-    imports: [RouterLink, FuseCardComponent, MatIconModule, MatButtonModule, MatMenuModule, MatFormFieldModule, MatInputModule, TextFieldModule, MatDividerModule, MatTooltipModule, NgClass, UserComponent, NgIf],
+    imports: [RouterLink,DatePipe,NgFor, FuseCardComponent, MatIconModule, MatButtonModule, MatMenuModule, MatFormFieldModule, MatInputModule, TextFieldModule, MatDividerModule, MatTooltipModule, NgClass, UserComponent, NgIf],
 
 })
 export class ProfileEmprendedoraComponent
@@ -42,7 +44,8 @@ export class ProfileEmprendedoraComponent
     idUsuario: any;
     idVendedor: any;
     vendedorLogueado: Vendedor;
-   Listpublicaciones: any;
+
+   Listpublicaciones: Publicacion[]=[];
     private _unsubscribeAll: Subject<any> = new Subject<any>();
     constructor(private _userService: UserService , private _router: Router,  
         private _personaService: PersonaService,     private vendedoraService: VendedorService, private publicacionservice: PublicacionesService) {
@@ -76,18 +79,15 @@ export class ProfileEmprendedoraComponent
     obtenerResumen2(): void {
         this._personaService.obtenerResumen2(this.idVendedor).subscribe((res) => {
             this.totalPublicaciones = res.totalpublicaciones;
-            this.totalComentarios = res.totalcomentarios;
+            this.publicacionservice.listPublicacionesUs(this.idVendedor).subscribe( (publicaciones) => {
+                this.Listpublicaciones= publicaciones;
+            
+            });
 
                 });
     }
 
 
-    listarRegistros() {
-        this.publicacionservice.listPublicacionesUs(this.idVendedor).subscribe( (publicaciones) => {
-        this.Listpublicaciones= publicaciones;
-    
-    });
-      }
 
 
 

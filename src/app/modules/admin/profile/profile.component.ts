@@ -8,13 +8,13 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatTooltipModule } from '@angular/material/tooltip';
-import { RouterLink } from '@angular/router';
 import { FuseCardComponent } from '@fuse/components/card';
 import { UserService } from 'app/core/user/user.service';
 import { User } from 'app/core/user/user.types';
 import { UserComponent } from 'app/layout/common/user/user.component';
 import { NgIf } from '@angular/common';
 import { Subject, takeUntil } from 'rxjs';
+import { Router, RouterLink } from '@angular/router';
 
 @Component({
     selector: 'profile',
@@ -31,7 +31,7 @@ export class ProfileAdminComponent {
     userExtraido: any;
 
     private _unsubscribeAll: Subject<any> = new Subject<any>();
-    constructor(private _userService: UserService,) {
+    constructor(private _userService: UserService,private _router: Router) {
     }
 
     ngOnInit(): void {
@@ -61,4 +61,12 @@ export class ProfileAdminComponent {
 
         return `${day} de ${monthName} de ${year}`;
     }
+
+    redirectToHome(): void {
+        this._router.navigate(['/dash-admin']);
+    }
+    redirectToConfiguration(): void {
+        this._router.navigate(['/config-admin']);
+    }
+
 }
