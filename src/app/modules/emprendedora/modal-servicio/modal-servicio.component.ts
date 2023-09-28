@@ -320,7 +320,7 @@ export class ModalServicioComponent implements OnInit
             this.publication.tituloPublicacion = post.tituloPublicacion;
             this.publication.descripcionPublicacion = post.descripcionPublicacion;
             this.publication.estado = post.estado;
-            this.publication.visible = true;
+            this.publication.visible = false;
             this.publication.fechaPublicacion = new Date(fecha);
 
             // Atributos de servicio

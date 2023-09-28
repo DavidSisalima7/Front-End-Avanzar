@@ -25,6 +25,11 @@ import { ModalClienteComponent } from 'app/modules/admin/modal-cliente/modal-cli
 import { InventarioPublicaciones } from 'app/modules/emprendedora/ecommerce/inventory/inventory.types';
 import { PublicacionesInventory } from 'app/services/services/publicacionesInventory.service';
 import { ModalPublicacionProductosComponent } from './modal-cliente-publicaciones/modal-cliente-publicacionescomponent';
+import { OnInit } from '@angular/core';
+import { FormControl } from '@angular/forms';
+import { debounceTime, distinctUntilChanged, switchMap, startWith, map } from 'rxjs/operators';
+import { of } from 'rxjs'; // <-- import the module
+import {NgxPaginationModule} from 'ngx-pagination'; // <-- import the module
 
 @Component({
     selector: 'landing-home',
@@ -32,7 +37,7 @@ import { ModalPublicacionProductosComponent } from './modal-cliente-publicacione
     encapsulation: ViewEncapsulation.None,
     styleUrls    : ['./home.component.scss'],
     standalone: true,
-    imports: [AsyncPipe, NgIf, MatButtonToggleModule, FormsModule, NgFor, FuseCardComponent, MatButtonModule, MatIconModule, RouterLink, NgClass, MatMenuModule, MatCheckboxModule, MatProgressBarModule, MatFormFieldModule, MatInputModule, TextFieldModule, MatDividerModule, MatTooltipModule, TitleCasePipe],
+    imports: [AsyncPipe, NgxPaginationModule, NgIf, MatButtonToggleModule, FormsModule, NgFor, FuseCardComponent, MatButtonModule, MatIconModule, RouterLink, NgClass, MatMenuModule, MatCheckboxModule, MatProgressBarModule, MatFormFieldModule, MatInputModule, TextFieldModule, MatDividerModule, MatTooltipModule, TitleCasePipe],
 
 })
 export class LandingHomeComponent {
@@ -48,7 +53,9 @@ export class LandingHomeComponent {
     dataSource: MatTableDataSource<InventarioPublicaciones>;
     @ViewChild(MatPaginator, {static: true}) paginator: MatPaginator;
     
-    
+    publicacionesOriginales: any[] = [];
+    publicacionesFiltradas: any[] = [];
+    mostrarHistorial = false;
     /**
      * Constructor
      */
@@ -60,8 +67,90 @@ export class LandingHomeComponent {
     }
     
     ngOnInit(): void {
+      
         this.publicaciones$ = this._inventoryService.publicaciones$;
+        this.publicaciones$.subscribe((publicaciones) => {
+          this.publicacionesOriginales = publicaciones;
+          this.publicacionesFiltradas = publicaciones;
+        });
+        
       }
+
+buscarPublicaciones(textoBusqueda: string) {
+  const busqueda = textoBusqueda.trim().toLowerCase();
+
+  if (busqueda === '') {
+    this.publicacionesFiltradas = this.publicacionesOriginales;
+  } else {
+    this.publicacionesFiltradas = this.publicacionesOriginales.filter((publicacion) => {
+      return (
+        publicacion.tituloPublicacion.toLowerCase().includes(busqueda) ||
+        publicacion.descripcionPublicacion.toLowerCase().includes(busqueda)||
+        publicacion.productos?.nombreProducto.toLowerCase().includes(busqueda)||
+        publicacion.productos?.descripcionProducto.toLowerCase().includes(busqueda)||
+        publicacion.servicios?.nombreServicio.toLowerCase().includes(busqueda)||
+        publicacion.servicios?.descripcionServicio.toLowerCase().includes(busqueda)
+      );
+    });
+  }
+}
+
+buscarProductos() {
+  const busquedaP = "productos";
+    this.publicacionesFiltradas = this.publicacionesOriginales.filter((publicacion) => {
+      return (
+        publicacion.categoria?.nombreCategoria.toLowerCase().includes(busquedaP)
+      );
+    });
+}
+buscartodo() {
+  this.publicacionesFiltradas = this.publicacionesOriginales;
+}
+buscarServicios(){
+  const busquedaS = "servicios";
+  this.publicacionesFiltradas = this.publicacionesOriginales.filter((publicacion) => {
+    return (
+      publicacion.categoria?.nombreCategoria.toLowerCase().includes(busquedaS)
+    );
+  });
+}
+buscarGastronomia(){
+  const busquedaG = "gastronomia";
+  this.publicacionesFiltradas = this.publicacionesOriginales.filter((publicacion) => {
+    return (
+      publicacion.categoria?.nombreCategoria.toLowerCase().includes(busquedaG)
+    );
+  });
+}
+public historial: string[] = [];
+public textoBusqueda: string = '';
+
+historialBusqueda() {
+  const busqueda = this.textoBusqueda.trim().toLowerCase();
+  if (busqueda !== '' && !this.historial.includes(busqueda)) {
+      this.historial.push(busqueda);
+      this.mostrarHistorial = true;
+      setTimeout(() => {
+        this.mostrarHistorial = false;
+        this.textoBusqueda="";
+      }, 5000);
+    
+  }
+}
+cerrarHistorial(){
+  this.mostrarHistorial = false;
+  setTimeout(() => {
+    this.textoBusqueda="";
+  }, 5000);
+}
+
+seleccionarTermino(termino: string) {
+  this.textoBusqueda = termino;
+  this.historialBusqueda();
+}
+eliminarTermino(termino: string) {
+  this.historial = this.historial.filter(item => item !== termino);
+}
 
     redirectToTienda(): void {
         this._router.navigate(['/contactanos']);
@@ -96,5 +185,8 @@ export class LandingHomeComponent {
       console.log('Compose dialog was closed!');
     });
   }
+
+  public page!:number;
+  
 
 }

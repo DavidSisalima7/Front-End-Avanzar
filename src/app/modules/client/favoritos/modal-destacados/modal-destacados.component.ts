@@ -65,10 +65,12 @@ export class ModalDestacadosComponent implements OnInit {
                 this.selectedPublicacionForm=this._formBuilder.group({
                     idPublicacion: [this.selectedPublicacion.idPublicacion],
                     nombreProducto: this.selectedPublicacion.productos ? this.selectedPublicacion.productos.nombreProducto : this.selectedPublicacion.servicios.nombreServicio,
+                    nombreCategoria:[this.selectedPublicacion.categoria.nombreCategoria],
                     tituloPublicacion:  [this.selectedPublicacion.tituloPublicacion],
                     descripcionPublicacion:  [this.selectedPublicacion.descripcionPublicacion],
                     descripcionUsuario:  [this.selectedPublicacion.vendedor.usuario.persona.descripcion],
                     vendedor: [this.selectedPublicacion.vendedor.usuario.name],
+                    emprendimiento:[this.selectedPublicacion.vendedor.nombreEmprendimiento],
                     cantidadDisponible:  [this.selectedPublicacion.idPublicacion],
                     avatar: [this.selectedPublicacion.vendedor.usuario.avatar],
                     precioProducto: [this.selectedPublicacion.idPublicacion],

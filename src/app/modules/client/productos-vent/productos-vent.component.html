@@ -1,5 +1,4 @@
 <div class="flex flex-col flex-auto min-w-0">
-
     <!-- Header -->
 <div class="flex flex-col sm:flex-row flex-0 sm:items-center sm:justify-between p-6 sm:py-8 sm:px-10 border-b bg-card dark:bg-transparent">
     <div class="flex-1 min-w-0">
@@ -20,15 +19,19 @@
                 Publicaciónes
             </h2>
         </div>
-        
     </div>
+          <!-- Search -->
+          <mat-form-field class="fuse-mat-dense fuse-mat-rounded min-w-64 mt-15" [subscriptSizing]="'dynamic'">
+            <mat-icon class="icon-size-5" matPrefix [svgIcon]="'heroicons_solid:magnifying-glass'"></mat-icon>
+            <input matInput [autocomplete]="'off'" [placeholder]="'Buscar Publicación'" #input (input)="buscarPublicaciones(input.value)">
+          </mat-form-field>
 </div>
 
 <div class="flex-auto p-6 sm:p-26">
     <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
         <ng-container *ngIf="publicaciones$ | async as publicaciones">
             <ng-container *ngIf="publicaciones.length > 0; else noPublicaciones">
-                <ng-container *ngFor="let publicacion of publicaciones; trackBy: trackByFn">
+                <ng-container *ngFor="let publicacion of publicacionesFiltradas | paginate: { itemsPerPage: 8, currentPage: page }, trackBy: trackByFn">
                     <fuse-card class="flex flex-col max-w-140 w-full filter-shopping">
                         <div class="flex-0 w-full  h-64 md:w-full">
                                 <ng-container
@@ -43,7 +46,7 @@
                                             publicacion.productos
                                                 .miniaturaProducto
                                         "
-                                        [ngSrc]="
+                                        [src]="
                                             publicacion.productos
                                                 .miniaturaProducto
                                         "
@@ -59,7 +62,7 @@
                                             publicacion.servicios
                                                 .miniaturaServicio
                                         "
-                                        [ngSrc]="
+                                        [src]="
                                             publicacion.servicios
                                                 .miniaturaServicio
                                         "
@@ -83,7 +86,7 @@
                                                 publicacion.vendedor
                                                     .usuario.avatar
                                             "
-                                            [ngSrc]="
+                                            [src]="
                                                 publicacion.vendedor
                                                     .usuario.avatar
                                             "
@@ -355,27 +358,29 @@
                                 <span class="ml-2">Adquirir</span>
                               </a>
                               
-                                    <button
-                                        class="ml-auto"
-                                        mat-icon-button
-                                    >
-                                        <mat-icon
-                                            class="icon-size-5 text-hint"
-                                            [svgIcon]="
-                                                'heroicons_solid:heart'
-                                            "
-                                        ></mat-icon>
-                                    </button>
+                              <button class="ml-auto" mat-icon-button (click)="toggleFavorito(publicacion)">
+                                <mat-icon
+                                    class="icon-size-5"
+                                    [svgIcon]="publicacion.visible ? 'heroicons_solid:heart' : 'heroicons_solid:heart'"
+                                    [style.color]="publicacion.visible ? 'red' : 'gray'"
+                                ></mat-icon>
+                            </button>
 
                                     <button
-                                    class="ml-auto"
+                                    class="ml-auto comment-button"
                                     mat-icon-button
+                                    [color]="'primary'"
+                                    (click)="openComposecomments(publicacion.idPublicacion)"
                                 >
                                     <mat-icon
-                                        class="icon-size-5 text-hint"
-                                        [svgIcon]="'heroicons_solid:chat-bubble-left-ellipsis'"
+                                        class="icon-size-5 transition-transform ease-in-out duration-150 rotate-0"
+                                        [svgIcon]="
+                                            'heroicons_solid:chat-bubble-left-ellipsis'
+                                        "
                                     ></mat-icon>
+
                                 </button>
+
 
                                     <div class="flex items-center">
                                         <button
@@ -403,9 +408,10 @@
             </ng-container>
         </ng-container>
         <ng-template #noPublicaciones>
-            <div class="p-8 sm:p-16 border-t text-4xl font-semibold tracking-tight text-center">No hay publicaciones
+            <div class="p-8 sm:p-16 border-t text-4xl font-semibold tracking-tight text-center">No hay productos
                 disponibles!</div>
         </ng-template>
     </div>
+    <pagination-controls (pageChange)="page = $event"  previousLabel="Anterior" nextLabel="Despues" ></pagination-controls>
     </div>
 </div>
