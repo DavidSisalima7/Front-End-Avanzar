@@ -128,6 +128,7 @@ export class ListEmprendedorasResponsableComponent {
     this.usuarioService.BuscarUsername(this.usernameSelect).subscribe(
       (usuarioEncontrado) => {
         this.verficarEstado = usuarioEncontrado;
+        console.log(this.verficarEstado);
         if (this.verficarEstado === null) {
           const confirmationDialog = this.confirmationService.open({
             title: 'Ocurrió un error',

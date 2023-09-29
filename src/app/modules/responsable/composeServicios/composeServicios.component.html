@@ -53,7 +53,7 @@
                     <!-- categoria, Brand & Vendor -->
 
                     <mat-form-field class="w-3/3 pr-2">
-                        <mat-label>Categoria</mat-label>
+                        <mat-label>Categoría</mat-label>
                         <mat-select formControlName="categoria" matInput>
                             <mat-option *ngFor="let categoria of categorias" [value]="categoria.id">
                                 {{ categoria.label }}
@@ -66,19 +66,40 @@
                         <input formControlName="tipo" matInput readonly>
                     </mat-form-field>
 
-
-                    <mat-form-field class="w-3/3 pr-2">
-                        <mat-label>Precio</mat-label>
-                        <span matSuffix>$</span>
-                        <input type="number" matInput formControlName="precio" />
+                    <mat-form-field class="w-full">
+                        <mat-label>Stock</mat-label>
+                        <input type="number" matInput formControlName="cantidad" />
                     </mat-form-field>
+                    
                 </div>
 
                 <!-- Weight & Tags -->
                 <div class="flex flex-col w-full lg:w-2/4 sm:pl-8">
-                    <mat-form-field class="w-full">
-                        <mat-label>Stock</mat-label>
-                        <input type="number" matInput formControlName="cantidad" />
+                    
+                    <div class="flex">
+                        <mat-form-field class="w-2/3 pr-2">
+                            <mat-label>Precio desde:</mat-label>
+                            <input
+                                placeholder="Opcional"
+                                type="number"
+                                matInput
+                                [formControlName]="'precioInicialServicio'">
+                        </mat-form-field>
+                        <mat-form-field class="w-2/3 pl-2">
+                            <mat-label>Precio hasta:</mat-label>
+                            <input
+                                placeholder="Opcional"
+                                type="number"
+                                matInput
+                                [formControlName]="'precioFinalServicio'">
+                        </mat-form-field>
+
+                        
+                </div>
+                    <mat-form-field class="w-3/3 pr-2">
+                        <mat-label>Precio</mat-label>
+                        <span matSuffix>$</span>
+                        <input type="number" matInput formControlName="precio" />
                     </mat-form-field>
 
                     <mat-form-field class="w-full">

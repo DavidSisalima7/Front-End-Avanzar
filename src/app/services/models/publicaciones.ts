@@ -23,7 +23,13 @@ export class PublicacionA{
     tituloPublicacion: string;
     descripcionPublicacion: string;
     estado: boolean;
+    visible: boolean;
     vendedor?: Vendedor ;
+}
+
+export class PublicacionB{
+    estado: boolean;
+    visible:boolean;
 }
 export class CategoriaPublicacion {
 

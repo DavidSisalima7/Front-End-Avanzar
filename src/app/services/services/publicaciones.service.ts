@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable, catchError, throwError } from 'rxjs';
-import { Publicacion, PublicacionA } from '../models/publicaciones';
+import { Publicacion, PublicacionA, PublicacionB } from '../models/publicaciones';
 
 @Injectable({
   providedIn: 'root'
@@ -24,6 +24,14 @@ export class PublicacionesService {
     return this.http.put(`${this.baseUrl}/actualizar/${idPublicacion}`, publicacion);
   }
 
+  updatePublicacionByIdN(idPublicacion: number, publicacion: PublicacionB): Observable<object> {
+    return this.http.put(`${this.baseUrl}/actualizarN/${idPublicacion}`, publicacion);
+  }
+
+  eliminadoLogico(idPublicacion: any) {
+    return this.http.put(`${this.baseUrl}/eliminar/${idPublicacion}`, null);
+  }
+
   listarPublicaciones(): Observable<Publicacion[]> {
     return this.http.get<Publicacion[]>(`${this.baseUrl}/listarProducto`)
   }
@@ -39,4 +47,8 @@ export class PublicacionesService {
   listPublicacionesUs(idVendedor:number):Observable<Publicacion[]>{
     return this.http.get<Publicacion[]>(`${this.baseUrl}/PublicacionxVendedor/${idVendedor}`);
    }
+
+  BuscarTituloPublicacion(tituloPublicacion: any) {
+    return this.http.get(`${this.baseUrl}/buscarPublicacion/${tituloPublicacion}`);
+  }
 }

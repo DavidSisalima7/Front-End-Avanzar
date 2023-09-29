@@ -111,6 +111,8 @@ export class MailboxComposeComponent implements OnInit {
                 vendedor: [this.publicacion.vendedor.usuario.name],
                 nombreCategoria: [this.publicacion.productos.categoriaProducto.idCategoriaProducto, Validators.required],
                 tipo: [this.publicacion.categoria.nombreCategoria],
+                precioInicialProducto: [this.publicacion.productos.precioInicialProducto],
+                precioFinalProducto: [this.publicacion.productos.precioFinalProducto],
                 precioProducto: [this.publicacion.productos.precioFijoProducto, Validators.required],
                 cantidadDisponible: [this.publicacion.productos.cantidadDisponible, Validators.required],
                 pesoProducto: [this.publicacion.productos.pesoProducto, Validators.required],
@@ -184,7 +186,9 @@ export class MailboxComposeComponent implements OnInit {
         const producto: Productos = {
 
             nombreProducto: this.composeForm.value.nombreProducto,
-            precioProducto: this.composeForm.value.precioProducto,
+            precioFijoProducto: this.composeForm.value.precioProducto,
+            precioInicialProducto: this.composeForm.value.precioInicialProducto,
+            precioFinalProducto: this.composeForm.value.precioFinalProducto,
             cantidadDisponible: this.composeForm.value.cantidadDisponible,
             pesoProducto: this.composeForm.value.pesoProducto,
             categoriaProducto: {
@@ -199,6 +203,7 @@ export class MailboxComposeComponent implements OnInit {
             tituloPublicacion: this.composeForm.value.tituloPublicacion,
             descripcionPublicacion: this.composeForm.value.descripcionPublicacion,
             estado: this.composeForm.value.estado,
+            visible: this.composeForm.value.estado,
             vendedor: {
                 idVendedor: this.idVendedor, // Agrega el ID del vendedor al objeto producto
             },

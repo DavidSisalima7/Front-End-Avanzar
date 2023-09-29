@@ -1,8 +1,9 @@
 export class Servicios {
     idServicio?: number;
     nombreServicio: string;
-    precioServicio:number;
-    descripcionServicio?: string;
+    precioInicialServicio:number;
+    precioFinalServicio:number;
+    precioFijoServicio: number;
     tiempoServicio:string;
     cantidadDisponible: number;
     estado?: boolean;

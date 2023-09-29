@@ -19,21 +19,21 @@ import Swal from 'sweetalert2';
 import { MatDialog } from '@angular/material/dialog';
 import { MailboxComposeComponent } from 'app/modules/responsable/composeProductos/composeProductos.component';
 import { PublicacionesInventory } from 'app/services/services/publicacionesInventory.service';
-import { Publicacion } from 'app/services/models/publicaciones';
+import { Publicacion, PublicacionA, PublicacionB } from 'app/services/models/publicaciones';
 import { PublicacionesService } from 'app/services/services/publicaciones.service';
+import { FuseConfirmationService } from '@fuse/services/confirmation';
 
 
 @Component({
-    selector     : 'list-emprendedoras',
-    standalone   : true,
-    templateUrl  : './list-productos.component.html',
-    encapsulation: ViewEncapsulation.None,
-    imports: [MatFormFieldModule, MatInputModule, MatTableModule, MatSortModule, MatPaginatorModule,
-      MatIconModule, MatButtonModule, CommonModule],
+  selector: 'list-emprendedoras',
+  standalone: true,
+  templateUrl: './list-productos.component.html',
+  encapsulation: ViewEncapsulation.None,
+  imports: [MatFormFieldModule, MatInputModule, MatTableModule, MatSortModule, MatPaginatorModule,
+    MatIconModule, MatButtonModule, CommonModule],
 })
-export class ListProductosResponsableComponent
-{
-  displayedColumns: string[] = ['nombreProducto', 'precioProducto', 'cantidaDisponible','vendedor', 'estado','editar','delete'];
+export class ListProductosResponsableComponent {
+  displayedColumns: string[] = ['nombreProducto', 'precioProducto', 'cantidaDisponible', 'vendedor', 'estado', 'editar', 'delete'];
   dataSource: MatTableDataSource<Publicacion>;
 
   pageSizeOptions: number[] = [1, 5, 10, 50]; // Opciones de tamaño de página
@@ -43,22 +43,22 @@ export class ListProductosResponsableComponent
   products: Productos[] = [];
   publicacion: Publicacion[] = [];
 
-  @ViewChild(MatPaginator, {static: true}) paginator: MatPaginator;
+  @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
 
   searchInputControl: UntypedFormControl = new UntypedFormControl();
   private _unsubscribeAll: Subject<any> = new Subject<any>();
   isLoading: boolean = false;
-  
+
 
 
 
   /**
    * Constructor
    */
-  constructor(private productoService: ProductosService, private _router: Router,private _matDialog: MatDialog,
-    private publicacionService: PublicacionesService
-    ) {
+  constructor(private productoService: ProductosService, private _router: Router, private _matDialog: MatDialog,
+    private publicacionService: PublicacionesService, private confirmationService: FuseConfirmationService,
+  ) {
   }
   ngOnInit(): void {
     this.listarPublicaciones();
@@ -69,7 +69,7 @@ export class ListProductosResponsableComponent
     this.paginator.pageIndex = event.pageIndex;
     // También puedes agregar un console.log() aquí para depurar
   }
-  
+
   nextPage() {
     if (this.paginator.hasNextPage()) {
       this.paginator.nextPage();
@@ -132,40 +132,107 @@ export class ListProductosResponsableComponent
   }
 
 
-///////////////////////// Fin de filtro
+  ///////////////////////// Fin de filtro
 
-////////eliminado lógico de productos
-selectedProducto:any;
-productSelect: any;
-verficarEstado: any;
-seleccionarProducto(producto: any) {
-  this.selectedProducto = producto.idProducto;
-  this.productoService.buscarProductoActivo(this.selectedProducto).subscribe(
-    (productoEncontrado) => {
-      this.verficarEstado=productoEncontrado;
-    if (this.verficarEstado === null){
-    Swal.fire(
-      'Acción no disponible',
-      'El producto ya se encuentra inactivo',
-      'error',
-          );
-    
-    }else{
-      this.productoService.eliminadoLogico(this.selectedProducto).subscribe(
-        (dataprodencontrada) => {
-          this.listarPublicaciones();
-          Swal.fire(
-            'Acción Exitosa',
-            'Producto Eliminado.',
-            'success'
-                );
-          return;
-        } );
-     
-    }
-  });
-}
-//////////////////////////////llevar datos al compose
+  ////////eliminado lógico de productos
+  selectedPublicacion: any;
+  tituloPublicacionSelect: any;
+  verficarEstado: any;
+  seleccionarProducto(publicacion: any) {
+    this.selectedPublicacion = publicacion.idPublicacion;
+    this.tituloPublicacionSelect = publicacion.tituloPublicacion;
+    this.publicacionService.BuscarTituloPublicacion(this.tituloPublicacionSelect).subscribe(
+      (publicacionEncontrado) => {
+        this.verficarEstado = publicacionEncontrado;
+        if (this.verficarEstado === null) {
+          const confirmationDialog = this.confirmationService.open({
+            title: 'Ocurrió un error',
+            message: 'Acción no disponible, La publicación ya se encuentra inactiva',
+            actions: {
+              confirm: {
+                show: true,
+                label: 'OK',
+                color: 'primary'
+              },
+              cancel: {
+                show: false,
+                label: 'Cancelar'
+              }
+            }
+          });
+
+        } else {
+          const confirmationDialog = this.confirmationService.open({
+            title: 'Confirmación',
+            message: '¿Está seguro de desactivar esta publicación?',
+            icon: {
+              show: true,
+              name: 'heroicons_outline:information-circle',
+              color: 'info',
+            },
+            actions: {
+              confirm: {
+                show: true,
+                label: 'Si estoy seguro',
+                color: 'primary'
+              },
+              cancel: {
+                show: true,
+                label: 'Cancelar'
+              }
+            }
+          });
+          confirmationDialog.afterClosed().subscribe(result => {
+            if (result === 'confirmed') {
+              this.publicacionService.eliminadoLogico(this.selectedPublicacion).subscribe(
+                (dataprodencontrada) => {
+                  const publicacion: PublicacionB = {
+                    estado: false,
+                    visible: false,
+                  };
+
+                  this.publicacionService.updatePublicacionByIdN(this.selectedPublicacion, publicacion).subscribe(
+                    (respuesta) => {
+                      // Realiza alguna acción adicional si es necesario
+                      this.listarPublicaciones();
+
+                      const confirmationDialog = this.confirmationService.open({
+                        title: 'Éxito',
+                        message: 'La publicación ha sido desactivada',
+                        icon: {
+                          show: true,
+                          name: 'heroicons_outline:check-circle',
+                          color: 'success',
+                        },
+                        actions: {
+                          confirm: {
+                            show: true,
+                            label: 'OK',
+                            color: 'primary'
+                          },
+                          cancel: {
+                            show: false,
+                            label: 'Cancelar'
+                          }
+                        }
+                      });
+                    },
+                    (error) => {
+                      // Maneja el error si la actualización falla
+                      console.error('Error al actualizar el estado en la base de datos', error);
+                    }
+                  );
+                });
+            } else {
+
+            }
+          });
+
+
+        }
+      });
+  }
+  //////////////////////////////llevar datos al compose
   /*selectProducto:any;
   seleccionarProductoEdit(publicacion: any) {
     console.log('Se seleccionó el producto:', publicacion);
@@ -174,3 +241,4 @@ seleccionarProducto(producto: any) {
     localStorage.setItem("idProductoSelected", String(publicacion.idPublicacion));
   }*/
 }
+    
