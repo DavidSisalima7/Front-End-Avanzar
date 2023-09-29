@@ -8,13 +8,14 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatTooltipModule } from '@angular/material/tooltip';
-import { RouterLink } from '@angular/router';
 import { FuseCardComponent } from '@fuse/components/card';
 import { UserService } from 'app/core/user/user.service';
 import { User } from 'app/core/user/user.types';
 import { UserComponent } from 'app/layout/common/user/user.component';
 import { NgIf } from '@angular/common';
 import { Subject, takeUntil } from 'rxjs';
+import { Router, RouterLink } from '@angular/router';
+import { ProductosService } from 'app/services/services/producto.service';
 
 @Component({
     selector     : 'profile-responsable',
@@ -33,7 +34,7 @@ export class ProfileResponsableComponent
     userExtraido: any;
 
     private _unsubscribeAll: Subject<any> = new Subject<any>();
-    constructor(private _userService: UserService,) {
+    constructor(private _userService: UserService, private _router: Router, private productoservice: ProductosService) {
     }
 
     ngOnInit(): void {
@@ -63,4 +64,19 @@ export class ProfileResponsableComponent
 
         return `${day} de ${monthName} de ${year}`;
     }
+
+
+    redirectToHome(): void {
+        this._router.navigate(['/dash-resp']);
+    }
+    redirectToPlanes(): void {
+        this._router.navigate(['/planes-resp']);
+    }
+    redirectToConfiguration(): void {
+        this._router.navigate(['/config-resp']);
+    }
+
+
+
 }
+

@@ -29,6 +29,7 @@ import { SharedFavoritoService } from 'app/services/services/sharedFavoritoServi
 import { Destacados } from 'app/services/models/destacados';
 import { FavoritosService } from 'app/services/services/favoritos.service';
 import { PublicacionesService } from 'app/services/services/publicaciones.service';
+import { FuseConfirmationService } from '@fuse/services/confirmation';
 @Component({
   selector: 'productos-vent',
  
@@ -63,7 +64,8 @@ export class ProductosVentClientComponent implements OnInit {
     private _inventoryService: PublicacionesInventoryProductos,
     private _matDialog: MatDialog,
     private _publicacionesService: PublicacionesService,
-    private _favoritoService: FavoritosService
+    private _favoritoService: FavoritosService,
+    private confirmationService: FuseConfirmationService,
   ) {
   }
 
@@ -147,49 +149,92 @@ export class ProductosVentClientComponent implements OnInit {
       data: { idPubli: idPublicacion },
     });
   }
-
-  //Metodo para destacados 
+  
   toggleFavorito(idPublicacion: number) {
-    if (!this.esFavorito) {
-      // Acción cuando se hace clic por primera vez
+    // Acción cuando se hace clic por primera vez
 
-      const userJSON = localStorage.getItem('user');
-      const user = JSON.parse(userJSON);
+    const userJSON = localStorage.getItem('user');
+    const user = JSON.parse(userJSON);
 
-      this._publicacionesService.buscarPublicacionId(idPublicacion).subscribe(
-        (datos: InventarioPublicaciones) => {
+    this._publicacionesService.buscarPublicacionId(idPublicacion).subscribe(
+      (datos: InventarioPublicaciones) => {
+    
+        this.destacados = new Destacados();
+        this.destacados.estadoDestacado = true;
+        this.destacados.fecha = new Date().toISOString();
+        this.destacados.publicaciones = datos;
+        this.destacados.usuario = user;
+
+       
+
+        this._favoritoService.saveFavorito(this.destacados).subscribe(
+          (datos: Destacados) => {
+            this.destacadoCreated = datos;
+
+            const confirmationDialog = this.confirmationService.open({
+              title: 'Éxito',
+              message: 'Agregado Correctamente a Tus Favoritos',
+              icon: {
+                  show: true,
+                  name: 'heroicons_outline:check-circle',
+                  color: 'success',
+              },
+              actions: {
+                  confirm: {
+                      show: false,
+                      label: '',
+                      color: 'primary'
+                  },
+                  cancel: {
+                      show: false,
+                      label: ''
+                  }
+              }
+          });
+          
+
+          setTimeout(() => {
+            confirmationDialog.close();
+          }, 1000); // 1000 milisegundos (1 segundo)
+          
+          },
+          error => {
+
+            const confirmationDialog = this.confirmationService.open({
+              title: 'Advertencia',
+              message: 'Ya se encuentra en tus favoritos',
+              icon: {
+                  show: true,
+                  name: 'heroicons_outline:exclamation-circle',
+                  color: 'warning',
+              },
+              actions: {
+                  confirm: {
+                      show: false,
+                      label: '',
+                      color: 'primary'
+                  },
+                  cancel: {
+                      show: false,
+                      label: ''
+                  }
+              }
+          });
+
+          
+          setTimeout(() => {
+            confirmationDialog.close();
+          }, 1000); // 1000 milisegundos (1 segundo)
+
+          }
+        );
+      },
+      error => {
+        console.error('Ocurrió un error al obtener la lista:', error);
+      }
+    );
       
-          this.destacados = new Destacados();
-          this.destacados.estadoDestacado = true;
-          this.destacados.fecha = new Date().toISOString();
-          this.destacados.publicaciones = datos;
-          this.destacados.usuario = user;
-
-         
-
-          this._favoritoService.saveFavorito(this.destacados).subscribe(
-            (datos: Destacados) => {
-              this.destacadoCreated = datos;
-
-            },
-            error => {
-              console.error('Ocurrió un error al guardar el favorito:', error);
-            }
-          );
-        },
-        error => {
-          console.error('Ocurrió un error al obtener la lista:', error);
-        }
-      );
-        
-
-      // Realiza la acción que desees aquí
-    } else {
-      // Acción cuando se hace clic después de haber sido clickeado
-      console.log('Botón clickeado después de haber sido clickeado');
-    }
-    this.esFavorito = !this.esFavorito; // Cambia el estado del botón
-  }
+}
 
   
   }

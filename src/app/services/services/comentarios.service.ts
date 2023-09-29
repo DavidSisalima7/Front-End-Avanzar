@@ -29,4 +29,8 @@ export class ComentarioService {
     return this.http.delete<any>(`${this.baseUrl}/deleteComment/${idComment}`);
   }
  
+  listCommentsUs(idPubli:number):Observable<Comentario[]>{
+    return this.http.get<Comentario[]>(`${this.baseUrl}/Comentarioxus/${idPubli}`);
+   }
+
 }

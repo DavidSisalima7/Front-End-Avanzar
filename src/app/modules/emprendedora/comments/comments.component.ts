@@ -10,6 +10,7 @@ import { ComentarioService } from 'app/services/services/comentarios.service';
 import { PublicacionesService } from 'app/services/services/publicaciones.service';
 import { ApexAxisChartSeries, ApexChart, ApexDataLabels, ApexPlotOptions, ApexStroke, ApexTitleSubtitle, ApexTooltip, ApexXAxis, ApexYAxis, ChartComponent, NgApexchartsModule } from 'ng-apexcharts';
 import { ComentariosModalEditarComponent } from '../comentarios-modal-editar/comentarios-modal-editar.component';
+import { MatButtonModule } from '@angular/material/button';
 export type ChartOptions = {
     series: ApexAxisChartSeries;
     chart: ApexChart;
@@ -29,7 +30,7 @@ export type ChartOptions = {
     standalone: true,
     templateUrl: './comments.component.html',
     encapsulation: ViewEncapsulation.None,
-    imports: [NgApexchartsModule, MatIconModule,NgIf, MatTabsModule, MatMenuModule,NgFor,MatTooltipModule]
+    imports: [NgApexchartsModule, MatIconModule,NgIf,MatButtonModule ,MatTabsModule, MatMenuModule,NgFor,MatTooltipModule]
 })
 
 export class CommentsComponent {
@@ -64,8 +65,10 @@ export class CommentsComponent {
 
 
     separarDatos():void{
-
+        this.listNumberSeries.length=0;
+        this.listStringCategori.length=0;
         for(const publi of this.listPubli){
+          
             this.listNumberSeries.push(parseInt(publi.tiempoTranscurrido));
             this.listStringCategori.push(publi.tituloPublicacion);
         }
@@ -112,21 +115,21 @@ export class CommentsComponent {
                 "#90ee7e",
                 "#f48024",
                 "#69d2e7",
-                "#69d2e7",
-                "#69d2e7"
+                "#FFA500",
+                "#8000ff"
             ],
             dataLabels: {
                 enabled: true,
                 textAnchor: "start",
                 style: {
-                    colors: ["#fff"]
+                    colors: ["#333333"]
                 },
                 formatter: function (val, opt) {
                     return opt.w.globals.labels[opt.dataPointIndex] + ":  " + val;
                 },
                 offsetX: 0,
                 dropShadow: {
-                    enabled: true
+                    enabled: false
                 }
             },
             stroke: {
@@ -144,11 +147,17 @@ export class CommentsComponent {
             title: {
                 text: "Comentarios",
                 align: "center",
-                floating: true
+                floating: true,
+                style: {
+                    color: "#333333" // Color del título
+                }
             },
             subtitle: {
                 text: "Gestión y visualizaciones de los comentarios",
-                align: "center"
+                align: "center",
+                style: {
+                    color: "#333333" // Color del título
+                }
             },
             tooltip: {
                 theme: "dark",
