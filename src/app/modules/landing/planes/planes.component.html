@@ -66,7 +66,7 @@
                     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-y-6 lg:gap-y-0 md:gap-x-6">
                         <!-- Card 1 -->
                         <fuse-card class="flex-col max-w-sm md:max-w-none p-6 sm:py-12 sm:px-10">
-                            <div class="text-4xl font-bold tracking-tight leading-tight">GRATIS</div>
+                            <div class="text-4xl font-bold tracking-tight leading-tight">Gratis</div>
                             <div class="mt-2 text-lg font-medium tracking-tight text-secondary">Perfecto para emprendedoras que recién están iniciando en esta plataforma y comienzan a crecer.</div>
                             <div class="w-8 h-1 my-10 rounded bg-accent"></div>
                             <!-- Price -->
@@ -103,7 +103,7 @@
                                         <mat-icon
                                             class="icon-size-5 text-green-600"
                                             [svgIcon]="'heroicons_solid:check'"></mat-icon>
-                                        <div class="ml-2 leading-5"><b>3</b> publicaciones</div>
+                                        <div class="ml-2 leading-5"><b>3</b> publicaciones activas</div>
                                     </div>
                                     <div class="flex">
                                         <mat-icon
@@ -119,12 +119,12 @@
                             <div class="absolute inset-x-0 -top-4 flex items-center justify-center">
                                 <div class="flex items-center h-8 px-8 rounded-full font-medium text-center leading-none bg-primary text-on-primary">POPULAR</div>
                             </div>
-                            <div class="text-4xl font-bold tracking-tight leading-tight">PREMIUM SILVER</div>
+                            <div class="text-4xl font-bold tracking-tight leading-tight">Premium Silver</div>
                             <div class="mt-2 text-lg font-medium tracking-tight text-secondary">Perfecto para emprendedoras en crecimiento y que desean tener mejor control de sus publicaciones.</div>
                             <div class="w-8 h-1 my-10 rounded bg-accent"></div>
                             <!-- Price -->
                             <div class="flex items-baseline whitespace-nowrap">
-                                <div class="mr-2 text-2xl">Precio: USD $5.00</div>
+                                <div class="mr-2 text-2xl">Precio: USD $10.00</div>
                                 <div class="text-6xl font-semibold leading-tight tracking-tight">
                                     <ng-container *ngIf="yearlyBilling">$12.00</ng-container>
                                     <ng-container *ngIf="!yearlyBilling">$15.00</ng-container>
@@ -156,49 +156,52 @@
                                         <mat-icon
                                             class="icon-size-5 text-green-600"
                                             [svgIcon]="'heroicons_solid:check'"></mat-icon>
-                                        <div class="ml-2 leading-5"><b>7</b> publicaciones</div>
+                                        <div class="ml-2 leading-5"><b>12</b> publicaciones activas</div>
                                     </div>
             
                                     <div class="flex">
                                         <mat-icon
                                             class="icon-size-5 text-green-600"
                                             [svgIcon]="'heroicons_solid:check'"></mat-icon>
-                                        <div class="ml-2 leading-5">Incluye 1 curso gratis</div>
+                                        <div class="ml-2 leading-5">Incluye 3 curso gratis</div>
                                     </div>
                                     
                                 </div>
                             </div>
                         </fuse-card>
                         <!-- Card 3 -->
-                        <fuse-card class="flex-col max-w-sm md:max-w-none p-6 sm:py-12 sm:px-10">
-                            <div class="text-4xl font-bold tracking-tight leading-tight">PREMIUM GOLD</div>
-                            <div class="mt-2 text-lg font-medium tracking-tight text-secondary">Perfecto para emprendedoras avanzadas que ya tienen un excelente uso de la plataforma.</div>
+                        <fuse-card class="flex-col max-w-sm md:max-w-none p-6 sm:py-12 sm:px-10 ring-2 ring-primary overflow-visible">
+                            <div class="absolute inset-x-0 -top-4 flex items-center justify-center">
+                                <div class="flex items-center h-8 px-8 rounded-full font-medium text-center leading-none bg-primary text-on-primary">PRÓXIMAMENTE</div>
+                            </div>
+                            <div class="text-4xl font-bold tracking-tight leading-tight">Premium Gold</div>
+                            <div class="mt-2 text-lg font-medium tracking-tight text-secondary">Perfecto para emprendedoras en crecimiento y que desean tener mejor control de sus publicaciones.</div>
                             <div class="w-8 h-1 my-10 rounded bg-accent"></div>
                             <!-- Price -->
                             <div class="flex items-baseline whitespace-nowrap">
-                                <div class="mr-2 text-2xl">Precio: USD $10.00</div>
+                                <div class="mr-2 text-2xl">Precio: USD $-.--</div>
                                 <div class="text-6xl font-semibold leading-tight tracking-tight">
-                                    <ng-container *ngIf="yearlyBilling">$49.00</ng-container>
-                                    <ng-container *ngIf="!yearlyBilling">$69.00</ng-container>
+                                    <ng-container *ngIf="yearlyBilling">$12.00</ng-container>
+                                    <ng-container *ngIf="!yearlyBilling">$15.00</ng-container>
                                 </div>
                             </div>
                             <!-- Price details -->
                             <div class="flex flex-col mt-2 text-secondary">
                                 <ng-container *ngIf="yearlyBilling">
                                     <div>billed yearly</div>
-                                    <div><b>$69.00</b> billed monthly</div>
+                                    <div><b>$15.00</b> billed monthly</div>
                                 </ng-container>
                                 <ng-container *ngIf="!yearlyBilling">
                                     <div>billed monthly</div>
-                                    <div><b>$49.00</b> billed yearly</div>
+                                    <div><b>$12.00</b> billed yearly</div>
                                 </ng-container>
                             </div>
                             <!-- CTA 
                             <button
                                 class="fuse-mat-button-large mt-10"
-                                mat-stroked-button
+                                mat-flat-button
                                 [color]="'primary'">
-                                Start a free 7-day trial
+                                Start a free 14-day trial
                             </button>-->
                             <!-- Features -->
                             <div class="flex flex-col mt-12">
@@ -208,14 +211,14 @@
                                         <mat-icon
                                             class="icon-size-5 text-green-600"
                                             [svgIcon]="'heroicons_solid:check'"></mat-icon>
-                                        <div class="ml-2 leading-5"><b>12</b> publicaciones</div>
+                                        <div class="ml-2 leading-5"><b>-</b> publicaciones</div>
                                     </div>
-                                    
+            
                                     <div class="flex">
                                         <mat-icon
                                             class="icon-size-5 text-green-600"
                                             [svgIcon]="'heroicons_solid:check'"></mat-icon>
-                                        <div class="ml-2 leading-5">Incluye 2 cursos gratis</div>
+                                        <div class="ml-2 leading-5">Incluye cursos gratis</div>
                                     </div>
                                     
                                 </div>
