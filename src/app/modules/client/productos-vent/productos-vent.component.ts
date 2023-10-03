@@ -1,8 +1,8 @@
-import { Component, OnInit, ViewEncapsulation ,ViewChild} from '@angular/core';
-import {MatPaginator, } from '@angular/material/paginator';
-import {MatTableDataSource, } from '@angular/material/table';
-import {MatInputModule} from '@angular/material/input';
-import {MatFormFieldModule} from '@angular/material/form-field';
+import { Component, OnInit, ViewEncapsulation, ViewChild } from '@angular/core';
+import { MatPaginator, } from '@angular/material/paginator';
+import { MatTableDataSource, } from '@angular/material/table';
+import { MatInputModule } from '@angular/material/input';
+import { MatFormFieldModule } from '@angular/material/form-field';
 import { User } from 'app/core/user/user.types';
 import { Observable } from 'rxjs';
 import { InventarioPublicaciones } from 'app/modules/emprendedora/ecommerce/inventory/inventory.types';
@@ -23,7 +23,7 @@ import { MatDividerModule } from '@angular/material/divider';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { PublicacionesInventoryProductos } from 'app/services/services/PublicacionesInventory-Productos.service';
 import { ModalPublicacionProductosComponent } from './modal-publicacion-productos/modal-publicacion-productos.component';
-import {NgxPaginationModule} from 'ngx-pagination'; // <-- import the module
+import { NgxPaginationModule } from 'ngx-pagination'; // <-- import the module
 import { ModalComentariosComponent } from '../home-tienda/modal-comentarios/modal-comentarios.component';
 import { SharedFavoritoService } from 'app/services/services/sharedFavoritoService.service';
 import { Destacados } from 'app/services/models/destacados';
@@ -32,28 +32,29 @@ import { PublicacionesService } from 'app/services/services/publicaciones.servic
 import { FuseConfirmationService } from '@fuse/services/confirmation';
 @Component({
   selector: 'productos-vent',
- 
+
   templateUrl: './productos-vent.component.html',
   styleUrls: ['../home-tienda/home-tienda.component.scss'],
   encapsulation: ViewEncapsulation.None,
   standalone: true,
-  imports: [NgOptimizedImage,AsyncPipe,NgxPaginationModule, NgIf, MatButtonToggleModule, FormsModule, NgFor, FuseCardComponent, MatButtonModule, MatIconModule, RouterLink, NgClass, MatMenuModule, MatCheckboxModule, MatProgressBarModule, MatFormFieldModule, MatInputModule, TextFieldModule, MatDividerModule, MatTooltipModule, TitleCasePipe],
- 
+  imports: [NgOptimizedImage, AsyncPipe, NgxPaginationModule, NgIf, MatButtonToggleModule, FormsModule, NgFor, FuseCardComponent, MatButtonModule, MatIconModule, RouterLink, NgClass, MatMenuModule, MatCheckboxModule, MatProgressBarModule, MatFormFieldModule, MatInputModule, TextFieldModule, MatDividerModule, MatTooltipModule, TitleCasePipe],
+
 })
 export class ProductosVentClientComponent implements OnInit {
   user: User;
   publicaciones$: Observable<InventarioPublicaciones[]>;
   currentImageIndex: [0];
   static publicacionSeleccionada: number;
-  publications:InventarioPublicaciones[]=[];
+  publications: InventarioPublicaciones[] = [];
   dataSource: MatTableDataSource<InventarioPublicaciones>;
-  @ViewChild(MatPaginator, {static: true}) paginator: MatPaginator;
+  @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
   publicacionesOriginales: any[] = [];
   publicacionesFiltradas: any[] = [];
-  public page!:number;
+  public page!: number;
   destacados: Destacados;
   esFavorito: boolean = false;
   destacadoCreated: any;
+  banNoServiceFound: boolean = false;
 
 
 
@@ -81,18 +82,26 @@ export class ProductosVentClientComponent implements OnInit {
 
   buscarPublicaciones(textoBusqueda: string) {
     const busqueda = textoBusqueda.trim().toLowerCase();
-  
+
     if (busqueda === '') {
       this.publicacionesFiltradas = this.publicacionesOriginales;
+      this.banNoServiceFound = false;
     } else {
       this.publicacionesFiltradas = this.publicacionesOriginales.filter((publicacion) => {
         return (
           publicacion.tituloPublicacion.toLowerCase().includes(busqueda) ||
-          publicacion.descripcionPublicacion.toLowerCase().includes(busqueda)||
-          publicacion.productos?.nombreProducto.toLowerCase().includes(busqueda)||
+          publicacion.descripcionPublicacion.toLowerCase().includes(busqueda) ||
+          publicacion.productos?.nombreProducto.toLowerCase().includes(busqueda) ||
           publicacion.productos?.descripcionProducto.toLowerCase().includes(busqueda)
         );
       });
+      if (this.publicacionesFiltradas.length === 0) {
+        // No se encontraron servicios que coincidan con la búsqueda
+        this.banNoServiceFound = true;
+      } else {
+        // Se encontraron servicios, por lo que ocultamos el mensaje
+        this.banNoServiceFound = false;
+      }
     }
   }
 
@@ -122,14 +131,14 @@ export class ProductosVentClientComponent implements OnInit {
   //ABRIR EL MODAL de detalles
   openComposeDialog(idPublicacion: number): void {
     // Abre el diálogo y pasa el idUsuario como dato
-  
+
     ProductosVentClientComponent.publicacionSeleccionada = idPublicacion;
     console.log('idPublicacionSeleccionado-PRODUCTOS', ProductosVentClientComponent.publicacionSeleccionada);
-  
-    const dialogRef = this._matDialog.open(ModalPublicacionProductosComponent,{
+
+    const dialogRef = this._matDialog.open(ModalPublicacionProductosComponent, {
       data: { idPublicacion: idPublicacion },
     });
-  
+
     dialogRef.componentInstance.confirmacionCerrada.subscribe((confirmado: boolean) => {
       if (confirmado) {
         dialogRef.close(); // Cierra el diálogo
@@ -137,19 +146,19 @@ export class ProductosVentClientComponent implements OnInit {
         this.listarPublicaciones();
       }
     });
-  
+
     dialogRef.afterClosed().subscribe((result) => {
       console.log('Compose dialog was closed!');
     });
   }
 
   //Abrir dialogo de comentarios 
-  openComposecomments(idPublicacion: number){
-    const dialogRef = this._matDialog.open(ModalComentariosComponent,{
+  openComposecomments(idPublicacion: number) {
+    const dialogRef = this._matDialog.open(ModalComentariosComponent, {
       data: { idPubli: idPublicacion },
     });
   }
-  
+
   toggleFavorito(idPublicacion: number) {
     // Acción cuando se hace clic por primera vez
 
@@ -158,14 +167,14 @@ export class ProductosVentClientComponent implements OnInit {
 
     this._publicacionesService.buscarPublicacionId(idPublicacion).subscribe(
       (datos: InventarioPublicaciones) => {
-    
+
         this.destacados = new Destacados();
         this.destacados.estadoDestacado = true;
         this.destacados.fecha = new Date().toISOString();
         this.destacados.publicaciones = datos;
         this.destacados.usuario = user;
 
-       
+
 
         this._favoritoService.saveFavorito(this.destacados).subscribe(
           (datos: Destacados) => {
@@ -175,28 +184,28 @@ export class ProductosVentClientComponent implements OnInit {
               title: 'Éxito',
               message: 'Agregado Correctamente a Tus Favoritos',
               icon: {
-                  show: true,
-                  name: 'heroicons_outline:check-circle',
-                  color: 'success',
+                show: true,
+                name: 'heroicons_outline:check-circle',
+                color: 'success',
               },
               actions: {
-                  confirm: {
-                      show: false,
-                      label: '',
-                      color: 'primary'
-                  },
-                  cancel: {
-                      show: false,
-                      label: ''
-                  }
+                confirm: {
+                  show: false,
+                  label: '',
+                  color: 'primary'
+                },
+                cancel: {
+                  show: false,
+                  label: ''
+                }
               }
-          });
-          
+            });
 
-          setTimeout(() => {
-            confirmationDialog.close();
-          }, 1000); // 1000 milisegundos (1 segundo)
-          
+
+            setTimeout(() => {
+              confirmationDialog.close();
+            }, 1000); // 1000 milisegundos (1 segundo)
+
           },
           error => {
 
@@ -204,27 +213,27 @@ export class ProductosVentClientComponent implements OnInit {
               title: 'Advertencia',
               message: 'Ya se encuentra en tus favoritos',
               icon: {
-                  show: true,
-                  name: 'heroicons_outline:exclamation-circle',
-                  color: 'warning',
+                show: true,
+                name: 'heroicons_outline:exclamation-circle',
+                color: 'warning',
               },
               actions: {
-                  confirm: {
-                      show: false,
-                      label: '',
-                      color: 'primary'
-                  },
-                  cancel: {
-                      show: false,
-                      label: ''
-                  }
+                confirm: {
+                  show: false,
+                  label: '',
+                  color: 'primary'
+                },
+                cancel: {
+                  show: false,
+                  label: ''
+                }
               }
-          });
+            });
 
-          
-          setTimeout(() => {
-            confirmationDialog.close();
-          }, 1000); // 1000 milisegundos (1 segundo)
+
+            setTimeout(() => {
+              confirmationDialog.close();
+            }, 1000); // 1000 milisegundos (1 segundo)
 
           }
         );
@@ -233,8 +242,8 @@ export class ProductosVentClientComponent implements OnInit {
         console.error('Ocurrió un error al obtener la lista:', error);
       }
     );
-      
-}
 
-  
   }
+
+
+}

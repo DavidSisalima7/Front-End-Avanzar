@@ -96,16 +96,25 @@ export class ListProductosResponsableComponent {
 
 
   applyFilter(event: Event) {
-    const filterValue = (event.target as HTMLInputElement).value;
-    this.dataSource.filter = filterValue.trim().toLowerCase();
-
+    const filterValue = (event.target as HTMLInputElement).value.toLowerCase();
+  
+    // Filtra los datos por título, fecha, nombre del producto y nombre del vendedor
+    this.dataSource.filterPredicate = (data: Publicacion, filter: string) => {
+      const productos = data.productos;
+      const vendedora = data.vendedor;
+  
+      return (
+        data.tituloPublicacion.toLowerCase().includes(filter) ||
+        productos.nombreProducto.toLowerCase().includes(filter) ||
+        vendedora.usuario.name.toLowerCase().includes(filter)
+      );
+    };
+  
+    this.dataSource.filter = filterValue;
+  
     if (this.dataSource.paginator) {
       this.dataSource.paginator.firstPage();
     }
-  }
-
-  redirectToRegisterProductos() {
-    this._router.navigate(['/register-productos']);
   }
 
 
@@ -231,6 +240,19 @@ export class ListProductosResponsableComponent {
 
         }
       });
+  }
+
+  formatDate(dateString: string): string {
+    const date = new Date(dateString);
+    const day = date.getDate();
+    const monthNames = [
+      'Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio',
+      'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'
+    ];
+    const monthIndex = date.getMonth();
+    const year = date.getFullYear();
+  
+    return `${day} de ${monthNames[monthIndex]} del ${year}`;
   }
   //////////////////////////////llevar datos al compose
   /*selectProducto:any;

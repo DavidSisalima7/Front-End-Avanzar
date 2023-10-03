@@ -34,6 +34,7 @@ import { CategoriaProductoService } from 'app/services/services/categoriaProduct
 import { MatDialog } from '@angular/material/dialog';
 import { ModalProductoComponent } from 'app/modules/emprendedora/modal-producto/modal-producto.component';
 import { DetalleSubscripcionService } from 'app/services/services/detalleSubscripcion.service';
+import { MatTableDataSource } from '@angular/material/table';
 
 
 
@@ -64,7 +65,7 @@ import { DetalleSubscripcionService } from 'app/services/services/detalleSubscri
     changeDetection: ChangeDetectionStrategy.OnPush,
     animations: fuseAnimations,
     standalone: true,
-    imports: [NgOptimizedImage,NgIf, MatProgressBarModule, MatFormFieldModule, MatIconModule, MatInputModule, FormsModule, ReactiveFormsModule, MatButtonModule, MatSortModule, NgFor, NgTemplateOutlet, MatPaginatorModule, NgClass, MatSlideToggleModule, MatSelectModule, MatOptionModule, MatCheckboxModule, MatRippleModule, AsyncPipe, CurrencyPipe],
+    imports: [NgOptimizedImage, NgIf, MatProgressBarModule, MatFormFieldModule, MatIconModule, MatInputModule, FormsModule, ReactiveFormsModule, MatButtonModule, MatSortModule, NgFor, NgTemplateOutlet, MatPaginatorModule, NgClass, MatSlideToggleModule, MatSelectModule, MatOptionModule, MatCheckboxModule, MatRippleModule, AsyncPipe, CurrencyPipe],
 })
 export class InventoryListComponent implements OnInit, AfterViewInit, OnDestroy {
     @ViewChild(MatPaginator) private _paginator: MatPaginator;
@@ -87,10 +88,11 @@ export class InventoryListComponent implements OnInit, AfterViewInit, OnDestroy 
     producto = new ProductosModels();
     categoriaExtraida: any;
     banLimitPost = false;
-
-
-    titleAlert="";
-    bodyAlert="";
+    publicacionesOriginales: any[] = [];
+    publicacionesFiltradas: any[] = [];
+    titleAlert = "";
+    bodyAlert = "";
+    banNoServiceFound: boolean = false;
     /**
      * Constructor
      */
@@ -132,8 +134,8 @@ export class InventoryListComponent implements OnInit, AfterViewInit, OnDestroy 
             tipos: [''],
             vendedor: [''],
             cantidadDisponible: [''],
-            precioInicialProducto:[''],
-            precioFinalProducto:[''],
+            precioInicialProducto: [''],
+            precioFinalProducto: [''],
             precioFijoProducto: [''],
             pesoProducto: [''],
             miniaturaProducto: [''],
@@ -186,6 +188,10 @@ export class InventoryListComponent implements OnInit, AfterViewInit, OnDestroy 
         // Get the products
 
         this.publicaciones$ = this._inventoryService.publicaciones$;
+        this.publicaciones$.subscribe((publicaciones) => {
+            this.publicacionesOriginales = publicaciones;
+            this.publicacionesFiltradas = publicaciones;
+        });
 
 
 
@@ -306,6 +312,31 @@ export class InventoryListComponent implements OnInit, AfterViewInit, OnDestroy 
         this.selectedPublicacion = null;
     }
 
+
+    buscarPublicaciones(textoBusqueda: string) {
+        const busqueda = textoBusqueda.trim().toLowerCase();
+
+        if (busqueda === '') {
+            this.publicacionesFiltradas = this.publicacionesOriginales;
+            this.banNoServiceFound = false;
+        } else {
+            this.publicacionesFiltradas = this.publicacionesOriginales.filter((publicacion) => {
+                return (
+                    publicacion.tituloPublicacion.toLowerCase().includes(busqueda) ||
+                    (publicacion.productos?.nombreProducto && publicacion.productos.nombreProducto.toLowerCase().includes(busqueda))
+                );
+            });
+
+            if (this.publicacionesFiltradas.length === 0) {
+                // No se encontraron servicios que coincidan con la búsqueda
+                this.banNoServiceFound = true;
+            } else {
+                // Se encontraron servicios, por lo que ocultamos el mensaje
+                this.banNoServiceFound = false;
+            }
+        }
+    }
+
     /**
      * Cycle through images of selected product
      */
@@ -335,7 +366,7 @@ export class InventoryListComponent implements OnInit, AfterViewInit, OnDestroy 
      * Update the selected product using the form data
      */
     checkLimitPubliActi(): void {
-       
+
         if (this.selectedPublicacionForm.get('estado').value) {
             this._detalleSubscripcionService.limitEstatusPost()
                 .subscribe({
@@ -487,12 +518,12 @@ export class InventoryListComponent implements OnInit, AfterViewInit, OnDestroy 
 
                         this.openComposeDialog();
                     } else {
-                        this.titleAlert=reponse.title;
-                        this.bodyAlert=reponse.body;
+                        this.titleAlert = reponse.title;
+                        this.bodyAlert = reponse.body;
                         this.banLimitPost = true;
                         this.cd.detectChanges();
                         setTimeout(() => {
-                            
+
                             this.banLimitPost = false; // Después de 3 segundos, restablece a false
                             this.cd.detectChanges();
                         }, 6000);

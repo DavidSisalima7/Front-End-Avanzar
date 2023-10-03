@@ -45,12 +45,12 @@
         <!-- Name Column -->
         <ng-container matColumnDef="precioProducto">
           <th mat-header-cell *matHeaderCellDef mat-sort-header (click)="ejecutarFuncionPrecio()"> Fecha Publicación </th>
-          <td mat-cell *matCellDef="let row"> {{row.fechaPublicacion}} </td>
+          <td mat-cell *matCellDef="let row"> {{ formatDate(row.fechaPublicacion)}} </td>
         </ng-container>
 
         <!-- Fruit Column -->
         <ng-container matColumnDef="cantidaDisponible">
-          <th mat-header-cell *matHeaderCellDef mat-sort-header (click)="ejecutarFuncionCantidad()"> Nombre Producto </th>
+          <th mat-header-cell *matHeaderCellDef mat-sort-header (click)="ejecutarFuncionCantidad()"> Nombre Servicio </th>
           <td mat-cell *matCellDef="let row">
             {{ row.servicios.nombreServicio }}
           </td>
