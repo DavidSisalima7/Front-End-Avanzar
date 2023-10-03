@@ -57,6 +57,7 @@ export class ServiciosVentClientComponent implements OnInit {
   destacados: Destacados;
   esFavorito: boolean = false;
   destacadoCreated: any;
+  banNoServiceFound: boolean = false;
 
   /**
    * Constructor
@@ -83,15 +84,22 @@ export class ServiciosVentClientComponent implements OnInit {
   
     if (busqueda === '') {
       this.publicacionesFiltradas = this.publicacionesOriginales;
+      this.banNoServiceFound = false;
     } else {
       this.publicacionesFiltradas = this.publicacionesOriginales.filter((publicacion) => {
         return (
           publicacion.tituloPublicacion.toLowerCase().includes(busqueda) ||
           publicacion.descripcionPublicacion.toLowerCase().includes(busqueda)||
-          publicacion.servicios?.nombreServicio.toLowerCase().includes(busqueda)||
-          publicacion.servicios?.descripcionServicio.toLowerCase().includes(busqueda)
+          publicacion.servicios?.nombreServicio.toLowerCase().includes(busqueda)
         );
       });
+      if (this.publicacionesFiltradas.length === 0) {
+        // No se encontraron servicios que coincidan con la búsqueda
+        this.banNoServiceFound = true;
+      } else {
+        // Se encontraron servicios, por lo que ocultamos el mensaje
+        this.banNoServiceFound = false;
+      }
     }
   }
   

@@ -88,9 +88,23 @@ export class ListAdminEmprendedorasComponent {
   }
 
   applyFilter(event: Event) {
-    const filterValue = (event.target as HTMLInputElement).value;
-    this.dataSource.filter = filterValue.trim().toLowerCase();
+    const filterValue = (event.target as HTMLInputElement).value.toLowerCase();
+    // Filtra los datos por nombre, correo, cédula y celular
+    this.dataSource.filterPredicate = (data: Usuario, filter: string) => {
+      const persona = data.persona;
+      return (
+        data.name.toLowerCase().includes(filter) ||
+        data.username.toLowerCase().includes(filter) ||
+        persona.cedula.toLowerCase().includes(filter) ||
+        persona.celular.toLowerCase().includes(filter)
+      );
+    };
 
+    this.dataSource.filter = filterValue;
+
+    if (this.dataSource.paginator) {
+      this.dataSource.paginator.firstPage();
+    }
   }
 
   usuarios: any;
