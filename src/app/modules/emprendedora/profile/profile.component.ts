@@ -21,6 +21,7 @@ import { VendedorService } from 'app/services/services/vendedora.service';
 import { PublicacionesService } from 'app/services/services/publicaciones.service';
 import { DatePipe } from '@angular/common';
 import { Publicacion } from 'app/services/models/publicaciones';
+import { SYSTEM_NAME } from 'assets/resources/helperNombre';
 @Component({
     selector     : 'profile-emprendedora',
     standalone   : true,
@@ -44,6 +45,8 @@ export class ProfileEmprendedoraComponent
     idUsuario: any;
     idVendedor: any;
     vendedorLogueado: Vendedor;
+     //Nombre EvaMarket
+     systemName=SYSTEM_NAME;
 
    Listpublicaciones: Publicacion[]=[];
     private _unsubscribeAll: Subject<any> = new Subject<any>();

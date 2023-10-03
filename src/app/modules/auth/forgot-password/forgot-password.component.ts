@@ -11,6 +11,7 @@ import { FuseAlertComponent, FuseAlertType } from '@fuse/components/alert';
 import { AuthService } from 'app/core/auth/auth.service';
 import { EmailDto } from 'app/services/models/emailDto';
 import { EmailService } from 'app/services/services/email.service';
+import { SYSTEM_NAME } from 'assets/resources/helperNombre';
 import { finalize } from 'rxjs';
 
 @Component({
@@ -32,6 +33,9 @@ export class AuthForgotPasswordComponent implements OnInit {
     };
     forgotPasswordForm: UntypedFormGroup;
     showAlert: boolean = false;
+
+     //Nombre EvaMarket
+     systemName=SYSTEM_NAME;
 
     /**
      * Constructor

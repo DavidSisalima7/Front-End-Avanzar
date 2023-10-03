@@ -26,6 +26,7 @@ import { ModalClienteComponent } from 'app/modules/admin/modal-cliente/modal-cli
 import { InventarioPublicaciones } from 'app/modules/emprendedora/ecommerce/inventory/inventory.types';
 import { PublicacionesInventory } from 'app/services/services/publicacionesInventory.service';
 import { ModalPublicacionProductosComponent } from '../home/modal-cliente-publicaciones/modal-cliente-publicacionescomponent';
+import { SYSTEM_NAME } from 'assets/resources/helperNombre';
 
 
 @Component({
@@ -51,6 +52,8 @@ export class HomeTiendaInvitadoComponent
     publications:InventarioPublicaciones[]=[];
     dataSource: MatTableDataSource<InventarioPublicaciones>;
     @ViewChild(MatPaginator, {static: true}) paginator: MatPaginator;
+     //Nombre EvaMarket
+     systemName=SYSTEM_NAME;
     
 
     /**

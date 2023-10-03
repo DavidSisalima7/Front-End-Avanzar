@@ -16,6 +16,7 @@ import { NgIf } from '@angular/common';
 import { Subject, takeUntil } from 'rxjs';
 import { Router, RouterLink } from '@angular/router';
 import { ProductosService } from 'app/services/services/producto.service';
+import { SYSTEM_NAME } from 'assets/resources/helperNombre';
 
 @Component({
     selector     : 'profile-responsable',
@@ -32,6 +33,8 @@ export class ProfileResponsableComponent
      */
     user: User;
     userExtraido: any;
+     //Nombre EvaMarket
+     systemName=SYSTEM_NAME;
 
     private _unsubscribeAll: Subject<any> = new Subject<any>();
     constructor(private _userService: UserService, private _router: Router, private productoservice: ProductosService) {

@@ -12,6 +12,7 @@ import { fuseAnimations } from '@fuse/animations';
 import { FuseAlertComponent, FuseAlertType } from '@fuse/components/alert';
 import { AuthService } from 'app/core/auth/auth.service';
 import { UsuarioRolService } from 'app/services/services/usuarioRol.service';
+import { SYSTEM_NAME } from 'assets/resources/helperNombre';
 import { Subject } from 'rxjs';
 
 
@@ -31,6 +32,10 @@ export class SingInComponent implements OnInit {
     rolUsuario:string;
     ROLINGRESADO: string = '';
     private _unsubscribeAll: Subject<void> = new Subject<void>();
+
+    //Nombre EvaMarket
+    systemName=SYSTEM_NAME;
+
 
     @ViewChild('signInNgForm') signInNgForm: NgForm;
 

@@ -71,7 +71,7 @@
                     </fuse-card>
                     <!-- Card 2 -->
                     <fuse-card class="relative flex-col items-center max-w-sm md:max-w-none p-8 sm:py-12 sm:px-10 lg:pb-28 lg:overflow-visible lg:z-99 lg:shadow-2xl text-center">
-                        <div class="flex items-center h-8 px-8 rounded-full font-semibold text-center leading-none bg-primary-100 text-on-primary-100">POPULAR</div>
+                        <div class="flex items-center h-8 px-8 rounded-full font-semibold text-center leading-none bg-primary-100 text-on-primary-100">PRÓXIMAMENTE</div>
                         <div class="mt-8 text-4xl font-extrabold tracking-tight leading-tight">PREMIUM SILVER</div>
                         <!-- Price -->
                         <div class="flex items-baseline mt-8 whitespace-nowrap">
@@ -95,14 +95,14 @@
                                 <mat-icon
                                     class="icon-size-5 text-green-600"
                                     [svgIcon]="'heroicons_solid:check'"></mat-icon>
-                                <div class="ml-2 leading-5"><b>7</b> publicaciones</div>
+                                <div class="ml-2 leading-5"><b>*</b> publicaciones</div>
                             </div>
     
                             <div class="flex">
                                 <mat-icon
                                     class="icon-size-5 text-green-600"
                                     [svgIcon]="'heroicons_solid:check'"></mat-icon>
-                                <div class="ml-2 leading-5">Incluye 1 curso gratis</div>
+                                <div class="ml-2 leading-5">Incluye * curso gratis</div>
                             </div>
                         </div>
                         <!-- CTA -->
@@ -110,6 +110,7 @@
                             (click)="openComposeDialog(2)"
                             class="fuse-mat-button-large w-full mt-10"
                             mat-flat-button
+                            disabled
                             [color]="'primary'">
                             Seleccionar plan
                         </button>

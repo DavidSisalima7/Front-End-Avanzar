@@ -18,6 +18,8 @@ export class SubscripcionEmprendedoraComponent implements OnInit {
     yearlyBilling: boolean = true;
     membresiaActual: any;
     fechaFormateada: string; // Variable para almacenar la fecha formateada
+    numeroPublicaciones:number;
+    precioMembresia:number;
 
     /**
      * Constructor
@@ -32,6 +34,8 @@ export class SubscripcionEmprendedoraComponent implements OnInit {
         console.log(detalleSubscripcion);
 
         this.membresiaActual = detalleSubscripcion;
+        this.numeroPublicaciones=detalleSubscripcion.subscripcion.numPublicaciones;
+        this.precioMembresia=detalleSubscripcion.subscripcion.precio;
     
         const fecha = new Date(detalleSubscripcion.fechaFin);
         const dia = fecha.getDate().toString().padStart(2, '0');

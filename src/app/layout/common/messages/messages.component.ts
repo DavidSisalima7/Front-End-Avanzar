@@ -23,8 +23,12 @@ export class MessagesComponent implements OnInit, OnDestroy
 {
     @ViewChild('messagesOrigin') private _messagesOrigin: MatButton;
     @ViewChild('messagesPanel') private _messagesPanel: TemplateRef<any>;
+    // Supongamos que tienes una lista de mensajes, por ejemplo:
+    messageses: any[] = [];
 
-    messages: Message[];
+  // Variable para controlar si hay mensajes o no
+    noMessages: boolean = true;
+    //messages: Message[];
     unreadCount: number = 0;
     private _overlayRef: OverlayRef;
     private _unsubscribeAll: Subject<any> = new Subject<any>();
@@ -56,7 +60,7 @@ export class MessagesComponent implements OnInit, OnDestroy
             .subscribe((messages: Message[]) =>
             {
                 // Load the messages
-                this.messages = messages;
+                this.messageses = messages;
 
                 // Calculate the unread count
                 this._calculateUnreadCount();
@@ -218,9 +222,9 @@ export class MessagesComponent implements OnInit, OnDestroy
     {
         let count = 0;
 
-        if ( this.messages && this.messages.length )
+        if ( this.messageses && this.messageses.length )
         {
-            count = this.messages.filter(message => !message.read).length;
+            count = this.messageses.filter(message => !message.read).length;
         }
 
         this.unreadCount = count;

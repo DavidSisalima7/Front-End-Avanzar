@@ -15,6 +15,7 @@ import { UserComponent } from 'app/layout/common/user/user.component';
 import { NgIf } from '@angular/common';
 import { Subject, takeUntil } from 'rxjs';
 import { Router, RouterLink } from '@angular/router';
+import { SYSTEM_NAME } from 'assets/resources/helperNombre';
 
 @Component({
     selector: 'profile',
@@ -29,6 +30,8 @@ export class ProfileAdminComponent {
      */
     user: User;
     userExtraido: any;
+     //Nombre EvaMarket
+     systemName=SYSTEM_NAME;
 
     private _unsubscribeAll: Subject<any> = new Subject<any>();
     constructor(private _userService: UserService,private _router: Router) {

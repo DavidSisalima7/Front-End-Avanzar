@@ -18,6 +18,7 @@ import { QuickChatComponent } from 'app/layout/common/quick-chat/quick-chat.comp
 import { SearchComponent } from 'app/layout/common/search/search.component';
 import { ShortcutsComponent } from 'app/layout/common/shortcuts/shortcuts.component';
 import { UserComponent } from 'app/layout/common/user/user.component';
+import { SYSTEM_NAME } from 'assets/resources/helperNombre';
 import { Subject, takeUntil } from 'rxjs';
 
 @Component({
@@ -33,6 +34,8 @@ export class CompactLayoutComponent implements OnInit, OnDestroy {
     user: User;
     rol: any;
     private _unsubscribeAll: Subject<any> = new Subject<any>();
+    //Nombre EvaMarket
+    systemName=SYSTEM_NAME;
 
     /**
      * Constructor

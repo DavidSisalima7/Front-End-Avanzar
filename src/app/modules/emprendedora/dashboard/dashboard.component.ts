@@ -19,6 +19,7 @@ import { PersonaService } from 'app/services/services/persona.service';
 import { Vendedor } from 'app/services/models/vendedora';
 import { VendedorService } from 'app/services/services/vendedora.service';
 import { DetalleSubscripcionService } from 'app/services/services/detalleSubscripcion.service';
+import { SYSTEM_NAME } from 'assets/resources/helperNombre';
 
 @Component({
     selector: 'dashboard-emprendedora',
@@ -40,7 +41,8 @@ export class DashboardEmprendedoraComponentimplements implements OnInit, OnDestr
     data: any;
     user: User;
     static detalleSubscripcion: any;
-    selectedProject: string = 'Fundación Avanzar';
+    //Nombre EvaMarket
+    systemName=SYSTEM_NAME;
     private _unsubscribeAll: Subject<any> = new Subject<any>();
     nombreUsuario: string;
 

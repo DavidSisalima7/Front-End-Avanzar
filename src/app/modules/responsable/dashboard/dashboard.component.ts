@@ -16,6 +16,7 @@ import { UserService } from 'app/core/user/user.service';
 import { User } from 'app/core/user/user.types';
 import { UserComponent } from 'app/layout/common/user/user.component';
 import { PersonaService } from 'app/services/services/persona.service';
+import { SYSTEM_NAME } from 'assets/resources/helperNombre';
 
 @Component({
     selector     : 'dashboard',
@@ -36,7 +37,8 @@ export class DashboardResponsableComponent implements OnInit, OnDestroy {
     chartYearlyExpenses: ApexOptions = {};
     data: any;
     user: User;
-    selectedProject: string = 'Fundación Avanzar';
+    //Nombre EvaMarket
+    systemName=SYSTEM_NAME;
     private _unsubscribeAll: Subject<any> = new Subject<any>();
     nombreUsuario: string;
 

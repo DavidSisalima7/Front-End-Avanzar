@@ -23,6 +23,7 @@ import { EmailService } from 'app/services/services/email.service';
 import { PersonaService } from 'app/services/services/persona.service';
 import Swal from 'sweetalert2';
 import { FuseConfirmationService } from '@fuse/services/confirmation';
+import { SYSTEM_NAME } from 'assets/resources/helperNombre';
 
 
 
@@ -73,6 +74,8 @@ export class SignUpComponent implements OnInit {
 
     cedulaRegistrada: boolean = false;
     correoRegistrado: boolean = false;
+     //Nombre EvaMarket
+     systemName=SYSTEM_NAME;
 
     /**
      * Constructor

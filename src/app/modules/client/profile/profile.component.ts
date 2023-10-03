@@ -18,6 +18,7 @@ import { Router, RouterLink } from '@angular/router';
 import { ComentarioService } from 'app/services/services/comentarios.service';
 import { DatePipe } from '@angular/common';
 import { Comentario } from 'app/services/models/comentario';
+import { SYSTEM_NAME } from 'assets/resources/helperNombre';
 
 @Component({
     selector     : 'profile-client',
@@ -39,6 +40,10 @@ export class ProfileClientComponent
     comentariodeus:any
     comentariosF:Comentario[]=[];
     private _unsubscribeAll: Subject<any> = new Subject<any>();
+
+    //Nombre EvaMarket
+    systemName=SYSTEM_NAME;
+
     constructor(private _userService: UserService,private _router: Router, private comentarioservice: ComentarioService  ) {
     }
 

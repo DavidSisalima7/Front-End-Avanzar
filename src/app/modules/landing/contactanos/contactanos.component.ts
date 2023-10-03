@@ -4,6 +4,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { Router, RouterLink } from '@angular/router';
 import { FuseCardComponent } from '@fuse/components/card';
+import { SYSTEM_NAME } from 'assets/resources/helperNombre';
 import { BehaviorSubject } from 'rxjs';
 
 @Component({
@@ -16,6 +17,8 @@ import { BehaviorSubject } from 'rxjs';
 })
 export class ContactanosComponent
 {
+    //Nombre EvaMarket
+    systemName=SYSTEM_NAME;
 
     filters: {
         categorySlug$: BehaviorSubject<string>;

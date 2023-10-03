@@ -30,6 +30,7 @@ import { FormControl } from '@angular/forms';
 import { debounceTime, distinctUntilChanged, switchMap, startWith, map } from 'rxjs/operators';
 import { of } from 'rxjs'; // <-- import the module
 import {NgxPaginationModule} from 'ngx-pagination'; // <-- import the module
+import { SYSTEM_NAME } from 'assets/resources/helperNombre';
 
 @Component({
     selector: 'landing-home',
@@ -53,6 +54,9 @@ export class LandingHomeComponent {
     dataSource: MatTableDataSource<InventarioPublicaciones>;
     @ViewChild(MatPaginator, {static: true}) paginator: MatPaginator;
     
+     //Nombre EvaMarket
+     systemName=SYSTEM_NAME;
+
     publicacionesOriginales: any[] = [];
     publicacionesFiltradas: any[] = [];
     mostrarHistorial = false;

@@ -3,6 +3,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { FuseCardComponent } from '@fuse/components/card';
 import { Router, RouterLink } from '@angular/router';
+import { SYSTEM_NAME } from 'assets/resources/helperNombre';
 @Component({
     selector     : 'planes',
     standalone   : true,
@@ -13,7 +14,9 @@ import { Router, RouterLink } from '@angular/router';
     imports      : [MatButtonModule, RouterLink, MatIconModule, FuseCardComponent],
 })
 export class PlanesComponent
-{
+{   
+     //Nombre EvaMarket
+     systemName=SYSTEM_NAME;
 
     constructor(private _router: Router) {
     }

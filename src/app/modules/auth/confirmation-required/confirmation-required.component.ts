@@ -1,6 +1,7 @@
 import { Component, ViewEncapsulation } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { fuseAnimations } from '@fuse/animations';
+import { SYSTEM_NAME } from 'assets/resources/helperNombre';
 
 @Component({
     selector     : 'auth-confirmation-required',
@@ -12,6 +13,8 @@ import { fuseAnimations } from '@fuse/animations';
 })
 export class AuthConfirmationRequiredComponent
 {
+     //Nombre EvaMarket
+     systemName=SYSTEM_NAME;
     /**
      * Constructor
      */
