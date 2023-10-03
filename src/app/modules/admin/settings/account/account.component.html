@@ -18,13 +18,17 @@
             <br>
             <div class="sm:col-span-4">
                 <div class="-mt-18 lg:-mt-18 rounded-full">
-                    <mat-label>Cambiar Foto de Perfil</mat-label>
-                    <img [src]="accountForm.get('avatar').value" alt="User avatar"
-                        class="w-32 h-32 rounded-full ring-4 ring-bg-card">
-                    <mat-icon class="icon-size-24" *ngIf="!accountForm.get('avatar').value"
+                    
+                    <!-- Mostrar el ícono de usuario si no hay una imagen de perfil -->
+                    <mat-icon class="w-32 h-32 rounded-full ring-4 ring-bg-card" *ngIf="!accountForm.get('avatar').value"
                         [svgIcon]="'heroicons_solid:user-circle'"></mat-icon>
-
+                
+                    <!-- Mostrar la imagen de perfil si está definida -->
+                    <img [src]="accountForm.get('avatar').value" alt="User avatar"
+                        class="w-32 h-32 rounded-full ring-4 ring-bg-card"
+                        *ngIf="accountForm.get('avatar').value">
                 </div>
+                
                 <div class="mt-3">
 
                     <input type="file" accept="image/*" (change)="onFileSelected($event)">
