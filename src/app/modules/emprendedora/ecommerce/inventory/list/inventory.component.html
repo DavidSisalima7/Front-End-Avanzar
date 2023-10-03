@@ -14,8 +14,8 @@
             <!-- Search -->
             <mat-form-field class="fuse-mat-dense fuse-mat-rounded min-w-64" [subscriptSizing]="'dynamic'">
                 <mat-icon class="icon-size-5" matPrefix [svgIcon]="'heroicons_solid:magnifying-glass'"></mat-icon>
-                <input matInput [autocomplete]="'off'" [placeholder]="'Buscar productos'" #input
-                    (input)="buscarPublicaciones(input.value)">
+                <input matInput  [autocomplete]="'off'"
+                    [placeholder]="'Buscar productos'" #input (input)="buscarPublicaciones(input.value)">
             </mat-form-field>
             <!-- Add product button -->
             <button class="ml-4" mat-flat-button [color]="'primary'" (click)="verifyLimtiPost()">
@@ -42,7 +42,6 @@
         <div class="flex flex-col flex-auto sm:mb-18 overflow-hidden sm:overflow-y-auto">
             <ng-container *ngIf="(publicaciones$ | async) as publicaciones">
                 <ng-container *ngIf="publicaciones.length > 0; else noPublicaciones">
-                    <ng-container *ngFor="let publicacion of publicacionesFiltradas">
                         <div class="grid">
                             <!-- Header -->
                             <div class="inventory-grid z-10 sticky top-0 grid gap-4 py-4 px-6 md:px-8 shadow text-md font-semibold text-secondary bg-gray-50 dark:bg-black dark:bg-opacity-5"
@@ -65,7 +64,7 @@
                             </div>
                             <!-- Rows -->
                             <ng-container *ngIf="(publicaciones$ | async) as publicaciones">
-                                <ng-container *ngFor="let publicacion of publicaciones; trackBy: trackByFn">
+                                <ng-container *ngFor="let publicacion of publicacionesFiltradas; trackBy: trackByFn">
                                     <div class="inventory-grid grid items-center gap-4 py-3 px-6 md:px-8 border-b">
 
                                         <!-- Image -->
@@ -148,6 +147,9 @@
                                         </ng-container>
                                     </div>
                                 </ng-container>
+                                <div class="p-8 sm:p-16 border-t text-4xl font-semibold tracking-tight text-center"
+            *ngIf="banNoServiceFound">No se encontró esa publicación!
+        </div>
                             </ng-container>
                         </div>
 
@@ -160,7 +162,6 @@
                         [pageSizeOptions]="[5, 10, 25, 100]"
                         [showFirstLastButtons]="true"></mat-paginator>  -->
                     </ng-container>
-                </ng-container>
             </ng-container>
 
             <ng-template #rowDetailsTemplate let-product>
@@ -342,9 +343,7 @@
                     publicaciones
                     disponibles!</div>
             </ng-template>
-            <div class="p-8 sm:p-16 border-t text-4xl font-semibold tracking-tight text-center"
-                *ngIf="banNoServiceFound">No se encontró esa publicación!
-            </div>
+            
         </div>
 
     </div>
