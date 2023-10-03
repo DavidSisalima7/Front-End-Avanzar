@@ -53,6 +53,7 @@ export class ModalComentariosComponent {
     private _commitService: ComentarioService,
     private _formBuilder: UntypedFormBuilder,
     private _userService: UserService,
+    
   ) { }
 
 
@@ -112,7 +113,7 @@ export class ModalComentariosComponent {
 
                   this.listComments = Array.from(response);
                   this.commentLimit--;
-
+                  this.createCommintForm.reset();
                 }, error: (error) => {
 
                 }
