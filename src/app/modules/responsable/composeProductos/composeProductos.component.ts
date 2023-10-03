@@ -51,9 +51,9 @@ export class MailboxComposeComponent implements OnInit {
 
     categorias = [
         { id: 1, value: 'Gastronomia', label: 'Gastronomia' },
-        {  id: 2,value: 'Vestimenta', label: 'Vestimenta' },
-        {  id: 3,value: 'Hogar', label: 'Hogar' },
-        {  id: 4,value: 'Manualidades', label: 'Manualidades' },
+        { id: 2, value: 'Vestimenta', label: 'Vestimenta' },
+        { id: 3, value: 'Hogar', label: 'Hogar' },
+        { id: 4, value: 'Manualidades', label: 'Manualidades' },
     ];
 
     tipos = [
@@ -83,7 +83,7 @@ export class MailboxComposeComponent implements OnInit {
         private productoService: ProductosService,
         private _confirmationService: FuseConfirmationService,
         private publicacionService: PublicacionesService,
- 
+
     ) {
     }
 
@@ -101,8 +101,6 @@ export class MailboxComposeComponent implements OnInit {
             this.publicacion = data;
 
             this.idVendedor = this.publicacion.vendedor.idVendedor;
-            console.log(this.idVendedor)
-
             // Create the form
             this.composeForm = this._formBuilder.group({
                 tituloPublicacion: [this.publicacion.tituloPublicacion, Validators.required],
@@ -238,8 +236,6 @@ export class MailboxComposeComponent implements OnInit {
                 this.productoService.actualizarProducto2(this.publicacion.productos.idProducto, producto).subscribe((data) => {
 
                     this.publicacionService.updatePublicacionById(this.publicacion.idPublicacion, publicacion).subscribe((data) => {
-
-                        console.log("Update OK");
                         this.matDialogRef.close();
                         this.confirmacionCerrada.emit(true);
 

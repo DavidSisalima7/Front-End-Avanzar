@@ -7,7 +7,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { QuillEditorComponent } from 'ngx-quill';
-import {MatDatepickerModule} from '@angular/material/datepicker';
+import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule, MatOptionModule } from '@angular/material/core';
 import { MatSelectModule } from '@angular/material/select';
 import { ServicioModels, Servicios } from 'app/services/models/servicios';
@@ -19,34 +19,33 @@ import { Publicacion, PublicacionA } from 'app/services/models/publicaciones';
 import { Usuario } from 'app/services/models/usuario';
 import { FuseConfirmationService } from '@fuse/services/confirmation';
 @Component({
-    selector     : 'mailbox-compose',
-    templateUrl  : './composeServicios.component.html',
+    selector: 'mailbox-compose',
+    templateUrl: './composeServicios.component.html',
     encapsulation: ViewEncapsulation.None,
-    standalone   : true,
-    styleUrls    : ['./composeServicios.component.scss'],
+    standalone: true,
+    styleUrls: ['./composeServicios.component.scss'],
 
     imports: [MatSelectModule, MatOptionModule, MatDatepickerModule, MatButtonModule, MatIconModule, FormsModule, ReactiveFormsModule, MatFormFieldModule,
         MatInputModule, NgIf, QuillEditorComponent, CommonModule, MatNativeDateModule],
 })
-export class MailboxComposeComponent implements OnInit
-{
+export class MailboxComposeComponent implements OnInit {
     composeForm: UntypedFormGroup;
     copyFields: { cc: boolean; bcc: boolean } = {
-        cc : false,
+        cc: false,
         bcc: false,
     };
     quillModules: any = {
         toolbar: [
             ['bold', 'italic', 'underline'],
-            [{align: []}, {list: 'ordered'}, {list: 'bullet'}],
+            [{ align: [] }, { list: 'ordered' }, { list: 'bullet' }],
             ['clean'],
         ],
     };
 
     categorias = [
-        { id:1, value: 'Belleza', label: 'Belleza' },
-        { id:2, value: 'Costura', label: 'Costura' },
-        { id:3, value: 'Hogar', label: 'Hogar' },
+        { id: 1, value: 'Belleza', label: 'Belleza' },
+        { id: 2, value: 'Costura', label: 'Costura' },
+        { id: 3, value: 'Hogar', label: 'Hogar' },
     ];
 
     tipos = [
@@ -61,7 +60,7 @@ export class MailboxComposeComponent implements OnInit
 
     @Output() confirmacionCerrada: EventEmitter<boolean> = new EventEmitter<boolean>();
 
-    publicacion : Publicacion;
+    publicacion: Publicacion;
     user: Usuario;
     servicio: ServicioModels;
     idPublicacion: any;
@@ -76,8 +75,7 @@ export class MailboxComposeComponent implements OnInit
         private servicioService: ServiciosService,
         private publicacionService: PublicacionesService,
         private _confirmationService: FuseConfirmationService,
-    )
-    {
+    ) {
     }
 
     // -----------------------------------------------------------------------------------------------------
@@ -87,15 +85,12 @@ export class MailboxComposeComponent implements OnInit
     /**
      * On init
      */
-    ngOnInit(): void
-    {
+    ngOnInit(): void {
 
         this.publicacionService.buscarPublicacionId(ListRespServiciosComponent.idPublicacionSeleccionado).subscribe((data) => {
             this.publicacion = data;
 
             this.idVendedor = this.publicacion.vendedor.idVendedor;
-            console.log(this.idVendedor)
-
             // Create the form
             this.composeForm = this._formBuilder.group({
                 titulopubli: [this.publicacion.tituloPublicacion, Validators.required],
@@ -123,11 +118,9 @@ export class MailboxComposeComponent implements OnInit
      *
      * @param name
      */
-    showCopyField(name: string): void
-    {
+    showCopyField(name: string): void {
         // Return if the name is not one of the available names
-        if ( name !== 'cc' && name !== 'bcc' )
-        {
+        if (name !== 'cc' && name !== 'bcc') {
             return;
         }
 
@@ -138,8 +131,7 @@ export class MailboxComposeComponent implements OnInit
     /**
      * Save and close
      */
-    saveAndClose(): void
-    {
+    saveAndClose(): void {
         // Save the message as a draft
         this.saveAsDraft();
 
@@ -150,8 +142,7 @@ export class MailboxComposeComponent implements OnInit
     /**
      * Discard the message
      */
-    discard(): void
-    {
+    discard(): void {
         /////cerrar
         //mensaje agregar
         this.matDialogRef.close();
@@ -160,8 +151,7 @@ export class MailboxComposeComponent implements OnInit
     /**
      * Save the message as a draft
      */
-    saveAsDraft(): void
-    {
+    saveAsDraft(): void {
     }
 
     /**
@@ -238,8 +228,6 @@ export class MailboxComposeComponent implements OnInit
                 this.servicioService.actualizarServicio(this.publicacion.servicios.idServicio, servicio).subscribe((data) => {
 
                     this.publicacionService.updatePublicacionById(this.publicacion.idPublicacion, publicacion).subscribe((data) => {
-
-                        console.log("Update OK");
                         this.matDialogRef.close();
                         this.confirmacionCerrada.emit(true);
 
@@ -253,16 +241,16 @@ export class MailboxComposeComponent implements OnInit
         });
     }
 
-   /* ActualizarServicio(){
-    this.servicioService.actualizarServicio(this.variableSer, this.servicio).subscribe((data)=>{
-        Swal.fire(
-           'Acción Exitosa',
-           'Servicio Actualizado',
-           'success'
-                 );
-       this.matDialogRef.close();
-           }, error=>{
-               console.log("Error al guardar");
-           });
-          }*/
+    /* ActualizarServicio(){
+     this.servicioService.actualizarServicio(this.variableSer, this.servicio).subscribe((data)=>{
+         Swal.fire(
+            'Acción Exitosa',
+            'Servicio Actualizado',
+            'success'
+                  );
+        this.matDialogRef.close();
+            }, error=>{
+                console.log("Error al guardar");
+            });
+           }*/
 }

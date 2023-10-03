@@ -30,7 +30,7 @@ import { Router } from '@angular/router';
     encapsulation: ViewEncapsulation.None,
     animations: fuseAnimations,
     standalone: true,
-    imports: [NgOptimizedImage,MatIconModule, FormsModule, ReactiveFormsModule, MatStepperModule, MatFormFieldModule, MatInputModule, MatSelectModule, MatOptionModule,
+    imports: [NgOptimizedImage, MatIconModule, FormsModule, ReactiveFormsModule, MatStepperModule, MatFormFieldModule, MatInputModule, MatSelectModule, MatOptionModule,
         MatButtonModule, MatCheckboxModule, MatRadioModule, MatTableModule, MatTabsModule, MatDatepickerModule,
         NgIf, FuseAlertComponent],
 })
@@ -139,8 +139,6 @@ export class RegisterResponsableComponent implements OnInit {
     capturarCedulaYBuscar(): void {
         const cedulaValue = this.horizontalStepperForm.get('step1.cedula').value;
         const correoValue = this.horizontalStepperForm.get('step1.correo').value;
-        console.log(`Cédula capturada: ${cedulaValue}`);
-        console.log(`Correo capturado: ${correoValue}`);
         this.buscarPersonaPorCedula(cedulaValue);
     }
 
@@ -151,12 +149,10 @@ export class RegisterResponsableComponent implements OnInit {
             .subscribe(
                 (cedulaEncontrada: boolean) => {
                     if (cedulaEncontrada) {
-                        console.log(`Persona con cédula ${cedulaValue} encontrada.`);
                         this.cedulaRegistrada = true;
                         const correoValue = this.horizontalStepperForm.get('step1.correo').value;
                         this.buscarPersonaPorCorreoYMostrarMensaje(cedulaValue, correoValue);
                     } else {
-                        console.log(`Persona con cédula ${cedulaValue} no encontrada.`);
                         this.cedulaRegistrada = false;
                         const correoValue = this.horizontalStepperForm.get('step1.correo').value;
                         this.buscarPersonaPorCorreo(correoValue);
@@ -174,7 +170,6 @@ export class RegisterResponsableComponent implements OnInit {
             .subscribe(
                 (correoEncontrado: boolean) => {
                     if (correoEncontrado) {
-                        console.log(`Persona con correo ${correoValue} encontrada.`);
                         this.correoRegistrado = true;
                         const confirmationDialog = this.confirmationService.open({
                             title: 'Ocurrió un error',
@@ -198,9 +193,7 @@ export class RegisterResponsableComponent implements OnInit {
                             }
                         });
                         this.canProceedToNextStep = false;
-                        console.log('Paso: ' + this.canProceedToNextStep)
                     } else {
-                        console.log(`Persona con correo ${correoValue} no encontrada.`);
                         this.correoRegistrado = false;
                         const confirmationDialog = this.confirmationService.open({
                             title: 'Ocurrió un error',
@@ -224,7 +217,6 @@ export class RegisterResponsableComponent implements OnInit {
                             }
                         });
                         this.canProceedToNextStep = false;
-                        console.log('Paso: ' + this.canProceedToNextStep)
                     }
                 },
                 (error) => {
@@ -240,7 +232,6 @@ export class RegisterResponsableComponent implements OnInit {
             .subscribe(
                 (encontrada: boolean) => {
                     if (encontrada) {
-                        console.log(`Persona con correo ${correoValue} encontrada.`);
                         this.correoRegistrado = true;
 
                         const confirmationDialog = this.confirmationService.open({
@@ -265,12 +256,9 @@ export class RegisterResponsableComponent implements OnInit {
                             }
                         });
                         this.canProceedToNextStep = false;
-                        console.log('Paso: ' + this.canProceedToNextStep)
                     } else {
-                        console.log(`Persona con correo ${correoValue} no encontrada.`);
                         this.correoRegistrado = false;
                         this.canProceedToNextStep = true;
-                        console.log('Paso: ' + this.canProceedToNextStep)
                         if (this.canProceedToNextStep) {
                             this.horizontalStepper.next(); // Avanzar al siguiente paso
                         }
@@ -335,13 +323,11 @@ export class RegisterResponsableComponent implements OnInit {
         // Luego, realiza la llamada al servicio para guardar la persona y el usuario
         // ... código para guardar persona y usuario ...
         this.personaService.savePersona(this.persona).subscribe(data => {
-            console.log(data);
             this.user.persona = data;
             const rolId = 2; // ID del rol
             this.usuarioService.registrarUsuarioConFoto(this.user, rolId, this.selectedFile)
                 .subscribe(
                     (response) => {
-                        console.log(response);
                         const confirmationDialog = this.confirmationService.open({
                             title: 'Éxito',
                             message: 'Registro de responsable de ventas exitosa',

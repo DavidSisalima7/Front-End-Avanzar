@@ -131,10 +131,7 @@ export class ProductosVentClientComponent implements OnInit {
   //ABRIR EL MODAL de detalles
   openComposeDialog(idPublicacion: number): void {
     // Abre el diálogo y pasa el idUsuario como dato
-
     ProductosVentClientComponent.publicacionSeleccionada = idPublicacion;
-    console.log('idPublicacionSeleccionado-PRODUCTOS', ProductosVentClientComponent.publicacionSeleccionada);
-
     const dialogRef = this._matDialog.open(ModalPublicacionProductosComponent, {
       data: { idPublicacion: idPublicacion },
     });

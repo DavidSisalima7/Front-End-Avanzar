@@ -189,8 +189,6 @@ export class MailboxComposeComponent implements OnInit {
           usuario.name = this.composeForm.value.primer_nombre + ' ' + this.composeForm.value.primer_apellido;
           usuario.username = this.composeForm.value.correo;
           this._userService.updateUserById(this.user.id, usuario).subscribe((data) => {
-
-            console.log("Update OK");
             this.matDialogRef.close();
             this.confirmacionCerrada.emit(true);
 

@@ -1,7 +1,7 @@
 import { FavoritosService } from './../../../services/services/favoritos.service';
 import { TextFieldModule } from '@angular/cdk/text-field';
 import { NgClass, NgFor, NgOptimizedImage, TitleCasePipe } from '@angular/common';
-import { Component, AfterViewInit, ChangeDetectionStrategy, ElementRef, QueryList, Renderer2, ViewChildren, ViewEncapsulation , ViewChild } from '@angular/core';
+import { Component, AfterViewInit, ChangeDetectionStrategy, ElementRef, QueryList, Renderer2, ViewChildren, ViewEncapsulation, ViewChild } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatButtonToggleChange, MatButtonToggleModule } from '@angular/material/button-toggle';
@@ -27,7 +27,7 @@ import { MatPaginator } from '@angular/material/paginator';
 import { PublicacionesService } from 'app/services/services/publicaciones.service';
 import { Destacados } from 'app/services/models/destacados';
 import { ModalComentariosComponent } from './modal-comentarios/modal-comentarios.component';
-import {NgxPaginationModule} from 'ngx-pagination'; // <-- import the module
+import { NgxPaginationModule } from 'ngx-pagination'; // <-- import the module
 import { SharedFavoritoService } from 'app/services/services/sharedFavoritoService.service';
 import { FuseConfirmationService } from '@fuse/services/confirmation';
 
@@ -45,21 +45,21 @@ import { FuseConfirmationService } from '@fuse/services/confirmation';
             } 
         `,
   ],
-  imports: [NgOptimizedImage,AsyncPipe,NgxPaginationModule, NgIf, MatButtonToggleModule, FormsModule, NgFor, FuseCardComponent, MatButtonModule, MatIconModule, RouterLink, NgClass, MatMenuModule, MatCheckboxModule, MatProgressBarModule, MatFormFieldModule, MatInputModule, TextFieldModule, MatDividerModule, MatTooltipModule, TitleCasePipe],
+  imports: [NgOptimizedImage, AsyncPipe, NgxPaginationModule, NgIf, MatButtonToggleModule, FormsModule, NgFor, FuseCardComponent, MatButtonModule, MatIconModule, RouterLink, NgClass, MatMenuModule, MatCheckboxModule, MatProgressBarModule, MatFormFieldModule, MatInputModule, TextFieldModule, MatDividerModule, MatTooltipModule, TitleCasePipe],
 })
 export class HomeTiendaClientComponent {
 
-  @ViewChildren(FuseCardComponent, {read: ElementRef}) private _fuseCards: QueryList<ElementRef>;
+  @ViewChildren(FuseCardComponent, { read: ElementRef }) private _fuseCards: QueryList<ElementRef>;
 
   public comentariosVisible: boolean = false;
   user: User;
   publicaciones$: Observable<InventarioPublicaciones[]>;
   currentImageIndex: [0];
   static publicacionSeleccionada: number;
-  publications:InventarioPublicaciones[]=[];
+  publications: InventarioPublicaciones[] = [];
   dataSource: MatTableDataSource<InventarioPublicaciones>;
-  @ViewChild(MatPaginator, {static: true}) paginator: MatPaginator;
-  
+  @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
+
   filters: string[] = ['all', 'article', 'listing', 'list', 'info', 'shopping', 'pricing', 'testimonial', 'post', 'interactive'];
   numberOfCards: any = {};
   selectedFilter: string = 'all';
@@ -69,7 +69,7 @@ export class HomeTiendaClientComponent {
   publicacionesOriginales: any[] = [];
   publicacionesFiltradas: any[] = [];
   mostrarHistorial = false;
-  public page!:number;
+  public page!: number;
   /**
    * Constructor
    */
@@ -90,41 +90,41 @@ export class HomeTiendaClientComponent {
       this.publicacionesOriginales = publicaciones;
       this.publicacionesFiltradas = publicaciones;
     });
-    
+
   }
 
   buscarPublicaciones(textoBusqueda: string) {
     const busqueda = textoBusqueda.trim().toLowerCase();
-  
+
     if (busqueda === '') {
       this.publicacionesFiltradas = this.publicacionesOriginales;
     } else {
       this.publicacionesFiltradas = this.publicacionesOriginales.filter((publicacion) => {
         return (
           publicacion.tituloPublicacion.toLowerCase().includes(busqueda) ||
-          publicacion.descripcionPublicacion.toLowerCase().includes(busqueda)||
-          publicacion.productos?.nombreProducto.toLowerCase().includes(busqueda)||
-          publicacion.productos?.descripcionProducto.toLowerCase().includes(busqueda)||
-          publicacion.servicios?.nombreServicio.toLowerCase().includes(busqueda)||
+          publicacion.descripcionPublicacion.toLowerCase().includes(busqueda) ||
+          publicacion.productos?.nombreProducto.toLowerCase().includes(busqueda) ||
+          publicacion.productos?.descripcionProducto.toLowerCase().includes(busqueda) ||
+          publicacion.servicios?.nombreServicio.toLowerCase().includes(busqueda) ||
           publicacion.servicios?.descripcionServicio.toLowerCase().includes(busqueda)
         );
-      } );
+      });
       this.mostrarHistorial = false;
     }
   }
-  
+
   buscarProductos() {
     const busquedaP = "productos";
-      this.publicacionesFiltradas = this.publicacionesOriginales.filter((publicacion) => {
-        return (
-          publicacion.categoria?.nombreCategoria.toLowerCase().includes(busquedaP)
-        );
-      });
+    this.publicacionesFiltradas = this.publicacionesOriginales.filter((publicacion) => {
+      return (
+        publicacion.categoria?.nombreCategoria.toLowerCase().includes(busquedaP)
+      );
+    });
   }
   buscartodo() {
     this.publicacionesFiltradas = this.publicacionesOriginales;
   }
-  buscarServicios(){
+  buscarServicios() {
     const busquedaS = "servicios";
     this.publicacionesFiltradas = this.publicacionesOriginales.filter((publicacion) => {
       return (
@@ -132,7 +132,7 @@ export class HomeTiendaClientComponent {
       );
     });
   }
-  buscarGastronomia(){
+  buscarGastronomia() {
     const busquedaG = "gastronomia";
     this.publicacionesFiltradas = this.publicacionesOriginales.filter((publicacion) => {
       return (
@@ -147,19 +147,19 @@ export class HomeTiendaClientComponent {
   historialBusqueda() {
     const busqueda = this.textoBusqueda.trim().toLowerCase();
     if (busqueda !== '' && !this.historial.includes(busqueda)) {
-        this.historial.push(busqueda);
-        this.mostrarHistorial = true;
-        setTimeout(() => {
-          this.mostrarHistorial = false;
-          this.textoBusqueda="";
-        }, 5000);
-      
+      this.historial.push(busqueda);
+      this.mostrarHistorial = true;
+      setTimeout(() => {
+        this.mostrarHistorial = false;
+        this.textoBusqueda = "";
+      }, 5000);
+
     }
   }
-  cerrarHistorial(){
+  cerrarHistorial() {
     this.mostrarHistorial = false;
     setTimeout(() => {
-      this.textoBusqueda="";
+      this.textoBusqueda = "";
     }, 5000);
   }
 
@@ -183,89 +183,89 @@ export class HomeTiendaClientComponent {
   }*/
 
   toggleFavorito(idPublicacion: number) {
-      // Acción cuando se hace clic por primera vez
+    // Acción cuando se hace clic por primera vez
 
-      const userJSON = localStorage.getItem('user');
-      const user = JSON.parse(userJSON);
+    const userJSON = localStorage.getItem('user');
+    const user = JSON.parse(userJSON);
 
-      this._publicacionesService.buscarPublicacionId(idPublicacion).subscribe(
-        (datos: InventarioPublicaciones) => {
-      
-          this.destacados = new Destacados();
-          this.destacados.estadoDestacado = true;
-          this.destacados.fecha = new Date().toISOString();
-          this.destacados.publicaciones = datos;
-          this.destacados.usuario = user;
+    this._publicacionesService.buscarPublicacionId(idPublicacion).subscribe(
+      (datos: InventarioPublicaciones) => {
 
-         
+        this.destacados = new Destacados();
+        this.destacados.estadoDestacado = true;
+        this.destacados.fecha = new Date().toISOString();
+        this.destacados.publicaciones = datos;
+        this.destacados.usuario = user;
 
-          this._favoritoService.saveFavorito(this.destacados).subscribe(
-            (datos: Destacados) => {
-              this.destacadoCreated = datos;
 
-              const confirmationDialog = this.confirmationService.open({
-                title: 'Éxito',
-                message: 'Agregado Correctamente a Tus Favoritos',
-                icon: {
-                    show: true,
-                    name: 'heroicons_outline:check-circle',
-                    color: 'success',
+
+        this._favoritoService.saveFavorito(this.destacados).subscribe(
+          (datos: Destacados) => {
+            this.destacadoCreated = datos;
+
+            const confirmationDialog = this.confirmationService.open({
+              title: 'Éxito',
+              message: 'Agregado Correctamente a Tus Favoritos',
+              icon: {
+                show: true,
+                name: 'heroicons_outline:check-circle',
+                color: 'success',
+              },
+              actions: {
+                confirm: {
+                  show: false,
+                  label: '',
+                  color: 'primary'
                 },
-                actions: {
-                    confirm: {
-                        show: false,
-                        label: '',
-                        color: 'primary'
-                    },
-                    cancel: {
-                        show: false,
-                        label: ''
-                    }
+                cancel: {
+                  show: false,
+                  label: ''
                 }
+              }
             });
-            
+
 
             setTimeout(() => {
               confirmationDialog.close();
             }, 1000); // 1000 milisegundos (1 segundo)
-            
-            },
-            error => {
 
-              const confirmationDialog = this.confirmationService.open({
-                title: 'Advertencia',
-                message: 'Ya se encuentra en tus favoritos',
-                icon: {
-                    show: true,
-                    name: 'heroicons_outline:exclamation-circle',
-                    color: 'warning',
+          },
+          error => {
+
+            const confirmationDialog = this.confirmationService.open({
+              title: 'Advertencia',
+              message: 'Ya se encuentra en tus favoritos',
+              icon: {
+                show: true,
+                name: 'heroicons_outline:exclamation-circle',
+                color: 'warning',
+              },
+              actions: {
+                confirm: {
+                  show: false,
+                  label: '',
+                  color: 'primary'
                 },
-                actions: {
-                    confirm: {
-                        show: false,
-                        label: '',
-                        color: 'primary'
-                    },
-                    cancel: {
-                        show: false,
-                        label: ''
-                    }
+                cancel: {
+                  show: false,
+                  label: ''
                 }
+              }
             });
 
-            
+
             setTimeout(() => {
               confirmationDialog.close();
             }, 1000); // 1000 milisegundos (1 segundo)
 
-            }
-          );
-        },
-        error => {
-          console.error('Ocurrió un error al obtener la lista:', error);
-        }
-      );
-        
+          }
+        );
+      },
+      error => {
+        console.error('Ocurrió un error al obtener la lista:', error);
+      }
+    );
+
   }
 
 
@@ -289,14 +289,12 @@ export class HomeTiendaClientComponent {
   //ABRIR EL MODAL
   openComposeDialog(idPublicacion: number): void {
     // Abre el diálogo y pasa el idUsuario como dato
-  
+
     HomeTiendaClientComponent.publicacionSeleccionada = idPublicacion;
-    console.log('idPublicacionSeleccionado', HomeTiendaClientComponent.publicacionSeleccionada);
-  
-    const dialogRef = this._matDialog.open(ModalPublicacionComponent,{
+    const dialogRef = this._matDialog.open(ModalPublicacionComponent, {
       data: { idPublicacion: idPublicacion },
     });
-  
+
     dialogRef.componentInstance.confirmacionCerrada.subscribe((confirmado: boolean) => {
       if (confirmado) {
         dialogRef.close(); // Cierra el diálogo
@@ -304,28 +302,28 @@ export class HomeTiendaClientComponent {
         this.listarPublicaciones();
       }
     });
-  
+
     dialogRef.afterClosed().subscribe((result) => {
       console.log('Compose dialog was closed!');
     });
   }
 
-  openComposecomments(idPublicacion: number){
-    const dialogRef = this._matDialog.open(ModalComentariosComponent,{
+  openComposecomments(idPublicacion: number) {
+    const dialogRef = this._matDialog.open(ModalComentariosComponent, {
       data: { idPubli: idPublicacion },
     });
-    
+
 
   }
 
-  
+
   toggleComentarios(publicacion: any) {
     publicacion.mostrarComentarios = !publicacion.mostrarComentarios;
   }
-  
 
 
 
 
-  
+
+
 }

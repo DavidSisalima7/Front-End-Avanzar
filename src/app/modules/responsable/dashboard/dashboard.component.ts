@@ -19,9 +19,9 @@ import { PersonaService } from 'app/services/services/persona.service';
 import { SYSTEM_NAME } from 'assets/resources/helperNombre';
 
 @Component({
-    selector     : 'dashboard',
-    standalone   : true,
-    templateUrl  : './dashboard.component.html',
+    selector: 'dashboard',
+    standalone: true,
+    templateUrl: './dashboard.component.html',
     changeDetection: ChangeDetectionStrategy.OnPush,
     encapsulation: ViewEncapsulation.None,
     imports: [TranslocoModule, UserComponent, MatIconModule, MatButtonModule, MatRippleModule, MatMenuModule, MatTabsModule, MatButtonToggleModule, NgApexchartsModule, NgFor, NgIf, MatTableModule, NgClass, CurrencyPipe],
@@ -38,7 +38,7 @@ export class DashboardResponsableComponent implements OnInit, OnDestroy {
     data: any;
     user: User;
     //Nombre EvaMarket
-    systemName=SYSTEM_NAME;
+    systemName = SYSTEM_NAME;
     private _unsubscribeAll: Subject<any> = new Subject<any>();
     nombreUsuario: string;
 
@@ -73,9 +73,6 @@ export class DashboardResponsableComponent implements OnInit, OnDestroy {
             this.totalPublicaciones = res.totalpublicaciones;
             this.usuariosActivos = res.usuariosactivos;
             this.emprendedoras = res.emprendedoras;
-
-            console.log(res);
-            
         });
 
         const parsedData = JSON.parse(localStorage.getItem('user'));
@@ -312,7 +309,7 @@ export class DashboardResponsableComponent implements OnInit, OnDestroy {
 
     redirectToConfiguracion() {
         this._router.navigate(['/config-resp']);
-      }
+    }
 
     redirectToProfile() {
         this._router.navigate(['/profile-resp']);

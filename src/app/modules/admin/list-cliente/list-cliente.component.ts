@@ -43,7 +43,7 @@ export class ListAdminClienteComponent {
 
   users: Usuario[] = [];
 
-  @ViewChild(MatPaginator, {static: true}) paginator: MatPaginator;
+  @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
 
   searchInputControl: UntypedFormControl = new UntypedFormControl();
@@ -62,9 +62,8 @@ export class ListAdminClienteComponent {
 
   cambioTamanioPagina(event) {
     this.paginator.pageIndex = event.pageIndex;
-    // También puedes agregar un console.log() aquí para depurar
   }
-  
+
   nextPage() {
     if (this.paginator.hasNextPage()) {
       this.paginator.nextPage();
@@ -343,7 +342,7 @@ export class ListAdminClienteComponent {
             if (result === 'confirmed') {
               this.usuarioService.eliminadoLogico(this.selectedCliente).subscribe(
                 (datapersencontrada) => {
-                  
+
                   const usuario: UserA = {
                     id: this.selectedCliente,
                     enabled: false,
@@ -396,12 +395,11 @@ export class ListAdminClienteComponent {
   //ABRIR EL MODAL
   openComposeDialog(idUsuario: number): void {
     // Abre el diálogo y pasa el idUsuario como dato
-  
+
     ListAdminClienteComponent.idUsuarioSeleccionado = idUsuario;
-    console.log('idUsuarioSeleccionado', ListAdminClienteComponent.idUsuarioSeleccionado);
-  
+
     const dialogRef = this._matDialog.open(ModalClienteComponent);
-  
+
     dialogRef.componentInstance.confirmacionCerrada.subscribe((confirmado: boolean) => {
       if (confirmado) {
         dialogRef.close(); // Cierra el diálogo
@@ -409,7 +407,7 @@ export class ListAdminClienteComponent {
         this.listarRegistros();
       }
     });
-  
+
     dialogRef.afterClosed().subscribe((result) => {
       console.log('Compose dialog was closed!');
     });

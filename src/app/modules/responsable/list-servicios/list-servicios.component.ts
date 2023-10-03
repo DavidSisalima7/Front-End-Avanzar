@@ -84,21 +84,21 @@ export class ListRespServiciosComponent {
 
   applyFilter(event: Event) {
     const filterValue = (event.target as HTMLInputElement).value.toLowerCase();
-  
+
     // Filtra los datos por título, fecha, nombre del producto y nombre del vendedor
     this.dataSource.filterPredicate = (data: Publicacion, filter: string) => {
       const servicios = data.servicios;
       const vendedora = data.vendedor;
-  
+
       return (
         data.tituloPublicacion.toLowerCase().includes(filter) ||
         servicios.nombreServicio.toLowerCase().includes(filter) ||
         vendedora.usuario.name.toLowerCase().includes(filter)
       );
     };
-  
+
     this.dataSource.filter = filterValue;
-  
+
     if (this.dataSource.paginator) {
       this.dataSource.paginator.firstPage();
     }
@@ -110,8 +110,6 @@ export class ListRespServiciosComponent {
     // Abre el diálogo y pasa el idUsuario como dato
 
     ListRespServiciosComponent.idPublicacionSeleccionado = idPublicacion;
-    console.log('idUsuarioSeleccionado', ListRespServiciosComponent.idPublicacionSeleccionado);
-
     const dialogRef = this._matDialog.open(MailboxComposeComponent);
 
     dialogRef.componentInstance.confirmacionCerrada.subscribe((confirmado: boolean) => {
@@ -127,152 +125,6 @@ export class ListRespServiciosComponent {
     });
   }
 
-  /////////////////////////Filtro de los Servicios
-  /*servicios:any;
-   ///descripcion
-     FiltroDescripcionAsc(): void {
-       this.serviciosService.listarServicio().subscribe(
-         (datos: Servicios[]) => {
-           // Ordena el array de Servicios por decsripcion asc
-           this.servicios = datos.sort((a, b) => a.descripcionServicio.localeCompare(b.descripcionServicio));
-           this.dataSource = new MatTableDataSource<Servicios>(this.servicios);
-         },
-         error => {
-          console.error('Ocurrió un error al obtener la lista de Servicios:', error);
-         }
-       );
-     }
-     FiltroDescripcionDesc(): void {
-       this.serviciosService.listarServicio().subscribe(
-         (datos: Servicios[]) => {
-           // Ordena el array de Servicios por descripcion en forma descendente
-           this.servicios = datos.sort((a, b) => a.descripcionServicio.localeCompare(b.descripcionServicio));
-           this.dataSource = new MatTableDataSource<Servicios>(this.servicios);
-         },
-         error => {
-          console.error('Ocurrió un error al obtener la lista de Servicios:', error);
-         }
-       );
-     }
-   
-     //Nombre de productos
-     FiltroNombreAsc(): void {
-       this.serviciosService.listarServicio().subscribe(
-         (datos: Servicios[]) => {
-           // Ordena el array de Servicios por el nombre acs
-           this.servicios = datos.sort((a, b) => a.nombreServicio.localeCompare(b.nombreServicio));
-           this.dataSource = new MatTableDataSource<Servicios>(this.servicios);
-         },
-         error => {
-           console.error('Ocurrió un error al obtener la lista de Servicios:', error);
-         }
-       );
-     }
-     FiltroNombreDesc(): void {
-      this.serviciosService.listarServicio().subscribe(
-        (datos: Servicios[]) => {
-          // Ordena el array de Servicios por el nombre acs
-          this.servicios = datos.sort((a, b) => b.nombreServicio.localeCompare(a.nombreServicio));
-          this.dataSource = new MatTableDataSource<Servicios>(this.servicios);
-        },
-        error => {
-          console.error('Ocurrió un error al obtener la lista de Servicios:', error);
-        }
-      );
-    }
-  
-   //precio
-   FiltroprecioAsc(): void {
-    this.serviciosService.listarServicio().subscribe(
-      (datos: Servicios[]) => {
-        // Ordena el array de Servicios por precio asc
-        this.servicios = datos.sort((a, b) => a.precioServicio - b.precioServicio);
-        this.dataSource = new MatTableDataSource<Servicios>(this.servicios);
-      },
-      error => {
-       console.error('Ocurrió un error al obtener la lista de Servicios:', error);
-      }
-    );
-  }
-   FiltroprecioDesc(): void {
-    this.serviciosService.listarServicio().subscribe(
-      (datos: Servicios[]) => {
-        // Ordena el array de Servicios por el precio en forma descendente
-        this.servicios = datos.sort((a, b) => b.precioServicio - a.precioServicio);
-        this.dataSource = new MatTableDataSource<Servicios>(this.servicios);
-      
-      },
-      error => {
-       console.error('Ocurrió un error al obtener la lista de Servicios:', error);
-      }
-    );
-  }
-   FiltroEstadoActivo() {
-    // Ordena el array de Servicios por estado activo
-   this.serviciosService.obtenerListServicioOrdenA().subscribe(
-     (datos: Servicios[]) => {
-       this.dataSource = new MatTableDataSource<Servicios>(datos);
-     },
-     error => {
-      console.error('Ocurrió un error al obtener la lista de Servicios:', error);
-     }
-   );
-  }
-  FiltroEstadoInactivo() {
-   // Ordena el array de Servicios por estado inactivo
-   this.serviciosService.obtenerListServicioOrdenI().subscribe(
-     (datos: Servicios[]) => {
-       this.dataSource = new MatTableDataSource<Servicios>(datos);
-     },
-     error => {
-      console.error('Ocurrió un error al obtener la lista de Servicios:', error);
-     }
-   );
-  }
-    
-     ejecutarPrimeraFuncion: boolean = true;
-     cambiarFuncionAEjecutar(): void {
-       this.ejecutarPrimeraFuncion = !this.ejecutarPrimeraFuncion;
-     }
-     //Nombre
-     ejecutarFuncionNombre(): void {
-       if (this.ejecutarPrimeraFuncion) {
-         this.FiltroNombreAsc();
-       } else {
-         this.FiltroNombreDesc();
-       }
-       this.cambiarFuncionAEjecutar();
-     }
-     //cantidada
-     ejecutarFuncionDescripcion(): void {
-       if (this.ejecutarPrimeraFuncion) {
-         this.FiltroDescripcionAsc();
-       } else {
-         this.FiltroDescripcionDesc();
-       }
-       this.cambiarFuncionAEjecutar();
-     }
-     //precio
-     ejecutarFuncionPrecio(): void {
-       if (this.ejecutarPrimeraFuncion) {
-         this.FiltroprecioAsc();
-       } else {
-         this.FiltroprecioDesc();
-       }
-       this.cambiarFuncionAEjecutar();
-     }
-     //Estado
-     ejecutarFuncionEstado(): void {
-       if (this.ejecutarPrimeraFuncion) {
-         this.FiltroEstadoActivo();
-       } else {
-         this.FiltroEstadoInactivo();
-       }
-       this.cambiarFuncionAEjecutar();
-     }
-  */
-
-  ///////////////////////// Fin de filtro
 
   ////////eliminado lógico de servicios
   selectedPublicacion: any;
@@ -382,10 +234,10 @@ export class ListRespServiciosComponent {
     ];
     const monthIndex = date.getMonth();
     const year = date.getFullYear();
-  
+
     return `${day} de ${monthNames[monthIndex]} del ${year}`;
   }
-  
+
   //////////////////////////////llevar datos al compose
   /*selectService:any;
   seleccionarServiceEdit(servicio: any) {

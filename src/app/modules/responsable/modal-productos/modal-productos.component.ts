@@ -11,7 +11,7 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatOptionModule } from '@angular/material/core';
 import { MatSelectModule } from '@angular/material/select';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
-import { CategoriaProducto, CategoriaPublicacion, InventarioPublicaciones} from 'app/modules/emprendedora/ecommerce/inventory/inventory.types';
+import { CategoriaProducto, CategoriaPublicacion, InventarioPublicaciones } from 'app/modules/emprendedora/ecommerce/inventory/inventory.types';
 import { Subject, takeUntil, forkJoin, Observable } from 'rxjs';
 import { Usuario } from 'app/services/models/usuario';
 import { UserService } from 'app/core/user/user.service';
@@ -169,60 +169,60 @@ export class ModalProductosComponent implements OnInit {
   }
 
   // -----------------------------------------------------------------------------------------------------
-    // @ Public methods
-    // -----------------------------------------------------------------------------------------------------
+  // @ Public methods
+  // -----------------------------------------------------------------------------------------------------
 
-    /**
-     * Show the copy field with the given field name
-     *
-     * @param name
-     */
-    showCopyField(name: string): void {
-      // Return if the name is not one of the available names
-      if (name !== 'cc' && name !== 'bcc') {
-          return;
-      }
+  /**
+   * Show the copy field with the given field name
+   *
+   * @param name
+   */
+  showCopyField(name: string): void {
+    // Return if the name is not one of the available names
+    if (name !== 'cc' && name !== 'bcc') {
+      return;
+    }
 
-      // Show the field
-      this.copyFields[name] = true;
+    // Show the field
+    this.copyFields[name] = true;
   }
 
   /**
    * Save and close
    */
   saveAndClose(): void {
-      // Save the message as a draft
-      this.saveAsDraft();
+    // Save the message as a draft
+    this.saveAsDraft();
 
-      // Close the dialog
-      this.matDialogRef.close();
+    // Close the dialog
+    this.matDialogRef.close();
   }
 
 
 
 
   showFlashMessage(type: 'success' | 'error'): void {
-      // Show the message
-      this.flashMessage = type;
+    // Show the message
+    this.flashMessage = type;
+
+    // Mark for check
+    this._changeDetectorRef.markForCheck();
+
+    // Hide it after 3 seconds
+    setTimeout(() => {
+      this.flashMessage = null;
 
       // Mark for check
       this._changeDetectorRef.markForCheck();
-
-      // Hide it after 3 seconds
-      setTimeout(() => {
-          this.flashMessage = null;
-
-          // Mark for check
-          this._changeDetectorRef.markForCheck();
-      }, 8000);
+    }, 8000);
   }
 
   /**
    * Discard the message
    */
   discard(): void {
-       // Close the dialog
-       this.matDialogRef.close();
+    // Close the dialog
+    this.matDialogRef.close();
   }
 
   /**
@@ -238,68 +238,63 @@ export class ModalProductosComponent implements OnInit {
 
   send(): void {
 
-      if ( this.selectedPublicacionForm.invalid )
-      {
-          return;
-      }
+    if (this.selectedPublicacionForm.invalid) {
+      return;
+    }
 
-      this.selectedPublicacionForm.disable();
+    this.selectedPublicacionForm.disable();
 
-      const post = this.selectedPublicacionForm.getRawValue();
-      const vendedor$ = this._vendedoraService.buscarVendedoraId(this.user.id);
-      const categoria$ = this._categoriaService.buscarCategoriaId(post.tipos);
-      const categoriaProducto$ = this._categoriaProductoService.getCategoriaProducto(post.categoria);
+    const post = this.selectedPublicacionForm.getRawValue();
+    const vendedor$ = this._vendedoraService.buscarVendedoraId(this.user.id);
+    const categoria$ = this._categoriaService.buscarCategoriaId(post.tipos);
+    const categoriaProducto$ = this._categoriaProductoService.getCategoriaProducto(post.categoria);
 
-      // Fecha actual
-      const fecha = new Date().toISOString();
+    // Fecha actual
+    const fecha = new Date().toISOString();
 
-      // Lista de imágenes predefinidas vacía
-      const imagenesSeleccionadas: File[] = [];
+    // Lista de imágenes predefinidas vacía
+    const imagenesSeleccionadas: File[] = [];
 
-      if (this.uploadedPhotos.length > 0) {
-          imagenesSeleccionadas.push(...this.uploadedPhotos);
-          const primeraImagen = imagenesSeleccionadas[0];
-          const baseUrl = 'http://localhost:8080';
-          const urlCompleta = `${baseUrl}/api/publicaciones/${primeraImagen.name}`;
-          this.producto.miniaturaProducto = urlCompleta;
-      }
+    if (this.uploadedPhotos.length > 0) {
+      imagenesSeleccionadas.push(...this.uploadedPhotos);
+      const primeraImagen = imagenesSeleccionadas[0];
+      const baseUrl = 'http://localhost:8080';
+      const urlCompleta = `${baseUrl}/api/publicaciones/${primeraImagen.name}`;
+      this.producto.miniaturaProducto = urlCompleta;
+    }
 
-      forkJoin([vendedor$, categoriaProducto$, categoria$]).subscribe(([vendedor, categoriaProducto, categoria]) => {
-          console.log(vendedor);
-          this.publication.vendedor = vendedor;
-          this.publication.categoria = categoria;
-          this.publication.tituloPublicacion = post.tituloPublicacion;
-          this.publication.descripcionPublicacion = post.descripcionPublicacion;
-          this.publication.estado = post.estado;
-          this.publication.visible = true;
-          this.publication.fechaPublicacion = new Date(fecha);
+    forkJoin([vendedor$, categoriaProducto$, categoria$]).subscribe(([vendedor, categoriaProducto, categoria]) => {
+      this.publication.vendedor = vendedor;
+      this.publication.categoria = categoria;
+      this.publication.tituloPublicacion = post.tituloPublicacion;
+      this.publication.descripcionPublicacion = post.descripcionPublicacion;
+      this.publication.estado = post.estado;
+      this.publication.visible = true;
+      this.publication.fechaPublicacion = new Date(fecha);
 
-          // Atributos de producto
-          this.producto.cantidadDisponible = post.cantidadDisponible;
-          this.producto.pesoProducto = post.pesoProducto;
-          this.producto.precioProducto = post.precioProducto;
-          this.producto.nombreProducto = post.nombreProducto;
-          this.producto.categoriaProducto = categoriaProducto;
-          this.producto.descripcionProducto = post.descripcionPublicacion;
-          this.producto.estadoProducto = true;
-
-          console.log("Hola" , this.publication.vendedor  );
-          // Llamar al servicio para guardar el producto
-          this._productoService.saveProducto(this.producto).subscribe((data) => {
-              this.publication.productos = data;
+      // Atributos de producto
+      this.producto.cantidadDisponible = post.cantidadDisponible;
+      this.producto.pesoProducto = post.pesoProducto;
+      this.producto.precioFijoProducto = post.precioProducto;
+      this.producto.nombreProducto = post.nombreProducto;
+      this.producto.categoriaProducto = categoriaProducto;
+      this.producto.descripcionProducto = post.descripcionPublicacion;
+      this.producto.estadoProducto = true;
+      // Llamar al servicio para guardar el producto
+      this._productoService.saveProducto(this.producto).subscribe((data) => {
+        this.publication.productos = data;
 
 
-              // Llamar al servicio para crear la publicación con las imágenes
-              this._inventoryService.createPublicacion(this.publication, imagenesSeleccionadas).subscribe((newPublicacion) => {
-                  //this.publication = newPublicacion;
-                  console.log("Ulti", newPublicacion);
-                  this.showFlashMessage('success');
-                  this.selectedPublicacionForm.enable();
-              });
-          });
-
-
+        // Llamar al servicio para crear la publicación con las imágenes
+        this._inventoryService.createPublicacion(this.publication, imagenesSeleccionadas).subscribe((newPublicacion) => {
+          //this.publication = newPublicacion;
+          this.showFlashMessage('success');
+          this.selectedPublicacionForm.enable();
+        });
       });
+
+
+    });
   }
 
 }

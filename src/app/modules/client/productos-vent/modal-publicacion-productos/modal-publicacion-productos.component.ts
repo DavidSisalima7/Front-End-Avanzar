@@ -30,11 +30,11 @@ import { PublicacionesInventoryProductos } from 'app/services/services/Publicaci
     templateUrl: './modal-publicacion-productos.component.html',
     styleUrls: ['./modal-publicacion-productos.component.scss'],
     standalone: true,
-    imports: [NgOptimizedImage,MatSlideToggleModule, MatSelectModule,FuseCardComponent,MatMenuModule,RouterLink, MatOptionModule, MatDatepickerModule, NgFor, MatButtonModule, MatIconModule, FormsModule, ReactiveFormsModule, MatFormFieldModule, MatInputModule, NgIf, QuillEditorComponent]
+    imports: [NgOptimizedImage, MatSlideToggleModule, MatSelectModule, FuseCardComponent, MatMenuModule, RouterLink, MatOptionModule, MatDatepickerModule, NgFor, MatButtonModule, MatIconModule, FormsModule, ReactiveFormsModule, MatFormFieldModule, MatInputModule, NgIf, QuillEditorComponent]
 
 })
 export class ModalPublicacionProductosComponent implements OnInit {
-    selectedPublicacionForm: UntypedFormGroup; 
+    selectedPublicacionForm: UntypedFormGroup;
     user: Usuario;
     selectedPublicacion: InventarioPublicaciones | null = null;
     flashMessage: 'success' | 'error' | null = null;
@@ -52,23 +52,21 @@ export class ModalPublicacionProductosComponent implements OnInit {
 
 
     ngOnInit(): void {
-        
-            this._inventoryService.getPublicacionById(ProductosVentClientComponent.publicacionSeleccionada)
+
+        this._inventoryService.getPublicacionById(ProductosVentClientComponent.publicacionSeleccionada)
             .subscribe((product) => {
                 this.selectedPublicacion = product;
-                console.log(product)
-
                 // Actualiza el FormGroup con los datos de la publicación
-                this.selectedPublicacionForm=this._formBuilder.group({
+                this.selectedPublicacionForm = this._formBuilder.group({
                     idPublicacion: [this.selectedPublicacion.idPublicacion],
                     nombreProducto: [this.selectedPublicacion.productos.nombreProducto],
-                    nombreCategoria:[this.selectedPublicacion.categoria.nombreCategoria],
-                    tituloPublicacion:  [this.selectedPublicacion.tituloPublicacion],
-                    descripcionPublicacion:  [this.selectedPublicacion.descripcionPublicacion],
-                    descripcionUsuario:  [this.selectedPublicacion.vendedor.usuario.persona.descripcion],
+                    nombreCategoria: [this.selectedPublicacion.categoria.nombreCategoria],
+                    tituloPublicacion: [this.selectedPublicacion.tituloPublicacion],
+                    descripcionPublicacion: [this.selectedPublicacion.descripcionPublicacion],
+                    descripcionUsuario: [this.selectedPublicacion.vendedor.usuario.persona.descripcion],
                     vendedor: [this.selectedPublicacion.vendedor.usuario.name],
-                    emprendimiento:[this.selectedPublicacion.vendedor.nombreEmprendimiento],
-                    cantidadDisponible:  [this.selectedPublicacion.idPublicacion],
+                    emprendimiento: [this.selectedPublicacion.vendedor.nombreEmprendimiento],
+                    cantidadDisponible: [this.selectedPublicacion.idPublicacion],
                     avatar: [this.selectedPublicacion.vendedor.usuario.avatar],
                     precioProducto: [this.selectedPublicacion.idPublicacion],
                     pais: [this.selectedPublicacion.vendedor.usuario.persona.nacionalidad],
@@ -82,7 +80,7 @@ export class ModalPublicacionProductosComponent implements OnInit {
 
                 this._changeDetectorRef.markForCheck();
             });
-        
+
     }
 
     saveAndClose(): void {

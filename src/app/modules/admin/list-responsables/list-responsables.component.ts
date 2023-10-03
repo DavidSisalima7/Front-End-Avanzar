@@ -407,8 +407,6 @@ export class ListResponsableComponent {
     // Abre el diálogo y pasa el idUsuario como dato
 
     ListResponsableComponent.idUsuarioSeleccionado = idUsuario;
-    console.log('idUsuarioSeleccionado', ListResponsableComponent.idUsuarioSeleccionado);
-
     const dialogRef = this._matDialog.open(MailboxComposeComponent);
 
     dialogRef.componentInstance.confirmacionCerrada.subscribe((confirmado: boolean) => {

@@ -18,8 +18,8 @@ export class SubscripcionEmprendedoraComponent implements OnInit {
     yearlyBilling: boolean = true;
     membresiaActual: any;
     fechaFormateada: string; // Variable para almacenar la fecha formateada
-    numeroPublicaciones:number;
-    precioMembresia:number;
+    numeroPublicaciones: number;
+    precioMembresia: number;
 
     /**
      * Constructor
@@ -31,20 +31,18 @@ export class SubscripcionEmprendedoraComponent implements OnInit {
 
         // Recuperar la variable almacenada en el localStorage en el segundo componente
         const detalleSubscripcion = JSON.parse(localStorage.getItem('extraerMembresia'));
-        console.log(detalleSubscripcion);
-
         this.membresiaActual = detalleSubscripcion;
-        this.numeroPublicaciones=detalleSubscripcion.subscripcion.numPublicaciones;
-        this.precioMembresia=detalleSubscripcion.subscripcion.precio;
-    
+        this.numeroPublicaciones = detalleSubscripcion.subscripcion.numPublicaciones;
+        this.precioMembresia = detalleSubscripcion.subscripcion.precio;
+
         const fecha = new Date(detalleSubscripcion.fechaFin);
         const dia = fecha.getDate().toString().padStart(2, '0');
         const mes = (fecha.getMonth() + 1).toString().padStart(2, '0');
         const anio = fecha.getFullYear();
         this.fechaFormateada = `${dia}/${mes}/${anio}`;
-      }
+    }
 
-    
+
 
 
 }

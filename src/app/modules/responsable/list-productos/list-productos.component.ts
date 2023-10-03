@@ -97,21 +97,21 @@ export class ListProductosResponsableComponent {
 
   applyFilter(event: Event) {
     const filterValue = (event.target as HTMLInputElement).value.toLowerCase();
-  
+
     // Filtra los datos por título, fecha, nombre del producto y nombre del vendedor
     this.dataSource.filterPredicate = (data: Publicacion, filter: string) => {
       const productos = data.productos;
       const vendedora = data.vendedor;
-  
+
       return (
         data.tituloPublicacion.toLowerCase().includes(filter) ||
         productos.nombreProducto.toLowerCase().includes(filter) ||
         vendedora.usuario.name.toLowerCase().includes(filter)
       );
     };
-  
+
     this.dataSource.filter = filterValue;
-  
+
     if (this.dataSource.paginator) {
       this.dataSource.paginator.firstPage();
     }
@@ -123,8 +123,6 @@ export class ListProductosResponsableComponent {
     // Abre el diálogo y pasa el idUsuario como dato
 
     ListProductosResponsableComponent.idPublicacionSeleccionado = idPublicacion;
-    console.log('idUsuarioSeleccionado', ListProductosResponsableComponent.idPublicacionSeleccionado);
-
     const dialogRef = this._matDialog.open(MailboxComposeComponent);
 
     dialogRef.componentInstance.confirmacionCerrada.subscribe((confirmado: boolean) => {
@@ -251,16 +249,8 @@ export class ListProductosResponsableComponent {
     ];
     const monthIndex = date.getMonth();
     const year = date.getFullYear();
-  
+
     return `${day} de ${monthNames[monthIndex]} del ${year}`;
   }
-  //////////////////////////////llevar datos al compose
-  /*selectProducto:any;
-  seleccionarProductoEdit(publicacion: any) {
-    console.log('Se seleccionó el producto:', publicacion);
-    this.openComposeDialog();
-    this.selectProducto = publicacion.idPrublicacion;
-    localStorage.setItem("idProductoSelected", String(publicacion.idPublicacion));
-  }*/
+ 
 }
-    

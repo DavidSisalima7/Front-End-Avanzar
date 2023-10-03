@@ -6,7 +6,7 @@ import { Router, RouterLink } from '@angular/router';
 import { FuseCardComponent } from '@fuse/components/card';
 import { TextFieldModule } from '@angular/cdk/text-field';
 import { NgClass, NgFor, TitleCasePipe } from '@angular/common';
-import { AfterViewInit, ChangeDetectionStrategy, ElementRef, QueryList, Renderer2, ViewChildren , ViewChild } from '@angular/core';
+import { AfterViewInit, ChangeDetectionStrategy, ElementRef, QueryList, Renderer2, ViewChildren, ViewChild } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { MatButtonToggleChange, MatButtonToggleModule } from '@angular/material/button-toggle';
 import { MatCheckboxModule } from '@angular/material/checkbox';
@@ -30,78 +30,77 @@ import { SYSTEM_NAME } from 'assets/resources/helperNombre';
 
 
 @Component({
-    selector     : 'home-tienda',
-    templateUrl  : './home-tienda.component.html',
-    styleUrls: ['./home-tienda.component.scss'],
-    encapsulation: ViewEncapsulation.None,
-    standalone   : true,
-    imports: [AsyncPipe, NgIf, MatButtonToggleModule, FormsModule, NgFor, FuseCardComponent, MatButtonModule, MatIconModule, RouterLink, NgClass, MatMenuModule, MatCheckboxModule, MatProgressBarModule, MatFormFieldModule, MatInputModule, TextFieldModule, MatDividerModule, MatTooltipModule, TitleCasePipe],
-    
+  selector: 'home-tienda',
+  templateUrl: './home-tienda.component.html',
+  styleUrls: ['./home-tienda.component.scss'],
+  encapsulation: ViewEncapsulation.None,
+  standalone: true,
+  imports: [AsyncPipe, NgIf, MatButtonToggleModule, FormsModule, NgFor, FuseCardComponent, MatButtonModule, MatIconModule, RouterLink, NgClass, MatMenuModule, MatCheckboxModule, MatProgressBarModule, MatFormFieldModule, MatInputModule, TextFieldModule, MatDividerModule, MatTooltipModule, TitleCasePipe],
+
 
 })
-export class HomeTiendaInvitadoComponent
-{
+export class HomeTiendaInvitadoComponent {
 
-    @ViewChildren(FuseCardComponent, {read: ElementRef}) private _fuseCards: QueryList<ElementRef>;
+  @ViewChildren(FuseCardComponent, { read: ElementRef }) private _fuseCards: QueryList<ElementRef>;
 
-    public comentariosVisible: boolean = false;
-    user: User;
-    publicaciones$: Observable<InventarioPublicaciones[]>;
-    currentImageIndex: [0];
-    static publicacionSeleccionada: number;
-    publications:InventarioPublicaciones[]=[];
-    dataSource: MatTableDataSource<InventarioPublicaciones>;
-    @ViewChild(MatPaginator, {static: true}) paginator: MatPaginator;
-     //Nombre EvaMarket
-     systemName=SYSTEM_NAME;
-    
+  public comentariosVisible: boolean = false;
+  user: User;
+  publicaciones$: Observable<InventarioPublicaciones[]>;
+  currentImageIndex: [0];
+  static publicacionSeleccionada: number;
+  publications: InventarioPublicaciones[] = [];
+  dataSource: MatTableDataSource<InventarioPublicaciones>;
+  @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
+  //Nombre EvaMarket
+  systemName = SYSTEM_NAME;
 
-    /**
-     * Constructor
-     */
-    constructor(private _router: Router,    
-        private _inventoryService: PublicacionesInventory,
-        private _matDialog: MatDialog,
-        ) {
 
-    }
-    
-    ngOnInit(): void {
-        this.publicaciones$ = this._inventoryService.publicaciones$;
-      }
+  /**
+   * Constructor
+   */
+  constructor(private _router: Router,
+    private _inventoryService: PublicacionesInventory,
+    private _matDialog: MatDialog,
+  ) {
 
-    redirectToTienda(): void {
-        this._router.navigate(['/contactanos']);
-    }
+  }
 
-    redirectToNosotros(): void {
-        this._router.navigate(['/nosotros']);
-    }
+  ngOnInit(): void {
+    this.publicaciones$ = this._inventoryService.publicaciones$;
+  }
 
-    redirectToPlanes(): void {
-        this._router.navigate(['/planes']);
-    }
+  redirectToTienda(): void {
+    this._router.navigate(['/contactanos']);
+  }
 
-    redirectToHome(): void {
-        this._router.navigate(['/home']);
-    }
-    redirectToShop(): void {
-        this._router.navigate(['/shop-avanzar']);
-    }
+  redirectToNosotros(): void {
+    this._router.navigate(['/nosotros']);
+  }
 
-    nextPage() {
+  redirectToPlanes(): void {
+    this._router.navigate(['/planes']);
+  }
+
+  redirectToHome(): void {
+    this._router.navigate(['/home']);
+  }
+  redirectToShop(): void {
+    this._router.navigate(['/shop-avanzar']);
+  }
+
+  nextPage() {
     if (this.paginator.hasNextPage()) {
       this.paginator.nextPage();
     }
-  } 
+  }
 
   //ABRIR EL MODAL
   openComposeDialog(): void {
-    const dialogRef = this._matDialog.open(ModalPublicacionProductosComponent,{
-      
+    const dialogRef = this._matDialog.open(ModalPublicacionProductosComponent, {
+
     });
-  
-  
+
+
     dialogRef.afterClosed().subscribe((result) => {
       console.log('Compose dialog was closed!');
     });

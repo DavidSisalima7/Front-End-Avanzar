@@ -392,9 +392,6 @@ export class InventoryListComponentService implements OnInit, AfterViewInit, OnD
         const post = this.selectedPublicacionForm.getRawValue();
         const vendedor$ = this._vendedoraService.buscarVendedoraId(this.user.id);
         const publicacion$ = this._publicacionService.buscarPublicacionId(post.idPublicacion);
-
-        console.log("Publicacion", post);
-
         forkJoin([vendedor$, publicacion$]).subscribe(([vendedor, publicacion]) => {
             this.publication.vendedor = vendedor;
             this.publication.servicios = publicacion.servicios;
@@ -409,8 +406,6 @@ export class InventoryListComponentService implements OnInit, AfterViewInit, OnD
 
                 this._categoriaService.getCategoriaServicio(post.categoria).subscribe((categoria) => {
                     this.categoriaExtraida = categoria;
-                    console.log("Cat Seleccionada", this.categoriaExtraida);
-
                     this.servicio.cantidadDisponible = post.cantidadDisponible;
                     this.servicio.tiempoServicio = post.tiempoServicio;
                     this.servicio.precioInicialServicio = post.precioInicialServicio;

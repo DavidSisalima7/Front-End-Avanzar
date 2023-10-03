@@ -115,8 +115,6 @@ export class ListEmprendedorasResponsableComponent {
     // Abre el diálogo y pasa el idUsuario como dato
 
     ListEmprendedorasResponsableComponent.idUsuarioSeleccionado = idUsuario;
-    console.log('idUsuarioSeleccionado', ListEmprendedorasResponsableComponent.idUsuarioSeleccionado);
-
     const dialogRef = this._matDialog.open(MailboxComposeComponent);
 
     dialogRef.componentInstance.confirmacionCerrada.subscribe((confirmado: boolean) => {
@@ -143,7 +141,6 @@ export class ListEmprendedorasResponsableComponent {
     this.usuarioService.BuscarUsername(this.usernameSelect).subscribe(
       (usuarioEncontrado) => {
         this.verficarEstado = usuarioEncontrado;
-        console.log(this.verficarEstado);
         if (this.verficarEstado === null) {
           const confirmationDialog = this.confirmationService.open({
             title: 'Ocurrió un error',
