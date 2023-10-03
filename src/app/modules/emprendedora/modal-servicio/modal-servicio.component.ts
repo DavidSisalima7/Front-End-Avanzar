@@ -153,11 +153,11 @@ export class ModalServicioComponent implements OnInit
             descripcionPublicacion: [''],
             tipos: ['',Validators.required],
             vendedor: [this.user.name],
-            cantidadDisponible: [''],
-            precioInicialServicio: [''],
-            precioFinalServicio: [''],
-            precioFijoServicio: ['',Validators.required],
-            tiempoServicio: [''],
+            cantidadDisponible: ['', [this.positiveIntegerValidator]],
+            precioInicialServicio: ['',[this.positiveNumberValidator]],
+            precioFinalServicio: ['',[this.positiveNumberValidator]],
+            precioFijoServicio: ['', [Validators.required,this.positiveNumberValidator]],
+            tiempoServicio:  ['',[this.positiveNumberValidator]],
             miniaturaServicio: [''],
             imagenes: [[]],
             currentImageIndex: [0], // Índice de la imagen que se está visualizando
@@ -350,5 +350,25 @@ export class ModalServicioComponent implements OnInit
 
 
         });
+    }
+
+    //Método para validar solo stock numeros enteros
+
+    positiveIntegerValidator(control) {
+        const value = control.value;
+        if (!Number.isInteger(value) || value < 0) {
+            return { positiveInteger: true };
+        }
+        return null;
+    }
+
+    //Método para validar solo peso numeros positivos
+
+    positiveNumberValidator(control) {
+        const value = control.value;
+        if (isNaN(value) || value < 0) {
+            return { positiveNumber: true }; 
+        }
+        return null;
     }
 }

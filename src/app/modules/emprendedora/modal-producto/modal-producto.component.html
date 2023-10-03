@@ -58,8 +58,7 @@
 
                     <mat-form-field class="w-full">
                         <mat-label>Título de publicación</mat-label>
-                        <input matInput [formControlName]="'tituloPublicacion'"
-                            pattern="^(?!.*\s$)[A-Za-zñÑáéíóúÁÉÍÓÚ\s0-9]+$" />
+                        <input matInput [formControlName]="'tituloPublicacion'" pattern="[A-Za-z0-9\s]*" />
                         <mat-error *ngIf="selectedPublicacionForm.get('tituloPublicacion').hasError('required')">
                             Este campo es requerido*
                         </mat-error>
@@ -81,7 +80,7 @@
                     <mat-form-field class="w-full">
                         <mat-label>Nombre del Producto</mat-label>
                         <input matInput [formControlName]="'nombreProducto'"
-                            pattern="^(?!.*\s$)[A-Za-zñÑáéíóúÁÉÍÓÚ\s0-9]+$" />
+                        pattern="[A-Za-z0-9\s]*" />
                         <mat-error *ngIf="selectedPublicacionForm.get('nombreProducto').hasError('required')">
                             Este campo es requerido*
                         </mat-error>
