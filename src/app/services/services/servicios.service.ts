@@ -8,7 +8,7 @@ import { catchError, map, Observable, ReplaySubject, tap, throwError } from 'rxj
   providedIn: 'root'
 })
 export class ServiciosService {
-  private url: string = 'http://localhost:8080/api/servicios';
+  private url: string = 'http://157.245.222.178:8080/api/servicios';
 
   constructor(private http: HttpClient) { }
   private handleError(error: any) {

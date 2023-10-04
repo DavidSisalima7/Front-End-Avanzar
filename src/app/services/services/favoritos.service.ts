@@ -9,7 +9,7 @@ import { Destacados } from '../models/destacados';
 })
 export class FavoritosService {
 
-  private baseUrl = 'http://localhost:8080/api/likes'; 
+  private baseUrl = 'http://157.245.222.178:8080/api/likes'; 
 
   constructor(private http: HttpClient) { }
 

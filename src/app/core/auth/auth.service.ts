@@ -66,7 +66,7 @@ export class AuthService {
       return throwError('User is already logged in.');
     }
 
-    return this._httpClient.post('http://localhost:8080/api/login/generartoken', credentials).pipe(
+    return this._httpClient.post('http://157.245.222.178:8080/api/login/generartoken', credentials).pipe(
       switchMap((response: any) => {
 
         // Store the access token in the local storage
@@ -92,7 +92,7 @@ export class AuthService {
    */
   signInUsingToken(): Observable<any> {
     // Sign in using the token
-    return this._httpClient.post('http://localhost:8080/api/login/signInWithToken', {
+    return this._httpClient.post('http://157.245.222.178:8080/api/login/signInWithToken', {
       accessToken: this.accessToken,
     }).pipe(
       catchError(() =>

@@ -6,7 +6,7 @@ import { catchError, map, Observable, ReplaySubject, tap, throwError } from 'rxj
 
 @Injectable({ providedIn: 'root' })
 export class UserService {
-  url: string = 'http://localhost:8080/api/usuarios';
+  url: string = 'http://157.245.222.178:8080/api/usuarios';
   private _user: ReplaySubject<User> = new ReplaySubject<User>(1);
 
   /**

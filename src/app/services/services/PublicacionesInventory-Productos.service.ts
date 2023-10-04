@@ -48,14 +48,14 @@ export class PublicacionesInventoryProductos
     // -----------------------------------------------------------------------------------------------------
 
     listarServicio(): void {
-        this._httpClient.get<InventarioPublicaciones[]>("http://localhost:8080/api/publicaciones/listarProducto")
+        this._httpClient.get<InventarioPublicaciones[]>("http://157.245.222.178:8080/api/publicaciones/listarProducto")
           .subscribe((data) => {
             this._publicaciones.next(data); // Actualiza el BehaviorSubject con los datos obtenidos
           });
       }
      
       obtenerListaPublicacionesXProducto(): Observable<InventarioPublicaciones[]> {
-        return this._httpClient.get<InventarioPublicaciones[]>("http://localhost:8080/api/publicaciones/listarProducto")
+        return this._httpClient.get<InventarioPublicaciones[]>("http://157.245.222.178:8080/api/publicaciones/listarProducto")
           .pipe(
             catchError(this.handleError)
           );

@@ -9,7 +9,7 @@ import { mensajeAlertasDto } from '../models/mensajeAlertasDto';
 })
 export class DetalleSubscripcionService {
 
-  private baseUrl = 'http://localhost:8080/api/detalleSubscripcion'; // Cambia la URL a la de tu servidor
+  private baseUrl = 'http://157.245.222.178:8080/api/detalleSubscripcion'; // Cambia la URL a la de tu servidor
 
   constructor(private http: HttpClient) { }
 

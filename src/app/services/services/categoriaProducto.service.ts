@@ -8,7 +8,7 @@ import { Observable, catchError, throwError } from 'rxjs';
 })
 export class CategoriaProductoService {
 
-  private baseUrl = 'http://localhost:8080/api/categoriaProducto'; 
+  private baseUrl = 'http://157.245.222.178:8080/api/categoriaProducto'; 
 
   constructor(private http: HttpClient) { }
 

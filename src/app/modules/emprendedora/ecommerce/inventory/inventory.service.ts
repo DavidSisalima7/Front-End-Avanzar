@@ -62,7 +62,7 @@ export class InventoryService {
 
     /*
     listarServicio(): void {
-        this._httpClient.get<InventarioPublicaciones[]>("http://localhost:8080/api/publicaciones/listaPublicacionesXProductos")
+        this._httpClient.get<InventarioPublicaciones[]>("http://157.245.222.178:8080/api/publicaciones/listaPublicacionesXProductos")
           .subscribe((data) => {
             this._publicaciones.next(data); // Actualiza el BehaviorSubject con los datos obtenidos
           });
@@ -81,7 +81,7 @@ export class InventoryService {
             )
             .subscribe((vendedora: Vendedor) => {
                 const vendedorId = vendedora.idVendedor;
-                const url = `http://localhost:8080/api/publicaciones/listaPublicacionesXProductos/${vendedorId}`;
+                const url = `http://157.245.222.178:8080/api/publicaciones/listaPublicacionesXProductos/${vendedorId}`;
                 this._httpClient.get<InventarioPublicaciones[]>(url)
                     .subscribe((data) => {
                         this._publicaciones.next(data); // Actualiza el BehaviorSubject con los datos obtenidos
@@ -105,7 +105,7 @@ export class InventoryService {
      * Get categories
      */
     getCategoriesProducto(): Observable<CategoriaProducto[]> {
-        return this._httpClient.get<CategoriaProducto[]>('http://localhost:8080/api/categoriaProducto/listar').pipe(
+        return this._httpClient.get<CategoriaProducto[]>('http://157.245.222.178:8080/api/categoriaProducto/listar').pipe(
             tap((categories) => {
                 this._categoriesProducto.next(categories);
             }),
@@ -113,7 +113,7 @@ export class InventoryService {
     }
 
     getCategoriesPublicacion(): Observable<CategoriaPublicacion[]> {
-        return this._httpClient.get<CategoriaPublicacion[]>('http://localhost:8080/api/categoria/listar').pipe(
+        return this._httpClient.get<CategoriaPublicacion[]>('http://157.245.222.178:8080/api/categoria/listar').pipe(
             tap((categories) => {
                 this._categoriesPublicacion.next(categories);
             }),
@@ -147,7 +147,7 @@ export class InventoryService {
             .set('search', search);
 
         return this._httpClient
-            .get<{ pagination: InventoryPagination; products: InventarioPublicaciones[] }>('http://localhost:8080/api/publicaciones/listar', {
+            .get<{ pagination: InventoryPagination; products: InventarioPublicaciones[] }>('http://157.245.222.178:8080/api/publicaciones/listar', {
                 params: params
             })
             .pipe(
@@ -205,7 +205,7 @@ export class InventoryService {
 
         return this.publicaciones$.pipe(
             take(1),
-            switchMap(publicaciones => this._httpClient.post<InventarioPublicaciones>('http://localhost:8080/api/publicaciones/registrarConFoto', formData, { headers: headers }).pipe(
+            switchMap(publicaciones => this._httpClient.post<InventarioPublicaciones>('http://157.245.222.178:8080/api/publicaciones/registrarConFoto', formData, { headers: headers }).pipe(
                 map((newPublicacion) => {
                     // Update the products with the new product
                     this._publicaciones.next([newPublicacion, ...publicaciones]);
@@ -219,7 +219,7 @@ export class InventoryService {
     updatePublicacion(id: number, publicacion: InventarioPublicaciones): Observable<InventarioPublicaciones> {
         return this.publicaciones$.pipe(
             take(1),
-            switchMap(publicaciones => this._httpClient.put<InventarioPublicaciones>(`http://localhost:8080/api/publicaciones/actualizar/${id}`, publicacion
+            switchMap(publicaciones => this._httpClient.put<InventarioPublicaciones>(`http://157.245.222.178:8080/api/publicaciones/actualizar/${id}`, publicacion
             ).pipe(
                 map((updatedPublicacion) => {
                     // Find the index of the updated product
@@ -251,7 +251,7 @@ export class InventoryService {
 
 
     deletePublicacion(id: number): Observable<boolean> {
-        return this._httpClient.put<boolean>(`http://localhost:8080/api/publicaciones/eliminar/${id}`, null).pipe(
+        return this._httpClient.put<boolean>(`http://157.245.222.178:8080/api/publicaciones/eliminar/${id}`, null).pipe(
             switchMap(isDeleted => {
                 if (isDeleted) {
                     // Eliminación exitosa, actualiza la lista

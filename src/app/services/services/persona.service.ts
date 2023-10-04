@@ -11,7 +11,7 @@ import { User } from 'app/core/user/user.types';
   providedIn: 'root'
 })
 export class PersonaService {
-  url: string = 'http://localhost:8080/api/persona';
+  url: string = 'http://157.245.222.178:8080/api/persona';
   constructor(private http: HttpClient) { }
 
 
