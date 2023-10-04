@@ -192,7 +192,7 @@ export class AuthService {
       const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
 
       // Realiza la solicitud con el encabezado Authorization
-      return this._httpClient.get<any>(`${baserUrl}/api/login/usuarioActual`, { headers: headers })
+      return this._httpClient.get<any>(`http://157.245.222.178:8080/api/login/usuarioActual`, { headers: headers })
         .pipe(
           catchError((error) => {
             // Maneja cualquier error que pueda ocurrir en la solicitud
