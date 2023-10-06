@@ -8,7 +8,7 @@ import baserUrl from './helper';
 @Injectable({ providedIn: 'root' })
 export class AuthService {
   private _authenticated: boolean = false;
-
+  private apiUrl: "http://157.245.222.178:8080/api/login/usuarioActual";
   /**
    * Constructor
    */
@@ -183,25 +183,26 @@ export class AuthService {
   }
 
   public getUsuarioActual(): Observable<any> {
-    // Obtiene el token del local storage
     const token = this.accessToken;
 
-    // Verifica que haya un token válido antes de hacer la solicitud
     if (token) {
-      // Agrega el token al encabezado Authorization
       const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
 
-      // Realiza la solicitud con el encabezado Authorization
-      return this._httpClient.get<any>(`http://157.245.222.178:8080/api/login/usuarioActual`, { headers: headers })
-        .pipe(
-          catchError((error) => {
-            // Maneja cualquier error que pueda ocurrir en la solicitud
-            console.log('Error al obtener el usuario actual:', error);
-            return of(null); // Devuelve un observable que emite un valor nulo en caso de error
-          })
-        );
+      return this._httpClient.get<any>(this.apiUrl, { headers: headers }).pipe(
+        catchError((error) => {
+          if (error.status === 401) {
+            // El token puede estar expirado o no válido
+            // Manejar el caso de token expirado o no válido, por ejemplo, redirigir a la página de inicio de sesión
+            console.log('Token expirado o no válido');
+          } else {
+            // Manejar otros errores
+            console.error('Error al obtener el usuario actual:', error);
+          }
+          return throwError(error);
+        })
+      );
     } else {
-      // Si no hay un token válido, puedes devolver un observable que emite un valor nulo
+      // No hay un token válido
       return of(null);
     }
   }
