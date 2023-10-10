@@ -351,7 +351,7 @@ export class SignUpComponent implements OnInit {
                                     };
                                     this.showAlert = true;
                                     setTimeout(function () {
-                                        window.location.href = 'http://evamarket.ec/sign-in'; // URL a la que deseas redirigir
+                                        window.location.href = 'http://evamarket.ec'; // URL a la que deseas redirigir
                                     }, 1500);
                                 },
                                 error: (error) => {

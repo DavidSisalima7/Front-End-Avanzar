@@ -207,7 +207,9 @@ export class SettingsAccountComponent implements OnInit {
           },
           "dismissible": true
         });
-         this.renderer.setProperty(window,'location',location);
+
+        window.location.href = 'http://evamarket.ec'; // URL a la que deseas redirigir
+
       },
       (error) => {
 

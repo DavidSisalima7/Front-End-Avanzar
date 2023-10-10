@@ -9,6 +9,8 @@ import baserUrl from './helper';
 export class AuthService {
   private _authenticated: boolean = false;
   private apiUrl: "http://157.245.222.178:8080/api/login/usuarioActual";
+
+  
   /**
    * Constructor
    */
@@ -119,6 +121,7 @@ export class AuthService {
         // Store the user on the user service
         this._userService.user = response.usuario;
 
+
         // Return true
         return of(true);
       }),
@@ -188,7 +191,7 @@ export class AuthService {
     if (token) {
       const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
 
-      return this._httpClient.get<any>(this.apiUrl, { headers: headers }).pipe(
+      return this._httpClient.get<any>('http://157.245.222.178:8080/api/login/usuarioActual', { headers: headers }).pipe(
         catchError((error) => {
           if (error.status === 401) {
             // El token puede estar expirado o no válido
@@ -196,6 +199,8 @@ export class AuthService {
             console.log('Token expirado o no válido');
           } else {
             // Manejar otros errores
+            console.log("Header", headers);
+            console.log("Token", token);
             console.error('Error al obtener el usuario actual:', error);
           }
           return throwError(error);
@@ -206,6 +211,8 @@ export class AuthService {
       return of(null);
     }
   }
+
+  
 
   //iniciamos sesión y establecemos el token en el localStorage
   public loginUser(token: any) {
