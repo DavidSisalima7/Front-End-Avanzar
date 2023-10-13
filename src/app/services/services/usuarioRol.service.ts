@@ -7,7 +7,7 @@ import { Observable } from 'rxjs';
   providedIn: 'root'
 })
 export class UsuarioRolService {
-  url: string = 'http://157.245.222.178:8080/api/usuariorol';
+  url: string = 'http://evamarket.ec:8080/api/usuariorol';
   constructor(private http: HttpClient) { }
 
 

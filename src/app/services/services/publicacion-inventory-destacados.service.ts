@@ -47,14 +47,14 @@ export class PublicacionInventoryDestacadosService {
   // -----------------------------------------------------------------------------------------------------
 
   listarServicio(): void {
-    this._httpClient.get<InventarioPublicaciones[]>(`http://157.245.222.178:8080/api/publicaciones/listarDestacados/${this.id}`)
+    this._httpClient.get<InventarioPublicaciones[]>(`http://evamarket.ec:8080/api/publicaciones/listarDestacados/${this.id}`)
       .subscribe((data) => {
         this._publicaciones.next(data); // Actualiza el BehaviorSubject con los datos obtenidos
       });
   }
 
   obtenerListaPublicaciones(): Observable<InventarioPublicaciones[]> {
-    return this._httpClient.get<InventarioPublicaciones[]>(`http://157.245.222.178:8080/api/publicaciones/listarDestacados/${this.id}`)
+    return this._httpClient.get<InventarioPublicaciones[]>(`http://evamarket.ec:8080/api/publicaciones/listarDestacados/${this.id}`)
       .pipe(
         catchError(this.handleError)
       );

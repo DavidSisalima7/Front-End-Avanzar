@@ -8,7 +8,7 @@ import { Publicacion, PublicacionA, PublicacionB } from '../models/publicaciones
 })
 export class PublicacionesService {
 
-  private baseUrl = 'http://157.245.222.178:8080/api/publicaciones'; // Cambia la URL a la de tu servidor
+  private baseUrl = 'http://evamarket.ec:8080/api/publicaciones'; // Cambia la URL a la de tu servidor
 
   constructor(private http: HttpClient) { }
 

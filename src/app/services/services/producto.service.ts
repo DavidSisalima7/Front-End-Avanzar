@@ -7,7 +7,7 @@ import { catchError, map, Observable, ReplaySubject, tap, throwError } from 'rxj
     providedIn: 'root'
   })
   export class ProductosService {
-    private url: string = 'http://157.245.222.178:8080/api/productos';
+    private url: string = 'http://evamarket.ec:8080/api/productos';
   
     constructor(private http: HttpClient) { }
     private handleError(error: any) {

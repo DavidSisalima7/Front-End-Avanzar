@@ -7,7 +7,7 @@ import { Observable, catchError, throwError } from 'rxjs';
   providedIn: 'root'
 })
 export class EmailService {
-  url: string = 'http://157.245.222.178:8080/api/email';
+  url: string = 'http://evamarket.ec:8080/api/email';
   constructor(private http: HttpClient) { }
 
 

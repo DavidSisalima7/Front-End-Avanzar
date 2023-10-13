@@ -9,7 +9,7 @@ import { Publicacion } from '../models/publicaciones';
 })
 export class ComentarioService {
 
-    private baseUrl='http://157.245.222.178:8080/api/comentarios';
+    private baseUrl='http://evamarket.ec:8080/api/comentarios';
     constructor(private http: HttpClient) { }
 
    createCommit(c:Comentario):Observable<Comentario>{

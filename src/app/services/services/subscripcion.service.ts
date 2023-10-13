@@ -8,7 +8,7 @@ import { Subscripcion } from '../models/subscripcion';
 })
 export class SubscripcionService {
 
-  private baseUrl = 'http://157.245.222.178:8080/api/subscripcion'; // Cambia la URL a la de tu servidor
+  private baseUrl = 'http://evamarket.ec:8080/api/subscripcion'; // Cambia la URL a la de tu servidor
 
   constructor(private http: HttpClient) { }
   

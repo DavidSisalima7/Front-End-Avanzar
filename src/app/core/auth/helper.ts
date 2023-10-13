@@ -1,2 +1,2 @@
-let baserUrl = 'http://157.245.222.178:8080'
+let baserUrl = 'http://evamarket.ec:8080'
 export default baserUrl;
